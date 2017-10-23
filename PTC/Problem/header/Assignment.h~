@@ -1,0 +1,9 @@
+
+struct Assignment{
+  int start;
+  int machine;
+
+  Assignment();
+  Assignment(int,int);
+};
+

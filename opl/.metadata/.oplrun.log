@@ -1,0 +1,290 @@
+!SESSION 2017-09-27 17:18:53.902 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:18:53.903
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+
+!ENTRY ilog.odms.ide.opllang.remote 4 0 2017-09-27 17:18:54.659
+!MESSAGE run failed
+!STACK 0
+ilog.concert.IloException: Echec du traitement.
+	at ilog.opl.opl_lang_wrapJNI.IloOplModel_getModel(Native Method)
+	at ilog.opl.IloOplModel.getModel(IloOplModel.java:537)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell.loadModel(IloAbstractRunShell.java:1198)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessModel(IloOplRunConfigRunner.java:162)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doRun(IloOplRunConfigRunner.java:398)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$2.run(IloAbstractRunShell.java:1589)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2017-09-27 17:22:57.464 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:22:57.465
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+
+!ENTRY ilog.odms.ide.opllang.remote 4 0 2017-09-27 17:22:57.553
+!MESSAGE run failed
+!STACK 0
+ilog.concert.IloException: Echec du traitement.
+	at ilog.opl.opl_lang_wrapJNI.IloOplModel_getModel(Native Method)
+	at ilog.opl.IloOplModel.getModel(IloOplModel.java:537)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell.loadModel(IloAbstractRunShell.java:1198)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessModel(IloOplRunConfigRunner.java:162)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doRun(IloOplRunConfigRunner.java:398)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$2.run(IloAbstractRunShell.java:1589)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2017-09-27 17:25:46.931 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:25:46.932
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-27 17:27:37.022 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:27:37.023
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-27 17:28:17.137 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:28:17.138
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-27 17:28:32.920 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:28:32.921
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-27 17:28:58.182 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:28:58.183
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-27 17:29:11.662 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:29:11.663
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-27 17:29:35.445 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-27 17:29:35.445
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-28 08:18:19.340 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 08:18:19.341
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-28 08:19:55.550 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 08:19:55.551
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-28 08:29:18.839 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 08:29:18.842
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-28 08:32:36.227 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 08:32:36.229
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-28 10:06:26.417 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 10:06:26.418
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-28 10:16:07.502 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 10:16:07.503
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+!SESSION 2017-09-28 10:50:04.971 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 10:50:04.971
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+
+!ENTRY ilog.odms.ide.opllang.remote 4 0 2017-09-28 10:50:05.157
+!MESSAGE run failed
+!STACK 0
+ilog.concert.IloException: Echec du traitement.
+	at ilog.opl.opl_lang_wrapJNI.IloOplModel_getModel(Native Method)
+	at ilog.opl.IloOplModel.getModel(IloOplModel.java:537)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell.loadModel(IloAbstractRunShell.java:1198)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessModel(IloOplRunConfigRunner.java:162)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doRun(IloOplRunConfigRunner.java:398)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$2.run(IloAbstractRunShell.java:1589)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2017-09-28 10:52:11.438 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 10:52:11.439
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+
+!ENTRY ilog.odms.ide.opllang.remote 4 0 2017-09-28 10:52:11.809
+!MESSAGE non-fixed constrained variable
+!STACK 0
+ilog.concert.IloException: non-fixed constrained variable
+	at ilog.concert.cppimpl.concert_wrapJNI.IloAlgorithm_getObjValue(Native Method)
+	at ilog.concert.cppimpl.IloAlgorithm.getObjValue(IloAlgorithm.java:97)
+	at ilog.cp.IloCP.getObjValue(IloCP.java:7642)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$MyCpCallback.customExecute(IloAbstractRunShell.java:381)
+	at ilog.cp.IloCustomIndexVarHash$MyIVH.execute(IloCustomIndexVarHash.java:27)
+	at ilog.cp.cppimpl.cp_wrapJNI.SwigDirector_IloIndexVarHashWrapper_execute(cp_wrapJNI.java:671)
+	at ilog.opl.opl_lang_wrapJNI.IloOplModel_internalSolve(Native Method)
+	at ilog.opl.IloOplModel.internalSolve(IloOplModel.java:421)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessSimpleCP(IloOplRunConfigRunner.java:317)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessSimple(IloOplRunConfigRunner.java:185)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessModel(IloOplRunConfigRunner.java:169)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doRun(IloOplRunConfigRunner.java:398)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$2.run(IloAbstractRunShell.java:1589)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2017-09-28 10:53:21.136 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -clean -nl fr_FR -configuration /home/mnattaf/Dev/opl/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2017-09-28 10:53:21.137
+!MESSAGE Run Configuration 1 in /home/mnattaf/opl/essai_PTC
+
+!ENTRY ilog.odms.ide.opllang.remote 4 0 2017-09-28 10:53:21.439
+!MESSAGE non-fixed constrained variable
+!STACK 0
+ilog.concert.IloException: non-fixed constrained variable
+	at ilog.concert.cppimpl.concert_wrapJNI.IloAlgorithm_getObjValue(Native Method)
+	at ilog.concert.cppimpl.IloAlgorithm.getObjValue(IloAlgorithm.java:97)
+	at ilog.cp.IloCP.getObjValue(IloCP.java:7642)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$MyCpCallback.customExecute(IloAbstractRunShell.java:381)
+	at ilog.cp.IloCustomIndexVarHash$MyIVH.execute(IloCustomIndexVarHash.java:27)
+	at ilog.cp.cppimpl.cp_wrapJNI.SwigDirector_IloIndexVarHashWrapper_execute(cp_wrapJNI.java:671)
+	at ilog.opl.opl_lang_wrapJNI.IloOplModel_internalSolve(Native Method)
+	at ilog.opl.IloOplModel.internalSolve(IloOplModel.java:421)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessSimpleCP(IloOplRunConfigRunner.java:317)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessSimple(IloOplRunConfigRunner.java:185)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessModel(IloOplRunConfigRunner.java:169)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doRun(IloOplRunConfigRunner.java:398)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$2.run(IloAbstractRunShell.java:1589)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)

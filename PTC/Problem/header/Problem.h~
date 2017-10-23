@@ -1,0 +1,65 @@
+#ifndef PROBLEM_H
+#define PROBLEM_H
+
+#include "Family.h"
+#include <iostream>
+typedef std::vector<Family> familyList;
+
+//WARNING!!!! Family in F are "ordered", don't change their order
+
+struct Problem{
+  //a problem is then defined by its number of taks, its number of machines and 
+  //a list of families (containing duration, setup, threshold, number of task
+  // and qualified machines)
+  int N;
+  int M;
+  std::vector<int> famOf;
+  familyList F;
+
+  //////////CONSTRUCTOR///////
+  //Construct a problem with a predefined number of task, number of machine equals to 0
+  //set the capacity of the vector F to the number of families and of famOf to the
+  //number of task
+  Problem(int,int);
+  //idem above plus number of machine
+  Problem(int,int,int);
+  //Construct a problem with the value of the parameter given in argument
+  Problem(int,int,std::vector<int>,familyList);
+
+
+  //get the number of task in a family
+  int getNf(int f) const;
+  
+  //display solution
+  std::string toString() const;
+  
+  //get an upper bound on the time horizon (to improve)
+  int computeHorizon() const;
+  
+  //get the number of family
+  inline int getFamilyNumber() const{
+    return this->F.size();
+  }
+  //get a task duration
+  inline int getDuration(int i) const{
+    return this->F[famOf[i]].duration;
+  }
+  //get a task setup time 
+  inline int getSetup(int i) const{
+    return this->F[famOf[i]].setup;
+  }
+  //get a task threshold
+  inline int getThreshold(int i) const{
+    return this->F[famOf[i]].threshold;
+  }
+  //return 1 if machine m is qualified for task i
+  inline int isQualif(int i, int m) const{
+    return this->F[this->famOf[i]].qualif[m];
+  }
+
+};
+
+
+  //generate new instance
+Problem generate(int n, int m, int F, int pmax, int sumQualif);
+#endif
