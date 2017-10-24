@@ -53,16 +53,16 @@ void generateFamilies(Problem& P, const int& n, const int& m,
   generateQualif(P,m,F,sumQualif);
 }
 
-void generateDuration(Problem& P,const int& F,const int& pmax){
+void generateDuration(Problem& P, const int& F, const int& pmax){
   std::random_device rd;
   std::mt19937 generator(rd());
-  std::normal_distribution<> disDur(4*pmax/5,pmax/5);
+  std::normal_distribution<> disDur(4.0*(double)pmax/5.0,(double)pmax/5.0);
   int sample;  
   for (int f = 0 ; f < F ; ++f){
     do {
       sample = (int)disDur(generator);
     } while (sample < 1 || sample > pmax);
-    P.F[f].duration = sample;
+    P.F[f].duration = (int)sample;
   }
 }
 
@@ -79,7 +79,7 @@ void generateSetup(Problem& P, const int& F){
     do {
       sample = (int)disSet(generator);
     } while (sample < 1 || sample > minDur);
-    P.F[f].setup = sample;
+    P.F[f].setup = (int)sample;
   }
 }
 
@@ -92,12 +92,12 @@ void generateThreshold(Problem& P, const int& n, const int& m, const int& F){
     if (P.F[f].duration  + P.F[f].setup > maxDur)
       maxDur = P.F[f].duration + P.F[f].setup;
 
-  std::normal_distribution<> disThres((n+m)*maxDur/(2*m) ,(n-m)*maxDur/(6*m) );
+  std::normal_distribution<> disThres(3*(n+m)*maxDur/(8*m) ,3*(n-m)*maxDur/(24*m) );
   for ( f = 0 ; f < F ; ++f){
     do {
       sample = (int)disThres(generator);
-    } while (sample < maxDur || sample > n*maxDur/m);
-    P.F[f].threshold = sample;
+    } while (sample < maxDur || sample > 3*n*maxDur/(4*m));
+    P.F[f].threshold = (int)sample;
   }
 }
 
@@ -112,7 +112,7 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
     nbQualif[f]++;
   sumQualif -= F;
   while (sumQualif > 0){
-    sample = qualifPerFam(generator) % (m - nbFull);
+    sample = (int)(qualifPerFam(generator) % (m - nbFull));
     int select = -1 ;
     while (sample > -1 ){
       if (nbQualif[select+1] < m)
@@ -124,13 +124,13 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
     sumQualif--;
   }
   //machine affectation to family
-  std::uniform_int_distribution<> machQualif(0,m-1);
+  std::uniform_int_distribution<int> machQualif(0,m-1);
   std::vector<int> selected(m,0);
   j=m; f=0;
   //make sure each machine is qualified for at least one family
   while (j > 0 && f < F){
     do {
-      int index =  machQualif(generator)%j ;
+      int index =  (int)(machQualif(generator)%j) ;
       int select = -1;
       while (index > -1 ){
 	if (!selected[select+1])
@@ -144,7 +144,7 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
     if (j > 0) f++;  
     else {
       while (nbQualif[f] > 0){
-	int select = machQualif(generator) % m;
+	int select = (int)(machQualif(generator) % m);
 	if (P.F[f].qualif[select] != 1){
 	  P.F[f].qualif[select] = 1;
 	  nbQualif[f]--;
@@ -156,7 +156,7 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
   for (int rest = f + 1 ; rest < F ; ++rest){
     j=m;
     while (nbQualif[rest] > 0){
-      int index =  machQualif(generator) % j;
+      int index =  (int)(machQualif(generator) % j);
       int select = -1;
       while (index > -1 ){
 	if (!P.F[rest].qualif[select+1])
@@ -180,7 +180,7 @@ void affectFamily(Problem& P, const int& n, const int& F){
     nF[f]++;
   nbRes -= F;
   while (nbRes > 0){
-    sample = disNf(generator);
+    sample = (int)(disNf(generator));
     nF[sample]++;
     nbRes--;
   }
@@ -189,7 +189,7 @@ void affectFamily(Problem& P, const int& n, const int& F){
   nbRes = n;
   for (f = 0 ; f < F ; ++f){
     while (nF[f] > 0){
-      int index = famAffect(generator) % nbRes;
+      int index = (int)(famAffect(generator) % nbRes);
       int select = -1;
       while (index > -1){
 	if (!selected[select+1])

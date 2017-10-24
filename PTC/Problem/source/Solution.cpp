@@ -75,16 +75,15 @@ int Solution::isValid(const Problem &P) const{
     if (S[i].start + P.getDuration(i) > QualifLostTime[P.famOf[i]][S[i].machine])
       return 0;
 
-  // std::cout<<"the machine j becomes disqualified for f if there is no task of f in an interval gamma_f\n";
+  //std::cout<<"the machine j becomes disqualified for f if there is no task of f in an interval gamma_f\n";
   for (j = 0 ; j < P.M ; ++j)
     for (int f = 0 ; f < F ; ++f)
       if (P.F[f].qualif[j])
 	for (int t = 0 ; t < getEnd(j) - P.F[f].threshold ; ++t){
 	  i = 0;
-	  while (!(P.famOf[i]==f && intersect(S[i].start,S[i].start+P.getDuration(i), t ,t + P.F[f].threshold))
+	  while (!(P.famOf[i]==f && intersect(S[i].start,S[i].start+P.getDuration(i), t ,t + P.F[f].threshold+1))
 		 && i < n)
 	    ++i;
-	  
 	  if (i >= n && QualifLostTime[f][j] > t + P.F[f].threshold){
 	    return 0;
 	  }
@@ -92,12 +91,19 @@ int Solution::isValid(const Problem &P) const{
   
   //std::cout<<" no more than gamma_f between to task of the same family\n";
   for (i = 0 ; i < n ; ++i){
-    j= i + 1;
-    while (j < n && P.famOf[i]!= P.famOf[j] && S[i].machine != S[j].machine)
-      ++j;   
-    if (j < n  && P.famOf[i]== P.famOf[j] && !(S[i].start + P.getDuration(i) + P.getThreshold(i)  >= S[j].start)){
-         return 0;
+    j = 0;
+    bool vu = false;
+    while (j < n && (i==j || P.famOf[i]!= P.famOf[j] || S[i].machine != S[j].machine
+		     || !intersect(S[i].start + P.getDuration(i) ,
+				   S[i].start + P.getDuration(i)+ P.getThreshold(i)+1,
+				   S[j].start , S[j].start + P.getDuration(i) )
+		     )){
+      if (i != j && P.famOf[j] == P.famOf[i] &&  S[i].machine == S[j].machine && S[j].start > S[i].start) vu = true; 
+      ++j;
     }
+    if (vu)
+      if (j >= n)
+	return 0;
   }
   return 1;
 }

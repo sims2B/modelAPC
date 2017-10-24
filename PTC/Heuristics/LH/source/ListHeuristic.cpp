@@ -40,7 +40,7 @@ int LH(Problem P, Solution& s){
   }
   for (f = 0 ; f < F ; ++f)
     for (i = 0 ; i < P.M ; ++i)
-      if (P.F[f].qualif[i]) s.QualifLostTime[f][i] = std::numeric_limits<int>::max(); 
+      if (P.F[f].qualif[i] || endLast[i] <= s.QualifLostTime[f][i]) s.QualifLostTime[f][i] = std::numeric_limits<int>::max(); 
   return 1;
 }
 
