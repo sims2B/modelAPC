@@ -6,15 +6,27 @@
 
 
 
-int QCH(const Problem &P, Solution& s){
+int QCH(Problem P, Solution& s){
   std::vector<int> endLast(P.M,0); //end time of the last task scheduled of m
   if (schedule(P,s,endLast)){//phase 1
-    std::cout << s.toString() << std::endl;
-    std::cout << "Objective value before f2:\t" <<
-      s.getWeigthedObjectiveValue(P,alpha,beta) << std::endl;
-    return !intraChange(P,s,endLast);
+    /*   std::cout << s.toString() << std::endl;
+    std::cout << "Phase 1 valide ? " << s.isValid(P) << std::endl;
+    std::cout << "Objective value before phase 2:\t" <<
+    s.getWeigthedObjectiveValue(P,alpha,beta) << std::endl;*/
+    if (!intraChange(P,s,endLast)){
+      /* std::cout << s.toString() << std::endl;
+    std::cout << "Phase 2 valide ? " << s.isValid(P) << std::endl;
+    std::cout << "Objective value before phase 3:\t" <<
+    s.getWeigthedObjectiveValue(P,alpha,beta) << std::endl;*/
+      return !interChange(P,s,endLast);
+    }
+    else {
+      std:: cout << "Problem in Phase 2\n"; return 0;
+    }
   }
-  else return 0;
+  else {
+    std::cout << "No solution Found\n"; return 0;
+  }
 }
 
 int schedule(Problem P, Solution& s, std::vector<int>& endLast){
@@ -106,10 +118,14 @@ int intraChange(const Problem &P, Solution& s, std::vector<int>& endLast){
   int k,j,i = 0;
   const int F = P.getFamilyNumber();
   for (k = 0 ; k < P.M ; ++k){
+    std::vector<int> moved(P.N,0);
     std::vector<int> firstOcc(F,-1);
+    i=0;
     while (i < P.N){
-      if (s.S[i].machine == k && (firstOcc[P.famOf[i]] == -1 ||
-				  s.S[firstOcc[P.famOf[i]]].start + P.getDuration(firstOcc[P.famOf[i]]) == s.S[i].start))  
+      if (s.S[i].machine == k &&
+	  (firstOcc[P.famOf[i]] == -1 ||
+	   s.S[firstOcc[P.famOf[i]]].start + P.getDuration(firstOcc[P.famOf[i]])
+	   == s.S[i].start))  
 	firstOcc[P.famOf[i]] = i;
       ++i;
     }
@@ -117,16 +133,53 @@ int intraChange(const Problem &P, Solution& s, std::vector<int>& endLast){
     do {
       update = false;
       j = getLastOn(P,s,k,endLast[k]);
-      i = firstOcc[P.famOf[j]];
-      std::cout << "candidat : \t" << i << " " << j << std::endl;
-      if (i != -1 && i != j && s.S[i].start + P.getDuration(i) != s.S[j].start && !addDisqualif(P,s,i,k)){
-      std::cout << "update : \t" << i << " " << j << std::endl;
+      i = firstOcc[P.famOf[j]]; 
+      if (i != -1 && i != j && !moved[j]  && !addDisqualif(P,s,i,k)){
         update = true;
-	updateTime(P,s,i,j,k,endLast);
+	moved[j]=1;
+	updateTime(P,s,i,j,k,k,endLast);
       }
     } while (update);
   }
   return 0;
+}
+
+
+int interChange(const Problem& P, Solution &s, std::vector<int>& endLast){
+  int k , m , i , j;
+  std::vector<int> moved(P.N,0);
+  for (k = 0 ; k < P.M ; ++k){
+    bool update ;
+    do {
+      update = false;
+      if ((j = getLastOn(P,s,k,endLast[k]))!=P.N){
+	for ( m = 0 ; m < P.M ; ++m){
+	  if (P.isQualif(j,m) && k != m){
+	    i = 0;
+	    while ( i < P.N ){
+	      if (P.isQualif(i,m) && s.S[i].machine == m && P.famOf[i]==P.famOf[j]) {
+		if (i < P.N && !moved[j]  && !addDisqualif(P,s,i,m)
+		    && !addCompletion(P,i,k,m,endLast)){
+		  update = true;
+		  moved[j]=1;
+		  updateTime(P,s,i,j,k,m,endLast);
+		  j = getLastOn(P,s,k,endLast[k]);
+		  i = P.N; //break while
+		}
+	      }
+	      ++i;
+	    }
+	  }
+	}
+      }
+    }while (update);
+  }
+  return 0;
+}
+
+
+int addCompletion(const Problem& P, const int& i, const int& k, const int& m, std::vector<int> endLast){
+  return (endLast[k]  <= endLast[m] + P.getDuration(i));
 }
 
 int getLastOn(const Problem& P, const Solution& s, const int& k,
@@ -137,33 +190,40 @@ int getLastOn(const Problem& P, const Solution& s, const int& k,
   return i;
 }
 
-int addDisqualif(const Problem& P, const Solution& s, const int& j, const int& k){
+// i sur machine m ; j sur machine k
+int addDisqualif(const Problem& P, const Solution& s, const int& i, const int& m){
   int cur;
   const int F = P.getFamilyNumber();
   std::vector<int> firstOccAfter(F,P.N);
   std::vector<int> lastOccBef(F,-1);
-  //compute last occurence of each familiy before j on k
+  //compute last occurence of each familiy before i on k
   for (cur = 0 ; cur < P.N ; ++cur)
-    if ( s.S[cur].machine == k && s.S[cur].start < s.S[j].start
-	&& s.S[lastOccBef[P.famOf[cur]]].start < s.S[cur].start )
-      lastOccBef[P.famOf[cur]] = cur;
-  //compute first occurence of each familiy after j on k
+    if ( s.S[cur].machine == m && s.S[cur].start < s.S[i].start){
+      if (lastOccBef[P.famOf[cur]] == -1)
+	lastOccBef[P.famOf[cur]] = cur;
+      else if (s.S[lastOccBef[P.famOf[cur]]].start < s.S[cur].start )
+	lastOccBef[P.famOf[cur]] = cur;
+    }
+  //compute first occurence of each familiy after i on k
   for (cur = 0 ; cur < P.N ; ++cur)
-    if ( s.S[cur].machine == k && s.S[cur].start > s.S[j].start
-	&& s.S[firstOccAfter[P.famOf[cur]]].start > s.S[cur].start )
+    if ( s.S[cur].machine == m && s.S[cur].start > s.S[i].start){
+      if (firstOccAfter[P.famOf[cur]] == P.N)
       firstOccAfter[P.famOf[cur]] = cur;
+      else if (s.S[firstOccAfter[P.famOf[cur]]].start > s.S[cur].start )
+	firstOccAfter[P.famOf[cur]] = cur;
+    }
   //we just have two check if the "qualification" still holds between the last occ
-  //of f before j and the first one after j
+  //of f before i and the first one after i
   for (int f = 0 ; f < F ; ++f){
-    if (f!=P.famOf[j] && P.F[f].qualif[k]){
+    if (f != P.famOf[i] && P.F[f].qualif[m]){
       if (lastOccBef[f] == -1){
 	if (firstOccAfter[f] < P.N)
-	  if (s.S[firstOccAfter[f]].start + P.getDuration(j) > P.F[f].threshold)
+	  if (s.S[firstOccAfter[f]].start + P.getDuration(i) > P.F[f].threshold)
 	    return 1;
       }
       else	
 	if (firstOccAfter[f] < P.N)
-	  if (s.S[firstOccAfter[f]].start + P.getDuration(j)  -
+	  if (s.S[firstOccAfter[f]].start + P.getDuration(i)  -
 	      (s.S[lastOccBef[f]].start + P.F[f].duration) > P.F[f].threshold)
 	    return 1;
     }
@@ -171,22 +231,24 @@ int addDisqualif(const Problem& P, const Solution& s, const int& j, const int& k
   return 0;
 }
 
-int updateTime(const Problem& P, Solution& s, const int& i, const int& j, const int& k,
-	       std::vector<int>& endLast){
+int updateTime(const Problem& P, Solution& s, const int& i, const int& j,
+	       const int& k, const int &m, std::vector<int>& endLast){
   int cur = 0;
   std::vector<int> update(P.getFamilyNumber(),0);
-  s.S[j].start = s.S[i].start + P.getDuration(i);   
-  endLast[k] =  s.S[i].start + P.getDuration(i);
+  s.S[j].start = s.S[i].start + P.getDuration(i);
+  s.S[j].machine = m;
+  endLast[m] += P.getDuration(j);
+  endLast[k] =  0;
   while (cur < P.N){
-    // shift all the task after j by p_j
-    if (cur != j && s.S[cur].machine == k && s.S[cur].start >  s.S[i].start){
+    // shift all the task after j by p_j on m
+    if (cur != j && s.S[cur].machine == m && s.S[cur].start >  s.S[i].start){
       s.S[cur].start += P.getDuration(j);
-      if (s.QualifLostTime[P.famOf[cur]][k] < std::numeric_limits<int>::max() && !update[P.famOf[cur]]){
+      if (s.QualifLostTime[P.famOf[cur]][m] < std::numeric_limits<int>::max() && !update[P.famOf[cur]]){
 	update[P.famOf[cur]]=1;
-	s.QualifLostTime[P.famOf[cur]][k] += P.getDuration(j);
+	s.QualifLostTime[P.famOf[cur]][m] += P.getDuration(j);
       }
     }
-    //update endLast
+    //update endLast on k
     if (s.S[cur].machine == k && endLast[k] < s.S[cur].start + P.getDuration(cur))
       endLast[k] = s.S[cur].start + P.getDuration(cur);
     ++cur;
