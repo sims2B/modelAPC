@@ -74,7 +74,7 @@ void generateSetup(Problem& P, const int& F){
   for (f = 0 ; f < F ; ++f)
     if (P.F[f].duration < minDur) minDur = P.F[f].duration;
 
-  std::normal_distribution<> disSet(minDur/2 ,minDur/6);
+  std::normal_distribution<> disSet(minDur/2 ,minDur/5);
   for (f = 0 ; f < F ; ++f){
     do {
       sample = (int)disSet(generator);
@@ -106,7 +106,7 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
   std::random_device rd;
   std::mt19937 generator(rd());
   int sample, j, f ,nbFull = 0;
-  std::uniform_int_distribution<int> qualifPerFam(0,F);
+  std::uniform_int_distribution<int> qualifPerFam(0,F-1);
   std::vector<int> nbQualif(F,0);
   for (f = 0 ; f < F ; ++f)
     nbQualif[f]++;
@@ -174,8 +174,8 @@ void affectFamily(Problem& P, const int& n, const int& F){
   std::random_device rd;
   std::mt19937 generator(rd());
   int sample, f;
-  std::uniform_int_distribution<int> disNf(0,F);
-  std::vector<int> nF(F,0);
+  std::uniform_int_distribution<int> disNf(0,F-1);
+  std::vector<int> nF(F,0); // nbTask per family
   for (f = 0 ; f < F ; ++f)
     nF[f]++;
   nbRes -= F;
@@ -184,7 +184,7 @@ void affectFamily(Problem& P, const int& n, const int& F){
     nF[sample]++;
     nbRes--;
   }
-  std::uniform_int_distribution<int> famAffect(0,n);
+  std::uniform_int_distribution<int> famAffect(0,n-1);
   std::vector<int> selected(n,0);
   nbRes = n;
   for (f = 0 ; f < F ; ++f){

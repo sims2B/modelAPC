@@ -3,8 +3,8 @@
 #include "Problem.h"
 
 int main( int ,char**){
-  //Problem P = generate(10,2,2,10,3);
-  std::vector<int> qualif(3,0);
+  Problem P = generateProblem(20,3,2,10,4);
+  /* std::vector<int> qualif(3,0);
   qualif[2]=1; qualif[0]=1;
   Family F1(6,3,16,qualif);  
   qualif[1]=1; qualif[2]=0;
@@ -15,10 +15,10 @@ int main( int ,char**){
   qualif.resize(6);
   qualif={1,0,1,0,1,0};
   Problem P(6,3,qualif,F);
-
+  */
   std::cout << P.toString() << std::endl;
   std::cout << std::endl << "***********************************" << std::endl;
-  std::cout << "Solving Problem with MIP1\n";
+  /*  std::cout << "Solving Problem with MIP1\n";
   std::cout  << "***********************************" << std::endl;
   Solution s1(P);  
   if (!IP1::solve(P,s1)){
@@ -42,6 +42,6 @@ int main( int ,char**){
   }
   else  
     std::cout << "...\n";
-
+  */
   return 0;
 }

@@ -2,7 +2,7 @@
 #include "Problem.h"
 
 int main( int ,char**){
-   Problem P = generateProblem(10,3,3,10,7);
+   Problem P = generateProblem(40,4,4,10,11);
   /* std::vector<int> qualif(3,0);
   qualif={1,1,1};
   Family F1(7,4,16,qualif); 
