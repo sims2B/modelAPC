@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 
 struct Family{
 
@@ -19,14 +20,16 @@ struct Family{
   //////////CONSTRUCTOR///////
   //Construct a family with all parameter = to 0 but set the size of the vector
   //to the number of machine
-  Family(int);
+  Family(int M);
   //Construct a family with the value of the parameter given in argument and set the
   //size of the vector to the number of machine
-  Family(int,int,int,int);
+  Family(int dur ,int set ,int thre ,int M);
   //Construct a family with the value of the parameter given in argument
-  Family(int,int,int,std::vector<int>);
+  Family(int dur,int set,int thre,std::vector<int> Q);
 
+  int writeFamily(std::ofstream&) const;
   std::string toString() const;
 };
-  
+
+Family readFamily(std::ifstream&, int M);
 #endif

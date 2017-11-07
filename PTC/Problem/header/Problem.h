@@ -3,6 +3,7 @@
 
 #include "Family.h"
 #include <iostream>
+#include <fstream>
 typedef std::vector<Family> familyList;
 
 //WARNING!!!! Family in F are "ordered", don't change their order
@@ -20,13 +21,13 @@ struct Problem{
   //Construct a problem with a predefined number of task, number of machine equals to 0
   //set the capacity of the vector F to the number of families and of famOf to the
   //number of task
-  Problem(int,int);
+  Problem(int N,int F);
   //idem above plus number of machine
-  Problem(int,int,int);
+  Problem(int N,int M,int F);
   //Construct a problem with the value of the parameter given in argument
-  Problem(int,int,std::vector<int>,familyList);
+  Problem(int N,int M,std::vector<int> f, familyList F);
 
-
+  int writeInFile(std::ofstream&) const;
   //get the number of task in a family
   int getNf(int f) const;
   
@@ -71,5 +72,7 @@ void affectFamily(Problem& P, const int& n, const int& F);
 
 Problem generateProblem(const int& n, const int& m, const int& F,
 			const int& pmax, int sumQualif);
+
+Problem readFromFile(std::ifstream&);
 #endif
 

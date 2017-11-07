@@ -12,6 +12,13 @@ Family::Family(int _dur,int _setup, int _threshold,  int m):
 Family::Family(int _dur,int _setup, int _threshold, std::vector<int> _qualif):
   duration(_dur), setup(_setup), threshold(_threshold), qualif(_qualif){}
 
+int Family::writeFamily(std::ofstream& out) const{
+  out <<  duration << " " << threshold << " " << setup << " " << qualif[0];
+  for (uint i = 1 ; i < qualif.size() ; ++i)
+    out << " " << qualif[i]; 
+  out << std::endl;
+  return 0;
+}
 
 std::string Family::toString() const{
   std::string res = "La famille a une durée de " + std::to_string(duration) + ", un setup time de " + std::to_string(setup) + ", un threshold de " +std::to_string(threshold) + " et les machines ";
@@ -21,4 +28,15 @@ std::string Family::toString() const{
   }
   res += " sont qualifiées pour son execution\n";
   return res;
+}
+
+Family readFamily(std::ifstream& in, int M){
+  Family f(M);
+  in >> f.duration >> f.threshold >> f.setup ;
+  for (int i = 0 ; i < M ; ++i){
+    int q;
+    in >> q;
+    f.qualif[i] = q;
+  }
+  return f;
 }

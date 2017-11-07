@@ -17,6 +17,19 @@ Problem::Problem(int nbTask, int nbMach, std::vector<int> _famOf,
 		 familyList _F): N(nbTask), M(nbMach), famOf(_famOf), F(_F){}
 
 
+int Problem::writeInFile(std::ofstream& out) const{
+  uint i ;
+  out << N << " " << M << " " << getFamilyNumber()
+      << std::endl;
+  out << famOf[0];
+  for (i = 1 ; i < famOf.size() ; ++i)
+    out << " " << famOf[i];
+  out << std::endl;
+  for (i = 0 ; i < F.size(); ++i)
+    F[i].writeFamily(out);
+  return 0;
+}
+
 int Problem::computeHorizon() const{
   int res=0;
   for (int i = 0 ; i < N ; ++i)
@@ -209,5 +222,19 @@ Problem generateProblem(const int& n, const int& m, const int& F,
   Problem P(n,m,F);
   generateFamilies(P,n,m,F,pmax,sumQualif);
   affectFamily(P,n,F);
+  return P;
+}
+
+
+
+
+Problem readFromFile(std::ifstream& in){
+  uint i , F , N, M;
+  in >> N >> M >> F;
+  Problem P(N,M,F);
+  for (i = 0 ; i < F ; ++i)
+    in >> P.famOf[i] ;
+  for (i = 0 ; i < F ; ++i)
+    P.F[i] = readFamily(in,M<);
   return P;
 }
