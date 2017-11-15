@@ -17,11 +17,14 @@ struct Solution{
 
   //construct right size vector (resize). QualifLostTime initialized with +oo.
    Solution(const Problem&);
-
+  
+  //last start time on machine j
   int getEnd(int j) const;
   int getSumCompletion(const Problem&) const;
   int getNbDisqualif() const;
+  int getRealNbDisqualif(const Problem& P) const;
   int getWeigthedObjectiveValue(const Problem&, const int&, const int&) const;
+  int getNbSetup(const Problem&) const;
   //return 1 if the solution satisfies all the constraints of the problem
   int isValid(const Problem&) const;
 

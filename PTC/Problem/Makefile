@@ -24,11 +24,11 @@ SRCS=~/Dev/PTC/Problem/source/Family.cpp \
 	~/Dev/PTC/Problem/source/Problem.cpp \
 	~/Dev/PTC/Problem/source/Assignment.cpp \
 	~/Dev/PTC/Problem/source/Solution.cpp \
-	~/Dev/PTC/MIP/IP1/source/jobModel.cpp \
-	~/Dev/PTC/CP/jobBased/source/CPjobModel.cpp \
 	./source/main.cpp
 
 
+#	~/Dev/PTC/MIP/IP1/source/jobModel.cpp \
+#	~/Dev/PTC/CP/jobBased/source/CPjobModel.cpp \
 ### PREPROCESSING #####################################
 
 ifeq (${DEBUG},1)

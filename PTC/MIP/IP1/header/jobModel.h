@@ -8,7 +8,7 @@
 #include "Solution.h"
 
 #ifndef TIME_LIMIT
-#define time_limit 1000
+#define time_limit 300
 #endif
 
 //coefficient of the objective function
@@ -45,6 +45,10 @@ int displayCplexSolution(const Problem&, IloEnv&, IloCplex&, const IloNumVar3DMa
 //display results : time, status, objective, gap
 int displayCplexResults(const IloCplex&, const IloNum&);
 
+//special result display for CVS format (time;solved;feas;opt;objValue;SumCompletion;nbDisqualif;RealNbDisqualif;nbSetup;CplexGap)
+//
+int displayCVS(const Problem& P, const Solution& s,
+	       const IloCplex& cplex,const IloNum& start);
 
 //////////////////////////////////////////
 ////////////  MODEL CREATION /////////////

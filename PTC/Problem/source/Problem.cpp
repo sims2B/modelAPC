@@ -61,7 +61,12 @@ int Problem::getNf(int f) const{
 void generateFamilies(Problem& P, const int& n, const int& m,
 		      const int& F, const int& pmax, int sumQualif){
   generateDuration(P,F,pmax);
-  generateSetup(P,F);
+
+  int minDur = std::numeric_limits<int>::max();
+  for (int f = 0 ; f < F ; ++f)
+    if (P.F[f].duration < minDur) minDur = P.F[f].duration;
+  generateSetup(P,F,minDur);
+
   generateThreshold(P,n,m,F);
   generateQualif(P,m,F,sumQualif);
 }
@@ -79,19 +84,16 @@ void generateDuration(Problem& P, const int& F, const int& pmax){
   }
 }
 
-void generateSetup(Problem& P, const int& F){
+void generateSetup(Problem& P, const int& F, const int& pmin){
   std::random_device rd;
   std::mt19937 generator(rd());
   int sample,f;
-  int minDur = std::numeric_limits<int>::max();
-  for (f = 0 ; f < F ; ++f)
-    if (P.F[f].duration < minDur) minDur = P.F[f].duration;
 
-  std::normal_distribution<> disSet(minDur/2 ,minDur/5);
+  std::normal_distribution<> disSet(pmin/2 ,pmin/5);
   for (f = 0 ; f < F ; ++f){
     do {
       sample = (int)disSet(generator);
-    } while (sample < 1 || sample > minDur);
+    } while (sample < 1 || sample > pmin);
     P.F[f].setup = (int)sample;
   }
 }
@@ -193,7 +195,7 @@ void affectFamily(Problem& P, const int& n, const int& F){
     nF[f]++;
   nbRes -= F;
   while (nbRes > 0){
-    sample = (int)(disNf(generator));
+    sample = disNf(generator);
     nF[sample]++;
     nbRes--;
   }
@@ -226,15 +228,112 @@ Problem generateProblem(const int& n, const int& m, const int& F,
 }
 
 
+//Abdoul
+void generateFamilies(Problem& P, const int& n, const int& m,
+		      const int& F){
+  int Hbound = 0 , i = 0;
+  generateDuration(P,F);
+  generateSetup(P,F);
+  for (i = 0 ; i < n ; ++i)
+    Hbound += P.getDuration(i) /*+ P.getSetup(i)*/;
+  Hbound = Hbound / m;
+  generateThreshold(P,F,Hbound);
+  generateQualif(P,m,F);
+}
+
+void generateThreshold(Problem& P, const int& F,const int& Hbound){
+  std::random_device rd;
+  std::mt19937 generator(rd());
+  std::uniform_int_distribution<int> disThresh(std::max((cat-1)*Hbound/nbCat ,
+							sizeMin * Pmax + Smax),
+					       std::max(cat*Hbound/nbCat,
+							(sizeMin+1) * Pmax + 2*Smax));
+  for (int f = 0 ; f < F ; ++f){
+    int sample = disThresh(generator) ;
+    if (sample < sizeMin * Pmax + Smax + P.F[f].setup)
+      P.F[f].threshold = sizeMin * Pmax + Smax + P.F[f].setup;
+    if (sample > (sizeMin+1) * Pmax + Smax + P.F[f].setup)
+      P.F[f].threshold = (sizeMin+1) * Pmax + Smax + P.F[f].setup;
+    else P.F[f].threshold = sample;
+  }
+}
+
+void generateSetup(Problem& P, const int& F){
+  std::random_device rd;
+  std::mt19937 generator(rd());
+  std::uniform_int_distribution<int> disSetup(Smin,Smax);
+  for (int  f = 0 ; f < F ; ++f){
+    P.F[f].setup = disSetup(generator);
+  }  
+}
+
+void generateDuration(Problem& P,const int& F){
+  std::random_device rd;
+  std::mt19937 generator(rd());
+  std::uniform_int_distribution<int> disDur(Pmin,Pmax);
+  for (int  f = 0 ; f < F ; ++f){
+    P.F[f].duration = disDur(generator);
+  }
+}
+
+void generateQualif(Problem& P, const int& m, const int& F){
+
+  std::random_device rd;
+  std::mt19937 generator(rd());
+  int sample,j,f = 0;
+  std::uniform_int_distribution<int> qualifPerFam(1,m);
+  std::vector<int> nbQualif(F,0);
+
+  //nbQualifPerFamily generation
+  for (f = 0 ; f < F ; ++f){
+    sample = qualifPerFam(generator);
+    nbQualif[f] = sample;
+  }
+  
+  //machine affectation to family
+  std::uniform_int_distribution<int> machQualif(0,m-1);
+  std::vector<int> selected(m,0);
+  for (f = 0 ; f < F ; ++f){
+    j = m;
+    while (nbQualif[f] > 0){
+      int index =  (int)(machQualif(generator) % j);
+      int select = -1;
+      while (index > -1 ){
+	if (!P.F[f].qualif[select+1])
+	  index--;
+	select++;
+      } 
+      P.F[f].qualif[select] = 1;
+      selected[select] = 1;
+      j--; nbQualif[f]--;
+    }
+  }
+
+  //if a machine cannot execute any family, randomly affect a family
+  std::uniform_int_distribution<int> disFam(0,F-1);
+  for (j = 0 ; j < m ; ++j){
+    if ( selected[j] == 0 ){
+      int fam = disFam(generator);
+      P.F[fam].qualif[j]=1;
+    }
+  }
+}
+Problem generateProblem(const int& n, const int& m, const int& F){
+  Problem P(n,m,F);
+  generateFamilies(P,n,m,F);
+  affectFamily(P,n,F);
+  return P;
+}
 
 
+//reader
 Problem readFromFile(std::ifstream& in){
   uint i , F , N, M;
   in >> N >> M >> F;
   Problem P(N,M,F);
-  for (i = 0 ; i < F ; ++i)
+  for (i = 0 ; i < N ; ++i)
     in >> P.famOf[i] ;
   for (i = 0 ; i < F ; ++i)
-    P.F[i] = readFamily(in,M<);
+    P.F[i] = readFamily(in,M);
   return P;
 }

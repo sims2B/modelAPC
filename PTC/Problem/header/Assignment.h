@@ -4,9 +4,11 @@
 struct Assignment{
   int start;
   int machine;
+  int index;
 
   Assignment();
-  Assignment(int,int);
+  Assignment(int,int,int);
 };
-
+bool operator==(const Assignment&, const Assignment&);
+bool operator<(const Assignment&, const Assignment&);
 #endif

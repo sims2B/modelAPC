@@ -4,6 +4,19 @@
 #include "Family.h"
 #include <iostream>
 #include <fstream>
+
+//parametre pour la generation d'instance!!
+//min/max duration
+const int Pmax = 10;
+const int Pmin = 1;
+//min/max setup
+const int Smax = 5;
+const int Smin = 1;
+//threshold 
+const int nbCat = 3; // small, meduim and big
+const int cat = 1; //1 = small, 2 = meduim , 3 = big
+const int sizeMin = 1; // "minimum threshold for at least sizeMin task"
+
 typedef std::vector<Family> familyList;
 
 //WARNING!!!! Family in F are "ordered", don't change their order
@@ -61,18 +74,31 @@ struct Problem{
 };
 
 
-//generate new instance
+//generateAli
+Problem generateProblem(const int& n, const int& m, const int& F,
+			const int& pmax, int sumQualif);
 void generateFamilies(Problem& P, const int& n, const int& m,
 		      const int& F, const int& pmax, int sumQualif);
 void generateThreshold(Problem& P, const int& n, const int& m, const int& F);
 void generateDuration(Problem& P,const int& F,const int& pmax);
-void generateSetup(Problem& P, const int& F);
+void generateSetup(Problem& P, const int& F, const int& pmin);
 void generateQualif(Problem& P, const int& m, const int& F, int sumQualif);
+
+//common
 void affectFamily(Problem& P, const int& n, const int& F);
 
-Problem generateProblem(const int& n, const int& m, const int& F,
-			const int& pmax, int sumQualif);
 
+//generateAbdoul
+Problem generateProblem(const int& n, const int& m, const int& F);
+void generateFamilies(Problem& P, const int& n, const int& m,
+		      const int& F);
+void generateThreshold(Problem& P, const int& F, const int& Hbound);
+void generateDuration(Problem& P,const int& F);
+void generateSetup(Problem& P, const int& F);
+void generateQualif(Problem& P, const int& m, const int& F);
+
+
+//reader
 Problem readFromFile(std::ifstream&);
 #endif
 

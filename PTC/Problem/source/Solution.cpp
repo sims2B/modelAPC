@@ -1,6 +1,7 @@
 #include "Solution.h"
 #include <iostream>
 #include <limits>
+#include <algorithm>
 
 Solution::Solution(const Problem& P){
   const int nbFam = P.getFamilyNumber();
@@ -36,9 +37,28 @@ int Solution::getNbDisqualif() const{
 	sum++;
   return sum;
 }
+int Solution::getRealNbDisqualif(const Problem& P) const{
+  int sum = 0;
+  for (uint f = 0 ; f < QualifLostTime.size() ; ++f)
+    for (uint j = 0 ; j < QualifLostTime[f].size() ; ++j)
+      if (QualifLostTime[f][j] < getEnd(j) + P.F[f].duration)
+	sum++;
+  return sum;
+}
 
 int Solution::getWeigthedObjectiveValue(const Problem &P, const int & alpha, const int& beta) const{
   return alpha * getSumCompletion(P) + beta * getNbDisqualif();
+}
+
+int Solution::getNbSetup(const Problem & P) const{
+  Solution s2 = *(this);
+  std::sort(s2.S.begin() , s2.S.end());
+  int nbSet = 0;
+
+  for (int i = 0; i < P.N - 1 ; ++i)
+    if (s2.S[i].machine == s2.S[i+1].machine && P.famOf[s2.S[i].index] !=  P.famOf[s2.S[i+1].index])
+      nbSet++;
+  return nbSet;
 }
 
 //return 1 if interval [a,b] intersect [c,d]

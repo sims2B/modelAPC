@@ -50,6 +50,7 @@ int treat(Problem &P,Solution& s,const int m, const int f, std::vector<int> &end
    s.S[nextOfFam[f]].start = endLast[m] ://no setup
    s.S[nextOfFam[f]].start = endLast[m] + P.F[f].setup);//otw setup
   s.S[nextOfFam[f]].machine = m;
+  s.S[nextOfFam[f]].index = nextOfFam[f];
   //update endLast
   endLast[m] = s.S[nextOfFam[f]].start + P.F[f].duration;
   s.QualifLostTime[f][m] = endLast[m]; //update QualifLostTIme

@@ -21,9 +21,9 @@ int IP1::solve(const Problem& P, Solution& s){
 
     //solve!
     if (cplex.solve() || cplex.getStatus()==IloAlgorithm::Infeasible){
-      int ret = displayCplexResults(cplex,start);
-	//	|| displayCplexSolution(P,env,cplex,x,y,C);
-      if (cplex.getStatus()==IloAlgorithm::Infeasible){
+      int ret = displayCVS(P,s,cplex,start);
+      //	|| displayCplexSolution(P,env,cplex,x,y,C);
+      if (cplex.getStatus() == IloAlgorithm::Infeasible){
 	env.end();
 	return ret;
       }
@@ -80,6 +80,24 @@ int displayCplexResults(const IloCplex& cplex, const IloNum& start){
   return 0;
 }
 
+
+int displayCVS(const Problem& P, const Solution& s,const IloCplex& cplex,const IloNum& start){
+  IloNum time_exec = cplex.getCplexTime() - start;
+  std::cout << time_exec << ";" ;
+  if (!(cplex.getStatus()==IloAlgorithm::Infeasible)){
+    std::cout << "1;1;";
+    if (cplex.getStatus()==IloAlgorithm::Optimal)
+      std::cout << "1;" ;
+    else std::cout << "0;";
+    std::cout << cplex.getObjValue() << ";" << s.getSumCompletion(P) << ";"
+	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
+	      << s.getNbSetup(P) << ";" << cplex.getMIPRelativeGap();
+  }
+  else
+    std::cout << "1; ; ; ; ; ; ; ; ";
+  return 0;
+}
+
 int setParam(IloEnv& env,IloCplex& cplex){
   cplex.setParam(IloCplex::TiLim, time_limit);
   cplex.setParam(IloCplex::Threads,2);
@@ -98,7 +116,7 @@ int modelToSol(const Problem& P, Solution& s, IloCplex& cplex, IloNumVar3DMatrix
       if (P.isQualif(i,j))
 	for (int t = 0 ; t <= T - P.getDuration(i) ; ++t)
 	  if (IloRound(cplex.getValue(x[i][j][t]))==1)
-	    s.S[i]=Assignment(t,j);
+	    s.S[i]=Assignment(t,j,i);
   
   for (int f = 0 ; f < F ; ++f)
     for (int j = 0 ; j < P.M ; ++j)
@@ -187,7 +205,7 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
 	  IloExpr expr(env);
 	  for (i = 0 ; i < n ; ++i)
 	    if ( P.famOf[i] == f )
-	      for (tau = t - P.getDuration(i)  ; tau < t ; ++tau)
+	      for (tau = t - P.getDuration(i) ; tau < t ; ++tau)
 		expr+=x[i][j][tau];
 	  model.add(expr <= 1);
 	  expr.end();
@@ -258,6 +276,6 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
 	if (P.F[f].qualif[j])
 	  model.add(y[f][j][t-1] <= y[f][j][t]);
   
-  	    
+  
     return 0;
 }

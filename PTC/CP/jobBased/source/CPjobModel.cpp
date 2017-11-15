@@ -38,6 +38,7 @@ int modelToSol(const Problem& P, Solution& s, const IloCP& cp,
     for (j = 0 ; j < m ; ++j)
       if (P.isQualif(i,j)){
 	if (cp.isPresent(altTasks[j][cpt[j]])){
+	  s.S[i].index = i;
 	  s.S[i].start = cp.getStart(altTasks[j][cpt[j]]);
 	  s.S[i].machine = j;
 	}

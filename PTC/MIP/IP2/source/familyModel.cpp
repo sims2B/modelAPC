@@ -107,7 +107,7 @@ int modelToSol(const Problem& P, Solution& s, IloCplex& cplex, IloNumVar3DMatrix
 	  if (IloRound(cplex.getValue(x[P.famOf[i]][j][t]))==1){
 	    ++cpt;
 	    if (cpt == found[P.famOf[i]]+1){
-	      s.S[i]=Assignment(t,j);
+	      s.S[i]=Assignment(t,j,i);
 	      found[P.famOf[i]]++;
 	      trouve=1;
 	    }
