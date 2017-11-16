@@ -21,14 +21,17 @@ int IP1::solve(const Problem& P, Solution& s){
 
     //solve!
     if (cplex.solve() || cplex.getStatus()==IloAlgorithm::Infeasible){
-      int ret = displayCVS(P,s,cplex,start);
-      //	|| displayCplexSolution(P,env,cplex,x,y,C);
       if (cplex.getStatus() == IloAlgorithm::Infeasible){
+	
+	int ret = displayCVS(P,s,cplex,start);
+	  //|| displayCplexSolution(P,env,cplex,x,y,C);
 	env.end();
 	return ret;
       }
       else {
-	ret = (ret || modelToSol(P,s,cplex,x,y));
+	int ret =/*displayCplexSolution(P,env,cplex,x,y,C)||*/
+	  modelToSol(P,s,cplex,x,y)||
+	  displayCVS(P,s,cplex,start) ; 
 	env.end();
 	return ret;
       }
@@ -110,20 +113,24 @@ int modelToSol(const Problem& P, Solution& s, IloCplex& cplex, IloNumVar3DMatrix
 
   const int F = P.getFamilyNumber(); 
   const int T = P.computeHorizon();
+  int i , j ,t, f;
   
-  for (int i = 0 ; i < P.N ; ++i)
-    for (int j = 0 ; j < P.M ; ++j)
+  for (i = 0 ; i < P.N ; ++i)
+    for (j = 0 ; j < P.M ; ++j)
       if (P.isQualif(i,j))
-	for (int t = 0 ; t <= T - P.getDuration(i) ; ++t)
+	for (t = 0 ; t < x[i][j].getSize() - P.getDuration(i) ; ++t) 
 	  if (IloRound(cplex.getValue(x[i][j][t]))==1)
 	    s.S[i]=Assignment(t,j,i);
   
-  for (int f = 0 ; f < F ; ++f)
-    for (int j = 0 ; j < P.M ; ++j)
-      if (P.F[f].qualif[j])
-	for (int t = 0 ; t < T ; ++t)
-	  if (IloRound(cplex.getValue(y[f][j][t]))==1)
-	    s.QualifLostTime[f][j]=t;
+  for (f = 0 ; f < F ; ++f)
+    for ( j = 0 ; j < P.M ; ++j)
+      if (P.F[f].qualif[j]){
+	t = 0;
+        while (t < T && IloRound(cplex.getValue(y[f][j][t]))!=1)
+	  ++t;
+	if ( t < T)
+	  s.QualifLostTime[f][j] = t;
+      }
   return 0;
 }
 
@@ -236,14 +243,14 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
   for (f = 0 ; f < F ; ++f)
     for (j = 0 ; j < m ; ++j)
       if (P.F[f].qualif[j]){
-	for (t = 0 ; t < P.F[f].threshold + P.F[f].duration ; ++t){
+	for (t = 0 ; t < std::min(T , P.F[f].threshold) ; ++t){
 	  model.add(y[f][j][t]==0);
 	}
-	for (t = P.F[f].threshold + P.F[f].duration ; t < T ; ++t){
+	for (t = P.F[f].threshold; t < T ; ++t){
 	  IloExpr expr(env);
 	  for (i = 0 ; i < n ; ++i)
-	    if (P.famOf[i]==f)
-	      for (tau = t - P.F[f].threshold - P.F[f].duration ; tau < t ; ++tau)
+	    if (P.famOf[i] == f)
+	      for (tau = std::max(0 , (int)t - P.F[f].threshold - P.getDuration(i) + 1); tau < t ; ++tau)
 		expr+=x[i][j][tau];
 	  //expr= expr/P.F[f].threshold;
 	  expr+=y[f][j][t];
@@ -251,14 +258,15 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
 	  expr.end();
 	}
       }
-    for (f = 0 ; f < F ; ++f)
+  
+  for (f = 0 ; f < F ; ++f)
     for (j = 0 ; j < m ; ++j)
       if (P.F[f].qualif[j]){
-	for (t = P.F[f].threshold + P.F[f].duration ; t < T ; ++t){
+	for (t = P.F[f].threshold ; t < T ; ++t){
 	  IloExpr expr(env);
 	  for (i = 0 ; i < n ; ++i)
-	    if (P.famOf[i]==f)
-	      for (tau = t - P.F[f].threshold - P.F[f].duration ; tau < t ; ++tau)
+	    if (P.famOf[i] == f)
+	      for (tau = std::max(0 ,(int) t - P.F[f].threshold - P.getDuration(i) + 1 ) ; tau < t ; ++tau)
 		expr+=x[i][j][tau];
 	  expr= expr/P.F[f].threshold;
 	  expr+=y[f][j][t];
@@ -266,8 +274,7 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
 	  expr.end();
 	}
       }
-	//empeche deux tache de la meme famille de s'exécuter dans un intervalle
-  //de taille gamma_f
+	
   
   //if a machine become disqualified, it stays disqualified
   for (t = 1 ; t < T ; ++t)

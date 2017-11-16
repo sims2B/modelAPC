@@ -74,7 +74,7 @@ int Solution::isValid(const Problem &P) const{
   const int n = P.N;
   const int F = P.getFamilyNumber();
   
-  // std::cout<<"two tasks not executed in parallel on the same machine\n";
+   //std::cout<<"two tasks not executed in parallel on the same machine\n";
   for (i = 0 ; i < n ; ++i)
     for (j = i + 1 ; j < n ; ++j)
       if (S[i].machine == S[j].machine 
@@ -82,7 +82,7 @@ int Solution::isValid(const Problem &P) const{
 	      || (S[i].start <= S[j].start && S[i].start + P.getDuration(i) > S[j].start)))
 	return 0;
   
-  // std::cout<<"setup time\n";
+   //std::cout<<"setup time\n";
   for (i = 0 ; i < n ; ++i)
     for (j = i + 1 ; j < n ; ++j)
       if (S[i].machine == S[j].machine && P.famOf[i] != P.famOf[j])
@@ -90,7 +90,7 @@ int Solution::isValid(const Problem &P) const{
 	    && S[j].start + P.getDuration(j) + P.getSetup(i) > S[i].start)
 	  return 0;
 
-  // std::cout<<"when the task is processed, the machine is still qualified\n";
+   //std::cout<<"when the task is processed, the machine is still qualified\n";
   for (i = 0 ; i < n ; ++i)
     if (S[i].start + P.getDuration(i) > QualifLostTime[P.famOf[i]][S[i].machine])
       return 0;

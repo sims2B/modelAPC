@@ -13,6 +13,5 @@ int main(int,char* argv[]){
     std::cout << ";" << s.isValid(P) << std::endl; 
   else  
     std::cout << "time_limit;0; ; ; ; ; ; ; ; ; \n";
-
   return 0;
 }
