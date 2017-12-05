@@ -12,6 +12,8 @@ int main(int,char* argv[]){
   if (!solve(P,s))
     std::cout << ";" << s.isValid(P) << std::endl; 
   else  
-    std::cout << "time_limit;0; ; ; ; ; ; ; ; ; \n";
+    std::cout << time_limit << ";0; ; ; ; ; ; ; ; ; \n";
+
+  //std::cout << P.toString() << s.toString();
   return 0;
 }

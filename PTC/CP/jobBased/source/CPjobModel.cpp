@@ -12,7 +12,7 @@ int CP::solve(const Problem& P, Solution & s){
     createModel(P,env,model,masterTask,altTasks,disqualif,mchs);
     IloCP cp(model);
     
-    cp.setParameter(IloCP::TimeLimit, 1000);
+    cp.setParameter(IloCP::TimeLimit, 500);
     if (cp.solve()) {
       cp.out() << "Objective \t: " << cp.getObjValue() << std::endl;
       modelToSol(P,s,cp,altTasks,disqualif);
@@ -176,7 +176,8 @@ int createConstraints(const Problem& P, IloEnv& env, IloModel& model,
   const int m = P.M;
   const int F = P.getFamilyNumber();
   std::vector<int> cptMach(m,0);
-  
+
+  // un seul "mode" est choisie pour une tâche
   for (i = 0 ; i < n ; ++i){
     IloIntervalVarArray members(env);
     for (j = 0 ; j < m ; ++j)
@@ -186,7 +187,8 @@ int createConstraints(const Problem& P, IloEnv& env, IloModel& model,
       }
     model.add(IloAlternative(env,masterTask[i],members));
   }
-   
+
+  //setup
   IloTransitionDistance setup(env,F);
   for (i = 0 ; i < F ; ++i)
     for (j = 0 ; j < F ; ++j)
@@ -197,7 +199,7 @@ int createConstraints(const Problem& P, IloEnv& env, IloModel& model,
   
 
  
-  // threshold ( disqualif last of family)
+  // threshold ( disqualif last executed of family on a machine)
   for (j = 0 ; j < m ; j++){
     IloInt Fcpt = 0;
     for (f = 0 ; f < F ; ++f)

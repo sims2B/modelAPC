@@ -2,44 +2,57 @@
 #include <cmath>
 
 int IP1::solve(const Problem& P, Solution& s){
-  IloNum start;
-  const int n = P.N;
-  const int T = P.computeHorizon();
-  IloEnv env;
-  IloModel model(env);
-
-  IloNumVar3DMatrix x(env,n);
-  IloNumVar3DMatrix y(env,P.getFamilyNumber());
-  IloNumVarArray C(env,n,0,T+1,ILOFLOAT);
-
-  if (!createModel(P,T,env,model,x,y,C)){
-    IloCplex cplex(model);
+  try{
+    IloNum start;
+    const int n = P.N;
+    const int T = P.computeHorizon();
+    IloEnv env;
+    IloModel model(env);
     
-    setParam(env,cplex);
-
-    start=cplex.getCplexTime();
-
-    //solve!
-    if (cplex.solve() || cplex.getStatus()==IloAlgorithm::Infeasible){
-      if (cplex.getStatus() == IloAlgorithm::Infeasible){
-	
-	int ret = displayCVS(P,s,cplex,start);
+    IloNumVar3DMatrix x(env,n);
+    IloNumVar3DMatrix y(env,P.getFamilyNumber());
+    IloNumVarArray C(env,n,0,T+1,ILOFLOAT);
+    
+    if (!createModel(P,T,env,model,x,y,C)){
+      IloCplex cplex(model);
+      
+      setParam(env,cplex);
+      
+      start=cplex.getCplexTime();
+      
+      //solve!
+      if (cplex.solve() || cplex.getStatus()==IloAlgorithm::Infeasible){
+	if (cplex.getStatus() == IloAlgorithm::Infeasible){
+	  
+	  int ret = displayCVS(P,s,cplex,start);
 	  //|| displayCplexSolution(P,env,cplex,x,y,C);
-	env.end();
-	return ret;
-      }
-      else {
-	int ret =/*displayCplexSolution(P,env,cplex,x,y,C)||*/
-	  modelToSol(P,s,cplex,x,y)||
+	  env.end();
+	  return ret;
+	}
+	else {
+	  int ret =/*displayCplexSolution(P,env,cplex,x,y,C)||*/
+	    modelToSol(P,s,cplex,x,y)||
 	  displayCVS(P,s,cplex,start) ; 
-	env.end();
-	return ret;
+	  env.end();
+	  return ret;
+	}
       }
     }
+    env.end();
+    return 1;
   }
-  env.end();
-  return 1;
+  catch (IloException &e){
+    std::cout << "Iloexception in solve" << e << std::endl;
+    e.end();
+    return 1;
+  } 
+  catch (...){
+    std::cout << "Error unknown\n";
+    return 1;
+  }
 }
+
+
     
 int displayCplexSolution(const Problem& P, IloEnv& env, IloCplex& cplex, const IloNumVar3DMatrix& x, const IloNumVar3DMatrix& y, const IloNumVarArray& C){
   IloNumArray v(env);
@@ -250,7 +263,7 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
 	  IloExpr expr(env);
 	  for (i = 0 ; i < n ; ++i)
 	    if (P.famOf[i] == f)
-	      for (tau = std::max(0 , (int)t - P.F[f].threshold - P.getDuration(i) + 1); tau < t ; ++tau)
+	      for (tau = std::max(0 , (int)t - P.F[f].threshold + 1); tau < t ; ++tau)
 		expr+=x[i][j][tau];
 	  //expr= expr/P.F[f].threshold;
 	  expr+=y[f][j][t];
@@ -266,7 +279,7 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
 	  IloExpr expr(env);
 	  for (i = 0 ; i < n ; ++i)
 	    if (P.famOf[i] == f)
-	      for (tau = std::max(0 ,(int) t - P.F[f].threshold - P.getDuration(i) + 1 ) ; tau < t ; ++tau)
+	      for (tau = std::max(0 ,(int) t - P.F[f].threshold + 1 ) ; tau < t ; ++tau)
 		expr+=x[i][j][tau];
 	  expr= expr/P.F[f].threshold;
 	  expr+=y[f][j][t];

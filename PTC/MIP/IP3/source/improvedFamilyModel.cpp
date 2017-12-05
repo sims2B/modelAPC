@@ -9,7 +9,7 @@ int solve(const Problem& P, Solution& s){
 
   IloNumVar3DMatrix x(env,F);
   IloNumVar3DMatrix y(env,F);
-  IloNumVarArray C(env,F,0,T+1,ILOFLOAT);
+  IloNumVarArray C(env,F,0,P.N*(T+1),ILOFLOAT);
   IloNumVarMatrix Y(env,F);
   
   if (!createModel(P,T,env,model,x,y,C,Y)){
