@@ -7,62 +7,25 @@ use Cwd;
 my $target = Cwd::realpath(shift);
 
 sub handle{
-    my $j = 2;
-    for (my $k = 0; $k < 10 ; $k++){
-	foreach my $i (10){
-	    foreach my $f (2,3){
-		system("./bin/le_nom $target/instance\_$i\_$j\_$f\_Mthr\_\_$k.txt $i $j $f");
-	    }
+	my @i= (10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,30,30,30,30,
+	30,30,40,40,40,40,40,50,50,50,50,50,50,50,50,60,60,60,60,70,70,70,70,70,70,
+	80,80);
+	my @j= (2,2,2,2,2,2,3,4,5,6,7,8,9,3,3,4,4,4,4,3,3,3,3,4,5,3,3,3,3,4,2,2,2,3,
+	5,5,5,5,3,3,5,5,2,3,4,4,5,5,2,2);
+	my @f= (2,2,2,3,3,3,3,4,2,2,2,2,2,4,5,2,3,4,5,2,3,4,5,4,5,2,3,4,5,4,2,3,4,3,
+	2,3,4,5,4,5,4,5,4,5,4,5,4,5,2,3);
+	my @p= (10,20,30,10,20,30,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
+	10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
+	10,10);
+	my @q= (3,3,3,5,5,5,7,10,6,8,8,10,10,8,9,6,7,11,13,4,7,8,13,10,14,4,5,7,10,
+	11,3,4,7,6,8,9,15,14,9,11,14,13,6,12,9,14,12,16,3,5);
+
+	for (my $cpt = 0 ; $cpt < 50 ;$cpt++){
+	    for (my $k = 0; $k < 10 ; $k++){
+			system("echo $target/instance\_$i[$cpt]\_$j[$cpt]\_$f[$cpt]\_$p[$cpt]\_$q[$cpt]\_Bthr\_$k.txt " );
+			system("./bin/le_nom $target/instance\_$i[$cpt]\_$j[$cpt]\_$f[$cpt]\_$p[$cpt]\_$q[$cpt]\_Bthr\_$k.txt $i[$cpt] $j[$cpt] $f[$cpt] $p[$cpt] $q[$cpt]");
+		}
 	}
-    }
-    $j = 2;
-    for (my $k = 0; $k < 10 ; $k++){
-	foreach my $i (20,30){
-	    foreach my $f (2,3,4,5){
-		system("./bin/le_nom $target/instance\_$i\_$j\_$f\_Mthr\_\_$k.txt $i $j $f");
-	    }
-	}
-    }
-    $j = 3;
-    for (my $k = 0; $k < 10 ; $k++){
-	foreach my $i (40,50){
-	    foreach my $f (2,3,4,5){
-		system("./bin/le_nom $target/instance\_$i\_$j\_$f\_Mthr\_\_$k.txt $i $j $f");
-	    }
-	}
-    }  
-    $j = 4;
-    for (my $k = 0; $k < 10 ; $k++){
-	foreach my $i (70,90){
-	    foreach my $f (2,3,4,5){
-		system("./bin/le_nom $target/instance\_$i\_$j\_$f\_Mthr\_\_$k.txt $i $j $f");
-	    }
-	}
-    } 
-    $j = 5;
-    for (my $k = 0; $k < 10 ; $k++){
-	foreach my $i (100,120){
-	    foreach my $f (2,3,4,5){
-		system("./bin/le_nom $target/instance\_$i\_$j\_$f\_Mthr\_\_$k.txt $i $j $f");
-	    }
-	}
-    }  
-    $j = 6;
-    for (my $k = 0; $k < 10 ; $k++){
-	foreach my $i (150){
-	    foreach my $f (2,3,4,5){
-		system("./bin/le_nom $target/instance\_$i\_$j\_$f\_Mthr\_\_$k.txt $i $j $f");
-	    }
-	}
-    }  
-    $j = 8;
-    for (my $k = 0; $k < 10 ; $k++){
-	foreach my $i (200){
-	    foreach my $f (2,3,4,5){
-		system("./bin/le_nom $target/instance\_$i\_$j\_$f\_Mthr\_\_$k.txt $i $j $f");
-	    }
-	}
-    }
     
 }
 

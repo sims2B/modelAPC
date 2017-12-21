@@ -5,7 +5,8 @@
 
 int main( int ,char* argv[]){
   std::ofstream output(argv[1], std::ios::out);
-  Problem P = generateProblem(atoi(argv[2]),atoi(argv[3]),atoi(argv[4]));
+  Problem P = generateProblem(atoi(argv[2]),atoi(argv[3]),atoi(argv[4]),
+			      atoi(argv[5]),atoi(argv[6]));
   P.writeInFile(output);
   /* std::vector<int> qualif(3,0);
   qualif[2]=1; qualif[0]=1;

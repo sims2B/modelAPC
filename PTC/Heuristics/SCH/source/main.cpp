@@ -1,23 +1,27 @@
 #include "SchedulingCentric.h"
 #include "Problem.h"
+#include <sys/time.h>
 
-int main( int ,char**){
-   Problem P = generateProblem(20,5,4,10,13);
-   
-   std::cout << P.toString() << std::endl;
-   std::cout << std::endl << "***********************************" << std::endl;
-   std::cout << "Solving Problem with SCH\n";
-   std::cout  << "***********************************" << std::endl;
-   Solution s1(P);  
-   if (SCH(P,s1)){
-     std::cout << "Hurray!\n"; 
-     std::cout << "Objective value:\t" << s1.getWeigthedObjectiveValue(P,alpha,beta) << std::endl;
-     std::cout << "valide? \t" << s1.isValid(P) << std::endl;
-     std::cout << s1.toString() << std::endl; 
- 
-   }
-   else  
-     std::cout << "...\n";
+int main(int,char* argv[]){
+  struct timeval tim;
 
-   return 0;
+  std::ifstream instance(argv[1],std::ios::in);
+  Problem P = readFromFile(instance);
+  instance.close();
+
+  std::cout << P.N << ";" << P.M << ";" << P.getFamilyNumber() <<";" ;
+  Solution s(P);
+  
+ gettimeofday(&tim,NULL);
+  double t1=tim.tv_sec+(tim.tv_usec/1000000.0);
+  bool solved = SCH(P,s);
+  
+  gettimeofday(&tim,NULL);
+  double t2=tim.tv_sec+(tim.tv_usec/1000000.0);
+  
+  std::cout << t2-t1 << ";" ;
+  displayCVS(P,s,solved);
+  std::cout << ";" << s.isValid(P) << std::endl;
+  //std::cout << P.toString() << s.toString();
+  return 0;
 }

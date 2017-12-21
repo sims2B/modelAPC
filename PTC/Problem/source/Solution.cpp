@@ -90,18 +90,19 @@ int Solution::isValid(const Problem &P) const{
 	    && S[j].start + P.getDuration(j) + P.getSetup(i) > S[i].start)
 	  return 0;
 
-   //std::cout<<"when the task is processed, the machine is still qualified\n";
+ 
+  //std::cout<<"when the task is processed, the machine is still qualified\n";
   for (i = 0 ; i < n ; ++i)
     if (S[i].start + P.getDuration(i) > QualifLostTime[P.famOf[i]][S[i].machine])
       return 0;
 
   //std::cout<<"the machine j becomes disqualified for f if there is no task of f in an interval gamma_f\n";
-  for (j = 0 ; j < P.M ; ++j)
-    for (int f = 0 ; f < F ; ++f)
+  for (j = 0; j < P.M; ++j)
+    for (int f = 0; f < F; ++f)
       if (P.F[f].qualif[j])
-	for (int t = 0 ; t < getEnd(j) - P.F[f].threshold ; ++t){
+	for (int t = 0; t < getEnd(j) - P.F[f].threshold; ++t){
 	  i = 0;
-	  while (!(P.famOf[i]==f && intersect(S[i].start,S[i].start+P.getDuration(i), t ,t + P.F[f].threshold+1))
+	  while (!(P.famOf[i] == f && S[i].start > t && S[i].start <= t + P.F[f].threshold)
 		 && i < n)
 	    ++i;
 	  if (i >= n && QualifLostTime[f][j] > t + P.F[f].threshold){
@@ -109,16 +110,13 @@ int Solution::isValid(const Problem &P) const{
 	  }
 	}
   
-  //std::cout<<" no more than gamma_f between to task of the same family\n";
-  for (i = 0 ; i < n ; ++i){
+  //std::cout << " no more than gamma_f between to task of the same family\n";
+  for (i = 0; i < n; ++i){
     j = 0;
     bool vu = false;
-    while (j < n && (i==j || P.famOf[i]!= P.famOf[j] || S[i].machine != S[j].machine
-		     || !intersect(S[i].start + P.getDuration(i) ,
-				   S[i].start + P.getDuration(i)+ P.getThreshold(i)+1,
-				   S[j].start , S[j].start + P.getDuration(i) )
-		     )){
-      if (i != j && P.famOf[j] == P.famOf[i] &&  S[i].machine == S[j].machine && S[j].start > S[i].start) vu = true; 
+    while (j < n && (i == j || P.famOf[i] != P.famOf[j] || S[i].machine != S[j].machine
+		     || !(S[j].start > S[i].start && S[j].start <= S[i].start + P.getThreshold(i)))){
+      if (i != j && P.famOf[j] == P.famOf[i] && S[i].machine == S[j].machine && S[j].start > S[i].start) vu = true;
       ++j;
     }
     if (vu)

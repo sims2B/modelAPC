@@ -11,6 +11,7 @@
 
 int QCH(Problem P , Solution &s);
 
+int displayCVS(const Problem& P, const Solution& s, bool& solved);
 /////////////// PHASE 1 //////////////////
 int schedule(Problem P, Solution &s, std::vector<int>& endLast);
 //return the family with the minimum remaining threshold

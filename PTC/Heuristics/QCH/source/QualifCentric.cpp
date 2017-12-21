@@ -29,6 +29,20 @@ int QCH(Problem P, Solution& s){
   }
 }
 
+
+int displayCVS(const Problem& P, const Solution& s, bool& solved){
+  if (solved){
+    std::cout << "1;";
+    std::cout << s.getWeigthedObjectiveValue(P,alpha,beta) << ";"
+	      << s.getSumCompletion(P) << ";"
+	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
+	      << s.getNbSetup(P) ;
+  }
+  else
+    std::cout << "0; ; ; ; ; ";
+  return 0;
+}
+
 int schedule(Problem P, Solution& s, std::vector<int>& endLast){
   const int F = P.getFamilyNumber();
   int i ,f , j;

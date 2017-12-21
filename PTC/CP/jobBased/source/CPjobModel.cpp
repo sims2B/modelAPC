@@ -1,3 +1,4 @@
+
 #include "CPjobModel.h"
 
 int CP::solve(const Problem& P, Solution & s){
@@ -12,24 +13,41 @@ int CP::solve(const Problem& P, Solution & s){
     createModel(P,env,model,masterTask,altTasks,disqualif,mchs);
     IloCP cp(model);
     
-    cp.setParameter(IloCP::TimeLimit, 500);
-    if (cp.solve()) {
-      cp.out() << "Objective \t: " << cp.getObjValue() << std::endl;
-      modelToSol(P,s,cp,altTasks,disqualif);
-    } else {
-      cp.out() << "No solution found."  << std::endl;
+    // cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    cp.setParameter(IloCP::TimeLimit, time_limit);
+      //cplex.exportModel("model.lp");
+    //solve!
+    if (cp.solve() || cp.getStatus() == IloAlgorithm::Infeasible){
+
+      if (cp.getStatus() == IloAlgorithm::Infeasible){
+	int ret = displayCVS(P, s, cp);
+	env.end();
+	return ret;
+      }
+      else {
+	int ret =//printSol(P,cp,altTasks,disqualif)||
+	  modelToSol(P, s, cp, altTasks, disqualif) ||
+	  displayCVS(P, s, cp);
+	env.end();
+	return ret;
+      }
     }
-  } catch(IloException& e){
-    env.out() << " ERROR: " << e << std::endl;
+  }
+
+  catch (IloException &e){
+    std::cout << "Iloexception in solve" << e << std::endl;
+  }
+  catch (...){
+    std::cout << "Error unknown\n";
   }
   env.end();
-  return 0;
+  return 1;
 }
 
 int modelToSol(const Problem& P, Solution& s, const IloCP& cp,
 	       const IloIntervalVarMatrix& altTasks,
 	       const IloIntervalVarMatrix& disqualif){
-  IloInt i , j ;
+  int i , j ;
   const int m = P.M;
   const int F = P.getFamilyNumber();
   
@@ -39,7 +57,7 @@ int modelToSol(const Problem& P, Solution& s, const IloCP& cp,
       if (P.isQualif(i,j)){
 	if (cp.isPresent(altTasks[j][cpt[j]])){
 	  s.S[i].index = i;
-	  s.S[i].start = cp.getStart(altTasks[j][cpt[j]]);
+	  s.S[i].start = (int)cp.getStart(altTasks[j][cpt[j]]);
 	  s.S[i].machine = j;
 	}
 	cpt[j]++;
@@ -51,29 +69,51 @@ int modelToSol(const Problem& P, Solution& s, const IloCP& cp,
     for (j = 0 ; j < m ; ++j)
       if (P.F[i].qualif[j]){
 	if (cp.isPresent(disqualif[j][cpt[j]]))
-	  s.QualifLostTime[i][j] = cp.getStart(disqualif[j][cpt[j]]);
+	  s.QualifLostTime[i][j] = (int)cp.getStart(disqualif[j][cpt[j]]);
 	cpt[j]++;
       }
   
   return 0;
 }
 
-int printSol(){
-        /*      for (int j = 0 ; j < P.M ; ++j){
-	IloInt Fcpt = 0;
-	for (int f = 0 ; f < P.getFamilyNumber() ; ++f)
-	  if (P.F[f].qualif[j]){
-	    if (cp.isPresent(disqualif[j][Fcpt]))
-	      std::cout << "disQ_" << j<< "="<< cp.getStart(disqualif[j][Fcpt])<<std::endl;
-	    Fcpt++;
-	  }
-	std::cout << "end_" << j<< "="<< cp.getStart(altTasks[j][altTasks[j].getSize()-1])<<std::endl;
+int printSol(const Problem& P, const IloCP& cp, const IloIntervalVarMatrix& altTasks,
+	     const IloIntervalVarMatrix& disqualif/*, const IloIntervalSequenceVarArray& mchs*/){
+  for (int j = 0; j < P.M; ++j){
+    IloInt Fcpt = 0;
+    for (int f = 0; f < P.getFamilyNumber(); ++f)
+      if (P.F[f].qualif[j]){
+	if (cp.isPresent(disqualif[j][Fcpt]))
+	  std::cout << "disQ_" << j << "=" << cp.getStart(disqualif[j][Fcpt]) << std::endl;
+	Fcpt++;
       }
+    std::cout << "end_" << j << "=" << cp.getStart(altTasks[j][altTasks[j].getSize() - 1]) << std::endl;
+  }
+  /*
+    for (IloInt j = 0; j < P.M; ++j){
+    for (IloInt i = 0; i < mchs[j].getSize(); ++i){
+    if (mchs[j][i].isPresent()){
+    std::cout << "Task " << m.n << " on machine " << j << " starting at " << mchs[j][i].start << std::endl;
+    }
+    }*/
+  return 0;
+}
 
- for (IloInt j = 0 ; j < P.M ; ++j){
-	  for (IloInt i = 0 ; i < mchs[j].getSize() ; ++i){
-	  if (mchs[j][i].isPresent()){
-	  std::cout << "Task " << m.n << " on machine " << j << " starting at " << mchs[j][i].start << std::endl;}}*/
+
+int displayCVS(const Problem& P, const Solution& s, const IloCP& cp){
+  IloNum time_exec = cp.getInfo(IloCP::SolveTime);
+  std::cout << time_exec << ";";
+  if (!(cp.getStatus() == IloAlgorithm::Infeasible)){
+    std::cout << "1;1;";
+    if (cp.getStatus() == IloAlgorithm::Optimal)
+      std::cout << "1;";
+    else std::cout << "0;";
+    std::cout << cp.getObjValue() << ";" << s.getSumCompletion(P) << ";"
+	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
+	      << s.getNbSetup(P) << ";" << cp.getInfo(IloCP::NumberOfBranches) << ";" 
+	      << cp.getInfo(IloCP::NumberOfFails);
+  }
+  else
+    std::cout << "1; ; ; ; ; ; ; ; ";
   return 0;
 }
 
@@ -88,7 +128,7 @@ int createModel(const Problem& P, IloEnv& env, IloModel& model,
 int createVariables(const Problem& P, IloEnv& env, IloIntervalVarArray& masterTask,
 		    IloIntervalVarMatrix& altTasks, IloIntervalVarMatrix& disqualif,
 		    IloIntervalSequenceVarArray& mchs){
-  IloInt i,j;
+  int i,j;
   const int n = P.N;
   const int m = P.M;
   const int T = P.computeHorizon();
@@ -171,7 +211,7 @@ int createObjective(const Problem& P, IloEnv& env, IloModel& model,
 int createConstraints(const Problem& P, IloEnv& env, IloModel& model,
 		      IloIntervalVarArray& masterTask, IloIntervalVarMatrix& altTasks,
 		      IloIntervalVarMatrix& disqualif, IloIntervalSequenceVarArray& mchs){
-  IloInt i, j , f;
+  int i, j , f;
   const int n = P.N;
   const int m = P.M;
   const int F = P.getFamilyNumber();
@@ -220,65 +260,67 @@ int createConstraints(const Problem& P, IloEnv& env, IloModel& model,
    // threshold (if a task of f is executed on j, then an aother one of f has to be
   // executed before gamma_f OR the machine j becomes disqualified for f OR no other
   // task is scheduled on j (end_j)
-   for (j = 0 ; j < m ; j++){
-     IloInt Icpt = 0;
-     for (i = 0 ; i < n ; ++i){
-       if (P.isQualif(i,j)){
-	 IloOr c(env);
-	 IloInt I2cpt = Icpt+1;
-	 for (IloInt i2 = i+1 ; i2 < n ; ++i2) {
-	   if (P.isQualif(i2,j)){
-	     if (P.famOf[i]==P.famOf[i2])
-	       c = c || (IloPresenceOf(env, altTasks[j][I2cpt]) && IloStartOf(altTasks[j][I2cpt]) <=
-			 IloEndOf(altTasks[j][Icpt])+ P.getThreshold(i));
-	     I2cpt++;
-	   }
-	 }
-	 IloInt Fcpt = 0;
-	 for (f = 0 ; f < P.famOf[i] ; ++f)
-	   if (P.F[f].qualif[j]) Fcpt++;
-	 c = c || IloEndOf(altTasks[j][Icpt]) +  P.getThreshold(i) ==
-	   IloStartOf(disqualif[j][Fcpt]);
-	 c = c ||  IloEndOf(altTasks[j][Icpt]) ==
-	   IloStartOf(altTasks[j][altTasks[j].getSize()-1]);
-	 model.add(IloIfThen(env,IloPresenceOf(env,altTasks[j][Icpt]), c));
-	 Icpt++;
-       }	 
-     }
-   }
-  // end_j is the last task on j
-   for (j = 0 ; j < m ; j++){
-     IloInt Icpt = 0;
-     for (i = 0 ; i < n ; ++i)
-       if (P.isQualif(i,j)){
-	 model.add(IloEndBeforeStart(env,altTasks[j][Icpt],
-				     altTasks[j][altTasks[j].getSize()-1]));
-	 Icpt++;
-       }
+  for (j = 0; j < m; j++){
+    IloInt Icpt = 0;
+    for (i = 0; i < n; ++i){
+      if (P.isQualif(i, j)){
+	IloOr c(env);
+	IloInt I2cpt = Icpt + 1;
+	for (int i2 = i + 1; i2 < n; ++i2) {
+	  if (P.isQualif(i2, j)){
+	    if (P.famOf[i] == P.famOf[i2])
+	      c = c || (IloPresenceOf(env, altTasks[j][I2cpt]) && IloStartOf(altTasks[j][I2cpt]) <=
+			IloStartOf(altTasks[j][Icpt]) + P.getThreshold(i));
+	    I2cpt++;
+	  }
+	}
+	IloInt Fcpt = 0;
+	for (f = 0; f < P.famOf[i]; ++f)
+	  if (P.F[f].qualif[j]) Fcpt++;
+	c = c || IloStartOf(altTasks[j][Icpt]) + P.getThreshold(i) ==
+	  IloStartOf(disqualif[j][Fcpt]);
+	c = c || IloEndOf(altTasks[j][Icpt]) ==
+	  IloStartOf(altTasks[j][altTasks[j].getSize() - 1]);
+	model.add(IloIfThen(env, IloPresenceOf(env, altTasks[j][Icpt]), c));
+	Icpt++;
+      }
+    }
+  }
+  
+  // if there is  no task of family f executed on a qualified machine j,
+  // the machine becomes disqualified for f OR end_j <= gamma_f
+  for (j = 0; j < m; j++) {
+    IloInt Fcpt = 0;
+    for (f = 0; f < F; ++f)
+      if (P.F[f].qualif[j]) {
+	IloInt Icpt = 0;
+	IloOr c(env);
+	for (i = 0; i < n; ++i){
+	  if (P.famOf[i] == f){
+	    c = c || IloPresenceOf(env, altTasks[j][Icpt]);
+	    Icpt++;
+	  }
+	  else if (P.isQualif(i, j))
+	    Icpt++;
+	}
+	c = c || IloPresenceOf(env, disqualif[j][Fcpt]);
+	c = c || IloStartOf(altTasks[j][altTasks[j].getSize() - 1]) <= P.F[f].threshold;
+	model.add(c);
+	Fcpt++;
+      }
+  }
 
-   }
-   // if there is  no task of family f executed on a qualified machine j,
-   // the machine becomes disqualified for f OR end_j <= gamma_f
-   for (j = 0 ; j < m ; j++) {
-     IloInt Fcpt = 0;
-     for (f = 0 ; f < F ; ++f) 
-       if (P.F[f].qualif[j]) {
-	 IloInt Icpt = 0;
-	 IloOr c(env);
-	 for (i = 0 ; i < n ; ++i)
-	   if (P.famOf[i]==f){
-	     c = c || IloPresenceOf(env, altTasks[j][Icpt]);
-	     Icpt++;
-	   }
-	   else if (P.isQualif(i,j)) Icpt++;
-	 c = c || IloPresenceOf(env, disqualif[j][Fcpt]);
-	 c = c || IloStartOf(altTasks[j][altTasks[j].getSize()-1]) <= P.F[f].threshold;
-	 model.add(c);
-	 Fcpt++;
-       }	 
-   }
-   
- 
+  // end_j is the last task on j
+  for (j = 0; j < m; j++){
+    IloInt Icpt = 0;
+    for (i = 0; i < n; ++i)
+      if (P.isQualif(i, j)){
+	model.add(IloEndBeforeStart(env, altTasks[j][Icpt],
+				    altTasks[j][altTasks[j].getSize() - 1]));
+	Icpt++;
+      }
+
+  }
 
    // ordonne les start des taches d'une même famille (optionnelle)
    // (version globale)

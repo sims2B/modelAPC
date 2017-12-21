@@ -34,6 +34,6 @@ sub handle_file {
 	system("timeout --signal=9 600s ./bin/modelIP1 $file >> $target"); 
     }
 }
-system( "rm $target ; touch $target");
-system("echo 'type;nom_instance;N;M;F;tps;solv;feas;opt;obj;obj1;obj2;obj22;setup;gapCplex;valide' >> $target");
+#system( "rm $target ; touch $target");
+#system("echo 'type;nom_instance;N;M;F;tps;solv;feas;opt;obj;obj1;obj2;obj22;setup;gapCplex;valide' >> $target");
 explore $path;

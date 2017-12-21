@@ -13,6 +13,8 @@
 
 typedef int(*ptrHeur)(Problem,Solution&);
   
+  
+int displayCVS(const Problem& P, const Solution& s, bool& solved);
 
 int RH(const Problem& P, Solution& s, ptrHeur);
 int disqualify(Problem& Q, const std::vector<std::tuple<int,int>>& disqualif, const int& iter, const int& nbDisqualif);

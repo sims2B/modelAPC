@@ -44,6 +44,20 @@ int LH(Problem P, Solution& s){
   return 1;
 }
 
+int displayCVS(const Problem& P, const Solution& s, bool& solved){
+  if (solved){
+    std::cout << "1;";
+    std::cout << s.getWeigthedObjectiveValue(P,alpha,beta) << ";"
+	      << s.getSumCompletion(P) << ";"
+	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
+	      << s.getNbSetup(P) ;
+  }
+  else
+    std::cout << "0; ; ; ; ; ";
+  return 0;
+}
+
+
 int treat(Problem &P,Solution& s,const int m, const int f, std::vector<int> &endLast,std::vector<int> &toSchedule, std::vector<int> &nextOfFam){
   //remplissage de solution
   (s.QualifLostTime[f][m] == endLast[m]? //if the last task on j is of family f

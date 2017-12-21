@@ -1,7 +1,6 @@
 #include "jobModel.h"
 #include <iostream>
 #include <fstream>
-using namespace IP1;
 
 int main(int,char* argv[]){
   std::ifstream instance(argv[1],std::ios::in);

@@ -1,7 +1,10 @@
 #include "Problem.h"
+#include "utils.h"
 #include <random>
 #include <limits>
 #include <cassert>
+
+
 Problem::Problem(int nbTask, int nbFam): N(nbTask), M(0){
   F.reserve(nbFam);
   famOf.resize(nbTask);
@@ -37,14 +40,15 @@ int Problem::computeHorizon() const{
   return res;
 }
 
-
-
-
 std::string Problem::toString() const{
-  std::string res = "Le problème possède les caractéristiques suivantes:\n - le nombre de tâches est :" + std::to_string(N) + "\n - le nombre de machine est :" + std::to_string(M) + "\n - \n";
+  std::string res =
+    "Le problème possède les caractéristiques suivantes:\n - le nombre de tâches est :" +
+    std::to_string(N) + "\n - le nombre de machine est :"+ std::to_string(M) + "\n - \n";
   for (int i = 0 ; i < N ; ++i)
-    res += "  * la tâche " + std::to_string(i) + " appartient à la famille " + std::to_string(famOf[i]) + "\n";
-  res+= "- Et les familles (" + std::to_string(F.size()) + ") possèdent les caractéristiques suivantes:\n";
+    res += "  * la tâche " + std::to_string(i) + " appartient à la famille " +
+      std::to_string(famOf[i]) + "\n";
+  res+= "- Et les familles (" + std::to_string(F.size()) +
+    ") possèdent les caractéristiques suivantes:\n";
   for (uint f = 0 ; f < F.size() ; ++f)
     res+= "   * " + std::to_string(f) + ": " + F[f].toString();
   return res;
@@ -58,29 +62,19 @@ int Problem::getNf(int f) const{
   return res;
 }
 
-void generateFamilies(Problem& P, const int& n, const int& m,
-		      const int& F, const int& pmax, int sumQualif){
-  generateDuration(P,F,pmax);
 
-  int minDur = std::numeric_limits<int>::max();
-  for (int f = 0 ; f < F ; ++f)
-    if (P.F[f].duration < minDur) minDur = P.F[f].duration;
-  generateSetup(P,F,minDur);
-
-  generateThreshold(P,n,m,F);
-  generateQualif(P,m,F,sumQualif);
-}
-
+//Ali
 void generateDuration(Problem& P, const int& F, const int& pmax){
   std::random_device rd;
   std::mt19937 generator(rd());
-  std::normal_distribution<> disDur(4.0*(double)pmax/5.0,(double)pmax/5.0);
+  std::uniform_int_distribution<int> disDur(1,pmax);
+  // std::normal_distribution<> disDur(4.0*(double)pmax/5.0,(double)pmax/5.0);
   int sample;  
   for (int f = 0 ; f < F ; ++f){
-    do {
+    // do {
       sample = (int)disDur(generator);
-    } while (sample < 1 || sample > pmax);
-    P.F[f].duration = (int)sample;
+      //} while (sample < 1 || sample > pmax);
+    P.F[f].duration = sample;
   }
 }
 
@@ -89,17 +83,35 @@ void generateSetup(Problem& P, const int& F, const int& pmin){
   std::mt19937 generator(rd());
   int sample,f;
 
-  std::normal_distribution<> disSet(pmin/2 ,pmin/5);
+  std::uniform_int_distribution<int> disSet(1,pmin);
+  //std::normal_distribution<> disSet(pmin/2 ,pmin/5);
   for (f = 0 ; f < F ; ++f){
-    do {
+    // do {
       sample = (int)disSet(generator);
-    } while (sample < 1 || sample > pmin);
-    P.F[f].setup = (int)sample;
+      // } while (sample < 1 || sample > pmin);
+    P.F[f].setup = sample;
   }
 }
 
-void generateThreshold(Problem& P, const int& n, const int& m, const int& F){
+
+void generateThreshold(Problem& P/*, const int& n*/, const int& m, const int& F, const int & pmax, const int& smax){
+  int Hbound = P.computeHorizon() / m ;
   std::random_device rd;
+  std::mt19937 generator(rd());
+  std::uniform_int_distribution<int> disThresh(std::max((cat-1)*Hbound/nbCat ,
+							sizeMin * 2 * pmax + smax),
+					       std::max(cat *Hbound/nbCat,
+							(sizeMin+1) * 2 * pmax + 2*smax));
+  for (int f = 0 ; f < F ; ++f){
+    int sample = disThresh(generator) ;
+    //std :: cout << sample << std::endl;
+    if (sample < P.F[f].duration + smax + sizeMin * pmax + P.F[f].setup)
+      P.F[f].threshold = P.F[f].duration + smax + sizeMin * pmax + P.F[f].setup;
+    if (sample > P.F[f].duration + smax + (sizeMin+1) * pmax + P.F[f].setup)
+      P.F[f].threshold =  P.F[f].duration  + smax + (sizeMin+1) * pmax+ P.F[f].setup;
+    else P.F[f].threshold = sample;
+  }
+  /*std::random_device rd;
   std::mt19937 generator(rd());
   int sample,f;
   int maxDur = std::numeric_limits<int>::min();
@@ -113,11 +125,73 @@ void generateThreshold(Problem& P, const int& n, const int& m, const int& F){
       sample = (int)disThres(generator);
     } while (sample < maxDur || sample > 3*n*maxDur/(4*m));
     P.F[f].threshold = (int)sample;
-  }
+    }*/
 }
 
-void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
 
+void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
+  std::random_device rd;
+  std::mt19937 generator(rd());
+  int sample,j,f= 0;
+  std::vector<int> selected(F,0);
+  std::vector<int> nbQualif(F,0);
+  std::uniform_int_distribution<int> qualifPerFam(0, F - 1);
+  std::uniform_int_distribution<int> machQualif(0,m - 1);
+
+  //nbQualifPerFamily generation
+  for (f = 0 ; f < F ; ++f)
+    nbQualif[f]++;
+  sumQualif -= F;
+  
+  while (sumQualif > 0){
+    sample = (int) qualifPerFam(generator);
+    while (nbQualif[sample] == m){
+      //std::cout << sample << std::endl;
+      sample ++ ;
+      sample = sample % F;
+    }
+    nbQualif[sample]++;
+    sumQualif--;
+  }
+  
+  // printVector("NbQualif " , nbQualif);
+  //each machine choose a family
+  for (j =0 ; j < m ; ++j){
+    sample =  qualifPerFam(generator);
+    while (nbQualif[sample] == 0){
+      //std::cout << sample << std::endl;
+      sample ++ ;
+      sample = sample % F;
+    }
+    nbQualif[sample]--;
+    selected[sample]++;
+    P.F[sample].qualif[j] = 1;
+    // std::cout << "sample " << sample << std::endl;
+    // printVector("P.F[sample].qualif",P.F[sample].qualif);
+  }
+
+  //std::cout << "nbQualif per families generated\n";
+  //the rest of the affectation is done randomly
+  for (f = 0 ; f < F ; ++f){
+    // std::cout << f << std::endl;
+    j = m - selected[f];
+    while (nbQualif[f] > 0){
+      //printVector("P.F[f].qualif",P.F[f].qualif);
+      int index =  (int)(machQualif(generator) % j);
+      int select = -1;
+      while (index > -1 ){
+	if (!P.F[f].qualif[select+1])
+	  index--;
+	select++;
+	select=select% m;
+      } 
+      P.F[f].qualif[select] = 1;
+      j--; nbQualif[f]--;
+    }
+  }
+
+  /*
+  
   std::random_device rd;
   std::mt19937 generator(rd());
   int sample, j, f ,nbFull = 0;
@@ -138,6 +212,7 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
     if (nbQualif[select]==m) nbFull++;
     sumQualif--;
   }
+  
   //machine affectation to family
   std::uniform_int_distribution<int> machQualif(0,m-1);
   std::vector<int> selected(m,0);
@@ -181,8 +256,38 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
       P.F[rest].qualif[select] = 1;
       j--; nbQualif[rest]--;
     }
-  }
+  }*/
 }
+
+
+void generateFamilies(Problem& P,const int& m,
+		      const int& F, const int& pmax, int sumQualif){
+  generateDuration(P,F,pmax);
+  int minDur = std::numeric_limits<int>::max();
+  for (int f = 0 ; f < F ; ++f)
+    if (P.F[f].duration < minDur) minDur = P.F[f].duration;
+  generateSetup(P,F,minDur);
+  
+  int maxDur = std::numeric_limits<int>::min();
+  int maxSet = std::numeric_limits<int>::min();
+  for (int f = 0 ; f < F ; ++f){
+    if (P.F[f].setup > maxSet) maxSet = P.F[f].setup;
+    if (P.F[f].duration > maxDur) maxDur = P.F[f].duration;
+  }
+  generateThreshold(P,m,F,maxDur,maxSet);
+  
+  generateQualif(P,m,F,sumQualif);
+}
+
+Problem generateProblem(const int& n, const int& m, const int& F,
+			const int& pmax, int sumQualif){
+  assert( sumQualif  >= m && sumQualif >= F); 
+  Problem P(n , m , F);
+  generateFamilies(P,m,F,pmax,sumQualif);
+  affectFamily(P,n,F);
+  return P;
+}
+//common
 
 void affectFamily(Problem& P, const int& n, const int& F){
   int nbRes = n;
@@ -218,30 +323,27 @@ void affectFamily(Problem& P, const int& n, const int& F){
   }
 }
 
-Problem generateProblem(const int& n, const int& m, const int& F,
-			const int& pmax, int sumQualif){
-  assert( sumQualif  >= m && sumQualif >= F); 
-  Problem P(n,m,F);
-  generateFamilies(P,n,m,F,pmax,sumQualif);
-  affectFamily(P,n,F);
-  return P;
-}
-
-
 //Abdoul
-void generateFamilies(Problem& P, const int& n, const int& m,
+void generateFamilies(Problem& P/*, const int& n*/, const int& m,
 		      const int& F){
-  int Hbound = 0 , i = 0;
   generateDuration(P,F);
   generateSetup(P,F);
-  for (i = 0 ; i < n ; ++i)
-    Hbound += P.getDuration(i) /*+ P.getSetup(i)*/;
-  Hbound = Hbound / m;
-  generateThreshold(P,F,Hbound);
+  generateThreshold(P,m,F);
   generateQualif(P,m,F);
 }
 
-void generateThreshold(Problem& P, const int& F,const int& Hbound){
+
+void generateSetup(Problem& P, const int& F){
+  std::random_device rd;
+  std::mt19937 generator(rd());
+  std::uniform_int_distribution<int> disSetup(Smin,Smax);
+  for (int  f = 0 ; f < F ; ++f){
+    P.F[f].setup = disSetup(generator);
+  }  
+}
+
+void generateThreshold(Problem& P,  const int& m, const int& F){
+  int Hbound = P.computeHorizon() / m ;
   std::random_device rd;
   std::mt19937 generator(rd());
   std::uniform_int_distribution<int> disThresh(std::max((cat-1)*Hbound/nbCat ,
@@ -257,16 +359,7 @@ void generateThreshold(Problem& P, const int& F,const int& Hbound){
     else P.F[f].threshold = sample;
   }
 }
-
-void generateSetup(Problem& P, const int& F){
-  std::random_device rd;
-  std::mt19937 generator(rd());
-  std::uniform_int_distribution<int> disSetup(Smin,Smax);
-  for (int  f = 0 ; f < F ; ++f){
-    P.F[f].setup = disSetup(generator);
-  }  
-}
-
+  
 void generateDuration(Problem& P,const int& F){
   std::random_device rd;
   std::mt19937 generator(rd());
@@ -320,7 +413,7 @@ void generateQualif(Problem& P, const int& m, const int& F){
 }
 Problem generateProblem(const int& n, const int& m, const int& F){
   Problem P(n,m,F);
-  generateFamilies(P,n,m,F);
+  generateFamilies(P,m,F);
   affectFamily(P,n,F);
   return P;
 }

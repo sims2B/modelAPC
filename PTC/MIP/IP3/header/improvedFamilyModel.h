@@ -37,6 +37,8 @@ int setParam(IloEnv&,IloCplex&);
 // fill an instance of solution with the solution found by the model
 int modelToSol(const Problem&, Solution&, const IloCplex&, const IloNumVar3DMatrix&,
 	       const IloNumVar3DMatrix&, const IloNumVarMatrix&);
+
+int displayCVS(const Problem& , const Solution&, const IloCplex&, const IloNum&);
 //display the solution found by cplex (value of the variable)
 int displayCplexSolution(const Problem&, IloEnv&, IloCplex&, const IloNumVar3DMatrix&,
 			 const IloNumVar3DMatrix&, const IloNumVarArray&,

@@ -1,7 +1,7 @@
 #include "jobModel.h"
 #include <cmath>
 
-int IP1::solve(const Problem& P, Solution& s){
+int solve(const Problem& P, Solution& s){
   try{
     IloNum start;
     const int n = P.N;
@@ -97,15 +97,15 @@ int displayCplexResults(const IloCplex& cplex, const IloNum& start){
 }
 
 
-int displayCVS(const Problem& P, const Solution& s,const IloCplex& cplex,const IloNum& start){
+int displayCVS(const Problem& P, const Solution& s, const IloCplex& cplex, const IloNum& start){
   IloNum time_exec = cplex.getCplexTime() - start;
-  std::cout << time_exec << ";" ;
-  if (!(cplex.getStatus()==IloAlgorithm::Infeasible)){
+  std::cout << time_exec << ";";
+  if (!(cplex.getStatus() == IloAlgorithm::Infeasible)){
     std::cout << "1;1;";
-    if (cplex.getStatus()==IloAlgorithm::Optimal)
-      std::cout << "1;" ;
+    if (cplex.getStatus() == IloAlgorithm::Optimal)
+      std::cout << "1;";
     else std::cout << "0;";
-    std::cout << cplex.getObjValue() << ";" << s.getSumCompletion(P) << ";"
+    std::cout << IloRound(cplex.getObjValue()) << ";" << s.getSumCompletion(P) << ";"
 	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
 	      << s.getNbSetup(P) << ";" << cplex.getMIPRelativeGap();
   }
@@ -124,24 +124,24 @@ int setParam(IloEnv& env,IloCplex& cplex){
 int modelToSol(const Problem& P, Solution& s, IloCplex& cplex, IloNumVar3DMatrix& x,
 	       IloNumVar3DMatrix& y){
 
-  const int F = P.getFamilyNumber(); 
+  const int F = P.getFamilyNumber();
   const int T = P.computeHorizon();
-  int i , j ,t, f;
-  
-  for (i = 0 ; i < P.N ; ++i)
-    for (j = 0 ; j < P.M ; ++j)
-      if (P.isQualif(i,j))
-	for (t = 0 ; t < x[i][j].getSize() - P.getDuration(i) ; ++t) 
-	  if (IloRound(cplex.getValue(x[i][j][t]))==1)
-	    s.S[i]=Assignment(t,j,i);
-  
-  for (f = 0 ; f < F ; ++f)
-    for ( j = 0 ; j < P.M ; ++j)
+  int i, j, t, f;
+
+  for (i = 0; i < P.N; ++i)
+    for (j = 0; j < P.M; ++j)
+      if (P.isQualif(i, j))
+	for (t = 0; t < x[i][j].getSize() - P.getDuration(i); ++t)
+	  if (IloRound(cplex.getValue(x[i][j][t])) == 1)
+	    s.S[i] = Assignment(t, j, i);
+
+  for (f = 0; f < F; ++f)
+    for (j = 0; j < P.M; ++j)
       if (P.F[f].qualif[j]){
 	t = 0;
-        while (t < T && IloRound(cplex.getValue(y[f][j][t]))!=1)
+	while (t < T && IloRound(cplex.getValue(y[f][j][t])) != 1)
 	  ++t;
-	if ( t < T)
+	if (t < T)
 	  s.QualifLostTime[f][j] = t;
       }
   return 0;
@@ -172,130 +172,131 @@ int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
   return 0;
 }
 
+
 int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, IloNumVar3DMatrix& x,
 		      IloNumVar3DMatrix& y, IloNumVarArray& C){
-  IloInt i,j,t,f,tau;
+  int i, j, t, f, tau;
   const int m = P.M;
   const int n = P.N;
-  const int F = P.getFamilyNumber(); 
+  const int F = P.getFamilyNumber();
 
   //objective
-   IloExpr expr(env);
-  for (i = 0 ; i < n ; ++i)
+  IloExpr expr(env);
+  for (i = 0; i < n; ++i)
     expr += alpha * C[i];
-  for (f = 0 ; f < F ; ++f)
-    for (j = 0 ; j < m ; ++j)
-      if (P.isQualif(f,j))
-	expr+= beta * y[f][j][T-1];
-  model.add(IloMinimize(env,expr));
+  for (f = 0; f < F; ++f)
+    for (j = 0; j < m; ++j)
+      if (P.F[f].qualif[j])
+	expr += beta * y[f][j][T - 1];
+  model.add(IloMinimize(env, expr));
   expr.end();
-  
+
   //each job is scheduled once
-  for (i = 0 ; i < n ; ++i){
+  for (i = 0; i < n; ++i){
     IloExpr expr(env);
-    for (j = 0 ; j < m ; ++j){
-      if (P.isQualif(i,j)){
-	for (t = 0 ; t < T - P.getDuration(i) ; ++t)
-	  expr+=x[i][j][t];
+    for (j = 0; j < m; ++j){
+      if (P.isQualif(i, j)){
+	for (t = 0; t < T - P.getDuration(i); ++t)
+	  expr += x[i][j][t];
       }
     }
-    model.add(expr==1);
+    model.add(expr == 1);
     expr.end();
-  }  
-  
+  }
+
   //completion time of a job
-  for (i = 0 ; i < n ; ++i){
-    IloExpr expr(env); 
-    for (j = 0 ; j < m ; ++j){
-      if (P.isQualif(i,j)){
-	for (t = 0 ; t  < T - P.getDuration(i) ; ++t)
-	  expr+= (t * x[i][j][t]) ;
+  for (i = 0; i < n; ++i){
+    IloExpr expr(env);
+    for (j = 0; j < m; ++j){
+      if (P.isQualif(i, j)){
+	for (t = 0; t < T - P.getDuration(i); ++t)
+	  expr += (t * x[i][j][t]);
       }
     }
     expr += P.getDuration(i);
     model.add(expr <= C[i]);
     expr.end();
   }
-  
+
   //noOverlap on the same machine for to job of the same family
-  for (f = 0 ; f < F ; ++f)
-    for (t = P.F[f].duration ; t < T ; ++t)
-      for (j = 0 ; j < m ; ++j)
+  for (f = 0; f < F; ++f)
+    for (t = P.F[f].duration; t < T; ++t)
+      for (j = 0; j < m; ++j)
 	if (P.F[f].qualif[j]){
 	  IloExpr expr(env);
-	  for (i = 0 ; i < n ; ++i)
-	    if ( P.famOf[i] == f )
-	      for (tau = t - P.getDuration(i) ; tau < t ; ++tau)
-		expr+=x[i][j][tau];
+	  for (i = 0; i < n; ++i)
+	    if (P.famOf[i] == f)
+	      for (tau = t - P.getDuration(i); tau < t; ++tau)
+		expr += x[i][j][tau];
 	  model.add(expr <= 1);
 	  expr.end();
 	}
-  
+
 
   //noOverlap on the same machine with setup time
-    for (i = 0 ; i < n ; ++i)
-      for (int i2 = i ; i2 < n ; ++i2){
-	for (t = 0 ; t < T ; ++t)
-	  for (j = 0 ; j < m ; ++j)
-	    if (P.famOf[i]!=P.famOf[i2] &&
-		!((P.isQualif(i,j) + P.isQualif(i2,j))% 2)){
-	      //  std::cout << "("<<i << "," <<i2<<") : "<< j<< "," << t << std::endl; 
-	      IloExpr expr(env);
-	      for (tau = std::max(0,(int)t - P.getDuration(i) - P.getSetup(i2))  ;
-		  tau < t ; ++tau)
-		expr+=x[i][j][tau];
-	      for (tau = std::max(0,(int)t - P.getDuration(i2) - P.getSetup(i))  ;
-		   tau >= 0 && tau < t ; ++tau)
-		expr+=x[i2][j][tau];
-	      model.add(expr <= 1);
-	      expr.end();
-	    }
-      }   
-  
+  for (i = 0; i < n; ++i)
+    for (int i2 = i; i2 < n; ++i2){
+      for (t = 0; t < T; ++t)
+	for (j = 0; j < m; ++j)
+	  if (P.famOf[i] != P.famOf[i2] &&
+	      !((P.isQualif(i, j) + P.isQualif(i2, j)) % 2)){
+	    //  std::cout << "("<<i << "," <<i2<<") : "<< j<< "," << t << std::endl; 
+	    IloExpr expr(env);
+	    for (tau = std::max(0, (int)t - P.getDuration(i) - P.getSetup(i2));
+		 tau < t; ++tau)
+	      expr += x[i][j][tau];
+	    for (tau = std::max(0, (int)t - P.getDuration(i2) - P.getSetup(i));
+		 tau >= 0 && tau < t; ++tau)
+	      expr += x[i2][j][tau];
+	    model.add(expr <= 1);
+	    expr.end();
+	  }
+    }
+
   //threshold 
-  for (f = 0 ; f < F ; ++f)
-    for (j = 0 ; j < m ; ++j)
+  for (f = 0; f < F; ++f)
+    for (j = 0; j < m; ++j)
       if (P.F[f].qualif[j]){
-	for (t = 0 ; t < std::min(T , P.F[f].threshold) ; ++t){
-	  model.add(y[f][j][t]==0);
+	for (t = 0; t < std::min(T, P.F[f].threshold); ++t){
+	  model.add(y[f][j][t] == 0);
 	}
-	for (t = P.F[f].threshold; t < T ; ++t){
+	for (t = P.F[f].threshold; t < T; ++t){
 	  IloExpr expr(env);
-	  for (i = 0 ; i < n ; ++i)
+	  for (i = 0; i < n; ++i)
 	    if (P.famOf[i] == f)
-	      for (tau = std::max(0 , (int)t - P.F[f].threshold + 1); tau < t ; ++tau)
-		expr+=x[i][j][tau];
+	      for (tau = std::max(0, (int)t - P.F[f].threshold + 1); tau < t; ++tau)
+		expr += x[i][j][tau];
 	  //expr= expr/P.F[f].threshold;
-	  expr+=y[f][j][t];
+	  expr += y[f][j][t];
 	  model.add(expr > 0);
 	  expr.end();
 	}
       }
-  
-  for (f = 0 ; f < F ; ++f)
-    for (j = 0 ; j < m ; ++j)
+
+  for (f = 0; f < F; ++f)
+    for (j = 0; j < m; ++j)
       if (P.F[f].qualif[j]){
-	for (t = P.F[f].threshold ; t < T ; ++t){
+	for (t = P.F[f].threshold; t < T; ++t){
 	  IloExpr expr(env);
-	  for (i = 0 ; i < n ; ++i)
+	  for (i = 0; i < n; ++i)
 	    if (P.famOf[i] == f)
-	      for (tau = std::max(0 ,(int) t - P.F[f].threshold + 1 ) ; tau < t ; ++tau)
-		expr+=x[i][j][tau];
-	  expr= expr/P.F[f].threshold;
-	  expr+=y[f][j][t];
+	      for (tau = std::max(0, (int)t - P.F[f].threshold + 1); tau < t; ++tau)
+		expr += x[i][j][tau];
+	  expr = expr / P.F[f].threshold;
+	  expr += y[f][j][t];
 	  model.add(expr <= 1);
 	  expr.end();
 	}
       }
-	
-  
+
+
   //if a machine become disqualified, it stays disqualified
-  for (t = 1 ; t < T ; ++t)
-    for (f = 0 ; f < F ; ++f)
-      for (j = 0 ; j < m ; ++j)
+  for (t = 1; t < T; ++t)
+    for (f = 0; f < F; ++f)
+      for (j = 0; j < m; ++j)
 	if (P.F[f].qualif[j])
-	  model.add(y[f][j][t-1] <= y[f][j][t]);
-  
-  
-    return 0;
+	  model.add(y[f][j][t - 1] <= y[f][j][t]);
+
+
+  return 0;
 }

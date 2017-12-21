@@ -26,9 +26,8 @@ typedef IloArray<IloNumVarMatrix> IloNumVar3DMatrix;
 //////////////////////////////////////////
 /////////////// SOLUTION /////////////////
 //////////////////////////////////////////
-namespace IP1{
   int solve(const Problem&, Solution&);
-}
+
 //set some Cplex parameters for function solve
 int setParam(IloEnv&,IloCplex&);
 
