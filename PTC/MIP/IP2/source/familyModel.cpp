@@ -1,5 +1,6 @@
+
+#include "stdafx.h"
 #include "familyModel.h"
-#include <cmath>
 int solve(const Problem& P, Solution& s){
   try{
     IloNum start;
@@ -10,7 +11,7 @@ int solve(const Problem& P, Solution& s){
 
     IloNumVar3DMatrix x(env, F);
     IloNumVar3DMatrix y(env, F);
-    IloNumVarArray C(env, F, 0, F*(T + 1), ILOFLOAT);
+    IloNumVarArray C(env, F, 0, P.N*(T + 1), ILOFLOAT);
 
     if (!createModel(P, T, env, model, x, y, C)){
       IloCplex cplex(model);
@@ -176,7 +177,7 @@ int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
     for (j = 0; j < P.M; ++j){
       x[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT);
       for (int t = 0; t < T; ++t){
-	sprintf(namevar, "x_%d_%d_%d", i, t, j);
+	sprintf_s(namevar, "x_%d_%d_%d", i, t, j);
 	x[i][j][t].setName(namevar);
       }
     }
@@ -187,7 +188,7 @@ int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
       (P.F[i].qualif[j] ? y[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT) :
        y[i][j] = IloNumVarArray(env, T, 0, 0, ILOINT));
       for (int t = 0; t < T; ++t){
-	sprintf(namevar, "y_%d_%d_%d", i, t, j);
+	sprintf_s(namevar, "y_%d_%d_%d", i, t, j);
 	y[i][j][t].setName(namevar);
       }
     }
@@ -269,53 +270,38 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
 
   //noOverlap on the same machine for to job of the same family
   for (f = 0; f < F; ++f)
-    for (t = P.F[f].duration; t < T; ++t)
-      for (j = 0; j < m; ++j)
-	if (P.F[f].qualif[j]){
-	  IloExpr expr(env);
-	  for (tau = t - P.F[f].duration; tau < t; ++tau)
-	    expr += x[f][j][tau];
-	  expr += y[f][j][t - 1];
-	  model.add(expr <= 1);
-	  expr.end();
-	}
+	  for (t = P.F[f].duration; t < T; ++t)
+		  for (j = 0; j < m; ++j)
+			  if (P.F[f].qualif[j]){
+				  IloExpr expr(env);
+				  for (tau = t - P.F[f].duration; tau < t; ++tau)
+					  expr += x[f][j][tau];
+				  expr += y[f][j][t - 1];
+				  model.add(expr <= 1);
+				  expr.end();
+			  }
 
 
   //threshold 
   for (f = 0; f < F; ++f)
-    for (j = 0; j < m; ++j)
-      if (P.F[f].qualif[j]){
-	for (t = P.F[f].threshold; t < T; ++t){
-	  IloExpr expr(env);
-	  for (tau = t - P.F[f].threshold; tau < t; ++tau)
-	    expr += x[f][j][tau];
-	  expr += y[f][j][t - 1];
-	  model.add(expr >= 1);
-	  expr.end();
-	}
-      }
-
-  /*	for (f = 0; f < F; ++f)
-	for (j = 0; j < m; ++j)
-	if (P.F[f].qualif[j]){
-	for (t = P.F[f].threshold ; t < T; ++t){
-	IloExpr expr(env);
-	for (tau = t - P.F[f].threshold ; tau < t; ++tau)
-	expr += x[f][j][tau];
-	expr = expr / P.F[f].threshold;
-	expr += y[f][j][t-1];
-	model.add(expr <= 1);
-	expr.end();
-	}
-	}*/
-
+	  for (j = 0; j < m; ++j)
+		  if (P.F[f].qualif[j]){
+			  for (t = P.F[f].threshold; t < T; ++t){
+				  IloExpr expr(env);
+				  for (tau = t - P.F[f].threshold; tau < t; ++tau)
+					  expr += x[f][j][tau];
+				  expr += y[f][j][t];
+				  model.add(expr >= 1);
+				  expr.end();
+			  }
+		  }
 
   //if a machine become disqualified, it stays disqualified
   for (t = 1; t < T; ++t)
-    for (f = 0; f < F; ++f)
-      for (j = 0; j < m; ++j)
-	if (P.F[f].qualif[j])
-	  model.add(y[f][j][t - 1] <= y[f][j][t]);
+	  for (f = 0; f < F; ++f)
+		  for (j = 0; j < m; ++j)
+			  if (P.F[f].qualif[j])
+				  model.add(y[f][j][t - 1] <= y[f][j][t]);
 
 
 

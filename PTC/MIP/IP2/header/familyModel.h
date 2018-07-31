@@ -1,10 +1,9 @@
+#pragma warning(disable: 4996)
 #ifndef FAMILYMODEL_H
 #define FAMILYMODEL_H
 
 #include <ilcplex/ilocplex.h>
 #include <ilcplex/ilocplexi.h>
-#include <iostream>
-
 #include "Solution.h"
 
 #ifndef TIME_LIMIT

@@ -1,5 +1,6 @@
+
+#include "stdafx.h"
 #include "jobModel.h"
-#include <cmath>
 
 int solve(const Problem& P, Solution& s){
   try{
@@ -8,31 +9,31 @@ int solve(const Problem& P, Solution& s){
     const int T = P.computeHorizon();
     IloEnv env;
     IloModel model(env);
-    
-    IloNumVar3DMatrix x(env,n);
-    IloNumVar3DMatrix y(env,P.getFamilyNumber());
-    IloNumVarArray C(env,n,0,T+1,ILOFLOAT);
-    
-    if (!createModel(P,T,env,model,x,y,C)){
+
+    IloNumVar3DMatrix x(env, n);
+    IloNumVar3DMatrix y(env, P.getFamilyNumber());
+    IloNumVarArray C(env, n, 0, T + 1, ILOFLOAT);
+
+    if (!createModel(P, T, env, model, x, y, C)){
       IloCplex cplex(model);
-      
-      setParam(env,cplex);
-      
-      start=cplex.getCplexTime();
-      
+
+      setParam(env, cplex);
+
+      start = cplex.getCplexTime();
+
       //solve!
-      if (cplex.solve() || cplex.getStatus()==IloAlgorithm::Infeasible){
+      if (cplex.solve() || cplex.getStatus() == IloAlgorithm::Infeasible){
 	if (cplex.getStatus() == IloAlgorithm::Infeasible){
-	  
-	  int ret = displayCVS(P,s,cplex,start);
+
+	  int ret = displayCVS(P, s, cplex, start);
 	  //|| displayCplexSolution(P,env,cplex,x,y,C);
 	  env.end();
 	  return ret;
 	}
 	else {
-	  int ret =/*displayCplexSolution(P,env,cplex,x,y,C)||*/
-	    modelToSol(P,s,cplex,x,y)||
-	  displayCVS(P,s,cplex,start) ; 
+	  int ret =//displayCplexSolution(P,env,cplex,x,y,C)||
+	    modelToSol(P, s, cplex, x, y) ||
+	    displayCVS(P, s, cplex, start);
 	  env.end();
 	  return ret;
 	}
@@ -45,7 +46,7 @@ int solve(const Problem& P, Solution& s){
     std::cout << "Iloexception in solve" << e << std::endl;
     e.end();
     return 1;
-  } 
+  }
   catch (...){
     std::cout << "Error unknown\n";
     return 1;
@@ -53,45 +54,45 @@ int solve(const Problem& P, Solution& s){
 }
 
 
-    
+
 int displayCplexSolution(const Problem& P, IloEnv& env, IloCplex& cplex, const IloNumVar3DMatrix& x, const IloNumVar3DMatrix& y, const IloNumVarArray& C){
   IloNumArray v(env);
- 
+
   // affichage de x et C
-  for (int i = 0 ; i < P.N ; ++i) {
-    for (int j = 0 ; j < P.M ; ++j)
-      if (P.isQualif(i,j)){
+  for (int i = 0; i < P.N; ++i) {
+    for (int j = 0; j < P.M; ++j)
+      if (P.isQualif(i, j)){
 	IloInt t = 0;
 	while (t < x[i][j].getSize() - P.getDuration(i) &&
-	       IloRound(cplex.getValue(x[i][j][t]))!= 1)
+	       IloRound(cplex.getValue(x[i][j][t])) != 1)
 	  ++t;
 	if (t < x[i][j].getSize() - P.getDuration(i)){
-	    std::cout << "x["<<i<<"]["<<j<<"]=";
-	    for (IloInt tau = 0 ; tau < x[i][j].getSize() - P.getDuration(i) ; ++tau)
-	      std::cout << cplex.getValue(x[i][j][tau]) << " , " ;
-	  }
+	  std::cout << "x[" << i << "][" << j << "]=";
+	  for (IloInt tau = 0; tau < x[i][j].getSize() - P.getDuration(i); ++tau)
+	    std::cout << cplex.getValue(x[i][j][tau]) << " , ";
+	}
       }
-    std::cout<< "\n C["<<i<<"]="<<cplex.getValue(C[i])<<std::endl;
+    std::cout << "\n C[" << i << "]=" << cplex.getValue(C[i]) << std::endl;
   }
-  
-  for (int f = 0 ; f < P.getFamilyNumber() ; ++f) 
-    for (int j = 0 ; j < P.M ; ++j) 
+
+  for (int f = 0; f < P.getFamilyNumber(); ++f)
+    for (int j = 0; j < P.M; ++j)
       if (P.F[f].qualif[j]){
-	cplex.getValues(y[f][j],v);
-	std::cout << "y["<<f<<"]["<<j<<"]="<<v <<std::endl;
+	cplex.getValues(y[f][j], v);
+	std::cout << "y[" << f << "][" << j << "]=" << v << std::endl;
       }
-	
+
   return 0;
 }
 
 int displayCplexResults(const IloCplex& cplex, const IloNum& start){
-  IloNum time_exec=cplex.getCplexTime() - start;
-  std::cout << "Final status: \t"<< cplex.getStatus() << " en " 
+  IloNum time_exec = cplex.getCplexTime() - start;
+  std::cout << "Final status: \t" << cplex.getStatus() << " en "
 	    << time_exec << std::endl;
-  if (!(cplex.getStatus()==IloAlgorithm::Infeasible)){
-    std:: cout << "Final objective: " << cplex.getObjValue() 
-	       <<"\nFinal gap: \t" << cplex.getMIPRelativeGap()
-	       << std::endl;
+  if (!(cplex.getStatus() == IloAlgorithm::Infeasible)){
+    std::cout << "Final objective: " << cplex.getObjValue()
+	      << "\nFinal gap: \t" << cplex.getMIPRelativeGap()
+	      << std::endl;
   }
   return 0;
 }
@@ -114,9 +115,9 @@ int displayCVS(const Problem& P, const Solution& s, const IloCplex& cplex, const
   return 0;
 }
 
-int setParam(IloEnv& env,IloCplex& cplex){
+int setParam(IloEnv& env, IloCplex& cplex){
   cplex.setParam(IloCplex::TiLim, time_limit);
-  cplex.setParam(IloCplex::Threads,2);
+  cplex.setParam(IloCplex::Threads, 2);
   cplex.setOut(env.getNullStream());
   return 0;
 }
@@ -149,29 +150,28 @@ int modelToSol(const Problem& P, Solution& s, IloCplex& cplex, IloNumVar3DMatrix
 
 int createModel(const Problem& P, int T, IloEnv& env, IloModel& model, IloNumVar3DMatrix& x,
 		IloNumVar3DMatrix& y, IloNumVarArray& C){
-  return createVars(P,T,env,x,y) || createConstraints(P,T,env,model,x,y,C);
+  return createVars(P, T, env, x, y) || createConstraints(P, T, env, model, x, y, C);
 }
 
 int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
 	       IloNumVar3DMatrix& y){
-  IloInt i,j;
+  IloInt i, j;
 
- 
-  for (i = 0 ; i < P.N ; ++i){
-    x[i] = IloNumVarMatrix(env,P.M);
-    for (j = 0 ; j < P.M ; ++j)
-      x[i][j] = IloNumVarArray(env,T,0,1,ILOINT);
+
+  for (i = 0; i < P.N; ++i){
+    x[i] = IloNumVarMatrix(env, P.M);
+    for (j = 0; j < P.M; ++j)
+      x[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT);
   }
-  for (i = 0 ; i < P.getFamilyNumber() ; ++i){
-    y[i] = IloNumVarMatrix(env,P.M);
-    for (j = 0 ; j < P.M ; ++j){
-      (P.F[i].qualif[j] ? y[i][j] = IloNumVarArray(env,T,0,1,ILOINT) :
-       y[i][j] = IloNumVarArray(env,T,0,0,ILOINT));
+  for (i = 0; i < P.getFamilyNumber(); ++i){
+    y[i] = IloNumVarMatrix(env, P.M);
+    for (j = 0; j < P.M; ++j){
+      (P.F[i].qualif[j] ? y[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT) :
+       y[i][j] = IloNumVarArray(env, T, 0, 0, ILOINT));
     }
   }
   return 0;
 }
-
 
 int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, IloNumVar3DMatrix& x,
 		      IloNumVar3DMatrix& y, IloNumVarArray& C){

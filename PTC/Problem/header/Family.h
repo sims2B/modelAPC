@@ -1,8 +1,6 @@
 #ifndef FAMILY_H
 #define FAMILY_H
 
-#include <string>
-#include <vector>
 #include <fstream>
 
 struct Family{

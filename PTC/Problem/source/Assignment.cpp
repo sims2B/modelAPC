@@ -1,3 +1,5 @@
+
+#include "stdafx.h"
 #include "Assignment.h"
 
 Assignment::Assignment() : start(-1), machine(-1), index(-1){}
@@ -10,5 +12,17 @@ bool operator==(const Assignment& a1, const Assignment& a2){
 }
 
 bool operator<(const Assignment& a1, const Assignment& a2){
+	return (a1.machine < a2.machine || (a1.machine == a2.machine && a1.start < a2.start));
+}
+
+bool mchsComp(const Assignment& a1, const Assignment& a2){
   return (a1.machine < a2.machine || (a1.machine == a2.machine && a1.start < a2.start));
+}
+
+bool startComp(const Assignment& a1, const Assignment& a2){
+	return (a1.start < a2.start || (a1.start == a2.start && a1.index < a2.index));
+}
+
+bool idComp(const Assignment& a1, const Assignment& a2){
+	return (a1.index < a2.index);
 }

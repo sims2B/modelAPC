@@ -10,7 +10,7 @@
 #endif
 
 int SCH(Problem P , Solution &s);
-int displayCVS(const Problem& P, const Solution& s, bool& solved);
+int displayCVS(const Problem& P, const Solution& s, int& solved);
 
 int chooseFamily(const Problem &P, const Solution& s, const int& m, const int& t, const int& current, std::vector<int> toSchedule);
 //return the family index with the minimum remaining threshold on m at time t

@@ -1,11 +1,13 @@
+#pragma warning(disable: 4996)
+
 #ifndef JOBMODEL_H
 #define JOBMODEL_H
 
-#include <ilcplex/ilocplex.h>
-#include <ilcplex/ilocplexi.h>
-#include <iostream>
+#include "stdafx.h"
 
 #include "Solution.h"
+#include <ilcplex/ilocplex.h>
+#include <ilcplex/ilocplexi.h>
 
 #ifndef TIME_LIMIT
 #define time_limit 300
@@ -20,13 +22,14 @@
 #define beta 1
 #endif
 
+
 typedef IloArray<IloNumVarArray> IloNumVarMatrix;
 typedef IloArray<IloNumVarMatrix> IloNumVar3DMatrix;
 
 //////////////////////////////////////////
 /////////////// SOLUTION /////////////////
 //////////////////////////////////////////
-  int solve(const Problem&, Solution&);
+int solve(const Problem&, Solution&);
 
 //set some Cplex parameters for function solve
 int setParam(IloEnv&,IloCplex&);

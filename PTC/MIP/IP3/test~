@@ -1,0 +1,60 @@
+\documentclass[11pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{tikz}
+\usepackage{graphicx}
+
+
+
+\begin{document}
+\rotatebox{90}{
+\begin{tikzpicture}[xscale=0.25]
+\node (O) at (0,0) {};
+\draw[->] (O.center) -- ( 92,0);
+\draw[->] (O.center) -- (0, 2);
+\draw[fill = red!80!black!80]  (0,0) rectangle (7,0.5) node[midway] {$0$};
+\draw[fill = red!80!black!80]  (7,0) rectangle (14,0.5) node[midway] {$1$};
+\draw[fill = red!80!black!80]  (14,0) rectangle (21,0.5) node[midway] {$2$};
+\draw[fill = red!80!black!80]  (21,0) rectangle (28,0.5) node[midway] {$3$};
+\draw[fill = red!80!black!80]  (28,0) rectangle (35,0.5) node[midway] {$4$};
+\draw[fill = red!80!black!80]  (35,0) rectangle (42,0.5) node[midway] {$5$};
+\draw[fill = blue!80!black!80]  (0,0.5) rectangle (4,1) node[midway] {$6$};
+\draw[fill = red!80!black!80]  (42,0) rectangle (49,0.5) node[midway] {$7$};
+\draw[fill = red!80!black!80]  (49,0) rectangle (56,0.5) node[midway] {$8$};
+\draw[fill = red!80!black!80]  (56,0) rectangle (63,0.5) node[midway] {$9$};
+\draw[fill = red!80!black!80]  (63,0) rectangle (70,0.5) node[midway] {$10$};
+\draw[fill = red!80!black!80]  (70,0) rectangle (77,0.5) node[midway] {$11$};
+\draw[fill = blue!80!black!80]  (4,0.5) rectangle (8,1) node[midway] {$12$};
+\draw[fill = red!80!black!80]  (77,0) rectangle (84,0.5) node[midway] {$13$};
+\draw[fill = blue!80!black!80]  (8,0.5) rectangle (12,1) node[midway] {$14$};
+\draw[fill = red!80!black!80]  (84,0) rectangle (91,0.5) node[midway] {$15$};
+\draw[fill = red!80!black!80]  (15,1) rectangle (22,1.5) node[midway] {$16$};
+\draw[fill = red!80!black!80]  (22,1) rectangle (29,1.5) node[midway] {$17$};
+\draw[fill = blue!80!black!80]  (12,0.5) rectangle (16,1) node[midway] {$18$};
+\draw[fill = red!80!black!80]  (29,1) rectangle (36,1.5) node[midway] {$19$};
+\draw[fill = red!80!black!80]  (36,1) rectangle (43,1.5) node[midway] {$20$};
+\draw[fill = blue!80!black!80]  (16,0.5) rectangle (20,1) node[midway] {$21$};
+\draw[fill = blue!80!black!80]  (20,0.5) rectangle (24,1) node[midway] {$22$};
+\draw[fill = red!80!black!80]  (43,1) rectangle (50,1.5) node[midway] {$23$};
+\draw[fill = blue!80!black!80]  (24,0.5) rectangle (28,1) node[midway] {$24$};
+\draw[fill = blue!80!black!80]  (28,0.5) rectangle (32,1) node[midway] {$25$};
+\draw[fill = blue!80!black!80]  (32,0.5) rectangle (36,1) node[midway] {$26$};
+\draw[fill = red!80!black!80]  (50,1) rectangle (57,1.5) node[midway] {$27$};
+\draw[fill = red!80!black!80]  (57,1) rectangle (64,1.5) node[midway] {$28$};
+\draw[fill = blue!80!black!80]  (36,0.5) rectangle (40,1) node[midway] {$29$};
+\draw[fill = red!80!black!80]  (64,1) rectangle (71,1.5) node[midway] {$30$};
+\draw[fill = blue!80!black!80]  (40,0.5) rectangle (44,1) node[midway] {$31$};
+\draw[fill = red!80!black!80]  (71,1) rectangle (78,1.5) node[midway] {$32$};
+\draw[fill = blue!80!black!80]  (44,0.5) rectangle (48,1) node[midway] {$33$};
+\draw[fill = blue!80!black!80]  (48,0.5) rectangle (52,1) node[midway] {$34$};
+\draw[fill = blue!80!black!80]  (52,0.5) rectangle (56,1) node[midway] {$35$};
+\draw[fill = blue!80!black!80]  (0,1) rectangle (4,1.5) node[midway] {$36$};
+\draw[fill = blue!80!black!80]  (4,1) rectangle (8,1.5) node[midway] {$37$};
+\draw[fill = blue!80!black!80]  (8,1) rectangle (12,1.5) node[midway] {$38$};
+\draw[fill = red!80!black!80]  (78,1) rectangle (85,1.5) node[midway] {$39$};
+\end{tikzpicture}
+
+
+}
+\end{document}

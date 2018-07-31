@@ -1,27 +1,29 @@
+#include "stdafx.h"
 #include "SchedulingCentric.h"
 #include "Problem.h"
-#include <sys/time.h>
 
-int main(int,char* argv[]){
-  struct timeval tim;
 
-  std::ifstream instance(argv[1],std::ios::in);
-  Problem P = readFromFile(instance);
-  instance.close();
+using Clock = std::chrono::high_resolution_clock;
 
-  std::cout << P.N << ";" << P.M << ";" << P.getFamilyNumber() <<";" ;
-  Solution s(P);
-  
- gettimeofday(&tim,NULL);
-  double t1=tim.tv_sec+(tim.tv_usec/1000000.0);
-  bool solved = SCH(P,s);
-  
-  gettimeofday(&tim,NULL);
-  double t2=tim.tv_sec+(tim.tv_usec/1000000.0);
-  
-  std::cout << t2-t1 << ";" ;
-  displayCVS(P,s,solved);
-  std::cout << ";" << s.isValid(P) << std::endl;
-  //std::cout << P.toString() << s.toString();
-  return 0;
+int main(int, char* argv[]){
+
+	std::ifstream instance(argv[1], std::ios::in);
+	Problem P = readFromFile(instance);
+	instance.close();
+
+	std::cout << P.N << ";" << P.M << ";" << P.getFamilyNumber() << ";";
+	Solution s(P);
+
+	Clock::time_point t1 = Clock::now();
+	int solved = SCH(P, s);
+	Clock::time_point t2 = Clock::now();
+	std::chrono::duration<double> duration =
+		std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+	std::cout << duration.count() << ";";
+	displayCVS(P, s, solved);
+	if (solved)	std::cout << ";" << s.isValid(P) << std::endl;
+	else std::cout << "; \n";
+	//std::cout << P.toString() << s.toString();
+	//s.toTikz(P);
+	return 0;
 }

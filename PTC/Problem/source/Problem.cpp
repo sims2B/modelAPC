@@ -1,9 +1,6 @@
-#include "Problem.h"
-#include "utils.h"
-#include <random>
-#include <limits>
-#include <cassert>
 
+#include "stdafx.h"
+#include "Problem.h"
 
 Problem::Problem(int nbTask, int nbFam): N(nbTask), M(0){
   F.reserve(nbFam);
@@ -19,9 +16,8 @@ Problem::Problem(int nbTask, int nbMach, int nbFam): N(nbTask), M(nbMach){
 Problem::Problem(int nbTask, int nbMach, std::vector<int> _famOf,
 		 familyList _F): N(nbTask), M(nbMach), famOf(_famOf), F(_F){}
 
-
 int Problem::writeInFile(std::ofstream& out) const{
-  uint i ;
+  unsigned int i ;
   out << N << " " << M << " " << getFamilyNumber()
       << std::endl;
   out << famOf[0];
@@ -41,15 +37,12 @@ int Problem::computeHorizon() const{
 }
 
 std::string Problem::toString() const{
-  std::string res =
-    "Le problème possède les caractéristiques suivantes:\n - le nombre de tâches est :" +
-    std::to_string(N) + "\n - le nombre de machine est :"+ std::to_string(M) + "\n - \n";
+  std::string res = "Le problème possède les caractéristiques suivantes:\n - le nombre de tâches est :" + std::to_string(N) + 
+	  "\n - le nombre de machine est :" + std::to_string(M) + "\n - \n";
   for (int i = 0 ; i < N ; ++i)
-    res += "  * la tâche " + std::to_string(i) + " appartient à la famille " +
-      std::to_string(famOf[i]) + "\n";
-  res+= "- Et les familles (" + std::to_string(F.size()) +
-    ") possèdent les caractéristiques suivantes:\n";
-  for (uint f = 0 ; f < F.size() ; ++f)
+    res += "  * la tâche " + std::to_string(i) + " appartient à la famille " + std::to_string(famOf[i]) + "\n";
+  res+= "- Et les familles (" + std::to_string(F.size()) + ") possèdent les caractéristiques suivantes:\n";
+  for (unsigned int f = 0 ; f < F.size() ; ++f)
     res+= "   * " + std::to_string(f) + ": " + F[f].toString();
   return res;
 }
@@ -61,7 +54,6 @@ int Problem::getNf(int f) const{
       res++;
   return res;
 }
-
 
 //Ali
 void generateDuration(Problem& P, const int& F, const int& pmax){
@@ -108,25 +100,10 @@ void generateThreshold(Problem& P/*, const int& n*/, const int& m, const int& F,
     if (sample < P.F[f].duration + smax + sizeMin * pmax + P.F[f].setup)
       P.F[f].threshold = P.F[f].duration + smax + sizeMin * pmax + P.F[f].setup;
     if (sample > P.F[f].duration + smax + (sizeMin+1) * pmax + P.F[f].setup)
-      P.F[f].threshold =  P.F[f].duration  + smax + (sizeMin+1) * pmax+ P.F[f].setup;
+      P.F[f].threshold =  P.F[f].duration  + smax + (sizeMin + 1) * pmax + P.F[f].setup;
     else P.F[f].threshold = sample;
   }
-  /*std::random_device rd;
-  std::mt19937 generator(rd());
-  int sample,f;
-  int maxDur = std::numeric_limits<int>::min();
-  for ( f = 0 ; f < F ; ++f)
-    if (P.F[f].duration  + P.F[f].setup > maxDur)
-      maxDur = P.F[f].duration + P.F[f].setup;
-
-  std::normal_distribution<> disThres(3*(n+m)*maxDur/(8*m) ,3*(n-m)*maxDur/(24*m) );
-  for ( f = 0 ; f < F ; ++f){
-    do {
-      sample = (int)disThres(generator);
-    } while (sample < maxDur || sample > 3*n*maxDur/(4*m));
-    P.F[f].threshold = (int)sample;
-    }*/
-}
+ }
 
 
 void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
@@ -146,37 +123,30 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
   while (sumQualif > 0){
     sample = (int) qualifPerFam(generator);
     while (nbQualif[sample] == m){
-      //std::cout << sample << std::endl;
       sample ++ ;
       sample = sample % F;
     }
     nbQualif[sample]++;
     sumQualif--;
   }
-  
-  // printVector("NbQualif " , nbQualif);
+
   //each machine choose a family
   for (j =0 ; j < m ; ++j){
     sample =  qualifPerFam(generator);
     while (nbQualif[sample] == 0){
-      //std::cout << sample << std::endl;
       sample ++ ;
       sample = sample % F;
     }
     nbQualif[sample]--;
     selected[sample]++;
     P.F[sample].qualif[j] = 1;
-    // std::cout << "sample " << sample << std::endl;
-    // printVector("P.F[sample].qualif",P.F[sample].qualif);
   }
 
   //std::cout << "nbQualif per families generated\n";
   //the rest of the affectation is done randomly
   for (f = 0 ; f < F ; ++f){
-    // std::cout << f << std::endl;
     j = m - selected[f];
     while (nbQualif[f] > 0){
-      //printVector("P.F[f].qualif",P.F[f].qualif);
       int index =  (int)(machQualif(generator) % j);
       int select = -1;
       while (index > -1 ){
@@ -189,74 +159,6 @@ void generateQualif(Problem& P, const int& m, const int& F, int sumQualif){
       j--; nbQualif[f]--;
     }
   }
-
-  /*
-  
-  std::random_device rd;
-  std::mt19937 generator(rd());
-  int sample, j, f ,nbFull = 0;
-  std::uniform_int_distribution<int> qualifPerFam(0,F-1);
-  std::vector<int> nbQualif(F,0);
-  for (f = 0 ; f < F ; ++f)
-    nbQualif[f]++;
-  sumQualif -= F;
-  while (sumQualif > 0){
-    sample = (int)(qualifPerFam(generator) % (m - nbFull));
-    int select = -1 ;
-    while (sample > -1 ){
-      if (nbQualif[select+1] < m)
-	sample--;
-      select++;
-    } 
-    nbQualif[select]++;
-    if (nbQualif[select]==m) nbFull++;
-    sumQualif--;
-  }
-  
-  //machine affectation to family
-  std::uniform_int_distribution<int> machQualif(0,m-1);
-  std::vector<int> selected(m,0);
-  j=m; f=0;
-  //make sure each machine is qualified for at least one family
-  while (j > 0 && f < F){
-    do {
-      int index =  (int)(machQualif(generator)%j) ;
-      int select = -1;
-      while (index > -1 ){
-	if (!selected[select+1])
-	  index--;
-	select++;
-      } 
-      selected[select] = 1;
-      P.F[f].qualif[select] = 1;
-      j--; nbQualif[f]--;
-    } while (nbQualif[f] > 0 && j > 0);
-    if (j > 0) f++;  
-    else {
-      while (nbQualif[f] > 0){
-	int select = (int)(machQualif(generator) % m);
-	if (P.F[f].qualif[select] != 1){
-	  P.F[f].qualif[select] = 1;
-	  nbQualif[f]--;
-	} 
-      } 
-    }
-  }
-  //rest of the family
-  for (int rest = f + 1 ; rest < F ; ++rest){
-    j=m;
-    while (nbQualif[rest] > 0){
-      int index =  (int)(machQualif(generator) % j);
-      int select = -1;
-      while (index > -1 ){
-	if (!P.F[rest].qualif[select+1])
-	  index--;
-	select++;
-      } 
-      P.F[rest].qualif[select] = 1;
-      j--; nbQualif[rest]--;
-    }
-  }*/
 }
 
 
@@ -421,7 +323,7 @@ Problem generateProblem(const int& n, const int& m, const int& F){
 
 //reader
 Problem readFromFile(std::ifstream& in){
-  uint i , F , N, M;
+  unsigned int i , F , N, M;
   in >> N >> M >> F;
   Problem P(N,M,F);
   for (i = 0 ; i < N ; ++i)

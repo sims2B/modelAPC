@@ -1,7 +1,6 @@
+#include "stdafx.h"
 #include "ListHeuristic.h"
-#include "utils.h"
-#include <limits>
-#include <vector>
+//#include "utils.h"
 
 
 
@@ -22,7 +21,7 @@ int LH(Problem P, Solution& s){
   for ( f = 0 ; f < F ; ++f)
     for (i = 0 ; i < P.M ; ++i)
       if (P.F[f].qualif[i])
-	s.QualifLostTime[f][i]=0;
+	s.QualifLostTime[f][i] = 0;
 
 
   //algo
@@ -44,7 +43,7 @@ int LH(Problem P, Solution& s){
   return 1;
 }
 
-int displayCVS(const Problem& P, const Solution& s, bool& solved){
+int displayCVS(const Problem& P, const Solution& s, const int& solved){
   if (solved){
     std::cout << "1;";
     std::cout << s.getWeigthedObjectiveValue(P,alpha,beta) << ";"
@@ -78,8 +77,8 @@ int treat(Problem &P,Solution& s,const int m, const int f, std::vector<int> &end
   //disqualification?
   for (int f2 = 0 ; f2 < P.getFamilyNumber() ; ++f2){ //forall families(!= f and qualified on m)
     if (P.F[f2].qualif[m] && f2!=f)
-      if (s.QualifLostTime[f2][m] + P.F[f2].threshold  < endLast[m] + P.F[f2].setup){
-	s.QualifLostTime[f2][m] +=  P.F[f2].threshold;
+      if (s.QualifLostTime[f2][m] + P.F[f2].threshold - P.F[f2].duration  < endLast[m] + P.F[f2].setup){
+		  (s.QualifLostTime[f2][m] == 0 ? s.QualifLostTime[f2][m] += P.F[f2].threshold : s.QualifLostTime[f2][m] += P.F[f2].threshold - P.F[f2].duration);
 	P.F[f2].qualif[m]=0;
       }
   }

@@ -1,0 +1,571 @@
+methode;type;threshold;nom_instance;N;M;F;tps;solv;obj;obj1;obj2;obj22;setup;valide;feas;opt 
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_0.txt;20;3;4;9.323;1;0;562;0;0;7;1;1;1
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_1.txt;20;3;4;0.343;1;0;337;0;0;1;1;1;1
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_2.txt;20;3;4;6.497;1;0;370;0;0;8;1;1;1
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_3.txt;20;3;4;135.762;1;0;437;0;0;5;1;1;1
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_4.txt;20;3;4;600.008;1;1;517;1;1;6;1;1;0
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_5.txt;20;3;4;2.646;1;0;316;0;0;8;1;1;1
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_6.txt;20;3;4;188.339;1;0;413;0;0;4;1;1;1
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_7.txt;20;3;4;225.821;1;0;473;0;0;9;1;1;1
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_8.txt;20;3;4;7.064;1;0;584;0;0;9;1;1;1
+jobBased.exe;T14_big;big;instance_20_3_4_10_8_Bthr_9.txt;20;3;4;99.781;1;0;453;0;0;7;1;1;1
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_0.txt;20;3;4;1.972;1;0;141;0;0;3;1;1;1
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_1.txt;20;3;4;600.009;1;2;475;2;2;8;1;1;0
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_2.txt;20;3;4;15.519;1;0;380;0;0;8;1;1;1
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_3.txt;20;3;4;600.008;1;1;179;1;1;8;1;1;0
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_4.txt;20;3;4;9.047;1;0;211;0;0;5;1;1;1
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_5.txt;20;3;4;173.246;1;0;748;0;0;10;1;1;1
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_6.txt;20;3;4;87.555;1;0;328;0;0;4;1;1;1
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_7.txt;20;3;4;600.008;1;1;426;1;1;8;1;1;0
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_8.txt;20;3;4;15.901;1;0;519;0;0;10;1;1;1
+jobBased.exe;T14_medium;medium;instance_20_3_4_10_8_Mthr_9.txt;20;3;4;5.434;1;0;437;0;0;8;1;1;1
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_0.txt;20;3;4;600.007;1;1;441;1;1;9;1;1;0
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_1.txt;20;3;4;600.008;1;1;409;1;1;8;1;1;0
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_2.txt;20;3;4;600.007;1;3;306;3;3;8;1;1;0
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_3.txt;20;3;4;600.009;1;0;421;0;0;10;1;1;0
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_4.txt;20;3;4;600.007;1;2;176;2;2;7;1;1;0
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_5.txt;20;3;4;49.231;1;0;413;0;0;9;1;1;1
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_6.txt;20;3;4;7.998;1;0;448;0;0;9;1;1;1
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_7.txt;20;3;4;2.625;1;0;235;0;0;7;1;1;1
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_8.txt;20;3;4;600.008;1;1;465;1;1;9;1;1;0
+jobBased.exe;T14_small;small;instance_20_3_4_10_8_Sthr_9.txt;20;3;4;600.007;1;1;388;1;1;9;1;1;0
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_0.txt;20;3;5;3.295;1;0;292;0;0;3;1;1;1
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_1.txt;20;3;5;13.905;1;0;369;0;0;2;1;1;1
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_2.txt;20;3;5;1.338;1;0;596;0;0;8;1;1;1
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_3.txt;20;3;5;7.075;1;0;267;0;0;4;1;1;1
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_4.txt;20;3;5;600.009;1;1;945;1;1;9;1;1;0
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_5.txt;20;3;5;14.485;1;0;376;0;0;3;1;1;1
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_6.txt;20;3;5;296.785;1;0;426;0;0;6;1;1;1
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_7.txt;20;3;5;14.813;1;0;323;0;0;4;1;1;1
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_8.txt;20;3;5;31.147;1;0;294;0;0;3;1;1;1
+jobBased.exe;T15_big;big;instance_20_3_5_10_9_Bthr_9.txt;20;3;5;600.009;1;2;333;2;2;7;1;1;0
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_0.txt;20;3;5;600.008;1;2;501;2;2;12;1;1;0
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_1.txt;20;3;5;600.009;1;2;496;2;2;10;1;1;0
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_2.txt;20;3;5;5.942;1;0;550;0;0;8;1;1;1
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_3.txt;20;3;5;600.011;1;3;414;3;3;6;1;1;0
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_4.txt;20;3;5;10.758;1;0;232;0;0;4;1;1;1
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_5.txt;20;3;5;600.009;1;2;458;2;2;5;1;1;0
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_6.txt;20;3;5;600.008;1;1;428;1;1;9;1;1;0
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_7.txt;20;3;5;10.203;1;0;387;0;0;11;1;1;1
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_8.txt;20;3;5;478.253;1;0;460;0;0;9;1;1;1
+jobBased.exe;T15_medium;medium;instance_20_3_5_10_9_Mthr_9.txt;20;3;5;600.009;1;2;425;2;2;7;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_0.txt;20;3;5;600.008;1;3;469;3;3;5;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_1.txt;20;3;5;600.011;1;2;411;2;2;12;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_2.txt;20;3;5;600.008;1;3;418;3;3;8;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_3.txt;20;3;5;600.007;1;4;705;4;4;8;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_4.txt;20;3;5;600.007;1;3;557;3;3;8;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_5.txt;20;3;5;600.008;1;3;462;3;3;8;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_6.txt;20;3;5;54.119;1;0;351;0;0;10;1;1;1
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_7.txt;20;3;5;600.008;1;2;485;2;2;14;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_8.txt;20;3;5;600.011;1;3;642;3;3;6;1;1;0
+jobBased.exe;T15_small;small;instance_20_3_5_10_9_Sthr_9.txt;20;3;5;600.009;1;3;512;3;3;6;1;1;0
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_0.txt;20;4;2;57.921;1;0;414;0;0;2;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_1.txt;20;4;2;12.447;1;0;314;0;0;1;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_2.txt;20;4;2;17.288;1;0;276;0;0;2;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_3.txt;20;4;2;61.895;1;0;404;0;0;2;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_4.txt;20;4;2;27.372;1;0;251;0;0;2;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_5.txt;20;4;2;44.851;1;0;516;0;0;3;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_6.txt;20;4;2;16.185;1;0;540;0;0;0;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_7.txt;20;4;2;4.651;1;0;272;0;0;0;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_8.txt;20;4;2;25.726;1;0;226;0;0;2;1;1;1
+jobBased.exe;T16_big;big;instance_20_4_2_10_6_Bthr_9.txt;20;4;2;54.736;1;0;748;0;0;4;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_0.txt;20;4;2;47.936;1;0;524;0;0;2;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_1.txt;20;4;2;6.569;1;0;95;0;0;1;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_2.txt;20;4;2;9.589;1;0;226;0;0;4;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_3.txt;20;4;2;73.402;1;0;420;0;0;2;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_4.txt;20;4;2;25.858;1;0;292;0;0;4;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_5.txt;20;4;2;93.03;1;0;367;0;0;4;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_6.txt;20;4;2;8.271;1;0;224;0;0;2;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_7.txt;20;4;2;43.463;1;0;440;0;0;4;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_8.txt;20;4;2;152.756;1;0;260;0;0;2;1;1;1
+jobBased.exe;T16_medium;medium;instance_20_4_2_10_6_Mthr_9.txt;20;4;2;51.65;1;0;364;0;0;1;1;1;1
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_0.txt;20;4;2;229.044;1;0;384;0;0;3;1;1;1
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_1.txt;20;4;2;36.63;1;0;360;0;0;4;1;1;1
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_2.txt;20;4;2;290.622;1;0;181;0;0;7;1;1;1
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_3.txt;20;4;2;16.901;1;0;280;0;0;2;1;1;1
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_4.txt;20;4;2;346.269;1;0;560;0;0;2;1;1;1
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_5.txt;20;4;2;261.569;1;0;301;0;0;4;1;1;1
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_6.txt;20;4;2;600.008;1;0;656;0;0;7;1;1;0
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_7.txt;20;4;2;28.872;1;0;311;0;0;2;1;1;1
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_8.txt;20;4;2;600.009;1;1;334;1;1;4;1;1;0
+jobBased.exe;T16_small;small;instance_20_4_2_10_6_Sthr_9.txt;20;4;2;228.659;1;0;410;0;0;4;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_0.txt;20;4;3;1.528;1;0;198;0;0;0;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_1.txt;20;4;3;53.776;1;0;329;0;0;2;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_2.txt;20;4;3;19.865;1;0;283;0;0;2;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_3.txt;20;4;3;8.298;1;0;507;0;0;3;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_4.txt;20;4;3;3.43;1;0;213;0;0;1;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_5.txt;20;4;3;18.279;1;0;388;0;0;1;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_6.txt;20;4;3;1.566;1;0;337;0;0;2;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_7.txt;20;4;3;10.584;1;0;221;0;0;3;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_8.txt;20;4;3;2.296;1;0;362;0;0;2;1;1;1
+jobBased.exe;T17_big;big;instance_20_4_3_10_7_Bthr_9.txt;20;4;3;3.956;1;0;705;0;0;5;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_0.txt;20;4;3;29.767;1;0;678;0;0;10;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_1.txt;20;4;3;34.094;1;0;354;0;0;3;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_2.txt;20;4;3;2.517;1;0;266;0;0;4;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_3.txt;20;4;3;600.008;1;1;707;1;1;4;1;1;0
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_4.txt;20;4;3;36.677;1;0;289;0;0;4;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_5.txt;20;4;3;39.01;1;0;407;0;0;1;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_6.txt;20;4;3;27.731;1;0;267;0;0;1;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_7.txt;20;4;3;48.846;1;0;357;0;0;4;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_8.txt;20;4;3;1.115;1;0;388;0;0;1;1;1;1
+jobBased.exe;T17_medium;medium;instance_20_4_3_10_7_Mthr_9.txt;20;4;3;11.048;1;0;476;0;0;5;1;1;1
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_0.txt;20;4;3;600.007;1;1;330;1;1;6;1;1;0
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_1.txt;20;4;3;74.133;1;0;405;0;0;5;1;1;1
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_2.txt;20;4;3;57.565;1;0;441;0;0;10;1;1;1
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_3.txt;20;4;3;600.01;1;1;918;1;1;6;1;1;0
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_4.txt;20;4;3;6.181;1;0;176;0;0;2;1;1;1
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_5.txt;20;4;3;600.008;1;2;636;2;2;6;1;1;0
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_6.txt;20;4;3;67.585;1;0;469;0;0;4;1;1;1
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_7.txt;20;4;3;21.822;1;0;306;0;0;6;1;1;1
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_8.txt;20;4;3;600.008;1;1;747;1;1;7;1;1;0
+jobBased.exe;T17_small;small;instance_20_4_3_10_7_Sthr_9.txt;20;4;3;162.174;1;0;442;0;0;6;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_0.txt;20;4;4;50.413;1;0;268;0;0;3;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_1.txt;20;4;4;46.709;1;0;554;0;0;4;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_2.txt;20;4;4;39.697;1;0;295;0;0;3;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_3.txt;20;4;4;520.13;1;0;474;0;0;4;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_4.txt;20;4;4;198.035;1;0;163;0;0;5;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_5.txt;20;4;4;600.009;1;1;752;1;1;9;1;1;0
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_6.txt;20;4;4;266.297;1;0;363;0;0;4;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_7.txt;20;4;4;105.585;1;0;310;0;0;4;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_8.txt;20;4;4;317.79;1;0;152;0;0;4;1;1;1
+jobBased.exe;T18_big;big;instance_20_4_4_10_11_Bthr_9.txt;20;4;4;56.133;1;0;301;0;0;4;1;1;1
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_0.txt;20;4;4;14.917;1;0;227;0;0;4;1;1;1
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_1.txt;20;4;4;23.557;1;0;238;0;0;4;1;1;1
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_2.txt;20;4;4;103.873;1;0;261;0;0;4;1;1;1
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_3.txt;20;4;4;600.008;1;0;263;0;0;5;1;1;0
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_4.txt;20;4;4;600.009;1;1;648;1;1;9;1;1;0
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_5.txt;20;4;4;600.008;1;2;510;2;2;6;1;1;0
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_6.txt;20;4;4;222.749;1;0;290;0;0;10;1;1;1
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_7.txt;20;4;4;600.009;1;0;473;0;0;4;1;1;0
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_8.txt;20;4;4;122.64;1;0;260;0;0;5;1;1;1
+jobBased.exe;T18_medium;medium;instance_20_4_4_10_11_Mthr_9.txt;20;4;4;101.333;1;0;169;0;0;4;1;1;1
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_0.txt;20;4;4;600.008;1;1;429;1;1;11;1;1;0
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_1.txt;20;4;4;600.008;1;1;504;1;1;9;1;1;0
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_2.txt;20;4;4;600.007;1;3;394;3;3;11;1;1;0
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_3.txt;20;4;4;101.515;1;0;282;0;0;14;1;1;1
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_4.txt;20;4;4;600.008;1;2;710;2;2;11;1;1;0
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_5.txt;20;4;4;600.007;1;0;247;0;0;9;1;1;0
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_6.txt;20;4;4;555.036;1;0;373;0;0;9;1;1;1
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_7.txt;20;4;4;600.007;1;3;424;3;3;7;1;1;0
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_8.txt;20;4;4;600.008;1;2;387;2;2;9;1;1;0
+jobBased.exe;T18_small;small;instance_20_4_4_10_11_Sthr_9.txt;20;4;4;15.493;1;0;283;0;0;9;1;1;1
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_0.txt;20;4;5;286.209;1;0;212;0;0;4;1;1;1
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_1.txt;20;4;5;64.52;1;0;244;0;0;4;1;1;1
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_2.txt;20;4;5;99.842;1;0;229;0;0;4;1;1;1
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_3.txt;20;4;5;12.302;1;0;120;0;0;3;1;1;1
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_4.txt;20;4;5;579.02;1;0;291;0;0;4;1;1;1
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_5.txt;20;4;5;600.009;1;0;483;0;0;3;1;1;0
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_6.txt;20;4;5;531.116;1;0;181;0;0;3;1;1;1
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_7.txt;20;4;5;600.008;1;3;797;3;3;8;1;1;0
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_8.txt;20;4;5;9.852;1;0;118;0;0;5;1;1;1
+jobBased.exe;T19_big;big;instance_20_4_5_10_13_Bthr_9.txt;20;4;5;20.451;1;0;143;0;0;6;1;1;1
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_0.txt;20;4;5;529.694;1;0;265;0;0;4;1;1;1
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_1.txt;20;4;5;9.234;1;0;170;0;0;4;1;1;1
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_2.txt;20;4;5;600.008;1;1;447;1;1;11;1;1;0
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_3.txt;20;4;5;600.009;1;0;247;0;0;7;1;1;0
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_4.txt;20;4;5;14.768;1;0;225;0;0;2;1;1;1
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_5.txt;20;4;5;90.229;1;0;415;0;0;8;1;1;1
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_6.txt;20;4;5;42.3;1;0;297;0;0;4;1;1;1
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_7.txt;20;4;5;132.994;1;0;312;0;0;4;1;1;1
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_8.txt;20;4;5;600.007;1;2;536;2;2;10;1;1;0
+jobBased.exe;T19_medium;medium;instance_20_4_5_10_13_Mthr_9.txt;20;4;5;600.009;1;2;237;2;2;6;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_0.txt;20;4;5;600.007;1;2;322;2;2;7;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_1.txt;20;4;5;600.008;1;4;307;4;4;8;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_2.txt;20;4;5;19.563;1;0;302;0;0;13;1;1;1
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_3.txt;20;4;5;600.009;1;1;278;1;1;3;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_4.txt;20;4;5;600.009;1;2;228;2;2;6;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_5.txt;20;4;5;600.008;1;3;460;3;3;7;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_6.txt;20;4;5;600.008;1;3;353;3;3;10;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_7.txt;20;4;5;600.009;1;2;506;2;2;12;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_8.txt;20;4;5;600.008;1;3;454;3;3;11;1;1;0
+jobBased.exe;T19_small;small;instance_20_4_5_10_13_Sthr_9.txt;20;4;5;8.447;1;0;124;0;0;3;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_0.txt;30;3;2;500.85;1;0;1145;0;0;3;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_1.txt;30;3;2;517.527;1;0;1143;0;0;6;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_2.txt;30;3;2;373.274;1;0;686;0;0;3;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_3.txt;30;3;2;90.349;1;0;977;0;0;2;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_4.txt;30;3;2;51.385;1;0;733;0;0;2;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_5.txt;30;3;2;600.007;1;2;1587;2;2;8;1;1;0
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_6.txt;30;3;2;272.382;1;0;777;0;0;6;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_7.txt;30;3;2;23.616;1;0;1747;0;0;4;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_8.txt;30;3;2;500.544;1;0;2182;0;0;6;1;1;1
+jobBased.exe;T20_big;big;instance_30_3_2_10_4_Bthr_9.txt;30;3;2;73.649;1;0;571;0;0;1;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_0.txt;30;3;2;11.668;1;0;627;0;0;2;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_1.txt;30;3;2;278.608;1;0;1276;0;0;3;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_2.txt;30;3;2;398.494;1;0;688;0;0;3;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_3.txt;30;3;2;31.109;1;0;565;0;0;3;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_4.txt;30;3;2;125.445;1;0;790;0;0;2;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_5.txt;30;3;2;334.646;1;0;1170;0;0;2;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_6.txt;30;3;2;18.135;1;0;370;0;0;1;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_7.txt;30;3;2;382.16;1;0;1929;0;0;6;1;1;1
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_8.txt;30;3;2;600.009;1;0;1258;0;0;2;1;1;0
+jobBased.exe;T20_medium;medium;instance_30_3_2_10_4_Mthr_9.txt;30;3;2;221.664;1;0;791;0;0;3;1;1;1
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_0.txt;30;3;2;600.008;1;0;1020;0;0;3;1;1;0
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_1.txt;30;3;2;600.007;1;1;2392;1;1;2;1;1;0
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_2.txt;30;3;2;600.008;1;0;1278;0;0;3;1;1;0
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_3.txt;30;3;2;600.007;1;3;1717;3;3;0;1;1;0
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_4.txt;30;3;2;600.007;1;0;1063;0;0;6;1;1;0
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_5.txt;30;3;2;11.748;1;0;487;0;0;3;1;1;1
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_6.txt;30;3;2;164.634;1;0;488;0;0;4;1;1;1
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_7.txt;30;3;2;413.56;1;0;663;0;0;6;1;1;1
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_8.txt;30;3;2;600.008;1;1;514;1;1;0;1;1;0
+jobBased.exe;T20_small;small;instance_30_3_2_10_4_Sthr_9.txt;30;3;2;600.007;1;1;647;1;1;0;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_0.txt;30;3;3;600.006;1;2;1593;2;2;5;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_1.txt;30;3;3;600.008;1;0;1619;0;0;13;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_2.txt;30;3;3;600.006;1;2;1399;2;2;11;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_3.txt;30;3;3;600.008;1;0;1309;0;0;9;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_4.txt;30;3;3;600.007;1;0;897;0;0;5;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_5.txt;30;3;3;600.007;1;0;1112;0;0;7;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_6.txt;30;3;3;600.008;1;0;591;0;0;8;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_7.txt;30;3;3;600.008;1;0;1389;0;0;13;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_8.txt;30;3;3;600.008;1;0;879;0;0;4;1;1;0
+jobBased.exe;T21_big;big;instance_30_3_3_10_7_Bthr_9.txt;30;3;3;600.008;1;0;1043;0;0;7;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_0.txt;30;3;3;600.008;1;0;928;0;0;9;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_1.txt;30;3;3;600.008;1;0;587;0;0;10;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_2.txt;30;3;3;600.009;1;1;1030;1;1;10;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_3.txt;30;3;3;600.009;1;0;1286;0;0;10;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_4.txt;30;3;3;600.008;1;0;856;0;0;6;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_5.txt;30;3;3;600.009;1;0;788;0;0;14;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_6.txt;30;3;3;600.008;1;0;1111;0;0;14;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_7.txt;30;3;3;600.007;1;2;1560;2;2;8;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_8.txt;30;3;3;600.006;1;1;1781;1;1;13;1;1;0
+jobBased.exe;T21_medium;medium;instance_30_3_3_10_7_Mthr_9.txt;30;3;3;600.006;1;4;1707;4;4;1;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_0.txt;30;3;3;600.007;1;1;1181;1;1;9;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_1.txt;30;3;3;600.007;1;0;606;0;0;13;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_2.txt;30;3;3;600.008;1;1;1638;1;1;12;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_3.txt;30;3;3;600.008;1;1;896;1;1;11;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_4.txt;30;3;3;82.228;1;0;407;0;0;8;1;1;1
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_5.txt;30;3;3;600.006;1;1;670;1;1;10;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_6.txt;30;3;3;600.007;1;1;1393;1;1;13;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_7.txt;30;3;3;600.007;1;2;1205;2;2;11;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_8.txt;30;3;3;600.008;1;2;1115;2;2;11;1;1;0
+jobBased.exe;T21_small;small;instance_30_3_3_10_7_Sthr_9.txt;30;3;3;600.008;1;3;1029;3;3;5;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_0.txt;30;3;4;600.008;1;0;932;0;0;7;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_1.txt;30;3;4;419.86;1;0;282;0;0;4;1;1;1
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_2.txt;30;3;4;600.008;1;0;568;0;0;6;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_3.txt;30;3;4;600.007;1;0;848;0;0;9;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_4.txt;30;3;4;600.007;1;0;1183;0;0;15;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_5.txt;30;3;4;600.008;1;0;1042;0;0;6;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_6.txt;30;3;4;600.008;1;0;1127;0;0;15;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_7.txt;30;3;4;600.007;1;2;1092;2;2;10;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_8.txt;30;3;4;600.008;1;0;1239;0;0;10;1;1;0
+jobBased.exe;T22_big;big;instance_30_3_4_10_8_Bthr_9.txt;30;3;4;600.007;1;1;740;1;1;9;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_0.txt;30;3;4;600.008;1;0;578;0;0;11;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_1.txt;30;3;4;600.006;1;2;1553;2;2;10;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_2.txt;30;3;4;600.007;1;1;705;1;1;12;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_3.txt;30;3;4;600.008;1;0;901;0;0;10;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_4.txt;30;3;4;600.008;1;0;1028;0;0;13;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_5.txt;30;3;4;600.006;1;1;1529;1;1;13;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_6.txt;30;3;4;600.008;1;0;861;0;0;12;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_7.txt;30;3;4;600.008;1;0;594;0;0;6;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_8.txt;30;3;4;600.008;1;0;894;0;0;11;1;1;0
+jobBased.exe;T22_medium;medium;instance_30_3_4_10_8_Mthr_9.txt;30;3;4;600.007;1;0;769;0;0;13;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_0.txt;30;3;4;600.01;1;2;1059;2;2;11;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_1.txt;30;3;4;600.006;1;5;1238;5;5;4;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_2.txt;30;3;4;600.008;1;2;991;2;2;12;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_3.txt;30;3;4;600.007;1;2;1228;2;2;17;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_4.txt;30;3;4;600.007;1;3;1177;3;3;10;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_5.txt;30;3;4;600.007;1;1;501;1;1;5;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_6.txt;30;3;4;600.009;1;3;738;3;3;12;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_7.txt;30;3;4;600.007;1;2;906;2;2;15;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_8.txt;30;3;4;600.008;1;2;760;2;2;16;1;1;0
+jobBased.exe;T22_small;small;instance_30_3_4_10_8_Sthr_9.txt;30;3;4;600.007;1;2;1552;2;2;14;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_0.txt;30;3;5;600.009;1;0;842;0;0;13;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_1.txt;30;3;5;600.009;1;0;450;0;0;6;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_2.txt;30;3;5;600.008;1;1;1100;1;1;16;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_3.txt;30;3;5;600.008;1;0;884;0;0;16;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_4.txt;30;3;5;600.008;1;0;670;0;0;11;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_5.txt;30;3;5;600.008;1;0;931;0;0;16;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_6.txt;30;3;5;600.01;1;0;647;0;0;13;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_7.txt;30;3;5;600.009;1;0;878;0;0;13;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_8.txt;30;3;5;600.011;1;0;810;0;0;13;1;1;0
+jobBased.exe;T23_big;big;instance_30_3_5_10_13_Bthr_9.txt;30;3;5;600.009;1;0;391;0;0;5;1;1;0
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_0.txt;30;3;5;600.008;1;1;946;1;1;21;1;1;0
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_1.txt;30;3;5;600.006;1;5;452;5;5;12;1;1;0
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_2.txt;30;3;5;600.007;1;2;1106;2;2;20;1;1;0
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_3.txt;30;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_4.txt;30;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_5.txt;30;3;5;600.009;1;0;641;0;0;15;1;1;0
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_6.txt;30;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_7.txt;30;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_8.txt;30;3;5;600.006;1;4;1242;4;4;16;1;1;0
+jobBased.exe;T23_medium;medium;instance_30_3_5_10_13_Mthr_9.txt;30;3;5;600.008;1;2;832;2;2;16;1;1;0
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_0.txt;30;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_1.txt;30;3;5;600.007;1;7;1298;7;7;13;1;1;0
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_2.txt;30;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_3.txt;30;3;5;600.006;1;5;1055;5;5;20;1;1;0
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_4.txt;30;3;5;600.009;1;5;673;5;5;13;1;1;0
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_5.txt;30;3;5;600.007;1;3;950;3;3;21;1;1;0
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_6.txt;30;3;5;600.008;1;6;908;6;6;16;1;1;0
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_7.txt;30;3;5;600.005;1;5;583;5;5;14;1;1;0
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_8.txt;30;3;5;600.008;1;3;686;3;3;17;1;1;0
+jobBased.exe;T23_small;small;instance_30_3_5_10_13_Sthr_9.txt;30;3;5;600.007;1;4;441;4;4;18;1;1;0
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_0.txt;30;4;4;6.9;1;0;237;0;0;2;1;1;1
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_1.txt;30;4;4;600.012;1;0;645;0;0;8;1;1;0
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_2.txt;30;4;4;9.272;1;0;574;0;0;2;1;1;1
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_3.txt;30;4;4;600.01;1;0;284;0;0;4;1;1;0
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_4.txt;30;4;4;600.009;1;0;579;0;0;10;1;1;0
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_5.txt;30;4;4;600.01;1;0;724;0;0;8;1;1;0
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_6.txt;30;4;4;600.011;1;0;779;0;0;7;1;1;0
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_7.txt;30;4;4;600.01;1;0;885;0;0;8;1;1;0
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_8.txt;30;4;4;600.01;1;0;644;0;0;6;1;1;0
+jobBased.exe;T24_big;big;instance_30_4_4_10_10_Bthr_9.txt;30;4;4;600.009;1;0;1115;0;0;10;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_0.txt;30;4;4;600.011;1;0;648;0;0;6;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_1.txt;30;4;4;600.01;1;0;1019;0;0;10;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_2.txt;30;4;4;600.01;1;0;640;0;0;11;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_3.txt;30;4;4;600.01;1;2;1379;2;2;13;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_4.txt;30;4;4;46.479;1;0;700;0;0;10;1;1;1
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_5.txt;30;4;4;600.01;1;0;489;0;0;10;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_6.txt;30;4;4;600.01;1;0;699;0;0;12;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_7.txt;30;4;4;600.01;1;1;1159;1;1;16;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_8.txt;30;4;4;600.011;1;2;1183;2;2;8;1;1;0
+jobBased.exe;T24_medium;medium;instance_30_4_4_10_10_Mthr_9.txt;30;4;4;600.01;1;0;377;0;0;7;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_0.txt;30;4;4;600.011;1;1;667;1;1;10;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_1.txt;30;4;4;600.01;1;3;828;3;3;8;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_2.txt;30;4;4;600.01;1;0;709;0;0;19;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_3.txt;30;4;4;600.008;1;6;706;6;6;5;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_4.txt;30;4;4;600.009;1;2;537;2;2;11;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_5.txt;30;4;4;600.01;1;2;531;2;2;16;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_6.txt;30;4;4;600.01;1;4;919;4;4;9;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_7.txt;30;4;4;600.009;1;1;646;1;1;17;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_8.txt;30;4;4;600.009;1;4;1066;4;4;8;1;1;0
+jobBased.exe;T24_small;small;instance_30_4_4_10_10_Sthr_9.txt;30;4;4;600.009;1;1;784;1;1;10;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_0.txt;30;5;5;600.01;1;0;388;0;0;5;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_1.txt;30;5;5;600.014;1;0;392;0;0;4;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_2.txt;30;5;5;600.013;1;0;736;0;0;2;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_3.txt;30;5;5;600.012;1;0;487;0;0;5;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_4.txt;30;5;5;600.01;1;0;646;0;0;3;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_5.txt;30;5;5;600.008;1;7;1153;7;7;7;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_6.txt;30;5;5;600.012;1;0;333;0;0;5;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_7.txt;30;5;5;600.011;1;0;533;0;0;4;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_8.txt;30;5;5;600.013;1;0;495;0;0;5;1;1;0
+jobBased.exe;T25_big;big;instance_30_5_5_10_14_Bthr_9.txt;30;5;5;600.01;1;0;573;0;0;5;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_0.txt;30;5;5;600.01;1;0;452;0;0;9;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_1.txt;30;5;5;600.009;1;4;1040;4;4;16;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_2.txt;30;5;5;600.01;1;2;488;2;2;11;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_3.txt;30;5;5;600.01;1;2;621;2;2;12;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_4.txt;30;5;5;600.01;1;2;972;2;2;13;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_5.txt;30;5;5;600.012;1;0;516;0;0;9;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_6.txt;30;5;5;600.01;1;2;644;2;2;11;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_7.txt;30;5;5;600.01;1;1;747;1;1;14;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_8.txt;30;5;5;600.011;1;0;354;0;0;6;1;1;0
+jobBased.exe;T25_medium;medium;instance_30_5_5_10_14_Mthr_9.txt;30;5;5;600.01;1;0;765;0;0;13;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_0.txt;30;5;5;600.011;1;2;483;2;2;11;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_1.txt;30;5;5;600.011;1;3;549;3;3;12;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_2.txt;30;5;5;600.009;1;2;499;2;2;10;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_3.txt;30;5;5;600.01;1;4;659;4;4;15;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_4.txt;30;5;5;600.01;1;3;553;3;3;15;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_5.txt;30;5;5;600.009;1;8;809;8;8;4;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_6.txt;30;5;5;600.009;1;1;525;1;1;14;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_7.txt;30;5;5;600.008;1;3;786;3;3;18;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_8.txt;30;5;5;600.01;1;1;604;1;1;14;1;1;0
+jobBased.exe;T25_small;small;instance_30_5_5_10_14_Sthr_9.txt;30;5;5;600.009;1;4;936;4;4;16;1;1;0
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_0.txt;40;3;3;600.01;1;0;1599;0;0;5;1;1;0
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_1.txt;40;3;3;335.851;1;0;1080;0;0;5;1;1;1
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_2.txt;40;3;3;600.01;1;0;2489;0;0;6;1;1;0
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_3.txt;40;3;3;600.01;1;0;2059;0;0;7;1;1;0
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_4.txt;40;3;3;600.01;1;0;1225;0;0;4;1;1;0
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_5.txt;40;3;3;600.01;1;0;1441;0;0;7;1;1;0
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_6.txt;40;3;3;170.837;1;0;941;0;0;8;1;1;1
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_7.txt;40;3;3;461.232;1;0;960;0;0;6;1;1;1
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_8.txt;40;3;3;600.01;1;0;1308;0;0;6;1;1;0
+jobBased.exe;T27_big;big;instance_40_3_3_10_5_Bthr_9.txt;40;3;3;29.089;1;0;1132;0;0;5;1;1;1
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_0.txt;40;3;3;600.009;1;1;930;1;1;5;1;1;0
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_1.txt;40;3;3;600.01;1;0;1960;0;0;7;1;1;0
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_2.txt;40;3;3;600.011;1;0;1414;0;0;8;1;1;0
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_3.txt;40;3;3;600.009;1;0;2090;0;0;11;1;1;0
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_4.txt;40;3;3;410.594;1;0;1827;0;0;11;1;1;1
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_5.txt;40;3;3;600.009;1;1;2291;1;1;4;1;1;0
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_6.txt;40;3;3;600.01;1;0;1672;0;0;7;1;1;0
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_7.txt;40;3;3;600.01;1;0;638;0;0;7;1;1;0
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_8.txt;40;3;3;600.009;1;1;984;1;1;5;1;1;0
+jobBased.exe;T27_medium;medium;instance_40_3_3_10_5_Mthr_9.txt;40;3;3;600.011;1;0;2672;0;0;10;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_0.txt;40;3;3;600.011;1;0;899;0;0;10;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_1.txt;40;3;3;600.008;1;1;1986;1;1;8;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_2.txt;40;3;3;600.01;1;0;1647;0;0;12;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_3.txt;40;3;3;600.009;1;3;2860;3;3;13;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_4.txt;40;3;3;600.01;1;2;2161;2;2;1;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_5.txt;40;3;3;600.009;1;2;1432;2;2;0;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_6.txt;40;3;3;600.01;1;1;3358;1;1;8;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_7.txt;40;3;3;188.347;1;0;1547;0;0;9;1;1;1
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_8.txt;40;3;3;600.01;1;1;1619;1;1;7;1;1;0
+jobBased.exe;T27_small;small;instance_40_3_3_10_5_Sthr_9.txt;40;3;3;600.008;1;2;1652;2;2;0;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_0.txt;50;3;3;600.012;1;0;2130;0;0;10;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_1.txt;50;3;3;600.015;1;0;3422;0;0;13;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_2.txt;50;3;3;600.011;1;1;2511;1;1;8;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_3.txt;50;3;3;600.01;1;1;2660;1;1;11;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_4.txt;50;3;3;600.015;1;0;1898;0;0;12;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_5.txt;50;3;3;600.011;1;1;2969;1;1;7;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_6.txt;50;3;3;600.011;1;2;1732;2;2;4;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_7.txt;50;3;3;600.014;1;0;1802;0;0;9;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_8.txt;50;3;3;600.013;1;0;1132;0;0;5;1;1;0
+jobBased.exe;T34_big;big;instance_50_3_3_10_6_Bthr_9.txt;50;3;3;600.012;1;0;3115;0;0;11;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_0.txt;50;3;3;600.013;1;1;3319;1;1;11;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_1.txt;50;3;3;600.011;1;2;2928;2;2;7;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_2.txt;50;3;3;600.011;1;3;2204;3;3;1;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_3.txt;50;3;3;600.014;1;0;1449;0;0;11;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_4.txt;50;3;3;600.015;1;0;3516;0;0;12;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_5.txt;50;3;3;600.01;1;1;2008;1;1;7;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_6.txt;50;3;3;600.014;1;1;3662;1;1;9;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_7.txt;50;3;3;600.015;1;0;1773;0;0;15;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_8.txt;50;3;3;600.016;1;0;2752;0;0;14;1;1;0
+jobBased.exe;T34_medium;medium;instance_50_3_3_10_6_Mthr_9.txt;50;3;3;600.01;1;1;2049;1;1;11;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_0.txt;50;3;3;600.01;1;3;2670;3;3;0;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_1.txt;50;3;3;600.01;1;5;3294;5;5;1;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_2.txt;50;3;3;600.011;1;3;1994;3;3;0;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_3.txt;50;3;3;600.011;1;3;1470;3;3;1;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_4.txt;50;3;3;600.011;1;4;1125;4;4;4;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_5.txt;50;3;3;600.012;1;2;1992;2;2;11;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_6.txt;50;3;3;600.01;1;3;1913;3;3;0;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_7.txt;50;3;3;600.01;1;3;2907;3;3;0;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_8.txt;50;3;3;600.012;1;3;1284;3;3;2;1;1;0
+jobBased.exe;T34_small;small;instance_50_3_3_10_6_Sthr_9.txt;50;3;3;600.01;1;3;1951;3;3;1;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_0.txt;60;3;4;600.022;1;0;1921;0;0;18;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_1.txt;60;3;4;600.012;1;5;4978;5;5;5;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_2.txt;60;3;4;600.013;1;1;4423;1;1;23;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_3.txt;60;3;4;600.012;1;3;4537;3;3;15;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_4.txt;60;3;4;600.015;1;2;3454;2;2;15;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_5.txt;60;3;4;600.018;1;0;2058;0;0;21;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_6.txt;60;3;4;600.013;1;5;4338;5;5;8;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_7.txt;60;3;4;600.01;1;1;2729;1;1;21;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_8.txt;60;3;4;600.017;1;0;3273;0;0;18;1;1;0
+jobBased.exe;T39_big;big;instance_60_3_4_10_9_Bthr_9.txt;60;3;4;600.013;1;4;3845;4;4;8;1;1;0
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_0.txt;60;3;4;600.013;1;5;3723;5;5;8;1;1;0
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_1.txt;60;3;4;600.015;1;2;3399;2;2;24;1;1;0
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_2.txt;60;3;4;600;0; ; ; ; ; ; ; 
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_3.txt;60;3;4;600;0; ; ; ; ; ; ; 
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_4.txt;60;3;4;600.014;1;2;2265;2;2;19;1;1;0
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_5.txt;60;3;4;600.015;1;3;2654;3;3;17;1;1;0
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_6.txt;60;3;4;600.015;1;2;1288;2;2;18;1;1;0
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_7.txt;60;3;4;600.013;1;4;2299;4;4;12;1;1;0
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_8.txt;60;3;4;600.014;1;4;3937;4;4;14;1;1;0
+jobBased.exe;T39_medium;medium;instance_60_3_4_10_9_Mthr_9.txt;60;3;4;600.014;1;3;2073;3;3;16;1;1;0
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_0.txt;60;3;4;600;0; ; ; ; ; ; ; 
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_1.txt;60;3;4;600;0; ; ; ; ; ; ; 
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_2.txt;60;3;4;600.014;1;6;2113;6;6;5;1;1;0
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_3.txt;60;3;4;600.012;1;6;4089;6;6;3;1;1;0
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_4.txt;60;3;4;600.014;1;5;3095;5;5;13;1;1;0
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_5.txt;60;3;4;600;0; ; ; ; ; ; ; 
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_6.txt;60;3;4;600.014;1;6;2236;6;6;4;1;1;0
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_7.txt;60;3;4;600.011;1;5;3360;5;5;14;1;1;0
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_8.txt;60;3;4;600.014;1;2;1212;2;2;21;1;1;0
+jobBased.exe;T39_small;small;instance_60_3_4_10_9_Sthr_9.txt;60;3;4;600.013;1;3;1793;3;3;24;1;1;0
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_0.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_1.txt;60;3;5;600.013;1;3;2864;3;3;17;1;1;0
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_2.txt;60;3;5;600.013;1;5;2476;5;5;13;1;1;0
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_3.txt;60;3;5;600.016;1;0;2168;0;0;26;1;1;0
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_4.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_5.txt;60;3;5;600.012;1;4;3257;4;4;19;1;1;0
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_6.txt;60;3;5;600.01;1;1;2908;1;1;24;1;1;0
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_7.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_8.txt;60;3;5;600.013;1;3;2466;3;3;21;1;1;0
+jobBased.exe;T40_big;big;instance_60_3_5_10_11_Bthr_9.txt;60;3;5;600.012;1;2;2789;2;2;18;1;1;0
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_0.txt;60;3;5;600.011;1;1;1878;1;1;21;1;1;0
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_1.txt;60;3;5;600.012;1;4;2381;4;4;22;1;1;0
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_2.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_3.txt;60;3;5;600.013;1;2;2057;2;2;23;1;1;0
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_4.txt;60;3;5;600.009;1;10;1809;10;10;6;1;1;0
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_5.txt;60;3;5;600.013;1;5;3311;5;5;16;1;1;0
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_6.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_7.txt;60;3;5;600.014;1;6;2948;6;6;14;1;1;0
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_8.txt;60;3;5;600.014;1;4;2797;4;4;22;1;1;0
+jobBased.exe;T40_medium;medium;instance_60_3_5_10_11_Mthr_9.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_0.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_1.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_2.txt;60;3;5;600.014;1;2;1604;2;2;27;1;1;0
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_3.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_4.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_5.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_6.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_7.txt;60;3;5;600.011;1;7;3771;7;7;13;1;1;0
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_8.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T40_small;small;instance_60_3_5_10_11_Sthr_9.txt;60;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_0.txt;70;3;5;600.015;1;5;2148;5;5;20;1;1;0
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_1.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_2.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_3.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_4.txt;70;3;5;600.015;1;1;2305;1;1;30;1;1;0
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_5.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_6.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_7.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_8.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_big;big;instance_70_3_5_10_12_Bthr_9.txt;70;3;5;600.015;1;1;2759;1;1;24;1;1;0
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_0.txt;70;3;5;600.013;1;7;2696;7;7;15;1;1;0
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_1.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_2.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_3.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_4.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_5.txt;70;3;5;600.015;1;5;3099;5;5;19;1;1;0
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_6.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_7.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_8.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_medium;medium;instance_70_3_5_10_12_Mthr_9.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_0.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_1.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_2.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_3.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_4.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_5.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_6.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_7.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_8.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T44_small;small;instance_70_3_5_10_12_Sthr_9.txt;70;3;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_0.txt;70;4;4;600.015;1;1;2853;1;1;16;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_1.txt;70;4;4;600.014;1;2;4291;2;2;12;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_2.txt;70;4;4;600.02;1;3;6475;3;3;13;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_3.txt;70;4;4;600.028;1;0;4068;0;0;20;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_4.txt;70;4;4;600.016;1;2;4614;2;2;12;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_5.txt;70;4;4;600.015;1;2;2751;2;2;12;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_6.txt;70;4;4;600.014;1;3;4777;3;3;13;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_7.txt;70;4;4;600.017;1;3;4171;3;3;13;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_8.txt;70;4;4;600.02;1;1;4156;1;1;18;1;1;0
+jobBased.exe;T45_big;big;instance_70_4_4_10_9_Bthr_9.txt;70;4;4;600.023;1;0;2007;0;0;14;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_0.txt;70;4;4;600.016;1;3;2938;3;3;11;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_1.txt;70;4;4;600.016;1;2;2836;2;2;17;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_2.txt;70;4;4;600.015;1;1;2958;1;1;20;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_3.txt;70;4;4;600.016;1;3;4425;3;3;14;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_4.txt;70;4;4;600.015;1;5;4634;5;5;4;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_5.txt;70;4;4;600.016;1;2;2884;2;2;23;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_6.txt;70;4;4;600.013;1;3;3921;3;3;11;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_7.txt;70;4;4;600.014;1;4;5871;4;4;6;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_8.txt;70;4;4;600.016;1;2;4556;2;2;21;1;1;0
+jobBased.exe;T45_medium;medium;instance_70_4_4_10_9_Mthr_9.txt;70;4;4;600.017;1;3;2890;3;3;14;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_0.txt;70;4;4;600.014;1;5;5711;5;5;1;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_1.txt;70;4;4;600.015;1;5;2695;5;5;2;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_2.txt;70;4;4;600.017;1;1;2815;1;1;26;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_3.txt;70;4;4;600.018;1;5;2908;5;5;14;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_4.txt;70;4;4;600;0; ; ; ; ; ; ; 
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_5.txt;70;4;4;600.014;1;7;3729;7;7;1;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_6.txt;70;4;4;600.017;1;3;1156;3;3;15;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_7.txt;70;4;4;600.017;1;5;4179;5;5;4;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_8.txt;70;4;4;600.014;1;5;4776;5;5;0;1;1;0
+jobBased.exe;T45_small;small;instance_70_4_4_10_9_Sthr_9.txt;70;4;4;600.014;1;7;4387;7;7;3;1;1;0
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_0.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_1.txt;70;4;5;600.015;1;6;3240;6;6;19;1;1;0
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_2.txt;70;4;5;600.013;1;9;4862;9;9;8;1;1;0
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_3.txt;70;4;5;600.018;1;4;3104;4;4;20;1;1;0
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_4.txt;70;4;5;600.016;1;6;2252;6;6;17;1;1;0
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_5.txt;70;4;5;600.019;1;2;2410;2;2;22;1;1;0
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_6.txt;70;4;5;600.019;1;4;3419;4;4;24;1;1;0
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_7.txt;70;4;5;600.015;1;6;4597;6;6;20;1;1;0
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_8.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_big;big;instance_70_4_5_10_14_Bthr_9.txt;70;4;5;600.017;1;1;2505;1;1;27;1;1;0
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_0.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_1.txt;70;4;5;600.021;1;8;3357;8;8;13;1;1;0
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_2.txt;70;4;5;600.016;1;10;3835;10;10;5;1;1;0
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_3.txt;70;4;5;600.018;1;6;2546;6;6;19;1;1;0
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_4.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_5.txt;70;4;5;600.024;1;0;1531;0;0;23;1;1;0
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_6.txt;70;4;5;600.015;1;8;1264;8;8;17;1;1;0
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_7.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_8.txt;70;4;5;600.019;1;5;3295;5;5;27;1;1;0
+jobBased.exe;T46_medium;medium;instance_70_4_5_10_14_Mthr_9.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_0.txt;70;4;5;600.022;1;10;3024;10;10;2;1;1;0
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_1.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_2.txt;70;4;5;600.021;1;9;3246;9;9;17;1;1;0
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_3.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_4.txt;70;4;5;600;0; ; ; ; ; ; ; 
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_5.txt;70;4;5;600.013;1;12;3426;12;12;1;1;1;0
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_6.txt;70;4;5;600.014;1;13;3871;13;13;3;1;1;0
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_7.txt;70;4;5;600.015;1;10;3762;10;10;4;1;1;0
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_8.txt;70;4;5;600.019;1;10;2623;10;10;5;1;1;0
+jobBased.exe;T46_small;small;instance_70_4_5_10_14_Sthr_9.txt;70;4;5;600;0; ; ; ; ; ; ; 

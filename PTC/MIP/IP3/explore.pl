@@ -29,11 +29,13 @@ sub handle_file {
     if ($file=~ /.*$/) {
 #	my $fichier = $name;
 #	$fichier =~ s/(.+)\.[^.]+/$1/;
-	system("printf '$type;' >> $target");
+#	system("printf '$type;' >> $target");
 	system("printf '$name;' >> $target");
 	system("timeout --signal=9 600s ./bin/modelIP3 $file >> $target"); 
     }
 }
 #system( "rm $target ; touch $target");
 #system("echo 'type;nom_instance;N;M;F;tps;solv;feas;opt;obj;obj1;obj2;obj22;setup;gapCplex;valide' >> $target");
+#system("echo 'nom_instance;N;M;F;tps;solv;feas;opt;obj;obj1;obj2;obj22;setup;gapCplex;valide' >> $target");
 explore $path;
+

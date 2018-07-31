@@ -1,6 +1,6 @@
+
+#include "stdafx.h"
 #include "jobModel.h"
-#include <iostream>
-#include <fstream>
 
 int main(int,char* argv[]){
   std::ifstream instance(argv[1],std::ios::in);

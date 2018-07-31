@@ -13,4 +13,4 @@ int LH(Problem P , Solution &s);
 int chooseFamily(const Problem &P, int m, std::vector<int> toSchedule);
 int treat(Problem &P, Solution& s, const int m, const int f, std::vector<int> &endLast,std::vector<int> &toSchedule, std::vector<int> &nextOfFam);
 
-int displayCVS(const Problem& P, const Solution& s, bool& solved);
+int displayCVS(const Problem& P, const Solution& s, const int& solved);

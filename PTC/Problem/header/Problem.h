@@ -4,6 +4,7 @@
 #include "Family.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 //parametre pour la generation d'instance!!
 //min/max duration
@@ -14,8 +15,8 @@ const int Smax = 5;
 const int Smin = 1;
 //threshold 
 const int nbCat = 3; // small, meduim and big
-const int cat = 3; //1 = small, 2 = meduim , 3 = big
-const int sizeMin = 3; // "minimum threshold for at least sizeMin task"
+const int cat = 1; //1 = small, 2 = meduim , 3 = big
+const int sizeMin = 1; // "minimum threshold for at least sizeMin task" (small => 1 ; medium => 2 ; big => 3)
 
 typedef std::vector<Family> familyList;
 
@@ -72,6 +73,7 @@ struct Problem{
   }
 
 };
+
 
 ///////////////////////////////////////////////////
 /////////////////// generateAli ///////////////////

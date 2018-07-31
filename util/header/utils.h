@@ -1,8 +1,16 @@
+#include "stdafx.h"
 #include <iostream>
 #include <vector>
-#ifndef UTILS_H
-#define UTILS_H
+#include <sstream>
+#include <string>
+
 
 void printVector(std::string name , std::vector<int> v);
 
-#endif
+/*inline std::string to_string(int const val) {
+std::stringstream ss;
+ss << val;
+std::string numberAsString(ss.str());
+    return  numberAsString;
+}*/
+
