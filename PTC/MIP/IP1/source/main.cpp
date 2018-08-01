@@ -1,5 +1,3 @@
-
-#include "stdafx.h"
 #include "jobModel.h"
 
 int main(int,char* argv[]){

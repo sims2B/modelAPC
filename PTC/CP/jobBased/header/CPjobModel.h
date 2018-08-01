@@ -5,14 +5,6 @@
 #ifndef CPJOBMODEL_H
 #define CPJOBMODEL_H
 
-#ifndef ALPHA
-#define alpha 1
-#endif
-
-#ifndef BETA
-#define beta 1
-#endif
-
 #ifndef TIME_LIMIT
 #define time_limit 180
 #endif

@@ -1,5 +1,3 @@
-
-#include "stdafx.h"
 #include "familyModel.h"
 int solve(const Problem& P, Solution& s){
   try{
@@ -177,7 +175,7 @@ int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
     for (j = 0; j < P.M; ++j){
       x[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT);
       for (int t = 0; t < T; ++t){
-	sprintf_s(namevar, "x_%d_%d_%d", i, t, j);
+	snprintf(namevar,24, "x_%d_%d_%d", i, t, j);
 	x[i][j][t].setName(namevar);
       }
     }
@@ -188,7 +186,7 @@ int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
       (P.F[i].qualif[j] ? y[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT) :
        y[i][j] = IloNumVarArray(env, T, 0, 0, ILOINT));
       for (int t = 0; t < T; ++t){
-	sprintf_s(namevar, "y_%d_%d_%d", i, t, j);
+	snprintf(namevar,24, "y_%d_%d_%d", i, t, j);
 	y[i][j][t].setName(namevar);
       }
     }

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "familyModel.h"
 
 int main(int,char *argv[]){

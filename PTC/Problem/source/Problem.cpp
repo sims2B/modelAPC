@@ -1,6 +1,7 @@
 
-#include "stdafx.h"
 #include "Problem.h"
+#include <random>
+#include <cassert>
 
 Problem::Problem(int nbTask, int nbFam): N(nbTask), M(0){
   F.reserve(nbFam);

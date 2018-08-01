@@ -1,5 +1,3 @@
-
-#include "stdafx.h"
 #include "Assignment.h"
 
 Assignment::Assignment() : start(-1), machine(-1), index(-1){}

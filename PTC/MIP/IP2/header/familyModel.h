@@ -1,4 +1,4 @@
-#pragma warning(disable: 4996)
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #ifndef FAMILYMODEL_H
 #define FAMILYMODEL_H
 

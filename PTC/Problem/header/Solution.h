@@ -1,8 +1,13 @@
 
 #ifndef SOLUTION_H
 #define SOLUTION_H
+
 #include "Problem.h"
 #include "Assignment.h"
+
+//coefficient of the objective function
+const int alpha = 1;
+const int beta = 1;//P.N * P.computeHorizon()
 
 #define nbFamMax 5
 const std::string tikzColor[nbFamMax] = { "blue", "green", "orange", "purple","red"};

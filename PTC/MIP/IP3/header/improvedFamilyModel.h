@@ -1,4 +1,5 @@
-#pragma warning(disable: 4996)
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 #ifndef FAMILYMODEL_H
 #define FAMILYMODEL_H
 
@@ -8,18 +9,11 @@
 
 #include "Solution.h"
 #include "QualifCentric.h"
+
 #ifndef TIME_LIMIT
 #define time_limit 600
 #endif
 
-//coefficient of the objective function
-#ifndef ALPHA
-#define alpha 1
-#endif
-
-#ifndef BETA
-#define beta 1//P.N * P.computeHorizon()
-#endif
 
 #define withMIPStart 1
 typedef int(*ptrHeur)(Problem, Solution&);

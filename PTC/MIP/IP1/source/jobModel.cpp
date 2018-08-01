@@ -1,5 +1,3 @@
-
-#include "stdafx.h"
 #include "jobModel.h"
 
 int solve(const Problem& P, Solution& s){

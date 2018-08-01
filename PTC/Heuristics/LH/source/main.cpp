@@ -1,6 +1,9 @@
-#include "stdafx.h"
 #include "ListHeuristic.h"
 #include "Problem.h"
+
+#include <ctime>
+#include <ratio>
+#include <chrono>
 
 using Clock = std::chrono::high_resolution_clock; 
 
@@ -21,7 +24,7 @@ int main(int,char* argv[]){
   std::cout << duration.count() << ";";
   displayCVS(P,s,solved);
   std::cout << ";" << s.isValid(P) << std::endl;
-  std::cout << P.toString() << s.toString();
+  std::cout << P.toString() << s.toString(P);
   s.toTikz(P);
   return 0;
 }

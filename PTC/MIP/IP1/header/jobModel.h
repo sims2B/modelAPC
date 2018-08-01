@@ -1,9 +1,7 @@
-#pragma warning(disable: 4996)
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 #ifndef JOBMODEL_H
 #define JOBMODEL_H
-
-#include "stdafx.h"
 
 #include "Solution.h"
 #include <ilcplex/ilocplex.h>

@@ -1,7 +1,8 @@
 
-#include "stdafx.h"
 #include "Solution.h"
 
+#include <limits>
+#include <algorithm>
 
 Solution::Solution(const Problem& P){
 	const int nbFam = P.getFamilyNumber();
@@ -150,7 +151,7 @@ int Solution::reaffectId(const Problem &P){
 			sortedId.push_back(S[i].index);
 		}
 		std::sort(sortedId.begin(), sortedId.end());
-		for (int i = 0; i < sortedId.size(); ++i)
+		for (uint i = 0; i < sortedId.size(); ++i)
 			S[id[i]].index = sortedId[i];
 	}
 	return 0;

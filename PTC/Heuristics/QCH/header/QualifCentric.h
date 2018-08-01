@@ -1,14 +1,6 @@
 #include "Solution.h"
 #include <vector>
 
-#ifndef ALPHA
-#define alpha 1
-#endif
-
-#ifndef BETA
-#define beta P.N * P.computeHorizon()
-#endif
-
 //remplacer addCompletion par reevaluation objectif?
 int QCH(Problem P , Solution &s);
 

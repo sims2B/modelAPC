@@ -1,6 +1,3 @@
-//#include "CPjobModel.h"
-//#include "jobModel.h"
-#include "stdafx.h"
 #include "Problem.h"
 
 int main( int ,char* argv[]){
