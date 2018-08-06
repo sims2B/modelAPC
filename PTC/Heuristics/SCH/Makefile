@@ -15,15 +15,15 @@ DEBUG=0#enable to provide debug infos
 ### FLAGS #############################################
 LDFLAGS= 
 LDLIBS=  -lm -lpthread -lrt
-CPPFLAGS=  -I/home/mnattaf//Dev/PTC/Problem/header/ -I./header -std=c++11 -O2 -m64 -W  -Wall -Werror -fPIC -march=native -DIL_STD 
+CPPFLAGS=  -I../../Problem/header/ -I./header -std=c++11 -O2 -m64 -W  -Wall -Werror -fPIC -march=native -DIL_STD 
 DEBUG_FLAGS= -W  -Wall -Werror -g 
 
 ### PROPERTIES ########################################
 PROJECTNAME=bin/SCH
-SRCS=~/Dev/PTC/Problem/source/Family.cpp \
-	~/Dev/PTC/Problem/source/Problem.cpp \
-	~/Dev/PTC/Problem/source/Assignment.cpp \
-	~/Dev/PTC/Problem/source/Solution.cpp \
+SRCS=../../Problem/source/Family.cpp \
+	../../Problem/source/Problem.cpp \
+	../../Problem/source/Assignment.cpp \
+	../../Problem/source/Solution.cpp \
 	./source/SchedulingCentric.cpp \
 	./source/main.cpp
 

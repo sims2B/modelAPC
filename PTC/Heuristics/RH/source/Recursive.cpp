@@ -1,5 +1,4 @@
 
-#include "stdafx.h"
 #include "Recursive.h"
 #include <cmath>
 #include <limits>

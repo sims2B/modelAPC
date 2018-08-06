@@ -2,6 +2,7 @@
 #include "Problem.h"
 #include <random>
 #include <cassert>
+#include <algorithm>
 
 Problem::Problem(int nbTask, int nbFam): N(nbTask), M(0){
   F.reserve(nbFam);
@@ -184,7 +185,7 @@ void generateFamilies(Problem& P,const int& m,
 
 Problem generateProblem(const int& n, const int& m, const int& F,
 			const int& pmax, int sumQualif){
-  assert( sumQualif  >= m && sumQualif >= F); 
+  assert( sumQualif  >= m && sumQualif >= F && sumQualif <= F*m); 
   Problem P(n , m , F);
   generateFamilies(P,m,F,pmax,sumQualif);
   affectFamily(P,n,F);
@@ -207,6 +208,18 @@ void affectFamily(Problem& P, const int& n, const int& F){
     nF[sample]++;
     nbRes--;
   }
+
+  int sum = 0;
+  for (f = 0 ; f < F ; ++f){
+    int i = 0;
+    while (i < nF[f]){
+      P.famOf[sum + i] = f;
+      i++;
+    }
+    sum += nF[f];
+  }
+  
+  /*
   std::uniform_int_distribution<int> famAffect(0,n-1);
   std::vector<int> selected(n,0);
   nbRes = n;
@@ -223,7 +236,7 @@ void affectFamily(Problem& P, const int& n, const int& F){
       P.famOf[select] = f;
       nF[f]--; nbRes--;
     }
-  }
+    }*/
 }
 
 //Abdoul
@@ -331,5 +344,6 @@ Problem readFromFile(std::ifstream& in){
     in >> P.famOf[i] ;
   for (i = 0 ; i < F ; ++i)
     P.F[i] = readFamily(in,M);
+  std::sort(P.famOf.begin(),P.famOf.end());
   return P;
 }

@@ -244,12 +244,12 @@ int createObjective(const Problem& P, IloEnv& env, IloModel& model,
 		    IloIntervalVarArray& masterTask, IloIntervalVarMatrix& disqualif){
   IloInt i;
   IloIntExprArray ends(env);
-  //IloNumExprArray objs(env);
+  IloNumExprArray objs(env);
   
   //then completion time
   for (i = 0; i < P.N; ++i)
     ends.add(IloEndOf(masterTask[i]));
-  //objs.add(IloSum(ends));
+  objs.add(IloSum(ends));
   
   //disqualif first
   IloIntExprArray disQ(env);
@@ -261,16 +261,16 @@ int createObjective(const Problem& P, IloEnv& env, IloModel& model,
 	Jcpt++;
       }
   }
-  //objs.add(IloSum(disQ));
+  objs.add(IloSum(disQ));
   
-  //IloMultiCriterionExpr myObj = IloStaticLex(env, objs);
-  //model.add(IloMinimize(env, myObj));
-  model.add(IloMinimize(env, alpha * IloSum(ends) + beta *
-			IloSum(disQ)));
+  IloMultiCriterionExpr myObj = IloStaticLex(env, objs);
+  model.add(IloMinimize(env, myObj));
+  //model.add(IloMinimize(env, alpha * IloSum(ends) + beta *
+  //			IloSum(disQ)));
   
   ends.end();
   disQ.end();
-  //	objs.end();
+  objs.end();
   return 0;
 }
 

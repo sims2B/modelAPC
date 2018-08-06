@@ -10,6 +10,10 @@
 #define time_limit 180
 #endif
 
+
+typedef IloArray<IloIntervalVarArray> IloIntervalVarMatrix;
+typedef IloArray<IloOplElement> IloOplElementArray;
+
 class MyCustomDataSource : public IloOplDataSourceBaseI {
   Problem P;
 public:
@@ -19,8 +23,9 @@ public:
 
 int solve(const Problem&, Solution&);
 
-/*int modelToSol(const Problem &, Solution&, const IloCP&, const IloIntervalVarMatrix&,const IloIntervalVarMatrix&);
+int modelToSol(const Problem &, Solution&, const IloEnv&, const IloCP&,const IloOplElement&);
 
+/*
 int displayCVS(const Problem& P, const Solution& s, const IloCP& cp, const IloNum& bestObj,const IloNum& timeBestSol);
 */
     

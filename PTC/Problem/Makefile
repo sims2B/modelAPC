@@ -13,18 +13,18 @@ RELEASE_DIR=${HOME}/local
 DEBUG=0#enable to provide debug infos
 
 ### FLAGS #############################################
-LDFLAGS= -L/home/mnattaf/Library/CPLEX_1271/cpoptimizer/lib/x86-64_linux/static_pic -L/home/mnattaf/Library/CPLEX_1271/cplex/lib/x86-64_linux/static_pic -L/home/mnattaf/Library/CPLEX_1271/concert/lib/x86-64_linux/static_pic
-LDLIBS= -lcp -lconcert -lilocplex -lcplex  -lm -lpthread -lrt
-CPPFLAGS=  -I/home/mnattaf/Library/CPLEX_1271/cplex/include -I/home/mnattaf/Library/CPLEX_1271/cpoptimizer/include -I/home/mnattaf/Library/CPLEX_1271/concert/include  -I../../util/header/ -I../CP/jobBased/header -I../MIP/IP1/header -I./header -std=c++11 -O2 -m64 -W  -Wall -Werror -fPIC -march=native -DIL_STD 
+LDFLAGS= 
+LDLIBS=   -lm -lpthread -lrt
+CPPFLAGS= -I../../util/header/ -I./header -std=c++11 -O2 -m64 -W  -Wall -Werror -fPIC -march=native -DIL_STD 
 DEBUG_FLAGS= -W  -Wall -Werror -g 
 
 ### PROPERTIES ########################################
 PROJECTNAME=bin/le_nom
-SRCS=~/Dev/util/source/utils.cpp \
-	~/Dev/PTC/Problem/source/Family.cpp \
-	~/Dev/PTC/Problem/source/Problem.cpp \
-	~/Dev/PTC/Problem/source/Assignment.cpp \
-	~/Dev/PTC/Problem/source/Solution.cpp \
+SRCS=../../util/source/utils.cpp \
+	./source/Family.cpp \
+	./source/Problem.cpp \
+	./source/Assignment.cpp \
+	./source/Solution.cpp \
 	./source/main.cpp
 
 

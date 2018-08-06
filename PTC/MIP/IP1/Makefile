@@ -9,23 +9,30 @@ MKDIR=@mkdir -p
 RM=@rm
 CP=@cp
 
+CPLEXDIR = /home/mnattaf/Library/CPLEX_128/
+
 RELEASE_DIR=${HOME}/local
 DEBUG=0#enable to provide debug infos
 
 ### FLAGS #############################################
-LDFLAGS= -L/home/mnattaf/Library/CPLEX_128/cplex/lib/x86-64_linux/static_pic -L/home/mnattaf/Library/CPLEX_128/concert/lib/x86-64_linux/static_pic
+LDFLAGS= -L$(CPLEXDIR)cplex/lib/x86-64_linux/static_pic \
+-L$(CPLEXDIR)concert/lib/x86-64_linux/static_pic
 LDLIBS= -lconcert -lilocplex -lcplex -lpthread -ldl
-CPPFLAGS= -I./header/ -I/home/mnattaf/Dev/PTC/Problem/header/ -I/home/mnattaf/Library/CPLEX_128/cplex/include -I/home/mnattaf/Library/CPLEX_128/concert/include -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD 
+CPPFLAGS= -I./header/ \
+-I../../Problem/header/ \
+-I$(CPLEXDIR)cplex/include \
+-I$(CPLEXDIR)concert/include \
+-std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD 
 
 DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 
 
 ### PROPERTIES ########################################
 PROJECTNAME=bin/modelIP1
-SRCS=~/Dev/PTC/Problem/source/Family.cpp \
-      ~/Dev/PTC/Problem/source/Problem.cpp \
-      ~/Dev/PTC/Problem/source/Assignment.cpp \
-      ~/Dev/PTC/Problem/source/Solution.cpp \
+SRCS=../../Problem/source/Family.cpp \
+      ../../Problem/source/Problem.cpp \
+      ../../Problem/source/Assignment.cpp \
+      ../../Problem/source/Solution.cpp \
 	./source/jobModel.cpp \
 	./source/main.cpp
 

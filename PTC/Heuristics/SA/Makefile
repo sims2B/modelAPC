@@ -31,11 +31,11 @@ SRCS=   ../../../util/source/utils.cpp \
 	../../Problem/source/Problem.cpp \
 	../../Problem/source/Assignment.cpp \
 	../../Problem/source/Solution.cpp \
-	../../Heuristics/QCH/source/QualifCentric.cpp \
-	./source/Recursive.cpp \
+	../../Heuristics/SCH/source/SchedulingCentric.cpp \
+	./source/SimulatedAnnealing.cpp \
 	./source/main.cpp
+#../../Heuristics/QCH/source/QualifCentric.cpp \
 #../../Heuristics/LH/source/ListHeuristic.cpp \
-#../../Heuristics/SCH/source/SchedulingCentric.cpp \
 
 
 ### PREPROCESSING #####################################

@@ -9,25 +9,34 @@ MKDIR=@mkdir -p
 RM=@rm
 CP=@cp
 
+CPLEXDIR = /home/mnattaf/Library/CPLEX_128/
+
 RELEASE_DIR=${HOME}/local
 DEBUG=0#enable to provide debug infos
 
 ### FLAGS #############################################
-LDFLAGS= -L/home/mnattaf/Library/CPLEX_1271/cpoptimizer/lib/x86-64_linux/static_pic -L/home/mnattaf/Library/CPLEX_1271/cplex/lib/x86-64_linux/static_pic -L/home/mnattaf/Library/CPLEX_1271/concert/lib/x86-64_linux/static_pic
-LDLIBS= -lcp  -lilocplex -lcplex -lconcert -lm -pthread
-CPPFLAGS= -I./header/ -I/home/mnattaf/Dev/PTC/Problem/header/ -I/home/mnattaf/Library/CPLEX_1271/cpoptimizer/include -I/home/mnattaf/Library/CPLEX_1271/concert/include -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD 
+LDFLAGS= -L$(CPLEXDIR)cpoptimizer/lib/x86-64_linux/static_pic \
+	 -L$(CPLEXDIR)cplex/lib/x86-64_linux/static_pic \
+	 -L$(CPLEXDIR)concert/lib/x86-64_linux/static_pic
+LDLIBS= -lcp  -lilocplex -lcplex -lconcert -lm -pthread -ldl
+CPPFLAGS= -I./header/ \
+	  -I../../Problem/header/ \
+	  -I$(CPLEXDIR)cpoptimizer/include \
+	  -I$(CPLEXDIR)concert/include \
+	  -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD 
 
 DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 
 
 ### PROPERTIES ########################################
 PROJECTNAME=bin/modelCP1
-SRCS=~/Dev/PTC/Problem/source/Family.cpp \
-      ~/Dev/PTC/Problem/source/Problem.cpp \
-      ~/Dev/PTC/Problem/source/Assignment.cpp \
-      ~/Dev/PTC/Problem/source/Solution.cpp \
-	./source/CPjobModel.cpp \
-	./source/main.cpp
+SRCS=../../Problem/source/Family.cpp \
+     ../../Problem/source/Problem.cpp \
+     ../../Problem/source/Assignment.cpp \
+     ../../Problem/source/Solution.cpp \
+     ./source/CPjobModel.cpp \
+     ./source/main.cpp
+
 ### PREPROCESSING #####################################
 
 ifeq (${DEBUG},1)

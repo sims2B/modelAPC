@@ -21,6 +21,11 @@
 #define NB_IT_PAR_TEMP 50 //???
 
 
+
+#include <ctime>
+#include <ratio>
+#include <chrono>
+
 using Clock = std::chrono::high_resolution_clock;
 typedef int(*ptrHeur)(Problem,Solution&);
 
