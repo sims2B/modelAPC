@@ -31,9 +31,9 @@ int main(int, char* argv[]){
   displayCVS(P, s, solved);
   if (solved) std::cout << ";" << s.isValid(P) << std::endl;
   else std::cout << "; \n";
-  /*if (solved) {
-    std::cout << P.toString() << s.toString();
+  if (solved) {
+    std::cout << P.toString() << s.toString(P);
     s.toTikz(P);
-    }*/
+    }
   return 0; 
 }

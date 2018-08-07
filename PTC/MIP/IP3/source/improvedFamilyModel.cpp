@@ -295,11 +295,11 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model,
   //objective
   IloExpr expr(env);
   for (f = 0; f < F; ++f)
-    expr += alpha * C[f];
+    expr += alpha_C * C[f];
   for (f = 0; f < F; ++f)
     for (j = 0; j < m; ++j)
       if (P.F[f].qualif[j])
-	expr += beta * Y[f][j];
+	expr += beta_Y * Y[f][j];
   model.add(IloMinimize(env, expr));
   expr.end();
 
@@ -331,7 +331,7 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model,
 
   //noOverlap on the same machine for to job of the same family
   for (f = 0; f < F; ++f)
-    for (t = P.F[f].duration - 1; t < T; ++t)
+    for (t = P.F[f].duration - 1; t <= T - P.F[f].duration; ++t)
       for (j = 0; j < m; ++j)
 	if (P.F[f].qualif[j]){
 	  IloExpr expr(env);
@@ -347,7 +347,7 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model,
   for (f = 0; f < F; ++f)
     for (int f2 = 0; f2 < F; ++f2){
       if (f != f2){
-	for (t = 0/*P.F[f].duration + P.F[f2].setup - 1*/; t < T; ++t)
+	for (t = 0/*P.F[f].duration + P.F[f2].setup - 1*/; t <= T - P.F[f2].duration; ++t)
 	  for (j = 0; j < m; ++j)
 	    if (!((P.F[f].qualif[j] + P.F[f2].qualif[j]) % 2)){
 	      IloExpr expr(env);

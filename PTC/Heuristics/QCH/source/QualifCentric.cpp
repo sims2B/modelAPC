@@ -17,7 +17,7 @@ int QCH(Problem P, Solution& s){
 int displayCVS(const Problem& P, const Solution& s, int& solved){
   if (solved){
     std::cout << "1;";
-    std::cout << s.getWeigthedObjectiveValue(P, alpha, P.N*P.computeHorizon()) << ";"
+    std::cout << s.getWeigthedObjectiveValue(P, alpha_C, beta_Y) << ";"
 	      << s.getSumCompletion(P) << ";"
 	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
 	      << s.getNbSetup(P);

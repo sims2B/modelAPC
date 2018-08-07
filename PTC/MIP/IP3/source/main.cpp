@@ -9,8 +9,8 @@ int main(int, char *argv[]){
   Solution s(P);
   if (solve(P, s))
     std::cout << time_limit << ";0; ; ; ; ; ; ; \n";
-  std::cout << P.toString() << s.toString(P);
-  s.toTikz(P);
+  // std::cout << P.toString() << s.toString(P);
+  // s.toTikz(P);
   return 0;
 }
  

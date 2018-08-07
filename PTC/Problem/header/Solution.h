@@ -6,8 +6,8 @@
 #include "Assignment.h"
 
 //coefficient of the objective function
-const int alpha = 1;
-const int beta = 1;//P.N * P.computeHorizon()
+#define alpha_C  1
+#define beta_Y  P.N * P.computeHorizon() //1
 
 #define nbFamMax 5
 const std::string tikzColor[nbFamMax] = { "blue", "green", "orange", "purple","red"};

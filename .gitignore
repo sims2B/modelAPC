@@ -14,6 +14,7 @@
 
 # Res file #
 ############
+*.csv
 *.txt
 *.ods
 '*res*'

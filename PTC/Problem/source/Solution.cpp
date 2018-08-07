@@ -60,7 +60,7 @@ std::vector<std::vector<int>> Solution::computeLastOf(const Problem & P) const{
 
   for (j = 0; j < P.M; ++j){
     lastOf[j].resize(F);
-    for (f = 0; f < P.getFamilyNumber(); ++f)
+    for (f = 0; f < F; ++f)
       (P.F[f].qualif[j] ? lastOf[j][f] = 0 : lastOf[j][f] = std::numeric_limits<int>::max());
   }
   while (i < P.N){
@@ -78,8 +78,8 @@ void Solution::repairDisqualif(const Problem& P){
   for (int f = 0; f < F; ++f)
     for (int j = 0; j < P.M; ++j){
       if (P.F[f].qualif[j]){
-	if (std::max(lastOf[j][f] - P.F[f].duration, 0) + P.F[f].threshold < Cmax)
-	  (lastOf[j][f] == 0 ? QualifLostTime[f][j] = P.F[f].threshold : QualifLostTime[f][j] = lastOf[j][f] + P.F[f].threshold - P.F[f].duration);
+	if (lastOf[j][f] + P.F[f].threshold < Cmax)
+	  (lastOf[j][f] == 0 ? QualifLostTime[f][j] = P.F[f].threshold : QualifLostTime[f][j] = lastOf[j][f] + P.F[f].threshold );
 	else QualifLostTime[f][j] = std::numeric_limits<int>::max();
       }
     }
