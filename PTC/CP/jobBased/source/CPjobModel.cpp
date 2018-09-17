@@ -14,9 +14,12 @@ int CP::solve(const Problem& P, Solution & s){
     IloIntervalSequenceVarArray mchs(env, P.M);
     createModel(P, env, model, masterTask, altTasks, disqualif, mchs);
     IloCP cp(model);
+    cp.exportModel("model.cpo");
     if (withCPStart){
       Solution s2(P);
       if (heuristique(P, s2)){
+	
+	std::cout << P.toString() << s2.toString(P);
 	IloSolution sol(env);
 	solToModel(P, s2, masterTask, altTasks, disqualif, masterTask[P.N], sol);
 	cp.setStartingPoint(sol);
@@ -24,7 +27,7 @@ int CP::solve(const Problem& P, Solution & s){
       }
     }
     
-    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    //    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
     //solve!
     cp.startNewSearch();
@@ -103,6 +106,8 @@ int solToModel(const Problem& P, const Solution& s,
   Solution s2 = s;
   s2.reaffectId(P);
   std::sort(s2.S.begin(), s2.S.end(), idComp);
+  
+  std::cout << s2.toString(P);
   //masterTask
   for (int i = 0; i < P.N; ++i)
     sol.setStart(masterTask[s2.S[i].index], s2.S[i].start);
@@ -111,7 +116,7 @@ int solToModel(const Problem& P, const Solution& s,
     IloInt Fcpt = 0;
     for (int f = 0; f < F; ++f)
       if (P.F[f].qualif[j]){
-	if (s2.QualifLostTime[Fcpt][j] < std::numeric_limits<int>::max())
+	if (s2.QualifLostTime[f][j] < std::numeric_limits<int>::max())
 	  sol.setPresent(disqualif[j][Fcpt]);
 	else sol.setAbsent(disqualif[j][Fcpt]);
 	Fcpt++;
@@ -194,7 +199,7 @@ int createVariables(const Problem& P, IloEnv& env, IloIntervalVarArray& masterTa
   char name[10];
   
   for (i = 0; i < n; ++i){
-    snprintf(name, 10, "t_%d", (int)i);
+    snprintf(name, 10, "master_%d", (int)i);
     masterTask[i] = IloIntervalVar(env, name);
     masterTask[i].setEndMax(T);
   }
@@ -246,12 +251,12 @@ int createObjective(const Problem& P, IloEnv& env, IloModel& model,
   IloIntExprArray ends(env);
   IloNumExprArray objs(env);
   
-  //then completion time
+  //1 completion time
   for (i = 0; i < P.N; ++i)
     ends.add(IloEndOf(masterTask[i]));
   objs.add(IloSum(ends));
   
-  //disqualif first
+  //2 disqualif
   IloIntExprArray disQ(env);
   for (i = 0; i < P.M; ++i){
     IloInt Jcpt = 0;

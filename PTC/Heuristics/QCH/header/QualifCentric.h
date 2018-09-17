@@ -1,17 +1,28 @@
 #include "Solution.h"
 #include <vector>
 
+#include <ctime>
+#include <ratio>
+#include <chrono>
+
+using Clock = std::chrono::high_resolution_clock;
+
+namespace QualifCentric {
+int displayCVS(const Problem&, const Solution&, int&);
+int treat(Problem&, Solution&, const int, const int, std::vector<int>&, 
+		std::vector<int>&, std::vector<int>&);
+int remainingThresh(const Problem&, const Solution&, const int&, const int&, 
+					const int&);
+}
+
 //remplacer addCompletion par reevaluation objectif?
 int QCH(Problem P , Solution &s);
+int QCHWithOutput(Problem P , Solution &s);
 
-int displayCVS(const Problem& P, const Solution& s, int& solved);
 /////////////// PHASE 1 //////////////////
 int schedule(Problem P, Solution &s, std::vector<int>& endLast);
 //return the family with the minimum remaining threshold
 int chooseFamily(const Problem &P, const Solution& s, const int &m, const int& t, std::vector<int> toSchedule);
-//compute the remaining threshold of a family on m at time t
-int remainingThresh(const Problem& P, const Solution& s, const int& f, const int& m, const int &t);
-int treat(Problem &P,Solution& s,const int m, const int f, std::vector<int>& endLast, std::vector<int>& toSchedule, std::vector<int>& nextOfFam);
 
 
 ///////////// PHASE 2 //////////////////

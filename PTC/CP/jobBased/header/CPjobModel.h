@@ -1,5 +1,6 @@
 #include "Solution.h"
-//#include "SchedulingCentric.h"
+#include "SchedulingCentric.h"
+#include "QualifCentric.h"
 #include <ilcp/cp.h>
 
 #ifndef CPJOBMODEL_H
@@ -9,12 +10,12 @@
 #define time_limit 180
 #endif
 
-#define withCPStart 0
+#define withCPStart 1
 typedef int(*ptrHeur)(Problem, Solution&);
+const ptrHeur heuristique = SCH;
 
 int toto(Problem, Solution&);
 
-const ptrHeur heuristique = toto;
 
 typedef IloArray<IloIntervalVarArray> IloIntervalVarMatrix;
 typedef IloArray<IloIntervalSequenceVar> IloIntervalSequenceVarArray;

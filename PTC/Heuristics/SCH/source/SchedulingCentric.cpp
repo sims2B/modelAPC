@@ -2,7 +2,83 @@
 #include <limits>
 #include <vector>
 
+using namespace SchedulingCentric;
 
+namespace SchedulingCentric{
+  int displayCVS(const Problem& P, const Solution& s, int& solved){
+    if (solved){
+      std::cout << "1;";
+      std::cout << s.getWeigthedObjectiveValue(P, alpha_C, beta_Y) << ";"
+		<< s.getSumCompletion(P) << ";"
+		<< s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
+		<< s.getNbSetup(P);
+    }
+    else
+      std::cout << "0; ; ; ; ; ";
+    return 0;
+  }
+
+  int treat(Problem &P, Solution& s, const int m, const int f,
+	    std::vector<int> &endLast, 
+	    std::vector<int> &toSchedule,
+	    std::vector<int> &nextOfFam){
+    //remplissage de solution
+    (s.QualifLostTime[f][m] == endLast[m] ? //if the last task on j is of family f
+     s.S[nextOfFam[f]].start = endLast[m] ://no setup
+     s.S[nextOfFam[f]].start = endLast[m] + P.F[f].setup);//otw setup
+    s.S[nextOfFam[f]].machine = m;
+    s.S[nextOfFam[f]].index = nextOfFam[f];
+    //update endLast
+    endLast[m] = s.S[nextOfFam[f]].start + P.F[f].duration;
+    s.QualifLostTime[f][m] = endLast[m]; //update QualifLostTIme
+    toSchedule[f]--; //update nf (toSchedule)
+    //update nextOfFam
+    if (toSchedule[f] != 0) {
+      nextOfFam[f]++;
+      while (P.famOf[nextOfFam[f]] != f && nextOfFam[f] < P.N)
+	nextOfFam[f]++;
+    }
+    //disqualification?
+    for (int f2 = 0; f2 < P.getFamilyNumber(); ++f2){ //forall families(!= f and qualified on m)
+      if (P.F[f2].qualif[m] && f2 != f){
+	if (s.QualifLostTime[f2][m] != 0){
+	  if (s.QualifLostTime[f2][m] + P.F[f2].threshold - P.F[f2].duration < endLast[m] + P.F[f2].setup){
+	    s.QualifLostTime[f2][m] += P.F[f2].threshold - P.F[f2].duration;
+	    P.F[f2].qualif[m] = 0;
+	  }
+	}
+	else{
+	  if (s.QualifLostTime[f2][m] + P.F[f2].threshold < endLast[m] + P.F[f2].setup){
+	    s.QualifLostTime[f2][m] += P.F[f2].threshold;
+	    P.F[f2].qualif[m] = 0;
+	  }
+	}
+      }
+    }
+    return 0;
+  }
+
+  int remainingThresh(const Problem& P, const Solution& s, const int& f, const int& m,
+		      const int &t){
+    return s.QualifLostTime[f][m] + P.F[f].threshold - t;
+  }
+
+}
+
+int SCHWithOutput(Problem P, Solution& s){
+  Clock::time_point t1 = Clock::now();
+  int solved = SCH(P,s);
+  Clock::time_point t2 = Clock::now();
+  std::chrono::duration<double> duration =
+    std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+  std::cout << duration.count() << ";";
+  displayCVS(P, s, solved);
+  if (solved)
+    std::cout << ";" << s.isValid(P) << std::endl;
+  else std::cout << "; \n";
+
+  return 0;
+}
 
 int SCH(Problem P, Solution& s){
   const int F = P.getFamilyNumber();
@@ -54,62 +130,6 @@ int SCH(Problem P, Solution& s){
   return 1;
 }
 
-
-int displayCVS(const Problem& P, const Solution& s, int& solved){
-  if (solved){
-    std::cout << "1;";
-    std::cout << s.getWeigthedObjectiveValue(P, alpha, beta) << ";"
-	      << s.getSumCompletion(P) << ";"
-	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
-	      << s.getNbSetup(P);
-  }
-  else
-    std::cout << "0; ; ; ; ; ";
-  return 0;
-}
-
-int treat(Problem &P, Solution& s, const int m, const int f, std::vector<int> &endLast, 
-	  std::vector<int> &toSchedule, std::vector<int> &nextOfFam){
-  //remplissage de solution
-  (s.QualifLostTime[f][m] == endLast[m] ? //if the last task on j is of family f
-   s.S[nextOfFam[f]].start = endLast[m] ://no setup
-   s.S[nextOfFam[f]].start = endLast[m] + P.F[f].setup);//otw setup
-  s.S[nextOfFam[f]].machine = m;
-  s.S[nextOfFam[f]].index = nextOfFam[f];
-  //update endLast
-  endLast[m] = s.S[nextOfFam[f]].start + P.F[f].duration;
-  s.QualifLostTime[f][m] = endLast[m]; //update QualifLostTIme
-  toSchedule[f]--; //update nf (toSchedule)
-  //update nextOfFam
-  if (toSchedule[f] != 0) {
-    nextOfFam[f]++;
-    while (P.famOf[nextOfFam[f]] != f && nextOfFam[f] < P.N)
-      nextOfFam[f]++;
-  }
-  //disqualification?
-  for (int f2 = 0; f2 < P.getFamilyNumber(); ++f2){ //forall families(!= f and qualified on m)
-    if (P.F[f2].qualif[m] && f2 != f){
-      if (s.QualifLostTime[f2][m] != 0){
-	if (s.QualifLostTime[f2][m] + P.F[f2].threshold - P.F[f2].duration < endLast[m] + P.F[f2].setup){
-	  s.QualifLostTime[f2][m] += P.F[f2].threshold - P.F[f2].duration;
-	  P.F[f2].qualif[m] = 0;
-	}
-      }
-      else{
-	if (s.QualifLostTime[f2][m] + P.F[f2].threshold < endLast[m] + P.F[f2].setup){
-	  s.QualifLostTime[f2][m] += P.F[f2].threshold;
-	  P.F[f2].qualif[m] = 0;
-	}
-      }
-    }
-  }
-  return 0;
-}
-
-int remainingThresh(const Problem& P, const Solution& s, const int& f, const int& m,
-		    const int &t){
-  return s.QualifLostTime[f][m] + P.F[f].threshold - t;
-}
 
 int famWithMinThresh(const Problem &P, const Solution& s, const int &m,
 		     const int& t, std::vector<int> toSchedule){

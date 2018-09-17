@@ -1,0 +1,342 @@
+// --------------------------------------------------------------------------
+// IBM ILOG CP Optimizer model export file
+// Effective workers: 4
+// --------------------------------------------------------------------------
+
+// ------ Constants: --------------------------------------------------------
+
+TransitionMatrix_87 = transitionMatrix(
+  matrixSize             = 3,
+  compacted              = no,
+  wildcardIndex          = 2, 
+  mapping  = [ (1, 0), (2, 1), (3, 2) ],
+  matrix = [ 0, 2, 0,
+             1, 0, 0,
+             0, 0, 0 ]
+  // contiguous: 0
+  // static:     1
+);
+
+// ------ Interval-related variables: ---------------------------------------
+
+IntervalVar_4 = intervalVar(end=0..70, size=28..70);
+IntervalVar_5 = intervalVar(end=0..70, size=2);
+IntervalVar_6 = intervalVar(end=0..70, size=2);
+IntervalVar_7 = intervalVar(end=0..70, size=2);
+IntervalVar_8 = intervalVar(end=0..70, size=2);
+IntervalVar_9 = intervalVar(end=0..70, size=2);
+IntervalVar_10 = intervalVar(end=0..70, size=9);
+IntervalVar_11 = intervalVar(end=0..70, size=9);
+IntervalVar_12 = intervalVar(end=0..70, size=9);
+IntervalVar_13 = intervalVar(end=0..70, size=9);
+IntervalVar_14 = intervalVar(end=0..70, size=9);
+IntervalVar_33 = intervalVar(optional, end=0..94, size=0..94);
+IntervalVar_35 = intervalVar(optional, end=0..94, size=0..94);
+IntervalVar_37 = intervalVar(optional, end=0..94, size=0..94);
+IntervalVar_39 = intervalVar(optional, end=0..94, size=0..94);
+IntervalVar_46 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_47 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_50 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_51 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_54 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_55 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_58 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_59 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_62 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_63 = intervalVar(optional, end=0..70, size=2);
+IntervalVar_66 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_67 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_70 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_71 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_74 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_75 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_78 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_79 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_82 = intervalVar(optional, end=0..70, size=9);
+IntervalVar_83 = intervalVar(optional, end=0..70, size=9);
+SequenceVar_90 = sequenceVar([IntervalVar_46, IntervalVar_50, IntervalVar_54, IntervalVar_58, IntervalVar_62, IntervalVar_66, IntervalVar_70, IntervalVar_74, IntervalVar_78, IntervalVar_82], [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]);
+SequenceVar_94 = sequenceVar([IntervalVar_47, IntervalVar_51, IntervalVar_55, IntervalVar_59, IntervalVar_63, IntervalVar_67, IntervalVar_71, IntervalVar_75, IntervalVar_79, IntervalVar_83], [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]);
+IntervalVar_148 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_149 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_154 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_159 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_165 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_172 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_173 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_178 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_183 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_189 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_196 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_197 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_201 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_206 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_212 = intervalVar(optional, end=0..94, size=23);
+IntervalVar_219 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_220 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_224 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_229 = intervalVar(optional, end=0..94, size=24);
+IntervalVar_235 = intervalVar(optional, end=0..94, size=24);
+
+// ------ Integer variables: ------------------------------------------------
+
+IntVar_0 = intVar(0..intmax);
+IntVar_1 = intVar(0..intmax);
+
+// ------ Expressions: ------------------------------------------------------
+
+VarCumulAtom_97 = pulse(IntervalVar_5, 1);
+VarCumulAtom_98 = pulse(IntervalVar_6, 1);
+VarCumulAtom_99 = pulse(IntervalVar_7, 1);
+VarCumulAtom_100 = pulse(IntervalVar_8, 1);
+VarCumulAtom_101 = pulse(IntervalVar_9, 1);
+VarCumulAtom_102 = pulse(IntervalVar_10, 1);
+VarCumulAtom_103 = pulse(IntervalVar_11, 1);
+VarCumulAtom_104 = pulse(IntervalVar_12, 1);
+VarCumulAtom_105 = pulse(IntervalVar_13, 1);
+VarCumulAtom_106 = pulse(IntervalVar_14, 1);
+cumProfile = sum([VarCumulAtom_97, VarCumulAtom_98, VarCumulAtom_99, VarCumulAtom_100, VarCumulAtom_101, VarCumulAtom_102, VarCumulAtom_103, VarCumulAtom_104, VarCumulAtom_105, VarCumulAtom_106]);
+VarCumulAtom_268 = pulse(IntervalVar_148, 1);
+VarCumulAtom_269 = pulse(IntervalVar_149, 1);
+VarCumulAtom_270 = pulse(IntervalVar_154, 1);
+VarCumulAtom_271 = pulse(IntervalVar_159, 1);
+VarCumulAtom_272 = pulse(IntervalVar_165, 1);
+"qualifProfiles(1)(1)" = sum([pulse(0, 25, 1), VarCumulAtom_268, VarCumulAtom_269, VarCumulAtom_270, VarCumulAtom_271, VarCumulAtom_272]);
+VarCumulAtom_277 = pulse(IntervalVar_196, 1);
+VarCumulAtom_278 = pulse(IntervalVar_197, 1);
+VarCumulAtom_279 = pulse(IntervalVar_201, 1);
+VarCumulAtom_280 = pulse(IntervalVar_206, 1);
+VarCumulAtom_281 = pulse(IntervalVar_212, 1);
+"qualifProfiles(1)(2)" = sum([pulse(0, 25, 1), VarCumulAtom_277, VarCumulAtom_278, VarCumulAtom_279, VarCumulAtom_280, VarCumulAtom_281]);
+VarCumulAtom_294 = pulse(IntervalVar_172, 1);
+VarCumulAtom_295 = pulse(IntervalVar_173, 1);
+VarCumulAtom_296 = pulse(IntervalVar_178, 1);
+VarCumulAtom_297 = pulse(IntervalVar_183, 1);
+VarCumulAtom_298 = pulse(IntervalVar_189, 1);
+"qualifProfiles(2)(1)" = sum([pulse(0, 33, 1), VarCumulAtom_294, VarCumulAtom_295, VarCumulAtom_296, VarCumulAtom_297, VarCumulAtom_298]);
+VarCumulAtom_303 = pulse(IntervalVar_219, 1);
+VarCumulAtom_304 = pulse(IntervalVar_220, 1);
+VarCumulAtom_305 = pulse(IntervalVar_224, 1);
+VarCumulAtom_306 = pulse(IntervalVar_229, 1);
+VarCumulAtom_307 = pulse(IntervalVar_235, 1);
+"qualifProfiles(2)(2)" = sum([pulse(0, 33, 1), VarCumulAtom_303, VarCumulAtom_304, VarCumulAtom_305, VarCumulAtom_306, VarCumulAtom_307]);
+
+// ------ Objective: --------------------------------------------------------
+
+minimize(IntVar_0 - IntVar_1);
+
+// ------ Constraints: ------------------------------------------------------
+
+span(IntervalVar_4, [IntervalVar_5, IntervalVar_6, IntervalVar_7, IntervalVar_8, IntervalVar_9, IntervalVar_10, IntervalVar_11, IntervalVar_12, IntervalVar_13, IntervalVar_14]);
+startOf(IntervalVar_4) == 0;
+IntVar_0 == sum([endOf(IntervalVar_5), endOf(IntervalVar_6), endOf(IntervalVar_7), endOf(IntervalVar_8), endOf(IntervalVar_9), endOf(IntervalVar_10), endOf(IntervalVar_11), endOf(IntervalVar_12), endOf(IntervalVar_13), endOf(IntervalVar_14)]);
+IntVar_1 == sum([presenceOf(IntervalVar_33), presenceOf(IntervalVar_35), presenceOf(IntervalVar_37), presenceOf(IntervalVar_39)]);
+IntVar_1 >= 1;
+alternative(IntervalVar_5, [IntervalVar_46, IntervalVar_47], 1);
+alternative(IntervalVar_6, [IntervalVar_50, IntervalVar_51], 1);
+alternative(IntervalVar_7, [IntervalVar_54, IntervalVar_55], 1);
+alternative(IntervalVar_8, [IntervalVar_58, IntervalVar_59], 1);
+alternative(IntervalVar_9, [IntervalVar_62, IntervalVar_63], 1);
+alternative(IntervalVar_10, [IntervalVar_66, IntervalVar_67], 1);
+alternative(IntervalVar_11, [IntervalVar_70, IntervalVar_71], 1);
+alternative(IntervalVar_12, [IntervalVar_74, IntervalVar_75], 1);
+alternative(IntervalVar_13, [IntervalVar_78, IntervalVar_79], 1);
+alternative(IntervalVar_14, [IntervalVar_82, IntervalVar_83], 1);
+true();
+noOverlap(SequenceVar_90, TransitionMatrix_87);
+noOverlap(SequenceVar_94, TransitionMatrix_87);
+true();
+2 >= cumProfile;
+startBeforeStart(IntervalVar_5, IntervalVar_6);
+startBeforeStart(IntervalVar_6, IntervalVar_5, 23 * -1);
+startBeforeStart(IntervalVar_6, IntervalVar_7);
+startBeforeStart(IntervalVar_7, IntervalVar_6, 23 * -1);
+startBeforeStart(IntervalVar_7, IntervalVar_8);
+startBeforeStart(IntervalVar_8, IntervalVar_7, 23 * -1);
+startBeforeStart(IntervalVar_8, IntervalVar_9);
+startBeforeStart(IntervalVar_9, IntervalVar_8, 23 * -1);
+true();
+endBeforeStart(IntervalVar_5, IntervalVar_7);
+endBeforeStart(IntervalVar_6, IntervalVar_8);
+endBeforeStart(IntervalVar_7, IntervalVar_9);
+true();
+startBeforeStart(IntervalVar_10, IntervalVar_11);
+startBeforeStart(IntervalVar_11, IntervalVar_10, -1 * 24);
+startBeforeStart(IntervalVar_11, IntervalVar_12);
+startBeforeStart(IntervalVar_12, IntervalVar_11, -1 * 24);
+startBeforeStart(IntervalVar_12, IntervalVar_13);
+startBeforeStart(IntervalVar_13, IntervalVar_12, -1 * 24);
+startBeforeStart(IntervalVar_13, IntervalVar_14);
+startBeforeStart(IntervalVar_14, IntervalVar_13, -1 * 24);
+true();
+endBeforeStart(IntervalVar_10, IntervalVar_12);
+endBeforeStart(IntervalVar_11, IntervalVar_13);
+endBeforeStart(IntervalVar_12, IntervalVar_14);
+true();
+true();
+startBeforeStart(IntervalVar_148, IntervalVar_149, 2);
+before(SequenceVar_90, IntervalVar_46, IntervalVar_50);
+true();
+startBeforeStart(IntervalVar_149, IntervalVar_154, 2);
+before(SequenceVar_90, IntervalVar_46, IntervalVar_54);
+before(SequenceVar_90, IntervalVar_50, IntervalVar_54);
+true();
+startBeforeStart(IntervalVar_154, IntervalVar_159, 2);
+before(SequenceVar_90, IntervalVar_46, IntervalVar_58);
+before(SequenceVar_90, IntervalVar_50, IntervalVar_58);
+before(SequenceVar_90, IntervalVar_54, IntervalVar_58);
+true();
+startBeforeStart(IntervalVar_159, IntervalVar_165, 2);
+before(SequenceVar_90, IntervalVar_46, IntervalVar_62);
+before(SequenceVar_90, IntervalVar_50, IntervalVar_62);
+before(SequenceVar_90, IntervalVar_54, IntervalVar_62);
+before(SequenceVar_90, IntervalVar_58, IntervalVar_62);
+true();
+startBeforeStart(IntervalVar_172, IntervalVar_173, 9);
+before(SequenceVar_90, IntervalVar_66, IntervalVar_70);
+true();
+startBeforeStart(IntervalVar_173, IntervalVar_178, 9);
+before(SequenceVar_90, IntervalVar_66, IntervalVar_74);
+before(SequenceVar_90, IntervalVar_70, IntervalVar_74);
+true();
+startBeforeStart(IntervalVar_178, IntervalVar_183, 9);
+before(SequenceVar_90, IntervalVar_66, IntervalVar_78);
+before(SequenceVar_90, IntervalVar_70, IntervalVar_78);
+before(SequenceVar_90, IntervalVar_74, IntervalVar_78);
+true();
+startBeforeStart(IntervalVar_183, IntervalVar_189, 9);
+before(SequenceVar_90, IntervalVar_66, IntervalVar_82);
+before(SequenceVar_90, IntervalVar_70, IntervalVar_82);
+before(SequenceVar_90, IntervalVar_74, IntervalVar_82);
+before(SequenceVar_90, IntervalVar_78, IntervalVar_82);
+true();
+startBeforeStart(IntervalVar_196, IntervalVar_197, 2);
+before(SequenceVar_94, IntervalVar_47, IntervalVar_51);
+true();
+startBeforeStart(IntervalVar_197, IntervalVar_201, 2);
+before(SequenceVar_94, IntervalVar_47, IntervalVar_55);
+before(SequenceVar_94, IntervalVar_51, IntervalVar_55);
+true();
+startBeforeStart(IntervalVar_201, IntervalVar_206, 2);
+before(SequenceVar_94, IntervalVar_47, IntervalVar_59);
+before(SequenceVar_94, IntervalVar_51, IntervalVar_59);
+before(SequenceVar_94, IntervalVar_55, IntervalVar_59);
+true();
+startBeforeStart(IntervalVar_206, IntervalVar_212, 2);
+before(SequenceVar_94, IntervalVar_47, IntervalVar_63);
+before(SequenceVar_94, IntervalVar_51, IntervalVar_63);
+before(SequenceVar_94, IntervalVar_55, IntervalVar_63);
+before(SequenceVar_94, IntervalVar_59, IntervalVar_63);
+true();
+startBeforeStart(IntervalVar_219, IntervalVar_220, 9);
+before(SequenceVar_94, IntervalVar_67, IntervalVar_71);
+true();
+startBeforeStart(IntervalVar_220, IntervalVar_224, 9);
+before(SequenceVar_94, IntervalVar_67, IntervalVar_75);
+before(SequenceVar_94, IntervalVar_71, IntervalVar_75);
+true();
+startBeforeStart(IntervalVar_224, IntervalVar_229, 9);
+before(SequenceVar_94, IntervalVar_67, IntervalVar_79);
+before(SequenceVar_94, IntervalVar_71, IntervalVar_79);
+before(SequenceVar_94, IntervalVar_75, IntervalVar_79);
+true();
+startBeforeStart(IntervalVar_229, IntervalVar_235, 9);
+before(SequenceVar_94, IntervalVar_67, IntervalVar_83);
+before(SequenceVar_94, IntervalVar_71, IntervalVar_83);
+before(SequenceVar_94, IntervalVar_75, IntervalVar_83);
+before(SequenceVar_94, IntervalVar_79, IntervalVar_83);
+true();
+true();
+0 == presenceOf(IntervalVar_35);
+0 == presenceOf(IntervalVar_47);
+0 == presenceOf(IntervalVar_196);
+0 == presenceOf(IntervalVar_51);
+0 == presenceOf(IntervalVar_197);
+0 == presenceOf(IntervalVar_55);
+0 == presenceOf(IntervalVar_201);
+0 == presenceOf(IntervalVar_59);
+0 == presenceOf(IntervalVar_206);
+0 == presenceOf(IntervalVar_63);
+0 == presenceOf(IntervalVar_212);
+true();
+true();
+alwaysIn("qualifProfiles(1)(1)", IntervalVar_46, 1, 6);
+alwaysIn("qualifProfiles(1)(2)", IntervalVar_47, 1, 6);
+alwaysIn("qualifProfiles(1)(1)", IntervalVar_50, 1, 6);
+alwaysIn("qualifProfiles(1)(2)", IntervalVar_51, 1, 6);
+alwaysIn("qualifProfiles(1)(1)", IntervalVar_54, 1, 6);
+alwaysIn("qualifProfiles(1)(2)", IntervalVar_55, 1, 6);
+alwaysIn("qualifProfiles(1)(1)", IntervalVar_58, 1, 6);
+alwaysIn("qualifProfiles(1)(2)", IntervalVar_59, 1, 6);
+alwaysIn("qualifProfiles(1)(1)", IntervalVar_62, 1, 6);
+alwaysIn("qualifProfiles(1)(2)", IntervalVar_63, 1, 6);
+alwaysIn("qualifProfiles(2)(1)", IntervalVar_66, 1, 6);
+alwaysIn("qualifProfiles(2)(2)", IntervalVar_67, 1, 6);
+alwaysIn("qualifProfiles(2)(1)", IntervalVar_70, 1, 6);
+alwaysIn("qualifProfiles(2)(2)", IntervalVar_71, 1, 6);
+alwaysIn("qualifProfiles(2)(1)", IntervalVar_74, 1, 6);
+alwaysIn("qualifProfiles(2)(2)", IntervalVar_75, 1, 6);
+alwaysIn("qualifProfiles(2)(1)", IntervalVar_78, 1, 6);
+alwaysIn("qualifProfiles(2)(2)", IntervalVar_79, 1, 6);
+alwaysIn("qualifProfiles(2)(1)", IntervalVar_82, 1, 6);
+alwaysIn("qualifProfiles(2)(2)", IntervalVar_83, 1, 6);
+true();
+presenceOf(IntervalVar_46) == presenceOf(IntervalVar_148);
+endAtStart(IntervalVar_46, IntervalVar_148);
+presenceOf(IntervalVar_47) == presenceOf(IntervalVar_196);
+endAtStart(IntervalVar_47, IntervalVar_196);
+presenceOf(IntervalVar_50) == presenceOf(IntervalVar_149);
+endAtStart(IntervalVar_50, IntervalVar_149);
+presenceOf(IntervalVar_51) == presenceOf(IntervalVar_197);
+endAtStart(IntervalVar_51, IntervalVar_197);
+presenceOf(IntervalVar_54) == presenceOf(IntervalVar_154);
+endAtStart(IntervalVar_54, IntervalVar_154);
+presenceOf(IntervalVar_55) == presenceOf(IntervalVar_201);
+endAtStart(IntervalVar_55, IntervalVar_201);
+presenceOf(IntervalVar_58) == presenceOf(IntervalVar_159);
+endAtStart(IntervalVar_58, IntervalVar_159);
+presenceOf(IntervalVar_59) == presenceOf(IntervalVar_206);
+endAtStart(IntervalVar_59, IntervalVar_206);
+presenceOf(IntervalVar_62) == presenceOf(IntervalVar_165);
+endAtStart(IntervalVar_62, IntervalVar_165);
+presenceOf(IntervalVar_63) == presenceOf(IntervalVar_212);
+endAtStart(IntervalVar_63, IntervalVar_212);
+presenceOf(IntervalVar_66) == presenceOf(IntervalVar_172);
+endAtStart(IntervalVar_66, IntervalVar_172);
+presenceOf(IntervalVar_67) == presenceOf(IntervalVar_219);
+endAtStart(IntervalVar_67, IntervalVar_219);
+presenceOf(IntervalVar_70) == presenceOf(IntervalVar_173);
+endAtStart(IntervalVar_70, IntervalVar_173);
+presenceOf(IntervalVar_71) == presenceOf(IntervalVar_220);
+endAtStart(IntervalVar_71, IntervalVar_220);
+presenceOf(IntervalVar_74) == presenceOf(IntervalVar_178);
+endAtStart(IntervalVar_74, IntervalVar_178);
+presenceOf(IntervalVar_75) == presenceOf(IntervalVar_224);
+endAtStart(IntervalVar_75, IntervalVar_224);
+presenceOf(IntervalVar_78) == presenceOf(IntervalVar_183);
+endAtStart(IntervalVar_78, IntervalVar_183);
+presenceOf(IntervalVar_79) == presenceOf(IntervalVar_229);
+endAtStart(IntervalVar_79, IntervalVar_229);
+presenceOf(IntervalVar_82) == presenceOf(IntervalVar_189);
+endAtStart(IntervalVar_82, IntervalVar_189);
+presenceOf(IntervalVar_83) == presenceOf(IntervalVar_235);
+endAtStart(IntervalVar_83, IntervalVar_235);
+true();
+0 == startOf(IntervalVar_33);
+endAtEnd(IntervalVar_4, IntervalVar_33, 2);
+alwaysIn("qualifProfiles(1)(1)", IntervalVar_33, 1, 6);
+0 == startOf(IntervalVar_35);
+endAtEnd(IntervalVar_4, IntervalVar_35, 2);
+alwaysIn("qualifProfiles(1)(2)", IntervalVar_35, 1, 6);
+0 == startOf(IntervalVar_37);
+endAtEnd(IntervalVar_4, IntervalVar_37, 9);
+alwaysIn("qualifProfiles(2)(1)", IntervalVar_37, 1, 6);
+0 == startOf(IntervalVar_39);
+endAtEnd(IntervalVar_4, IntervalVar_39, 9);
+alwaysIn("qualifProfiles(2)(2)", IntervalVar_39, 1, 6);
+true();
+
+parameters {
+  TimeLimit = 180;
+  LogPeriod = 10000;
+}
+

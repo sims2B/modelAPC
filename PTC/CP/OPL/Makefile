@@ -21,6 +21,8 @@ LDFLAGS=-L$(CPLEXDIR)opl/lib/x86-64_linux/static_pic \
 LDLIBS=-lopl -liljs -loplnl1 -lilocplex  -lcp -lconcert -lcplex1280 -licuuc -licui18n -licuio -licudata -lpthread -ldl  
 CPPFLAGS=-I./header/ \
 	 -I../../Problem/header/ \
+	 -I../../Heuristics/SCH/header/ \
+	 -I../../Heuristics/QCH/header/ \
 	 -I$(CPLEXDIR)opl/include \
 	 -std=c++11 -m64 -fPIC -DIL_STD -O1 -DNDEBUG -march=native -Wall -Werror -DILOUSEMT -D_REENTRANT
 
@@ -33,6 +35,8 @@ SRCS=../../Problem/source/Assignment.cpp \
 ../../Problem/source/Family.cpp \
 ../../Problem/source/Problem.cpp \
 ../../Problem/source/Solution.cpp \
+../../Heuristics/SCH/source/SchedulingCentric.cpp \
+../../Heuristics/QCH/source/QualifCentric.cpp \
 ./source/schedAPC.cpp \
 ./source/main.cpp
 ### PREPROCESSING #####################################

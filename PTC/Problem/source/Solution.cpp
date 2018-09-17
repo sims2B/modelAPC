@@ -94,6 +94,15 @@ int Solution::getNbDisqualif() const{
   return sum;
 }
 
+int Solution::getNbQualif(const Problem& P) const{
+  int sum = 0;
+  for (unsigned int f = 0; f < QualifLostTime.size(); ++f)
+    for (unsigned int j = 0; j < QualifLostTime[f].size(); ++j)
+      if (P.F[f].qualif[j] && QualifLostTime[f][j] >= std::numeric_limits<int>::max())
+	sum++;
+  return sum;
+}
+
 int Solution::getRealNbDisqualif(const Problem& P) const{
   int sum = 0;
   int Cmax = getMaxEnd(P);

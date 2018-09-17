@@ -7,16 +7,16 @@
 
 //coefficient of the objective function
 #define alpha_C  1
-#define beta_Y  P.N * P.computeHorizon() //1
+#define beta_Y  1 //P.N * P.computeHorizon()
 
 #define nbFamMax 5
 const std::string tikzColor[nbFamMax] = { "blue", "green", "orange", "purple","red"};
 typedef std::vector<Assignment> assignmentList;
 
 struct Solution{
-  //a problem is then defined by a List of Assignment (containing for each task
-  //its start time and affectation to a machine) and a matrix
-  //family x machines containing the time where a machine become disqualified for a
+  //a solution is defined by a List of Assignment (containing for each task
+  //its id, start time and affectation to a machine) and a matrix
+  //(family x machines) containing the time where a machine m become disqualified for a
   //family f (0 if the machine is not qualified from the beginning) if it exists
   //and +oo otherwise
   assignmentList S;
@@ -37,6 +37,7 @@ struct Solution{
   std::vector<std::vector<int>> computeLastOf(const Problem & P) const;
 
   int getNbDisqualif() const;
+  int getNbQualif(const Problem &) const;
   int getRealNbDisqualif(const Problem& P) const;
   int getWeigthedObjectiveValue(const Problem&, const int&, const int&) const;
   int getNbSetup(const Problem&) const;

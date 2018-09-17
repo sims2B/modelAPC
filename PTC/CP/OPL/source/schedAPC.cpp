@@ -1,4 +1,5 @@
 #include "schedAPC.h"
+#include <algorithm>
 
 int solve(const Problem& P, Solution& s){
   IloEnv env;
@@ -9,21 +10,28 @@ int solve(const Problem& P, Solution& s){
     IloOplModelSource modelSource(env,"schedAPC.mod");
     IloOplSettings settings(env,handler);
     IloOplModelDefinition def(modelSource,settings);
-    IloCP cp(env);
+    IloCP cp(env);    
     IloOplModel opl(def,cp);
     MyCustomDataSource ds(env,P);
     IloOplDataSource dataSource(&ds);
     opl.addDataSource(dataSource);
     opl.generate();
+    cp.setParameter(IloCP::TimeLimit, time_limit);
 
-    if ( cp.solve()) {
+    if (withCPStart){
+      Solution s2(P);
+      if (heuristique(P,s2))
+	solToModel(P,s2,env,opl,cp);
+    }
+    
+    if ( cp.solve()){
       IloOplElement elmt = opl.getElement("mjobs");
       modelToSol(P,s,env,cp,elmt);
       //std::cout << std::endl 
       //    << "OBJECTIVE: "  << opl.getCP().getObjValue() 
       //    << std::endl;
       opl.postProcess();
-      opl.printSolution(std::cout);
+      //      opl.printSolution(std::cout);
       status = 0;
     } else {
       std::cout << "No solution!" << std::endl;
@@ -108,6 +116,41 @@ void MyCustomDataSource::read() const {
 }
 
 
+int solToModel(const Problem& P, Solution s,
+	       IloEnv& env, IloOplModel& opl, IloCP& cp){
+  IloSolution sol(env);
+  s.reaffectId(P);	
+  std::sort(s.S.begin(),s.S.end(),idComp);
+  
+  sol.setValue((opl.getElement("flowtime")).asIntVar(), s.getSumCompletion(P));
+  sol.setEnd((opl.getElement("cmax")).asIntervalVar(), s.getMaxEnd(P));
+        
+  sol.setValue((opl.getElement("qualified")).asIntVar(), s.getNbQualif(P));
+	
+  IloIntervalVarMap jobs = opl.getElement("jobs").asIntervalVarMap();
+  for (IloInt j = 1 ; j <= P.N ; ++j){
+    IloIntervalVar job_j = jobs.get(j);
+    sol.setStart(job_j,s.S[j-1].start);
+  }
+	
+  IloIntervalVarMap mjobs = opl.getElement("mjobs").asIntervalVarMap();
+  for (IloInt j = 0; j < P.N ; ++j){
+    IloIntervalVarMap sub = mjobs.getSub(j + 1);
+    for (IloInt k = 0 ; k < P.M; ++k){
+      IloIntervalVar alt_job = sub.get(k + 1);
+      if (s.S[j].machine == k){
+	sol.setPresent(alt_job);
+	sol.setStart(alt_job, s.S[j].start);
+      }
+      else sol.setAbsent(alt_job);
+    }
+  }
+
+  cp.setStartingPoint(sol);
+
+  return 0;
+}
+
 
 int modelToSol(const Problem &P, Solution& s, const IloEnv& env, const IloCP& cp, const IloOplElement& elmt){
   IloInt i ,j;
@@ -116,11 +159,6 @@ int modelToSol(const Problem &P, Solution& s, const IloEnv& env, const IloCP& cp
   for (i = 0 ; i < P.N ; ++i){
     dk[i] = mjobs[i + 1].asNewIntervalVarArray();
   }
-  /*for (i = 0; i < P.N; ++i){
-    for (j = 0; j < P.M; ++j)
-      std::cout <<cp.getStart( dk[i][j] ) << " " ;
-    std::cout <<  std::endl;
-    }*/
   
   for (i = 0; i < P.N; ++i)
     for (j = 0; j < P.M; ++j)

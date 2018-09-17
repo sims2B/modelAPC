@@ -21,6 +21,8 @@ LDFLAGS= -L$(CPLEXDIR)cpoptimizer/lib/x86-64_linux/static_pic \
 LDLIBS= -lcp  -lilocplex -lcplex -lconcert -lm -pthread -ldl
 CPPFLAGS= -I./header/ \
 	  -I../../Problem/header/ \
+	  -I../../Heuristics/SCH/header/ \
+	  -I../../Heuristics/QCH/header/ \
 	  -I$(CPLEXDIR)cpoptimizer/include \
 	  -I$(CPLEXDIR)concert/include \
 	  -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD 
@@ -34,6 +36,8 @@ SRCS=../../Problem/source/Family.cpp \
      ../../Problem/source/Problem.cpp \
      ../../Problem/source/Assignment.cpp \
      ../../Problem/source/Solution.cpp \
+     ../../Heuristics/SCH/source/SchedulingCentric.cpp \
+     ../../Heuristics/QCH/source/QualifCentric.cpp \
      ./source/CPjobModel.cpp \
      ./source/main.cpp
 
