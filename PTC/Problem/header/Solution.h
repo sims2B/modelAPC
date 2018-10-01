@@ -7,7 +7,7 @@
 
 //coefficient of the objective function
 #define alpha_C  1
-#define beta_Y  1 //P.N * P.computeHorizon()
+#define beta_Y  P.N * P.computeHorizon()
 
 #define nbFamMax 5
 const std::string tikzColor[nbFamMax] = { "blue", "green", "orange", "purple","red"};

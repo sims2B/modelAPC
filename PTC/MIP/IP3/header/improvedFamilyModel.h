@@ -1,4 +1,5 @@
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 
 #ifndef FAMILYMODEL_H
 #define FAMILYMODEL_H

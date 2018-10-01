@@ -5,15 +5,16 @@ use warnings;
 use Cwd;
 
 
-sub handle{   my $cpt = 1;
-    my $j = 2;
-    foreach my $i (10){
-	foreach my $f (2,3){
-	    system("mkdir T$cpt\_$i\_$j\_$f\_medium");
-	    system("mv instance\_$i\_$j\_$f\_Mthr\_\_* T$cpt\_$i\_$j\_$f\_medium");
-	    $cpt = $cpt +1;
-	}
-    }
+sub handle{   
+	my $cpt = 1;
+    my $j = 1;
+    foreach my $i (20,30,40){
+		foreach my $f (2,3,4){
+		    system("mkdir T$cpt\_$i\_$j\_$f\_medium");
+		    system("mv instance\_$i\_$j\_$f\_Mthr\_\_* T$cpt\_$i\_$j\_$f\_medium");
+		    $cpt = $cpt +1;
+			}
+	    }
     $j = 2;
     foreach my $i (20,30){
 	foreach my $f (2,3,4,5){

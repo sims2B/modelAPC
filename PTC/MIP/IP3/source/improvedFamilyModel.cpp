@@ -57,6 +57,7 @@ int solve(const Problem& P, Solution& s){
 int useMIPStart(const Problem &P, Solution& s, IloEnv& env, IloCplex& cplex,
 		IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, IloNumVarMatrix& Y, IloNumVarArray& C){
   if (heuristique(P, s)){
+    std::cout << "soluttion QCH " << s.toString(P);
     IloNumVarArray startVar(env);
     IloNumArray startVal(env);
     solToModel(P,s,x,y,Y,C,startVar,startVal);
@@ -238,8 +239,7 @@ int createModel(const Problem& P, int T, IloEnv& env, IloModel& model,
   return createVars(P, T, env, x, y, Y) || createConstraints(P, T, env, model, x, y, C, Y);
 }
 
-int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
-	       IloNumVar3DMatrix& y, IloNumVarMatrix& Y){
+int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, IloNumVarMatrix& Y){ 
   int i, j;
 
   IloNumArray Y_ub(env, P.M);

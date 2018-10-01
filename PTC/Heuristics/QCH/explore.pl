@@ -29,7 +29,7 @@ sub handle_file {
     if ($file=~ /.*$/) {
 #	my $fichier = $name;
 #	$fichier =~ s/(.+)\.[^.]+/$1/;
-	system("printf '$type;' >> $target");
+#	system("printf '$type;' >> $target");
 	system("printf '$name;' >> $target");
 	system("timeout --signal=9 600s ./bin/QCH $file >> $target"); 
     }

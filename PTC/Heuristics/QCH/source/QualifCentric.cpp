@@ -22,12 +22,17 @@ int QCHWithOutput(Problem P, Solution& s){
 int QCH(Problem P, Solution& s){
   std::vector<int> endLast(P.M, 0);
   if (schedule(P, s, endLast)){
-    if (!intraChange(P, s, endLast))
+    //std::cout << " Phase 1 done \n La solution est valide ?" << s.isValid(P) << "\n" << s.toString(P);
+    //s.toTikz(P);
+    if (!intraChange(P, s, endLast)){
+      // std::cout << " Phase 2 done \n  La solution est valide ?" << s.isValid(P) << "\n" << s.toString(P); 
+      //s.toTikz(P);
       return !interChange(P, s, endLast);
+      return 1;
+    }
     else return 0;
     return 1;
-  }
-
+  } 
   else return 0;
 }
 
@@ -175,7 +180,7 @@ int intraChange(const Problem &P, Solution& s, std::vector<int>& endLast){
       bool update;
       do {
 	update = false;
-	j = getLastOn(P, s, k, endLast[k]); //recupere l'index du dernier élément
+	j = getLastOn(P, s, k, endLast[k]); //recupere l'index du dernier Ã©lÃ©ment
 	i = firstOcc[P.famOf[s.S[j].index]];
 	if (i != -1 && i != j && !moved[s.S[j].index] && !addDisqualif(P, s, i, j, k, k, 1)){
 	  update = true;
@@ -191,47 +196,35 @@ int intraChange(const Problem &P, Solution& s, std::vector<int>& endLast){
 	if (s.QualifLostTime[f][i] >= Cmax) s.QualifLostTime[f][i] = std::numeric_limits<int>::max();
       }
   }
+  
   return 0;
 }
 
 int interChange(const Problem& P, Solution &s, std::vector<int>& endLast){
-  int k, m, i, j;
+  int k, i, j;
   std::sort(s.S.begin(), s.S.end());
-  //std::vector<int> moved(P.N, 0);
-  for (k = 0; k < P.M; ++k){
-    if (s.getNbJobsOn(k) > 1){// pour chaque machine
+  for (k = 0; k < P.M; ++k){// pour chaque machine
+    if (s.getNbJobsOn(k) > 1){
       bool update;
       do {// tant qu'on fait un move
 	update = false;
 	// recuperer la derniere tache sur k (si il y en a une)
 	if ((j = getLastOn(P, s, k, endLast[k])) != P.N){
-	  int firstOfLast = getBeginOfLasts(P, s, k, j);
+	  int firstOfLast = getBeginOfLasts(P, s, j);
 	  int machineSelected = -1;
-	  for (m = 0; m < P.M; ++m){
-	    if (P.isQualif(s.S[j].index, m) && k != m){// sur quelle machine je la met...
-	      i = 0;
-	      while (i < P.N){
-		if (s.S[i].machine == m && P.famOf[s.S[i].index] == P.famOf[s.S[j].index]) { //...et avec quelle tache
-		  if (!addDisqualif(P, s, i, firstOfLast, m, k, j - firstOfLast + 1) && !addCompletion(P, s.S[i].index, j - firstOfLast + 1, k, m, endLast)){
-		    ((machineSelected == -1 || endLast[m] < endLast[machineSelected]) ?
-		     machineSelected = m : machineSelected = machineSelected);
-		    i = P.N; //break while
-		  }
-		}
-		++i;
-	      }
-	    }
-	  }
-	  if (machineSelected != - 1) {
+	  int jobSelected = -1;
+
+	  findJobMachineMatch(P,s,k,j,firstOfLast,endLast,machineSelected,jobSelected);
+	
+	  if (machineSelected != - 1 && jobSelected != -1) {
 	    update = true;
-	    //moved[s.S[j].index] = 1;
-	    updateTime(P, s, i, j, firstOfLast, k, machineSelected, endLast);
+	    updateTime(P, s, jobSelected, j, firstOfLast, k, machineSelected, endLast);
 	    std::sort(s.S.begin(), s.S.end());
 	  }
 	}
       } while (update);
     }
-
+    
     int Cmax = s.getMaxEnd(P);
     for (int f = 0; f < P.getFamilyNumber(); ++f)
       for (i = 0; i < P.M; ++i){
@@ -239,6 +232,24 @@ int interChange(const Problem& P, Solution &s, std::vector<int>& endLast){
       }
   }
   return 0;
+}
+
+void findJobMachineMatch(const Problem& P, const Solution& s, int k, int j, int firstOfLast, const std::vector<int>& endLast, int& machineSelected, int& jobSelected){
+  for (int m = 0; m < P.M; ++m){
+    if (P.isQualif(s.S[j].index, m) && k != m){// sur quelle machine je la met...
+      int i = 0;
+      while (i < P.N){
+	if (s.S[i].machine == m && P.famOf[s.S[i].index] == P.famOf[s.S[j].index])  //...et avec quelle tache
+	  if (!addDisqualif(P, s, i, firstOfLast, m, k, j - firstOfLast + 1)
+	      && !addCompletion(P, s.S[i].index, j - firstOfLast + 1, k, m, endLast)) 
+	    if (machineSelected == -1 || endLast[m] < endLast[machineSelected]) {
+	      jobSelected = i;
+	      machineSelected = m ;
+	    }
+	++i;
+      }
+    }
+  }
 }
 
 int addCompletion(const Problem& P, const int& i, const int& nbJobs, const int& k, const int& m, std::vector<int> endLast){
@@ -252,38 +263,28 @@ int getLastOn(const Problem& P, const Solution& s, const int& k, const int& t){
   return i;
 }
 
-int getBeginOfLasts(const Problem& P, const Solution& s, const int& k, const int &last){
+int getBeginOfLasts(const Problem& P, const Solution& s, const int &last){
   int i = last;
   while (i >= 0 && P.famOf[s.S[i].index] == P.famOf[s.S[last].index])
     --i;
   return i + 1;
 }
 
+
 // i sur machine m ; j sur machine k
-int addDisqualif(const Problem& P, const Solution& s, const int& i, const int &j, const int& m, const int & k, const int& nbJobs){
-  int cur;
+int addDisqualif(const Problem& P, const Solution& s, const int& i, const int &j, const int& m,
+		 const int & k, const int& nbJobs){
   const int F = P.getFamilyNumber();
   std::vector<int> firstOccAfter(F, P.N);
   std::vector<int> lastOccBef(F, -1);
+  
   //adding j on m add a disqualif? 
 
   //compute last occurence of each familiy before i on m
-  for (cur = 0; cur < P.N; ++cur)
-    if (s.S[cur].machine == m && s.S[cur].start < s.S[i].start){
-      if (lastOccBef[P.famOf[s.S[cur].index]] == -1)
-	lastOccBef[P.famOf[s.S[cur].index]] = cur;
-      else if (s.S[lastOccBef[P.famOf[s.S[cur].index]]].start < s.S[cur].start)
-	lastOccBef[P.famOf[s.S[cur].index]] = cur;
-    }
+  computeLastOccBefore(P,s,m,i,lastOccBef);
   //compute first occurence of each familiy after i on m
-  for (cur = 0; cur < P.N; ++cur){
-    if (s.S[cur].machine == m && s.S[cur].start > s.S[i].start){
-      if (firstOccAfter[P.famOf[s.S[cur].index]] == P.N)
-	firstOccAfter[P.famOf[s.S[cur].index]] = cur;
-      else if (s.S[firstOccAfter[P.famOf[s.S[cur].index]]].start > s.S[cur].start)
-	firstOccAfter[P.famOf[s.S[cur].index]] = cur;
-    }
-  }
+  computeFirstOccAfter(P,s,m,i,firstOccAfter);
+  
   //we just have two check if the "qualification" still holds between the last occ
   //of f before i and the first one after i
   for (int f = 0; f < F; ++f){
@@ -301,7 +302,8 @@ int addDisqualif(const Problem& P, const Solution& s, const int& i, const int &j
     }
   }
   //removing j on k add a disqualif?
-  for (cur = 0; cur < P.N; ++cur){
+  lastOccBef[P.famOf[s.S[j].index]]=-1;
+  for (int cur = 0; cur < P.N; ++cur){
     if (j != cur && P.famOf[s.S[j].index] == P.famOf[s.S[cur].index] && s.S[cur].machine == k && s.S[cur].start < s.S[j].start){
       if (lastOccBef[P.famOf[s.S[cur].index]] == -1)
 	lastOccBef[P.famOf[s.S[cur].index]] = cur;
@@ -309,32 +311,67 @@ int addDisqualif(const Problem& P, const Solution& s, const int& i, const int &j
 	lastOccBef[P.famOf[s.S[cur].index]] = cur;
     }
   }
+  int Cmax = 0;
+  if (k == m ) Cmax = s.getMaxEnd(P);
+  else{
+    for (int l = 0 ; l < P.M ; ++l){
+      if ( l == k ) Cmax = std::max (Cmax,  s.getRealEnd(P,k) - nbJobs * P.getDuration(s.S[i].index));
+      else if (l == m) Cmax = std::max (Cmax, s.getRealEnd(P,m) + nbJobs* P.getDuration(s.S[i].index));
+      else Cmax = std::max(Cmax, s.getRealEnd(P,l));
+    }
+  }
   if (lastOccBef[P.famOf[s.S[j].index]] == -1){
-    if (P.F[P.famOf[s.S[j].index]].threshold > s.getMaxEnd(P))
+    if (P.F[P.famOf[s.S[j].index]].threshold < Cmax )
       return 1;
   }
-  else if (s.S[lastOccBef[P.famOf[s.S[j].index]]].start + P.F[P.famOf[s.S[j].index]].threshold < s.getMaxEnd(P))
+  else if (s.S[lastOccBef[P.famOf[s.S[j].index]]].start + P.F[P.famOf[s.S[j].index]].threshold < Cmax)
     return 1;
   return 0;
 }
 
+
+void computeLastOccBefore(const Problem& P, const Solution& s, int m, int i, std::vector<int>& lastOccBef){
+  for (int cur = 0; cur < P.N; ++cur)
+    if (s.S[cur].machine == m && s.S[cur].start < s.S[i].start){
+      if (lastOccBef[P.famOf[s.S[cur].index]] == -1)
+	lastOccBef[P.famOf[s.S[cur].index]] = cur;
+      else if (s.S[lastOccBef[P.famOf[s.S[cur].index]]].start < s.S[cur].start)
+	lastOccBef[P.famOf[s.S[cur].index]] = cur;
+    }
+}
+
+void computeFirstOccAfter(const Problem& P, const Solution& s, int m, int i, std::vector<int>& firstOccAfter){
+  for (int cur = 0; cur < P.N; ++cur){
+    if (s.S[cur].machine == m && s.S[cur].start > s.S[i].start){
+      if (firstOccAfter[P.famOf[s.S[cur].index]] == P.N)
+	firstOccAfter[P.famOf[s.S[cur].index]] = cur;
+      else if (s.S[firstOccAfter[P.famOf[s.S[cur].index]]].start > s.S[cur].start)
+	firstOccAfter[P.famOf[s.S[cur].index]] = cur;
+    }
+  }
+}
+
 int updateTime(const Problem& P, Solution& s, const int& i, const int& j, const int& firstOfLast,
 	       const int& k, const int &m, std::vector<int>& endLast){
-  int cur = 0; int nbJobs = j - firstOfLast + 1;
+  int cur = 0;
+  int nbJobs = j - firstOfLast + 1;
   std::vector<int> update(P.getFamilyNumber(), 0);
   s.S[firstOfLast].start = s.S[i].start + P.getDuration(s.S[i].index);
   s.S[firstOfLast].machine = m;
+  // ???
   for (cur = firstOfLast + 1; cur <= j; ++cur){
     s.S[cur].start = s.S[cur - 1].start + P.getDuration(s.S[cur - 1].index);
     s.S[cur].machine = m;
   }
+
   cur = 0;
   endLast[m] += nbJobs * P.getDuration(s.S[j].index);
   endLast[k] = 0;
   while (cur < P.N){
     // shift all the task after j by nbJobs * p_j on m
-    if (s.S[cur].machine == m && s.S[cur].start >  s.S[j].start){
-      s.S[cur].start += nbJobs * P.getDuration(s.S[j].index);
+    if (s.S[cur].machine == m && s.S[cur].start >=  s.S[firstOfLast].start){
+      if (firstOfLast > cur || cur > j) 
+	s.S[cur].start += nbJobs * P.getDuration(s.S[j].index);
       if (s.QualifLostTime[P.famOf[s.S[cur].index]][m] < std::numeric_limits<int>::max() && !update[P.famOf[s.S[cur].index]]){
 	update[P.famOf[s.S[cur].index]] = 1;
 	s.QualifLostTime[P.famOf[s.S[cur].index]][m] += nbJobs * P.getDuration(s.S[j].index);
