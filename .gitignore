@@ -63,8 +63,13 @@ Thumbs.db
 *.swn
 *.*~
 
+# IDE   #
+#########
+.project
+.oplproject
 
 # other #
 #########
 *.aux
 *.
+

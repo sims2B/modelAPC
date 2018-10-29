@@ -49,7 +49,7 @@ int qualifications[F][M] = ...;
 // Scheduling horizon
 //TODO Compute upper bound
 int cmaxLB = ( nbM - 1 + sum(f in F) fsizes[f] * durations[f]) div nbM;
-int cmaxUB = sum(f in F) fsizes[f] * (durations[f] + max (f1 in F) setups[f][f1]);
+int cmaxUB = sum(f in F) fsizes[f] * (durations[f] + max(e in F) setups[f][e]);
 range H = 0..cmaxUB;
 range HQ = 0..cmaxUB+max(f in F) thresholds[f];
 //TODO Write a test case with a single machine 
@@ -165,6 +165,7 @@ subject to {
  			forall(j in JF[f].s+nbM..JF[f].e) {
  				 	// Total ordering of jobs that cannot be executed in parallel.
  				 	// Indeed, there are at least nbM-1 jobs between them.
+ 				 	//TODO Improve by using the exact number of machines for which the family is qualified for
  				 	endBeforeStart(jobs[j-nbM], jobs[j]);	
  			}				
  		}

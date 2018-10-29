@@ -1,0 +1,15 @@
+nbM=2;
+nbF=3;
+fsizes=[ 2, 3, 5 ];
+durations=[ 8, 6, 2 ];
+thresholds=[ 43, 41, 38 ];
+setups=[
+[ 0, 1, 1 ],
+[ 1, 0, 1 ],
+[ 2, 2, 0 ]
+];
+qualifications=[
+[ 1, 0 ],
+[ 1, 1 ],
+[ 1, 1 ]
+];
