@@ -9,7 +9,9 @@ MKDIR=@mkdir -p
 RM=@rm
 CP=@cp
 
-CPLEXDIR = /home/mnattaf/Library/CPLEX_128/
+#CPLEXDIR = /home/mnattaf/Library/CPLEX_128/
+CPLEXDIR=$(CPX_PATH)
+
 RELEASE_DIR=${HOME}/local
 DEBUG=0#enable to provide debug infos
 
