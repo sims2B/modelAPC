@@ -24,6 +24,8 @@ int setups[F][F] = ...;
  
 // qualification of machines for processing a family
 int qualifications[F][M] = ...;
+int qualifCount[f in F] = sum(m in M) qualifications[f][m];
+
 
  // Number of jobs
  int nbJ = sum(f in F) fsizes[f];
@@ -162,11 +164,11 @@ subject to {
  				startBeforeStart(jobs[j], jobs[j-1], -thresholds[f]);	
  				 			
  			}
- 			forall(j in JF[f].s+nbM..JF[f].e) {
+ 			forall(j in JF[f].s+qualifCount[f]..JF[f].e) {
  				 	// Total ordering of jobs that cannot be executed in parallel.
- 				 	// Indeed, there are at least nbM-1 jobs between them.
- 				 	//TODO Improve by using the exact number of machines for which the family is qualified for
- 				 	endBeforeStart(jobs[j-nbM], jobs[j]);	
+ 				 	// Indeed, there are at least Mf jobs between them.
+ 				 	// Mf is the number of machines for which the job is qualified.
+ 				 	endBeforeStart(jobs[j-qualifCount[f]], jobs[j]);	
  			}				
  		}
  		

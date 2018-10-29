@@ -8,10 +8,5 @@ module load Ilog
 OPLOPTS=""
 INST=`basename $2 -opl.dat`
 echo "i "$INST
-oplrun $OPLOPTS $1 $2
+oplrun $OPLOPTS schedAPC.mod $1 $2
 
-# config=`mktemp --tmpdir torpedo_XXXX.dat`
-# echo "configPath=\"$1\";" > $config
-# echo "instancePath=\"$2\";" >> $config
-# oplrun torpedo-2-stages-scheduling.mod $config
-# rm $config
