@@ -25,7 +25,7 @@ CPPFLAGS=-I./header/ \
 	 -I../../Heuristics/SCH/header/ \
 	 -I../../Heuristics/QCH/header/ \
 	 -I$(CPLEXDIR)opl/include \
-	 -std=c++11 -m64 -fPIC -DIL_STD -O1 -DNDEBUG -march=native -Wall -Werror -DILOUSEMT -D_REENTRANT
+	 -std=c++11 -m64 -fPIC -DIL_STD -O1 -DNDEBUG -march=native -Wall -Werror -DILOUSEMT -D_REENTRANT -Wno-ignored-attributes
 
 DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 

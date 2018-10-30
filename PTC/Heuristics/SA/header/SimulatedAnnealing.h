@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <tuple>
+#include <random>
 
 #ifndef ALPHA
 #define alpha 1
