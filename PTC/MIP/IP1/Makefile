@@ -23,7 +23,7 @@ CPPFLAGS= -I./header/ \
 -I../../Problem/header/ \
 -I$(CPLEXDIR)cplex/include \
 -I$(CPLEXDIR)concert/include \
--std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD 
+-std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD -Wno-ignored-attributes
 
 DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 

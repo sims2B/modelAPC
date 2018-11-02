@@ -30,7 +30,7 @@
   find . -name Makefile -execdir make \;
 #+END_SRC
 
-*** On my Fedora 27, only PTC/MIP compiles
+*** On my Fedora 27, PTC/MIP compiles.
 #+BEGIN_EXAMPLE
 > g++ --version
 g++ (GCC) 7.3.1 20180712 (Red Hat 7.3.1-6)
@@ -39,7 +39,7 @@ Ce logiciel est un logiciel libre; voir les sources pour les conditions de copie
 AUCUNE GARANTIE, pas même pour la COMMERCIALISATION ni L'ADÉQUATION À UNE TÂCHE PARTICULIÈRE.
 #+END_EXAMPLE
 
-*** PCT/CP: compile if the flag ~-Wno-ignored-attributes~ is added to the Makefiles ?
+*** PCT/CP compiles if the flag ~-Wno-ignored-attributes~ is added to the Makefiles ?
 #+BEGIN_EXAMPLE
 > find PTC/CP/ -name Makefile -execdir make \;
 g++  -I./header/ -I../../Problem/header/ -I../../Heuristics/SCH/header/ -I../../Heuristics/QCH/header/ -I/opt/ibm/ILOG/CPLEX_Studio128/opl/include -std=c++11 -m64 -fPIC -DIL_STD -O1 -DNDEBUG -march=native -Wall -Werror -DILOUSEMT -D_REENTRANT  -c -o source/schedAPC.o source/schedAPC.cpp
