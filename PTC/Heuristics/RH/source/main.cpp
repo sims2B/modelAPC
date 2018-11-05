@@ -23,7 +23,7 @@ int main(int, char* argv[]){
   heuristic = QCH;
 
   Clock::time_point t1 = Clock::now();
-  int solved = RH(P, s, heuristic);
+  bool solved = RH(P, s, heuristic);
   Clock::time_point t2 = Clock::now();
   std::chrono::duration<double> duration =
     std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);

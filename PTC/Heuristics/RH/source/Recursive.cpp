@@ -3,6 +3,18 @@
 #include <cmath>
 #include <limits>
 
+int displayCVS(const Problem& P, const Solution& s, bool& solved){
+  if (solved){
+    std::cout << "1;";
+    std::cout << s.getWeigthedObjectiveValue(P, alpha_C, beta_Y) << ";"
+	      << s.getSumCompletion(P) << ";"
+	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
+	      << s.getNbSetup(P);
+  }
+  else
+    std::cout << "0; ; ; ; ; ";
+  return 0;
+}
 
 std::vector<bool> convert(int x, int size);
 // !!! ajouté les disqualifications à la solution, i.e. QualifLostTime?? !!!

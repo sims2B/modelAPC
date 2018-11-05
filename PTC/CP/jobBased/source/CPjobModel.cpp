@@ -1,10 +1,11 @@
 #include "CPjobModel.h"
+#include "paramModelAPC.h"
+#include "utils.h"
 #include <algorithm>
 
 int CP::solve(const Problem& P, Solution & s){
   IloEnv env;
-  IloNum bestObj, timeBest;
-  int  solved = 0;
+  Clock::time_point startTime = Clock::now();
   try{
     IloModel model(env);
     
@@ -14,44 +15,36 @@ int CP::solve(const Problem& P, Solution & s){
     IloIntervalSequenceVarArray mchs(env, P.M);
     createModel(P, env, model, masterTask, altTasks, disqualif, mchs);
     IloCP cp(model);
-    cp.exportModel("model.cpo");
+
     if (withCPStart){
-      Solution s2(P);
-      if (heuristique(P, s2)){
-	
-	std::cout << P.toString() << s2.toString(P);
+      Solution solSCH(P);
+      if (SCH(P, solSCH)){
 	IloSolution sol(env);
-	solToModel(P, s2, masterTask, altTasks, disqualif, masterTask[P.N], sol);
+	solToModel(P, solSCH, masterTask, altTasks, disqualif, masterTask[P.N], sol);
 	cp.setStartingPoint(sol);
-	//std::cout << "sol used\n";
+	sol.end();
       }
+      Solution solQCH(P);
+      if (QCH(P, solQCH)){
+	IloSolution sol(env);
+	solToModel(P, solQCH, masterTask, altTasks, disqualif, masterTask[P.N], sol);
+	cp.setStartingPoint(sol);
+	sol.end();
+      }      
     }
     
-    //    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
-    //solve!
-    cp.startNewSearch();
-    while (cp.next()){
-      if (!solved || bestObj > cp.getObjValue()){
-	bestObj = cp.getObjValue();
-	timeBest = cp.getInfo(IloCP::SolveTime);
-      }
-      solved = 1;
+
+    if (cp.solve()){
+      //printSol(P,cp,altTasks,disqualif);
+      modelToSol(P, s, cp, altTasks, disqualif);
+      displayCPAIOR(P, s, cp, startTime,1);
     }
-    if (solved){
-      int ret = //printSol(P,cp,altTasks,disqualif)||
-	modelToSol(P, s, cp, altTasks, disqualif)
-	|| displayCVS(P, s, cp, bestObj, timeBest);
-      env.end();
-      return ret;
-    }
-    else if (cp.getStatus() == IloAlgorithm::Infeasible){
-      int ret = displayCVS(P, s, cp, bestObj, timeBest);
-      env.end();
-      return ret;
-    }
+    else displayCPAIOR(P, s, cp, startTime,0);
+    env.end();
+  return 0;
   }
-  
   catch (IloException &e){
     std::cout << "Iloexception in solve" << e << std::endl;
   }
@@ -62,7 +55,6 @@ int CP::solve(const Problem& P, Solution & s){
   return 1;
 }
 
-int toto(Problem, Solution&){ return 1; }
 int modelToSol(const Problem& P, Solution& s, const IloCP& cp,
 	       const IloIntervalVarMatrix& altTasks,
 	       const IloIntervalVarMatrix& disqualif){
@@ -107,7 +99,7 @@ int solToModel(const Problem& P, const Solution& s,
   s2.reaffectId(P);
   std::sort(s2.S.begin(), s2.S.end(), idComp);
   
-  std::cout << s2.toString(P);
+  //std::cout << s2.toString(P);
   //masterTask
   for (int i = 0; i < P.N; ++i)
     sol.setStart(masterTask[s2.S[i].index], s2.S[i].start);
@@ -139,6 +131,38 @@ int solToModel(const Problem& P, const Solution& s,
       }
   }
   return 0;
+}
+
+int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::time_point t1, int solved){
+  Clock::time_point t2 = Clock::now();
+  
+  std::cout << "s "  << cp.getStatus() << std::endl;
+  
+  std::cout << "d WCTIME " <<  cp.getInfo(IloCP::SolveTime) << "\n";
+
+  std::chrono::duration<double> duration =
+    std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+  std::cout << "d RUNTIME "<< duration.count() << "\n";
+  if (solved){
+  std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
+  std::cout << "d FLOWTIME " << s.getSumCompletion(P) << "\n";
+  std::cout << "d DISQUALIFIED "<< s.getRealNbDisqualif(P) << "\n";
+  std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
+  std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
+  std::cout << "d VALIDE "<< s.isValid(P) << "\n";
+  }
+  std::cout << "d NBSOLS "  <<  cp.getInfo(IloCP::NumberOfSolutions)<< "\n";
+  std::cout << "d BRANCHES " <<  cp.getInfo(IloCP::NumberOfBranches) << "\n";
+  std::cout << "d FAILS "  <<  cp.getInfo(IloCP::NumberOfFails)<< "\n";
+  std::cout << "c VARIABLES " <<  cp.getInfo(IloCP::NumberOfVariables) << "\n";
+  std::cout << "c CONSTRAINTS " <<  cp.getInfo(IloCP::NumberOfConstraints) << "\n";
+  std::cout << "c MACHINES "<< P.M << "\n";
+  std::cout << "c FAMILIES "<< P.getFamilyNumber() << "\n";
+  std::cout << "c JOBS "<<P.N << "\n";
+
+  std::cout << std::endl;
+  s.toTikz(P);
+ return 0;
 }
 
 int printSol(const Problem& P, const IloCP& cp, const IloIntervalVarMatrix& altTasks,
@@ -196,10 +220,11 @@ int createVariables(const Problem& P, IloEnv& env, IloIntervalVarArray& masterTa
   const int n = P.N;
   const int m = P.M;
   const int T = P.computeHorizon();
-  char name[10];
+  char name[27];
   
   for (i = 0; i < n; ++i){
-    snprintf(name, 10, "master_%d", (int)i);
+    snprintf(name, 27, "master_%d",i);
+    //  masterTask[i].setName(name);
     masterTask[i] = IloIntervalVar(env, name);
     masterTask[i].setEndMax(T);
   }
@@ -211,7 +236,7 @@ int createVariables(const Problem& P, IloEnv& env, IloIntervalVarArray& masterTa
     for (i = 0; i < n; ++i)
       if (P.isQualif(i, j)){
 	IloIntervalVar alt(env, P.getDuration(i));
-	snprintf(name, 10,"alt_%d_%d", (int)j, (int)i);
+	snprintf(name, 27, "alt_%d_%d", j, i);
 	alt.setName(name);
 	alt.setOptional();
 	altTasks[j].add(alt);
@@ -224,7 +249,6 @@ int createVariables(const Problem& P, IloEnv& env, IloIntervalVarArray& masterTa
     for (i = 0; i < n; ++i){
       if (P.isQualif(i, j)){
 	types[cpt] = P.famOf[i];
-	//	std::cout << "type of " << altTasks[j][cpt].getName()<< " = " << types[cpt]<< std::endl;
 	cpt++;
       }
     }
@@ -236,7 +260,7 @@ int createVariables(const Problem& P, IloEnv& env, IloIntervalVarArray& masterTa
     for (i = 0; i < P.getFamilyNumber(); ++i)
       if (P.F[i].qualif[j]){
 	IloIntervalVar qual(env, (IloInt)0);
-	snprintf(name,10, "disQ_%d_%d", (int)j, (int)i);
+	snprintf(name,27, "disQ_%d_%d", j,i);
 	qual.setName(name);
 	qual.setOptional();
 	disqualif[j].add(qual);
@@ -249,12 +273,10 @@ int createObjective(const Problem& P, IloEnv& env, IloModel& model,
 		    IloIntervalVarArray& masterTask, IloIntervalVarMatrix& disqualif){
   IloInt i;
   IloIntExprArray ends(env);
-  IloNumExprArray objs(env);
   
   //1 completion time
   for (i = 0; i < P.N; ++i)
     ends.add(IloEndOf(masterTask[i]));
-  objs.add(IloSum(ends));
   
   //2 disqualif
   IloIntExprArray disQ(env);
@@ -266,16 +288,27 @@ int createObjective(const Problem& P, IloEnv& env, IloModel& model,
 	Jcpt++;
       }
   }
-  objs.add(IloSum(disQ));
   
+  if (!weighted){
+  IloNumExprArray objs(env);
+  if (prioFlow){
+    objs.add(IloSum(ends));
+    objs.add(IloSum(disQ));
+  }
+  else{
+    objs.add(IloSum(disQ));
+    objs.add(IloSum(ends));
+  }
+    
   IloMultiCriterionExpr myObj = IloStaticLex(env, objs);
   model.add(IloMinimize(env, myObj));
-  //model.add(IloMinimize(env, alpha * IloSum(ends) + beta *
-  //			IloSum(disQ)));
+  objs.end();
+  }
+  else
+    model.add(IloMinimize(env, alpha_C * IloSum(ends) + beta_Y * IloSum(disQ)));
   
   ends.end();
   disQ.end();
-  objs.end();
   return 0;
 }
 
@@ -406,3 +439,13 @@ int createConstraints(const Problem& P, IloEnv& env, IloModel& model,
 }
 
 
+
+//solve!
+    /*cp.startNewSearch();
+      while (cp.next()){
+      if (!solved || bestObj > cp.getObjValue()){
+      bestObj = cp.getObjValue();
+      //	timeBest = cp.getInfo(IloCP::SolveTime);
+      }
+      solved = 1;
+      }*/

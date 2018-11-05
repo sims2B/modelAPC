@@ -1,6 +1,6 @@
 
 #include "CPjobModel.h"
-
+#include "utils.h"
 using namespace CP;
 
 
@@ -10,11 +10,11 @@ int main(int,char* argv[]){
   Problem P = readFromFile(instance);
   instance.close();
   //std::cout << P.toString();
-  std::cout << P.N << ";" << P.M << ";" << P.getFamilyNumber() << ";";
+  std::cout << "i " << getBasename(argv[1]) << std::endl;
   Solution s(P);
-  if (solve(P, s)){
-    std::cout << time_limit << ";0; ; ; ; ; ; ; \n";
-    }
+
+  solve(P, s);
+  
   /*std::cout << s.toString(P);
     s.toTikz(P);*/
 	

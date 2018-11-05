@@ -21,6 +21,7 @@ LDFLAGS=-L$(CPLEXDIR)opl/lib/x86-64_linux/static_pic \
 	-L$(CPLEXDIR)opl/bin/x86-64_linux/ 
 LDLIBS=-lopl -liljs -loplnl1 -lilocplex  -lcp -lconcert -lcplex1280 -licuuc -licui18n -licuio -licudata -lpthread -ldl  
 CPPFLAGS=-I./header/ \
+	 -I../../../util/header/ \
 	 -I../../Problem/header/ \
 	 -I../../Heuristics/SCH/header/ \
 	 -I../../Heuristics/QCH/header/ \
@@ -32,7 +33,8 @@ DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 
 ### PROPERTIES ########################################
 PROJECTNAME=bin/schedAPC
-SRCS=../../Problem/source/Assignment.cpp \
+SRCS=../../../util/source/utils.cpp \
+../../Problem/source/Assignment.cpp \
 ../../Problem/source/Family.cpp \
 ../../Problem/source/Problem.cpp \
 ../../Problem/source/Solution.cpp \

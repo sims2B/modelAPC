@@ -24,6 +24,7 @@ CPPFLAGS= -I./header/ \
 	  -I../../Problem/header/ \
 	  -I../../Heuristics/SCH/header/ \
 	  -I../../Heuristics/QCH/header/ \
+	  -I../../../util/header/ \
 	  -I$(CPLEXDIR)cpoptimizer/include \
 	  -I$(CPLEXDIR)concert/include \
 	  -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD -Wno-ignored-attributes
@@ -33,7 +34,8 @@ DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 
 ### PROPERTIES ########################################
 PROJECTNAME=bin/modelCP1
-SRCS=../../Problem/source/Family.cpp \
+SRCS=../../../util/source/utils.cpp\
+     ../../Problem/source/Family.cpp \
      ../../Problem/source/Problem.cpp \
      ../../Problem/source/Assignment.cpp \
      ../../Problem/source/Solution.cpp \

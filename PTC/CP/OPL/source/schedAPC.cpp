@@ -4,6 +4,7 @@
 int solve(const Problem& P, Solution& s){
   IloEnv env;
 
+  Clock::time_point startTime = Clock::now();
   int status = 127;
   try {
     IloOplErrorHandler handler(env,std::cout);
@@ -16,27 +17,21 @@ int solve(const Problem& P, Solution& s){
     IloOplDataSource dataSource(&ds);
     opl.addDataSource(dataSource);
     opl.generate();
+    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
-
     if (withCPStart){
-      Solution s2(P);
-      if (heuristique(P,s2))
-	solToModel(P,s2,env,opl,cp);
+      Solution solSCH(P);
+      if (SCH(P, solSCH)) solToModel(P, solSCH, env,opl,cp);
+      Solution solQCH(P);
+      if (QCH(P, solQCH)) solToModel(P, solQCH, env,opl,cp);
     }
-    
-    if ( cp.solve()){
+    if (cp.solve()){
       IloOplElement elmt = opl.getElement("mjobs");
       modelToSol(P,s,env,cp,elmt);
-      //std::cout << std::endl 
-      //    << "OBJECTIVE: "  << opl.getCP().getObjValue() 
-      //    << std::endl;
-      opl.postProcess();
-      //      opl.printSolution(std::cout);
-      status = 0;
-    } else {
-      std::cout << "No solution!" << std::endl;
-      status = 1;
+      displayCPAIOR(P, s, cp, startTime,1);
     }
+    else displayCPAIOR(P, s, cp, startTime,0);
+    status = 0;
   } catch (IloOplException & e) {
     std::cout << "### OPL exception: " << e.getMessage() << std::endl;
   } catch( IloException & e ) {
@@ -51,6 +46,39 @@ int solve(const Problem& P, Solution& s){
   env.end();
     
   return status;
+}
+
+
+int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::time_point t1, int solved){
+  Clock::time_point t2 = Clock::now();
+  
+  std::cout << "s "  << cp.getStatus() << std::endl;
+  
+  std::cout << "d WCTIME " <<  cp.getInfo(IloCP::SolveTime) << "\n";
+
+  std::chrono::duration<double> duration =
+    std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+  std::cout << "d RUNTIME "<< duration.count() << "\n";
+  if (solved){
+  std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
+  std::cout << "d FLOWTIME " << s.getSumCompletion(P) << "\n";
+  std::cout << "d DISQUALIFIED "<< s.getRealNbDisqualif(P) << "\n";
+  std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
+  std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
+  std::cout << "d VALIDE "<< s.isValid(P) << "\n";
+  }
+  std::cout << "d NBSOLS "  <<  cp.getInfo(IloCP::NumberOfSolutions)<< "\n";
+  std::cout << "d BRANCHES " <<  cp.getInfo(IloCP::NumberOfBranches) << "\n";
+  std::cout << "d FAILS "  <<  cp.getInfo(IloCP::NumberOfFails)<< "\n";
+  std::cout << "c VARIABLES " <<  cp.getInfo(IloCP::NumberOfVariables) << "\n";
+  std::cout << "c CONSTRAINTS " <<  cp.getInfo(IloCP::NumberOfConstraints) << "\n";
+  std::cout << "c MACHINES "<< P.M << "\n";
+  std::cout << "c FAMILIES "<< P.getFamilyNumber() << "\n";
+  std::cout << "c JOBS "<<P.N << "\n";
+
+  std::cout << std::endl;
+  s.toTikz(P);
+ return 0;
 }
 
 

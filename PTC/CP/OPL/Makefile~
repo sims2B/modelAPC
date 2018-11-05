@@ -9,25 +9,36 @@ MKDIR=@mkdir -p
 RM=@rm
 CP=@cp
 
+CPLEXDIR = /home/mnattaf/Library/CPLEX_128/
+
 RELEASE_DIR=${HOME}/local
 DEBUG=0#enable to provide debug infos
 
+
 ### FLAGS #############################################
-LDFLAGS= -L/home/mnattaf/Library/CPLEX_1271/cpoptimizer/lib/x86-64_linux/static_pic -L/home/mnattaf/Library/CPLEX_1271/cplex/lib/x86-64_linux/static_pic -L/home/mnattaf/Library/CPLEX_1271/concert/lib/x86-64_linux/static_pic
-LDLIBS= -lcp  -lilocplex -lcplex -lconcert -lm -pthread
-CPPFLAGS= -I./header/ -I/home/mnattaf/Dev/PTC/Problem/header/ -I/home/mnattaf/Library/CPLEX_1271/cpoptimizer/include -I/home/mnattaf/Library/CPLEX_1271/concert/include -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD 
+LDFLAGS=-L$(CPLEXDIR)opl/lib/x86-64_linux/static_pic \
+	-L$(CPLEXDIR)opl/bin/x86-64_linux/ 
+LDLIBS=-lopl -liljs -loplnl1 -lilocplex  -lcp -lconcert -lcplex1280 -licuuc -licui18n -licuio -licudata -lpthread -ldl  
+CPPFLAGS=-I./header/ \
+	 -I../../Problem/header/ \
+	 -I../../Heuristics/SCH/header/ \
+	 -I../../Heuristics/QCH/header/ \
+	 -I$(CPLEXDIR)opl/include \
+	 -std=c++11 -m64 -fPIC -DIL_STD -O1 -DNDEBUG -march=native -Wall -Werror -DILOUSEMT -D_REENTRANT
 
 DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 
 
 ### PROPERTIES ########################################
-PROJECTNAME=bin/modelCP1
-SRCS=~/Dev/PTC/Problem/source/Family.cpp \
-      ~/Dev/PTC/Problem/source/Problem.cpp \
-      ~/Dev/PTC/Problem/source/Assignment.cpp \
-      ~/Dev/PTC/Problem/source/Solution.cpp \
-	./source/CPjobModel.cpp \
-	./source/main.cpp
+PROJECTNAME=bin/schedAPC
+SRCS=../../Problem/source/Assignment.cpp \
+../../Problem/source/Family.cpp \
+../../Problem/source/Problem.cpp \
+../../Problem/source/Solution.cpp \
+../../Heuristics/SCH/source/SchedulingCentric.cpp \
+../../Heuristics/QCH/source/QualifCentric.cpp \
+./source/schedAPC.cpp \
+./source/main.cpp
 ### PREPROCESSING #####################################
 
 ifeq (${DEBUG},1)
