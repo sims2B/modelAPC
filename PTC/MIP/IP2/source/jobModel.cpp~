@@ -1,6 +1,0 @@
-
-int solve(const Problem&, Solution);
-int modelToSol();
-int createModel();
-int createVariable();
-itn createConstraints();
