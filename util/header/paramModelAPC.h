@@ -23,7 +23,7 @@
 //beta = nbJob.Cmax (borne sup sur Cmax)
 
 // lexico 
-#define prioFlow 1 // ordre pour le lexico ( 1 => flow ; 0 => disqualif)
+#define prioFlow 0 // ordre pour le lexico ( 1 => flow ; 0 => disqualif)
 
 #define pathToOPL "/home/nattafm/Dev/PTC/CP/OPL/schedAPC.mod"
 

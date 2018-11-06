@@ -112,7 +112,7 @@ int displayCPAIOR(const Problem& P, const Solution& s, const IloCplex& cplex,  C
   std::cout << "c JOBS "<<P.N << "\n";
 
   std::cout << std::endl;
-  s.toTikz(P);
+  if (solved) s.toTikz(P);
  return 0;
 }
 

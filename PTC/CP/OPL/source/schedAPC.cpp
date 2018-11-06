@@ -5,7 +5,7 @@ int solve(const Problem& P, Solution& s){
   IloEnv env;
 
   Clock::time_point startTime = Clock::now();
-  int status = 127;
+  //int status = 127;
   try {
     IloOplErrorHandler handler(env,std::cout);
     IloOplModelSource modelSource(env, pathToOPL);
@@ -17,7 +17,7 @@ int solve(const Problem& P, Solution& s){
     IloOplDataSource dataSource(&ds);
     opl.addDataSource(dataSource);
     opl.generate();
-    //   cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
     if (withCPStart){
       Solution solSCH(P);
@@ -26,34 +26,38 @@ int solve(const Problem& P, Solution& s){
       if (QCH(P, solQCH)) solToModel(P, solQCH, env,opl,cp);
     }
     if (cp.solve()){
-  
-      std::cout << "s "  << cp.getStatus() << std::endl;
       IloOplElement elmt = opl.getElement("mjobs");
       modelToSol(P,s,env,cp,elmt);
       displayCPAIOR(P, s, cp, startTime,1);
     }
     else displayCPAIOR(P, s, cp, startTime,0);
-    status = 0;
+   return 0;
   } catch (IloOplException & e) {
     std::cout << "### OPL exception: " << e.getMessage() << std::endl;
   } catch( IloException & e ) {
     std::cout << "### exception: ";
     e.print(std::cout);
-    status = 2;
+    return  2;
   } catch (...) {
     std::cout << "### UNEXPECTED ERROR ..." << std::endl;
-    status = 3;
+    return 3;
   }
 
   env.end();
     
-  return status;
+  return 127;
 }
 
 
 int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::time_point t1, int solved){
   Clock::time_point t2 = Clock::now();
   
+  if (solved) {
+    if ( cp.getObjGap() >= -0.00001 && cp.getObjGap() <= 0.00001)
+      std::cout << "s OPTIMUM \n";
+    else std::cout << "s FEASIBLE\n";
+  }
+  else std::cout << "s " << cp.getStatus() << "\n";
   std::cout << "d WCTIME " <<  cp.getInfo(IloCP::SolveTime) << "\n";
 
   std::chrono::duration<double> duration =
@@ -78,7 +82,7 @@ int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::
   std::cout << "c JOBS "<<P.N << "\n";
 
   std::cout << std::endl;
-  s.toTikz(P);
+  if (solved) s.toTikz(P);
  return 0;
 }
 

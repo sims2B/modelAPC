@@ -37,7 +37,6 @@ int CP::solve(const Problem& P, Solution & s){
     cp.setParameter(IloCP::TimeLimit, time_limit);
 
     if (cp.solve()){
-  std::cout << "s "  << cp.getStatus() << std::endl;
       //printSol(P,cp,altTasks,disqualif);
       modelToSol(P, s, cp, altTasks, disqualif);
       displayCPAIOR(P, s, cp, startTime,1);
@@ -137,6 +136,12 @@ int solToModel(const Problem& P, const Solution& s,
 int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::time_point t1, int solved){
   Clock::time_point t2 = Clock::now();
   
+  if (solved) {
+    if ( cp.getObjGap() >= -0.00001 && cp.getObjGap() <= 0.00001)
+      std::cout << "s OPTIMUM \n";
+    else std::cout << "s FEASIBLE\n";
+  }
+  else std::cout << "s " << cp.getStatus() << "\n";
   
   std::cout << "d WCTIME " <<  cp.getInfo(IloCP::SolveTime) << "\n";
 
@@ -162,7 +167,7 @@ int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::
   std::cout << "c JOBS "<<P.N << "\n";
 
   std::cout << std::endl;
-  s.toTikz(P);
+  if (solved)   s.toTikz(P);
  return 0;
 }
 
