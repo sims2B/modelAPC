@@ -17,7 +17,7 @@ int main(int,char* argv[]){
     /*std::cout << s.toString(P);
       s.toTikz(P);*/
   }
-  else cout << "Unable to open file";
+  else std::cout << "Unable to open file";
   return 0;
 }
  
