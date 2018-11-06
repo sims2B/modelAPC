@@ -1,0 +1,39 @@
+#+SETUPFILE: ~/.emacs.d/org-templates/base.org
+#+TITLE:       Notes about the experimental protocol 
+#+DESCRIPTION: 
+#+KEYWORDS:    
+#+TEXT:        
+#+OPTIONS: H:2 num:nil toc:2
+#+LANGUAGE: en
+#+HTML_HEAD:    <link rel="stylesheet" type="text/css" href="http://www.i3s.unice.fr/~malapert/css/worg.min.css" />
+#+PROPERTY: exports results
+* Tasks                                                            :noexport:
+* Convert instances From TXT To OPL format
+
+* AWK Script : Extract Tikz  
+
+#+BEGIN_SRC awk :tangle toTikz.awk
+BEGIN{
+    tikz = 0;
+    print "\\documentclass{standalone}\n\\usepackage{pgfplots}\n\\usepackage{tikz}\n\\begin{document}"
+}{
+    if( $0 ~ /begin{tikzpicture}/) {tikz = 1}
+    if(tikz) {print $0}
+    if( $0 ~  /end{tikzpicture}/ ) {tikz = 0}
+}
+ END {
+     print "\\end{document}"
+ 
+ }
+#+END_SRC
+
+* Extract and Compile Tikz
+
+#+BEGIN_SRC sh
+    find -name '*.o' -exec sh -c 'awk -f toTikz.awk {} > {}.tex' \;
+    find -name '*.tex' -execdir latexmk {} \; 
+    find -name '*.tex' -execdir latexmk -c {} \; 
+#+END_SRC
+
+#+RESULTS:
+
