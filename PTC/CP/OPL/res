@@ -1,0 +1,278 @@
+i instance_20_3_4_10_8_Sthr_5.txt
+ ! ----------------------------------------------------------------------------
+ ! Minimization problem - 158 variables, 578 constraints
+ ! Presolve      : 104 extractables eliminated
+ ! Using starting point solution
+ ! TimeLimit            = 30
+ ! LogPeriod            = 10000
+ ! Initial process time : 0.01s (0.01s extraction + 0.00s propagation)
+ !  . Log search space  : 447.3 (before), 447.3 (after)
+ !  . Memory usage      : 1.2 MB (before), 1.2 MB (after)
+ ! Using parallel search with 8 workers.
+ ! ----------------------------------------------------------------------------
+ !          Best Branches  Non-fixed    W       Branch decision
+                        0        158                 -
+ + New bound is 175
+ ! Using temporal relaxation.
+ ! Starting point is complete, restoration successed.
+ *           352        1  0.12s        1      (gap is 50.28%)
+ *           346      420  0.12s        1      (gap is 49.42%)
+ *           345      560  0.12s        4      (gap is 49.28%)
+ *           342      522  0.12s        7      (gap is 48.83%)
+ *           338      398  0.12s        8      (gap is 48.22%)
+ *           321     1634  0.16s        1      (gap is 45.48%)
+             321    10000          3    7   F   on _itv81
+             321    10000          6    8   F   on _itv70
+             321    10000          8    1       on _itv89
+             321    10000          1    3   F   on _itv42
+             321    10000          1    6   F   on _itv73
+             321    10000          4    2       on _itv73
+             321    10000          4    4   F   on _itv130
+             321    10000          2    5       on _itv135
+             321    20000         19    3   F   on _itv86
+             321    20000         11    4   F   on _itv87
+             321    20000          5    7   F   on _itv82
+             321    20000         14    5   F   on _itv70
+             321    20000         12    6   F   on _itv82
+ ! Time = 1.08s, Average fail depth = 32, Memory usage = 12.5 MB
+ ! Current bound is 175 (gap is 45.48%)
+ !          Best Branches  Non-fixed    W       Branch decision
+             321    20000         12    8   F   on _itv88
+             321    20000         14    2       on _itv99
+             321    20000          8    1   F   on _itv57
+             321    22356         30    4            -
+ + New bound is 190 (gap is 40.81%)
+ ! Using failure-directed search.
+ *           320    23055  1.24s        4      (gap is 40.62%)
+ *           300    25074  1.39s        4      (gap is 36.67%)
+ *           299    25229  1.39s        4      (gap is 36.45%)
+             299    30000          9    3       on _itv66
+             299    30000          7    6   F   on _itv87
+             299    30000         17    8   F   on _itv92
+             299    30000         21    2   F   on _itv47
+             299    30000         11    5   F   on _itv63
+             299    30000         16    7   F   on _itv149
+             299    30000          2    4   F   on _itv67
+             299    40000         19    3   F   on _itv90
+             299    40000         25    2       on _itv64
+             299    40000         14    5       on _itv47
+             299    40000         17    6   F   on _itv90
+             299    40000         17    7   F   on _itv86
+             299    40000         17    8   F   on _itv86
+ ! Time = 2.01s, Average fail depth = 30, Memory usage = 12.8 MB
+ ! Current bound is 190 (gap is 36.45%)
+ !          Best Branches  Non-fixed    W       Branch decision
+             299    28842          2    1   F   on _itv15
+ + New bound is 202 (gap is 32.44%)
+             299    30000          2    1   F   on _itv102
+             299    40000          2    4       on _itv86
+             299    31063         60    1   F   on _itv14
+ + New bound is 219 (gap is 26.76%)
+             299    31197         60    1   F   on _itv16
+ + New bound is 223 (gap is 25.42%)
+             299    50000         30    2       on _itv149
+             299    50000         24    8   F   on _itv55
+             299    50000         31    3   F   on _itv38
+             299    50000         20    6   F   on _itv70
+             299    32673         57    1   F   on _itv3
+ + New bound is 231 (gap is 22.74%)
+             299    50000         26    5   F   on _itv124
+             299    50000         31    7   F   on _itv58
+             299    35107          5    1   F   on _itv8
+ + New bound is 241 (gap is 19.40%)
+             299    60000         37    2       on _itv66
+             299    50000          5    4   F   on _itv88
+             299    60000         23    5       on _itv127
+             299    60000         21    8   F   on _itv66
+             299    60000          5    3   F   on _itv57
+             299    60000          2    6       on _itv41
+             299    60000          2    7       on _itv73
+ ! Time = 3.39s, Average fail depth = 27, Memory usage = 13.0 MB
+ ! Current bound is 241 (gap is 19.40%)
+ !          Best Branches  Non-fixed    W       Branch decision
+             299    70000         25    8   F   on _itv92
+             299    70000         25    2       on _itv76
+             299    40000          5    1   F   on _itv14
+             299    70000         24    5   F   on _itv92
+             299    41207         22    1   F   on _itv3
+ + New bound is 243 (gap is 18.73%)
+             299    41684         22    1   F   on _itv14
+ + New bound is 245 (gap is 18.06%)
+             299    80000         25    2       on _itv42
+             299    60000          2    4   F   on _itv81
+             299    70000          2    6       on _itv73
+             299    70000          2    3       on _itv36
+             299    80000         20    8       on _itv97
+             299    70000          2    7   F   on _itv125
+             299    80000         20    5   F   on _itv104
+             299    90000         24    8       on _itv81
+             299    90000         27    2       on _itv66
+             299    90000         22    5       on _itv79
+             299    70000          2    4   F   on _itv23
+             299    80000          2    6   F   on _itv88
+             299    80000          3    3       on _itv48
+             299    80000          2    7       on _itv31
+ ! Time = 4.89s, Average fail depth = 25, Memory usage = 13.1 MB
+ ! Current bound is 245 (gap is 18.06%)
+ !          Best Branches  Non-fixed    W       Branch decision
+             299    50000          9    1   F   on _itv83
+             299     100k         19    2       on _itv70
+             299     100k         19    8   F   on _itv58
+             299     100k         19    5   F   on _itv88
+             299    80000          2    4       on _itv24
+             299    90000          2    3   F   on _itv31
+             299    90000          2    7       on _itv123
+             299     110k         28    2   F   on _itv33
+             299    90000          2    6   F   on _itv30
+             299     110k         33    8   F   on _itv82
+             299     110k         31    5   F   on _itv123
+             299    60000         11    1   F   on _itv84
+             299    90000          2    4   F   on _itv30
+             299     100k          2    7       on _itv36
+             299     120k         29    2   F   on _itv64
+             299     100k          2    3   F   on _itv47
+             299     100k          2    6       on _itv70
+             299     120k         17    8       on _itv73
+             299     120k         35    5       on _itv41
+             299     100k          2    4   F   on _itv81
+ ! Time = 7.05s, Average fail depth = 23, Memory usage = 13.3 MB
+ ! Current bound is 245 (gap is 18.06%)
+ !          Best Branches  Non-fixed    W       Branch decision
+             299     130k          9    2       on _itv125
+             299     110k          2    3   F   on _itv123
+             299     110k          5    6       on _itv61
+             299     110k          2    7   F   on _itv82
+             299     130k          3    5       on _itv42
+             299     130k          2    8       on _itv150
+             299    70000          2    1   F   on _itv58
+             299     140k          2    2       on _itv32
+             299     110k          2    4   F   on _itv63
+             299     120k          4    6   F   on _itv150
+             299     120k          2    7       on _itv131
+             299     140k          2    5   F   on _itv90
+             299     120k          2    3   F   on _itv86
+             299     140k          2    8       on _itv31
+             299     120k          2    4   F   on _itv85
+             299     150k          2    2       on _itv70
+             299     130k          2    6       on _itv151
+             299     130k          2    7   F   on _itv49
+             299     150k          2    5       on _itv76
+             299     130k          2    3       on _itv63
+ ! Time = 8.92s, Average fail depth = 21, Memory usage = 13.5 MB
+ ! Current bound is 245 (gap is 18.06%)
+ !          Best Branches  Non-fixed    W       Branch decision
+             299     150k          2    8       on _itv76
+             299    80000          9    1   F   on _itv8
+             299     130k          2    4       on _itv30
+             299     140k          2    6   F   on _itv94
+             299     160k          5    2       on _itv91
+             299     160k          2    5       on _itv99
+             299     140k          5    7       on _itv112
+             299     160k          2    8   F   on _itv82
+             299     140k          2    3       on _itv83
+             299     140k          2    4       on _itv104
+             299     170k          2    2   F   on _itv67
+             299     150k          2    6       on _itv81
+             299     150k          2    7   F   on _itv30
+             299     150k          2    3   F   on _itv81
+             299     170k          2    8       on _itv32
+             299     170k          2    5       on _itv47
+             299    90000         39    1   F   on _itv5
+             299     180k          2    2       on _itv38
+             299     150k          2    4   F   on _itv89
+             299     160k          2    7       on _itv31
+ ! Time = 11.03s, Average fail depth = 20, Memory usage = 13.7 MB
+ ! Current bound is 245 (gap is 18.06%)
+ !          Best Branches  Non-fixed    W       Branch decision
+             299     160k          2    6       on _itv79
+             299     160k          2    3   F   on _itv94
+             299     180k          2    5       on _itv79
+             299     180k          2    8   F   on _itv86
+             299    97406         17    1   F   on _itv33
+ + New bound is 246 (gap is 17.73%)
+             299    97576         17    1   F   on _itv4
+ + New bound is 247 (gap is 17.39%)
+             299     190k          2    2   F   on _itv42
+             299     160k          2    4   F   on _itv89
+             299     170k          2    7       on _itv91
+             299     170k          2    3   F   on _itv87
+             299     190k          2    5       on _itv128
+             299     170k          2    6       on _itv125
+             299     190k          2    8   F   on _itv150
+             299     100k         17    1       on _itv45
+             299     102k          2    1   F   on _itv81
+ + New bound is 248 (gap is 17.06%)
+             299     200k          2    2   F   on _itv90
+             299     102k          2    1   F   on _itv81
+ + New bound is 250 (gap is 16.39%)
+             299     170k          2    4       on _itv79
+             299     180k          2    7       on _itv110
+             299     103k          2    1       on _itv9
+ + New bound is 281 (gap is 6.02%)
+ ! Time = 12.64s, Average fail depth = 19, Memory usage = 13.9 MB
+ ! Current bound is 281 (gap is 6.02%)
+ !          Best Branches  Non-fixed    W       Branch decision
+             299     103k          2    1   F   on _itv19
+ + New bound is 299 (gap is 0%)
+ ! ----------------------------------------------------------------------------
+ ! Search completed, 9 solutions found.
+ ! Best objective         : 299 (optimal - effective tol. is 0)
+ ! Best bound             : 299
+ ! Number of branches     : 1373926
+ ! Number of fails        : 683892
+ ! Total memory usage     : 14.6 MB (13.8 MB CP Optimizer + 0.8 MB Concert)
+ ! Time spent in solve    : 12.66s (12.64s engine + 0.01s extraction)
+ ! Search speed (br. / s) : 108610.8
+ ! ----------------------------------------------------------------------------
+s Unknown
+d WCTIME 12.66
+d RUNTIME 12.6736
+d CMAX 40
+d FLOWTIME 303
+d DISQUALIFIED 4
+d QUALIFIED 4
+d SETUP 5
+d VALIDE 1
+d GAP 0
+d NBSOLS 9
+d BRANCHES 1373926
+d FAILS 683892
+c VARIABLES 158
+c CONSTRAINTS 578
+c MACHINES 3
+c FAMILIES 4
+c JOBS 20
+
+\begin{tikzpicture}
+\node (O) at (0,0) {};
+\draw[->] (O.center) -- ( 41,0);
+\draw[->] (O.center) -- (0, 2.5);
+\draw (5,0) -- (5,-0.1) node[below] {$5$} ;
+\draw (10,0) -- (10,-0.1) node[below] {$10$} ;
+\draw (15,0) -- (15,-0.1) node[below] {$15$} ;
+\draw (20,0) -- (20,-0.1) node[below] {$20$} ;
+\draw (25,0) -- (25,-0.1) node[below] {$25$} ;
+\draw (30,0) -- (30,-0.1) node[below] {$30$} ;
+\draw (35,0) -- (35,-0.1) node[below] {$35$} ;
+\draw (40,0) -- (40,-0.1) node[below] {$40$} ;
+\draw[fill = blue!80!black!80]  (0,1) rectangle (8,1.5) node[midway] {$0$};
+\draw[fill = blue!80!black!80]  (5,0) rectangle (13,0.5) node[midway] {$1$};
+\draw[fill = blue!80!black!80]  (8,1) rectangle (16,1.5) node[midway] {$2$};
+\draw[fill = blue!80!black!80]  (13,0) rectangle (21,0.5) node[midway] {$3$};
+\draw[fill = blue!80!black!80]  (16,1) rectangle (24,1.5) node[midway] {$4$};
+\draw[fill = green!80!black!80]  (0,0) rectangle (1,0.5) node[midway] {$5$};
+\draw[fill = green!80!black!80]  (0,0.5) rectangle (1,1) node[midway] {$6$};
+\draw[fill = green!80!black!80]  (1,0) rectangle (2,0.5) node[midway] {$7$};
+\draw[fill = green!80!black!80]  (1,0.5) rectangle (2,1) node[midway] {$8$};
+\draw[fill = green!80!black!80]  (2,0) rectangle (3,0.5) node[midway] {$9$};
+\draw[fill = green!80!black!80]  (2,0.5) rectangle (3,1) node[midway] {$10$};
+\draw[fill = green!80!black!80]  (3,0) rectangle (4,0.5) node[midway] {$11$};
+\draw[fill = orange!80!black!80]  (4,0.5) rectangle (9,1) node[midway] {$12$};
+\draw[fill = orange!80!black!80]  (9,0.5) rectangle (14,1) node[midway] {$13$};
+\draw[fill = orange!80!black!80]  (14,0.5) rectangle (19,1) node[midway] {$14$};
+\draw[fill = orange!80!black!80]  (19,0.5) rectangle (24,1) node[midway] {$15$};
+\draw[fill = purple!80!black!80]  (22,0) rectangle (31,0.5) node[midway] {$16$};
+\draw[fill = purple!80!black!80]  (25,1) rectangle (34,1.5) node[midway] {$17$};
+\draw[fill = purple!80!black!80]  (25,0.5) rectangle (34,1) node[midway] {$18$};
+\draw[fill = purple!80!black!80]  (31,0) rectangle (40,0.5) node[midway] {$19$};
+\end{tikzpicture}

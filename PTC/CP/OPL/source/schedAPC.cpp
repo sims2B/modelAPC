@@ -8,7 +8,7 @@ int solve(const Problem& P, Solution& s){
   int status = 127;
   try {
     IloOplErrorHandler handler(env,std::cout);
-    IloOplModelSource modelSource(env,"schedAPC.mod");
+    IloOplModelSource modelSource(env, pathToOPL);
     IloOplSettings settings(env,handler);
     IloOplModelDefinition def(modelSource,settings);
     IloCP cp(env);    
@@ -17,7 +17,7 @@ int solve(const Problem& P, Solution& s){
     IloOplDataSource dataSource(&ds);
     opl.addDataSource(dataSource);
     opl.generate();
-    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    //   cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
     if (withCPStart){
       Solution solSCH(P);
@@ -26,6 +26,8 @@ int solve(const Problem& P, Solution& s){
       if (QCH(P, solQCH)) solToModel(P, solQCH, env,opl,cp);
     }
     if (cp.solve()){
+  
+      std::cout << "s "  << cp.getStatus() << std::endl;
       IloOplElement elmt = opl.getElement("mjobs");
       modelToSol(P,s,env,cp,elmt);
       displayCPAIOR(P, s, cp, startTime,1);
@@ -52,8 +54,6 @@ int solve(const Problem& P, Solution& s){
 int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::time_point t1, int solved){
   Clock::time_point t2 = Clock::now();
   
-  std::cout << "s "  << cp.getStatus() << std::endl;
-  
   std::cout << "d WCTIME " <<  cp.getInfo(IloCP::SolveTime) << "\n";
 
   std::chrono::duration<double> duration =
@@ -66,6 +66,7 @@ int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::
   std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
   std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
   std::cout << "d VALIDE "<< s.isValid(P) << "\n";
+  std::cout << "d GAP "  <<  cp.getObjGap()<< "\n";
   }
   std::cout << "d NBSOLS "  <<  cp.getInfo(IloCP::NumberOfSolutions)<< "\n";
   std::cout << "d BRANCHES " <<  cp.getInfo(IloCP::NumberOfBranches) << "\n";

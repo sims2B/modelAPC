@@ -1,10 +1,12 @@
 
 #include "improvedFamilyModel.h"
+#include "paramModelAPC.h"
+#include "utils.h"
 
-
-int solve(const Problem& P, Solution& s){
+int solve(const Problem& P, Solution& s){ 
+  Clock::time_point startRunTime = Clock::now();
   try{
-    IloNum start;
+    IloNum startWC;
     const int F = P.getFamilyNumber();
     const int T = P.computeHorizon();
     IloEnv env;
@@ -19,29 +21,19 @@ int solve(const Problem& P, Solution& s){
       IloCplex cplex(model);
       setParam(env, cplex);
       if (withMIPStart)
-	useMIPStart(P, s,  env, cplex, x, y, Y, C);
+	useMIPStart(P, env, cplex, x, y, Y, C);
 
-      start = cplex.getCplexTime();
+      startWC = cplex.getCplexTime();
 
       //solve!
-      if (cplex.solve() || cplex.getStatus() == IloAlgorithm::Infeasible){
-	if (cplex.getStatus() == IloAlgorithm::Infeasible){
-	  int ret = displayCVS(P, s, cplex, start);
-	  //|| displayCplexSolution(P,env,cplex,x,y,C,Y);
-	  env.end();
-	  return ret;
-	}
-	else {
-	  int ret =//displayCplexSolution(P, env, cplex, x, y, C, Y) ||
-	    modelToSol(P, s, cplex, x, y, Y) ||
-	    displayCVS(P, s, cplex, start);
-	  env.end();
-	  return ret;
-	}
+      if (cplex.solve()){
+	modelToSol(P, s, cplex, x, y, Y);
+	displayCPAIOR(P, s, cplex, startRunTime, startWC, 1);
       }
-    }
+      else displayCPAIOR(P, s, cplex,  startRunTime, startWC, 0);
+    } 
     env.end();
-    return 1;
+    return 0;
   }
   catch (IloException &e){
     std::cout << "Iloexception in solve" << e << std::endl;
@@ -54,17 +46,25 @@ int solve(const Problem& P, Solution& s){
   }
 }
 
-int useMIPStart(const Problem &P, Solution& s, IloEnv& env, IloCplex& cplex,
+int useMIPStart(const Problem &P, IloEnv& env, IloCplex& cplex,
 		IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, IloNumVarMatrix& Y, IloNumVarArray& C){
-  if (heuristique(P, s)){
-    std::cout << "soluttion QCH " << s.toString(P);
+  Solution solSCH(P);
+  if (SCH(P, solSCH)){
     IloNumVarArray startVar(env);
     IloNumArray startVal(env);
-    solToModel(P,s,x,y,Y,C,startVar,startVal);
+    solToModel(P,solSCH,x,y,Y,C,startVar,startVal);
     cplex.addMIPStart(startVar, startVal);
     startVar.end();
     startVal.end();
-    //s.clear(P);
+  }
+    Solution solQCH(P);
+  if (QCH(P, solQCH)){
+    IloNumVarArray startVar(env);
+    IloNumArray startVal(env);
+    solToModel(P,solQCH,x,y,Y,C,startVar,startVal);
+    cplex.addMIPStart(startVar, startVal);
+    startVar.end();
+    startVal.end();
   }
   return 0;
 }
@@ -82,6 +82,38 @@ int displayCVS(const Problem& P, const Solution& s, const IloCplex& cplex, const
   else
     std::cout << " ; ; ; ; ; ; \n";
   return 0;
+}
+
+int displayCPAIOR(const Problem& P, const Solution& s, const IloCplex& cplex,  Clock::time_point t1, IloNum start, int solved){
+  Clock::time_point t2 = Clock::now();
+  
+  std::cout << "s "  << cplex.getStatus() << std::endl;
+  
+  std::cout << "d WCTIME " <<cplex.getCplexTime() - start<< "\n";
+
+  std::chrono::duration<double> duration =
+    std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+  std::cout << "d RUNTIME "<< duration.count() << "\n";
+  if (solved){
+  std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
+  std::cout << "d FLOWTIME " << s.getSumCompletion(P) << "\n";
+  std::cout << "d DISQUALIFIED "<< s.getRealNbDisqualif(P) << "\n";
+  std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
+  std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
+  std::cout << "d VALIDE "<< s.isValid(P) << "\n";
+  }
+  std::cout << "d NBSOLS "  <<  cplex.getSolnPoolNsolns() << "\n";
+  std::cout << "d GAP " << cplex.getMIPRelativeGap() << "\n";
+  std::cout << "d NBNODES " << cplex.getNnodes() << "\n";
+  std::cout << "c VARIABLES " <<  cplex.getNcols() << "\n";
+  std::cout << "c CONSTRAINTS " <<  cplex.getNrows() << "\n";
+  std::cout << "c MACHINES "<< P.M << "\n";
+  std::cout << "c FAMILIES "<< P.getFamilyNumber() << "\n";
+  std::cout << "c JOBS "<<P.N << "\n";
+
+  std::cout << std::endl;
+  s.toTikz(P);
+ return 0;
 }
 
 int displayCplexSolution(const Problem& P, IloEnv& env, IloCplex& cplex,

@@ -33,10 +33,11 @@ int CP::solve(const Problem& P, Solution & s){
       }      
     }
     
-    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    //cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
 
     if (cp.solve()){
+  std::cout << "s "  << cp.getStatus() << std::endl;
       //printSol(P,cp,altTasks,disqualif);
       modelToSol(P, s, cp, altTasks, disqualif);
       displayCPAIOR(P, s, cp, startTime,1);
@@ -136,7 +137,6 @@ int solToModel(const Problem& P, const Solution& s,
 int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::time_point t1, int solved){
   Clock::time_point t2 = Clock::now();
   
-  std::cout << "s "  << cp.getStatus() << std::endl;
   
   std::cout << "d WCTIME " <<  cp.getInfo(IloCP::SolveTime) << "\n";
 
@@ -150,6 +150,7 @@ int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::
   std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
   std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
   std::cout << "d VALIDE "<< s.isValid(P) << "\n";
+  std::cout << "d GAP "  <<  cp.getObjGap()<< "\n";
   }
   std::cout << "d NBSOLS "  <<  cp.getInfo(IloCP::NumberOfSolutions)<< "\n";
   std::cout << "d BRANCHES " <<  cp.getInfo(IloCP::NumberOfBranches) << "\n";

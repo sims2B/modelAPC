@@ -1,17 +1,21 @@
 #include "schedAPC.h"
 #include "utils.h"
-int main(int,char* argv[]){
   
+int main(int,char* argv[]){
+ 
   std::ifstream instance(argv[1], std::ios::in);
-  Problem P = readFromFile(instance);
-  instance.close();
-  //std::cout << P.toString();
-  std::cout << "i " << getBasename(argv[1]) << std::endl;
-  Solution s(P);
+  if (instance.is_open()){
+    Problem P = readFromFile(instance);
+    instance.close();
+    //std::cout << P.toString();
+    std::cout << "i " << getBasename(argv[1]) << std::endl;
+    Solution s(P);
 
-  solve(P, s);
-  //std::cout << s.toString(P);
-  //s.toTikz(P);
-  	
+    solve(P, s);
+  
+    /*std::cout << s.toString(P);
+      s.toTikz(P);*/
+  }
+  else cout << "Unable to open file";
   return 0;
 }

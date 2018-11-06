@@ -21,8 +21,10 @@ LDFLAGS= -L$(CPLEXDIR)cplex/lib/x86-64_linux/static_pic \
 	 -L$(CPLEXDIR)concert/lib/x86-64_linux/static_pic
 LDLIBS= -lconcert -lilocplex -lcplex -lpthread -ldl
 CPPFLAGS= -I./header/ \
+	  -I../../../util/header/ \
 	  -I../../Problem/header/ \
 	  -I../../Heuristics/QCH/header \
+	  -I../../Heuristics/SCH/header \
 	  -I$(CPLEXDIR)cplex/include \
 	  -I$(CPLEXDIR)concert/include \
 	  -std=c++11 -O2 -m64 -fPIC -march=native -Wno-format-truncation  -Wall  -Werror  -DIL_STD 
@@ -32,13 +34,15 @@ DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 
 ### PROPERTIES ########################################
 PROJECTNAME=bin/modelIP3
-SRCS=../../Problem/source/Family.cpp \
+SRCS=../../../util/source/utils.cpp \
+      ../../Problem/source/Family.cpp \
       ../../Problem/source/Problem.cpp \
       ../../Problem/source/Assignment.cpp \
       ../../Problem/source/Solution.cpp \
+      ../../Heuristics/SCH/source/SchedulingCentric.cpp \
       ../../Heuristics/QCH/source/QualifCentric.cpp \
-	./source/improvedFamilyModel.cpp \
-	./source/main.cpp
+      ./source/improvedFamilyModel.cpp \
+      ./source/main.cpp
 
 ### PREPROCESSING #####################################
 
