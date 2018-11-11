@@ -11,8 +11,6 @@
  Look for the most up-to-date documentation on the web site.
  
 * Download and Installation
-
-
 ** Prerequisites 
   This project works on 64 bits environment. 
 
@@ -30,39 +28,20 @@
   find . -name Makefile -execdir make \;
 #+END_SRC
 
-*** On my Fedora 27, PTC/MIP compiles.
-#+BEGIN_EXAMPLE
-> g++ --version
-g++ (GCC) 7.3.1 20180712 (Red Hat 7.3.1-6)
-Copyright © 2017 Free Software Foundation, Inc.
-Ce logiciel est un logiciel libre; voir les sources pour les conditions de copie.  Il n'y a
-AUCUNE GARANTIE, pas même pour la COMMERCIALISATION ni L'ADÉQUATION À UNE TÂCHE PARTICULIÈRE.
-#+END_EXAMPLE
 
-*** PCT/CP compiles if the flag ~-Wno-ignored-attributes~ is added to the Makefiles ?
 #+BEGIN_EXAMPLE
-> find PTC/CP/ -name Makefile -execdir make \;
-g++  -I./header/ -I../../Problem/header/ -I../../Heuristics/SCH/header/ -I../../Heuristics/QCH/header/ -I/opt/ibm/ILOG/CPLEX_Studio128/opl/include -std=c++11 -m64 -fPIC -DIL_STD -O1 -DNDEBUG -march=native -Wall -Werror -DILOUSEMT -D_REENTRANT  -c -o source/schedAPC.o source/schedAPC.cpp
-In file included from /opt/ibm/ILOG/CPLEX_Studio128/opl/include/ilconcert/iloanyset.h:22:0,
-                 from /opt/ibm/ILOG/CPLEX_Studio128/opl/include/ilconcert/ilomodel.h:26,
-                 from /opt/ibm/ILOG/CPLEX_Studio128/opl/include/ilcplex/ilocplex.h:27,
-                 from /opt/ibm/ILOG/CPLEX_Studio128/opl/include/ilopl/iloopl.h:23,
-                 from ./header/schedAPC.h:6,
-                 from source/schedAPC.cpp:1:
-/opt/ibm/ILOG/CPLEX_Studio128/opl/include/ilconcert/iloany.h:32:24: error: les attributs sur l'argument « IloAny {aka void*} » du patron sont ignorés [-Werror=ignored-attributes]
- typedef IloArray<IloAny> IloAnyArrayBase;
-#+END_EXAMPLE
-
-*** TODO PCT/Heuristic: missing includes ?
-#+BEGIN_EXAMPLE
-g++  -I../../Problem/header/ -I../../Heuristics/LH/header -I../../Heuristics/SCH/header -I../../Heuristics/QCH/header -I../../../util/header/ -I./header -std=c++11 -O2 -m64 -W  -Wall -Werror -fPIC -march=native -DIL_STD   -c -o source/main.o source/main.cpp
-source/main.cpp: Dans la fonction « int main(int, char**) »:
-source/main.cpp:31:26: error: impossible de lier la référence d'une l-valeur non constante de type « bool& » à une r-valeur de type « bool »
-   displayCVS(P, s, solved);
-                          ^
-In file included from source/main.cpp:1:0:
-./header/Recursive.h:17:5: note:   initialisation de l'argument 3 de « int displayCVS(const Problem&, const Solution&, bool&) »
- int displayCVS(const Problem& P, const Solution& s, bool& solved);
-     ^~~~~~~~~~
-make: *** [<commande interne>: source/main.o] Error 1
+g++  -I./header/ -I../../Problem/header/ -I/opt/ibm/ILOG/CPLEX_Studio128/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio128/concert/include -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD -Wno-ignored-attributes  -c -o source/jobModel.o source/jobModel.cpp
+In file included from ./header/jobModel.h:6:0,
+                 from source/jobModel.cpp:1:
+../../Problem/header/Solution.h:7:10: erreur fatale: paramModelAPC.h : No such file or directory
+ #include "paramModelAPC.h"
+          ^~~~~~~~~~~~~~~~~
+compilation terminée.
+make: *** [<commande interne>: source/jobModel.o] Error 1
+g++  -I./header/ -I../../Problem/header/ -I/opt/ibm/ILOG/CPLEX_Studio128/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio128/concert/include -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD -Wno-ignored-attributes -Wno-format-truncation   -c -o source/familyModel.o source/familyModel.cpp
+In file included from ./header/familyModel.h:7:0,
+                 from source/familyModel.cpp:1:
+../../Problem/header/Solution.h:7:10: erreur fatale: paramModelAPC.h : No such file or directory
+ #include "paramModelAPC.h"
+          ^~~~~~~~~~~~~~~~~
 #+END_EXAMPLE
