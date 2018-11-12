@@ -7,19 +7,6 @@
 #include <ilcplex/ilocplex.h>
 #include <ilcplex/ilocplexi.h>
 
-#ifndef TIME_LIMIT
-#define time_limit 300
-#endif
-
-//coefficient of the objective function
-#ifndef ALPHA
-#define alpha 1
-#endif
-
-#ifndef BETA
-#define beta 1
-#endif
-
 
 typedef IloArray<IloNumVarArray> IloNumVarMatrix;
 typedef IloArray<IloNumVarMatrix> IloNumVar3DMatrix;

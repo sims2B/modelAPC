@@ -211,11 +211,11 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
   //objective
   IloExpr expr_obj(env);
   for (f = 0; f < F; ++f)
-    expr_obj += alpha * C[f];
+    expr_obj += alpha_C * C[f];
   for (f = 0; f < F; ++f)
     for (j = 0; j < m; ++j)
       if (P.F[f].qualif[j])
-	expr_obj += beta * y[f][j][T - 1];
+	expr_obj += beta_Y * y[f][j][T - 1];
   model.add(IloMinimize(env, expr_obj));
   expr_obj.end();
 

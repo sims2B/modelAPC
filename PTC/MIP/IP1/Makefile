@@ -20,6 +20,7 @@ LDFLAGS= -L$(CPLEXDIR)cplex/lib/x86-64_linux/static_pic \
 -L$(CPLEXDIR)concert/lib/x86-64_linux/static_pic
 LDLIBS= -lconcert -lilocplex -lcplex -lpthread -ldl
 CPPFLAGS= -I./header/ \
+-I../../../util/header/ \
 -I../../Problem/header/ \
 -I$(CPLEXDIR)cplex/include \
 -I$(CPLEXDIR)concert/include \
@@ -30,7 +31,8 @@ DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 
 ### PROPERTIES ########################################
 PROJECTNAME=bin/modelIP1
-SRCS=../../Problem/source/Family.cpp \
+SRCS=../../../util/source/utils.cpp \
+../../Problem/source/Family.cpp \
       ../../Problem/source/Problem.cpp \
       ../../Problem/source/Assignment.cpp \
       ../../Problem/source/Solution.cpp \
