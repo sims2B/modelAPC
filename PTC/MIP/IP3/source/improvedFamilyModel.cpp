@@ -19,6 +19,7 @@ int solve(const Problem& P, Solution& s){
 
     if (!createModel(P, T, env, model, x, y, C, Y)){
       IloCplex cplex(model);
+      if (!VERBOSITY)   cplex.setOut(env.getNullStream());
       setParam(env, cplex);
       if (withMIPStart)
 	useMIPStart(P, env, cplex, x, y, Y, C);
@@ -170,8 +171,7 @@ int displayCplexResults(const IloCplex& cplex, const IloNum& start){
 int setParam(IloEnv& env, IloCplex& cplex){
   cplex.setParam(IloCplex::TiLim, time_limit);
   cplex.setParam(IloCplex::Threads, 2);
-  cplex.setOut(env.getNullStream());
-  return 0;
+    return 0;
 }
 
 int modelToSol(const Problem& P, Solution& s, const IloCplex& cplex,

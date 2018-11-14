@@ -33,7 +33,7 @@ int CP::solve(const Problem& P, Solution & s){
       }      
     }
     
-    //cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    if (!VERBOSITY) cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
 
     if (cp.solve()){

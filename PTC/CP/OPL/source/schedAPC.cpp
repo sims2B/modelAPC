@@ -17,7 +17,7 @@ int solve(const Problem& P, Solution& s){
     IloOplDataSource dataSource(&ds);
     opl.addDataSource(dataSource);
     opl.generate();
-    cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+if (!VERBOSITY)     cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
     if (withCPStart){
       Solution solSCH(P);
