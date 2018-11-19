@@ -31,9 +31,136 @@ BEGIN{
 
 #+BEGIN_SRC sh
     find -name '*.o' -exec sh -c 'awk -f toTikz.awk {} > {}.tex' \;
-    find -name '*.tex' -execdir latexmk {} \; 
+    find -name '*.tex' -execdir latexm  resfiles <- list.files('results', pattern = '*.res', full.names=TRUE)
+  results <- lapply(resfiles, function(x) read.table(x, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE))
+  resnames <- gsub(".res$", "", resfiles)
+  resnames <- gsub("^.*/", "", resnames)
+  names(results) <- resnames
+
+  lapply(results, function(x) aggregate(x$s, by = list(x$JOBS), summary)) 
+k {} \; 
     find -name '*.tex' -execdir latexmk -c {} \; 
 #+END_SRC
 
 #+RESULTS:
+
+* Compare algorithms
+
+Read the results files
+#+BEGIN_SRC R :results silent :session apc
+    resfiles <- list.files('results', pattern = '*.res', full.names=TRUE)
+    ReadResults <- function(resfile) {
+      df <- read.table(resfile, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE)
+      df <- df[-ncol(df)]
+      df$o <- df$FLOWTIME - df$DISQUALIFIED
+     return(df)
+    }
+    ##results <- lapply(resfiles, function(x) read.table(x, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE))
+    results <- lapply(resfiles, ReadResults)
+    resnames <- gsub(".res$", "", resfiles)
+    resnames <- gsub("^.*/", "", resnames)
+    names(results) <- resnames
+
+#+END_SRC
+
+#+BEGIN_SRC R :results output :session apc
+  lapply(results, function(x) table(x$s))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+$modelCP1
+
+FEASIBLE  OPTIMUM  Unknown 
+     300      255       15 
+
+$modelIP3
+
+Feasible  Optimal  Unknown 
+     402      144       24 
+
+$schedAPC
+
+segfault   FEASIBLE  OPTIMUM  Unknown 
+      13      236      305       16
+#+end_example
+
+Build results data frame.
+#+BEGIN_SRC R :results silent :session apc
+  indBy <- c("i", "JOBS", "MACHINES")
+  indD <- c("FLOWTIME", "DISQUALIFIED", "WCTIME")
+  ind <- c(indBy, indD)
+  df <- data.frame(results[[1]][ind])
+  for(i in tail(seq_along(results),-1)) {
+    df <- merge(df, results[[i]][ind], by = indBy, all = TRUE)
+    ##df <- merge(df, results[[i]][ind], by = indBy, all = FALSE)
+  }
+  colnames(df) <- c( 
+    indBy, 
+    paste( 
+      rep(names(results), each = length(indD)),
+      rep(indD, length(results)),
+      sep = "."
+    )
+  )
+#+END_SRC
+
+
+Compute the average linearized objective per number of jobs
+#+BEGIN_SRC R :results output :session apc
+  indF <- seq(from = length(indBy)+1, by = length(indD), length.out = length(results))
+  minF <- apply(df[indF], 1, min, na.rm = TRUE)
+
+  x <-  df[indF+1] +  1 - minF/df[indF]
+
+  aggregate(x, by = list(df$JOBS), mean, na.rm = TRUE)
+#+END_SRC
+
+#+RESULTS:
+: There were 49 warnings (use warnings() to see them)
+:   Group.1 modelCP1.DISQUALIFIED modelIP3.DISQUALIFIED schedAPC.DISQUALIFIED
+: 1      20             0.6331050             1.1202183             0.5846082
+: 2      30             1.4153642             3.1784701             1.2127822
+: 3      40             0.6083408             0.9176692             0.2786837
+: 4      50             1.4503070             2.9373211             0.8586837
+: 5      60             3.4221583             7.5146587             2.8544054
+: 6      70             4.9777950             9.6004482             4.0121783
+
+Number of instances for which each algorithm is the VBS of disqualified.
+#+BEGIN_SRC R :results output :session apc
+  y <- df[indF+1] == apply(df[indF+1], 1, min , na.rm = TRUE)
+  aggregate(y, by = list(df$JOBS), sum, na.rm = TRUE)
+#+END_SRC
+
+#+RESULTS:
+: There were 49 warnings (use warnings() to see them)
+:   Group.1 modelCP1.DISQUALIFIED modelIP3.DISQUALIFIED schedAPC.DISQUALIFIED
+: 1      20                   175                   130                   164
+: 2      30                   137                    60                   175
+: 3      40                    19                    18                    30
+: 4      50                    14                     5                    30
+: 5      60                    28                     0                    50
+: 6      70                    36                     0                    71
+
+
+Number of instances for which each algorithm is the VBS for disqualified and flowtime.
+#+BEGIN_SRC R :results output :session apc
+  x <- df[indF] / y
+  x <- x == apply(x, 1, min , na.rm = TRUE)
+
+  aggregate(x, by = list(df$JOBS), sum, na.rm = TRUE)
+
+#+END_SRC
+
+#+RESULTS:
+: There were 49 warnings (use warnings() to see them)
+:   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME schedAPC.FLOWTIME
+: 1      20               156               100               152
+: 2      30               108                43               129
+: 3      40                19                 8                29
+: 4      50                 9                 1                23
+: 5      60                21                 0                33
+: 6      70                33                 0                51
+
+
 

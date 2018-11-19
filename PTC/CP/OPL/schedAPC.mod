@@ -117,9 +117,9 @@ execute SEARCH {
   		//cp.setSearchPhases(f.searchPhase(mjobs)); 
 }
 
-//minimize staticLex(-qualified, flowtime);
+minimize staticLex(-qualified, flowtime);
 
-minimize flowtime - qualified;
+//minimize flowtime - qualified;
 //minimize flowtime;
 
 subject to {

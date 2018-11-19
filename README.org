@@ -28,20 +28,3 @@
   find . -name Makefile -execdir make \;
 #+END_SRC
 
-
-#+BEGIN_EXAMPLE
-g++  -I./header/ -I../../Problem/header/ -I/opt/ibm/ILOG/CPLEX_Studio128/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio128/concert/include -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD -Wno-ignored-attributes  -c -o source/jobModel.o source/jobModel.cpp
-In file included from ./header/jobModel.h:6:0,
-                 from source/jobModel.cpp:1:
-../../Problem/header/Solution.h:7:10: erreur fatale: paramModelAPC.h : No such file or directory
- #include "paramModelAPC.h"
-          ^~~~~~~~~~~~~~~~~
-compilation terminée.
-make: *** [<commande interne>: source/jobModel.o] Error 1
-g++  -I./header/ -I../../Problem/header/ -I/opt/ibm/ILOG/CPLEX_Studio128/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio128/concert/include -std=c++11 -O2 -m64 -fPIC -march=native -Wall  -Werror -DIL_STD -Wno-ignored-attributes -Wno-format-truncation   -c -o source/familyModel.o source/familyModel.cpp
-In file included from ./header/familyModel.h:7:0,
-                 from source/familyModel.cpp:1:
-../../Problem/header/Solution.h:7:10: erreur fatale: paramModelAPC.h : No such file or directory
- #include "paramModelAPC.h"
-          ^~~~~~~~~~~~~~~~~
-#+END_EXAMPLE
