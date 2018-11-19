@@ -20,8 +20,8 @@ int solve(const Problem& P, Solution& s){
     if (!VERBOSITY)     cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
     if (withCPStart){
-      // Solution solSCH(P);
-      //if (SCH(P, solSCH)) solToModel(P, solSCH, env,opl,cp);
+      Solution solSCH(P);
+      if (SCH(P, solSCH)) solToModel(P, solSCH, env,opl,cp);
       Solution solQCH(P);
       if (QCH(P, solQCH)) solToModel(P, solQCH, env,opl,cp);
     }
