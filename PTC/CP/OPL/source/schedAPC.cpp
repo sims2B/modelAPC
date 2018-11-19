@@ -17,11 +17,11 @@ int solve(const Problem& P, Solution& s){
     IloOplDataSource dataSource(&ds);
     opl.addDataSource(dataSource);
     opl.generate();
-if (!VERBOSITY)     cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    if (!VERBOSITY)     cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
     if (withCPStart){
-      Solution solSCH(P);
-      if (SCH(P, solSCH)) solToModel(P, solSCH, env,opl,cp);
+      // Solution solSCH(P);
+      //if (SCH(P, solSCH)) solToModel(P, solSCH, env,opl,cp);
       Solution solQCH(P);
       if (QCH(P, solQCH)) solToModel(P, solQCH, env,opl,cp);
     }
@@ -31,7 +31,7 @@ if (!VERBOSITY)     cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
       displayCPAIOR(P, s, cp, startTime,1);
     }
     else displayCPAIOR(P, s, cp, startTime,0);
-   return 0;
+    return 0;
   } catch (IloOplException & e) {
     std::cout << "### OPL exception: " << e.getMessage() << std::endl;
   } catch( IloException & e ) {
@@ -64,13 +64,13 @@ int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::
     std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
   std::cout << "d RUNTIME "<< duration.count() << "\n";
   if (solved){
-  std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
-  std::cout << "d FLOWTIME " << s.getSumCompletion(P) << "\n";
-  std::cout << "d DISQUALIFIED "<< s.getRealNbDisqualif(P) << "\n";
-  std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
-  std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
-  std::cout << "d VALIDE "<< s.isValid(P) << "\n";
-  std::cout << "d GAP "  <<  cp.getObjGap()<< "\n";
+    std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
+    std::cout << "d FLOWTIME " << s.getSumCompletion(P) << "\n";
+    std::cout << "d DISQUALIFIED "<< s.getRealNbDisqualif(P) << "\n";
+    std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
+    std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
+    std::cout << "d VALIDE "<< s.isValid(P) << "\n";
+    std::cout << "d GAP "  <<  cp.getObjGap()<< "\n";
   }
   std::cout << "d NBSOLS "  <<  cp.getInfo(IloCP::NumberOfSolutions)<< "\n";
   std::cout << "d BRANCHES " <<  cp.getInfo(IloCP::NumberOfBranches) << "\n";
@@ -83,7 +83,7 @@ int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::
 
   std::cout << std::endl;
   if (solved) s.toTikz(P);
- return 0;
+  return 0;
 }
 
 
@@ -152,7 +152,7 @@ void MyCustomDataSource::read() const {
 int solToModel(const Problem& P, Solution s,
 	       IloEnv& env, IloOplModel& opl, IloCP& cp){
   IloSolution sol(env);
-  s.reaffectId(P);	
+  s.reaffectId(P);
   std::sort(s.S.begin(),s.S.end(),idComp);
   
   sol.setValue((opl.getElement("flowtime")).asIntVar(), s.getSumCompletion(P));
@@ -165,7 +165,7 @@ int solToModel(const Problem& P, Solution s,
     IloIntervalVar job_j = jobs.get(j);
     sol.setStart(job_j,s.S[j-1].start);
   }
-	
+ 	
   IloIntervalVarMap mjobs = opl.getElement("mjobs").asIntervalVarMap();
   for (IloInt j = 0; j < P.N ; ++j){
     IloIntervalVarMap sub = mjobs.getSub(j + 1);
@@ -173,7 +173,7 @@ int solToModel(const Problem& P, Solution s,
       IloIntervalVar alt_job = sub.get(k + 1);
       if (s.S[j].machine == k){
 	sol.setPresent(alt_job);
-	sol.setStart(alt_job, s.S[j].start);
+	//	sol.setStart(alt_job, s.S[j].start);
       }
       else sol.setAbsent(alt_job);
     }

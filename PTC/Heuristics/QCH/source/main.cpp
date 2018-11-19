@@ -11,8 +11,8 @@ int main(int, char* argv[]){
   std::cout << P.N << ";" << P.M << ";" << P.getFamilyNumber() << ";";
   Solution s(P);
   QCHWithOutput(P, s);
-  //std::cout << P.toString() << s.toString(P);
-  // s.toTikz(P);
+  std::cout << P.toString() << s.toString(P);
+  s.toTikz(P);
   return 0;
 }
 
