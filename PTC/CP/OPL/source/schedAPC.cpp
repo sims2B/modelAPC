@@ -19,18 +19,21 @@ int solve(const Problem& P, Solution& s){
     opl.generate();
     if (!VERBOSITY)     cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
-    if (withCPStart){
+    
       Solution solSCH(P);
-      if (SCH(P, solSCH)) solToModel(P, solSCH, env,opl,cp);
       Solution solQCH(P);
-      if (QCH(P, solQCH)) solToModel(P, solQCH, env,opl,cp);
-    }
+      if (withCPStart){
+	if (SCH(P, solSCH)) solToModel(P, solSCH, env,opl,cp);
+	else solSCH.clear(P);
+	if (QCH(P, solQCH)) solToModel(P, solQCH, env,opl,cp);
+	else solQCH.clear(P);
+      }
     if (cp.solve()){
       IloOplElement elmt = opl.getElement("mjobs");
       modelToSol(P,s,env,cp,elmt);
-      displayCPAIOR(P, s, cp, startTime,1);
+      displayCPAIOR(P, s, solSCH, solQCH,cp, startTime,1);
     }
-    else displayCPAIOR(P, s, cp, startTime,0);
+    else displayCPAIOR(P, s, solSCH,solQCH,cp, startTime,0);
     return 0;
   } catch (IloOplException & e) {
     std::cout << "### OPL exception: " << e.getMessage() << std::endl;
@@ -49,9 +52,22 @@ int solve(const Problem& P, Solution& s){
 }
 
 
-int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::time_point t1, int solved){
+int displayCPAIOR(const Problem& P, const Solution& s, const Solution& solSCH, const Solution& solQCH, const IloCP& cp,  Clock::time_point t1, int solved){
   Clock::time_point t2 = Clock::now();
-  
+    if (solSCH.S[0].start!=-1){
+    std::cout << "s INIT_SOL_SCH "  << 1 << std::endl;
+    std::cout << "s FLOW_SOL_SCH "  << solSCH.getSumCompletion(P) << std::endl;
+    std::cout << "s QUAL_SOL_SCH "  << solSCH.getNbQualif(P) << std::endl;
+  }
+  else 
+    std::cout << "s INIT_SOL_SCH "  << 0 << std::endl;
+  if (solQCH.S[0].start!=-1){
+    std::cout << "s INIT_SOL_QCH "  << 1 << std::endl;
+    std::cout << "s FLOW_SOL_QCH "  << solQCH.getSumCompletion(P) << std::endl;
+    std::cout << "s QUAL_SOL_QCH "  << solQCH.getNbQualif(P) << std::endl;
+  }
+  else 
+    std::cout << "s INIT_SOL_QCH "  << 0 << std::endl;
   if (solved) {
     if ( cp.getObjGap() >= -0.00001 && cp.getObjGap() <= 0.00001)
       std::cout << "s OPTIMUM \n";

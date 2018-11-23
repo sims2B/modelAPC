@@ -21,7 +21,7 @@ typedef IloArray<IloNumVarMatrix> IloNumVar3DMatrix;
 /////////////// SOLUTION /////////////////
 //////////////////////////////////////////
 int solve(const Problem&, Solution&);
-int useMIPStart(const Problem &P,  IloEnv& env, IloCplex& cplex,
+int useMIPStart(const Problem &P,  Solution&, Solution&,IloEnv& env, IloCplex& cplex,
 	IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, IloNumVarMatrix& Y, IloNumVarArray& C);
 //set some Cplex parameters for function solve
 int setParam(IloEnv&,IloCplex&);
@@ -31,7 +31,7 @@ int setParam(IloEnv&,IloCplex&);
 /////////// SOLUTION TREATMENT ///////////
 //////////////////////////////////////////
 //AFFICHAGE SOLUTION
-int displayCPAIOR(const Problem&, const Solution& , const IloCplex&, Clock::time_point,
+int displayCPAIOR(const Problem&, const Solution&, const Solution&, const Solution& , const IloCplex&, Clock::time_point,
 	IloNum, int solved);
 // fill an instance of solution with the solution found by the model
 int modelToSol(const Problem&, Solution&, const IloCplex&, const IloNumVar3DMatrix&,

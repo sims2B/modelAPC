@@ -27,7 +27,7 @@ int solToModel(const Problem& P, const Solution& s,
 	IloSolution& sol);
 
 //AFFICHAGE SOLUTION
-int displayCPAIOR(const Problem&, const Solution& , const IloCP&, Clock::time_point,
+int displayCPAIOR(const Problem&, const Solution& , const Solution&, const Solution&,const IloCP&, Clock::time_point,
 	int solved);
 int displayCVS(const Problem& P, const Solution& s, const IloCP& cp, 
 	const IloNum& bestObj,const IloNum& timeBestSol);//Format CSV

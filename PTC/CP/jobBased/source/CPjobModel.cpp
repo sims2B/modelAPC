@@ -16,21 +16,25 @@ int CP::solve(const Problem& P, Solution & s){
     createModel(P, env, model, masterTask, altTasks, disqualif, mchs);
     IloCP cp(model);
 
+    
+    Solution solSCH(P);
+    Solution solQCH(P);
     if (withCPStart){
-      Solution solSCH(P);
       if (SCH(P, solSCH)){
 	IloSolution sol(env);
 	solToModel(P, solSCH, masterTask, altTasks, disqualif, masterTask[P.N], sol);
 	cp.setStartingPoint(sol);
 	sol.end();
       }
-      Solution solQCH(P);
+      else solSCH.clear(P);
+	
       if (QCH(P, solQCH)){
 	IloSolution sol(env);
 	solToModel(P, solQCH, masterTask, altTasks, disqualif, masterTask[P.N], sol);
 	cp.setStartingPoint(sol);
 	sol.end();
-      }      
+      }
+      else solQCH.clear(P);
     }
     
     if (!VERBOSITY) cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
@@ -39,9 +43,9 @@ int CP::solve(const Problem& P, Solution & s){
     if (cp.solve()){
       //printSol(P,cp,altTasks,disqualif);
       modelToSol(P, s, cp, altTasks, disqualif);
-      displayCPAIOR(P, s, cp, startTime,1);
+      displayCPAIOR(P, s,  solSCH, solQCH, cp, startTime,1);
     }
-    else displayCPAIOR(P, s, cp, startTime,0);
+    else displayCPAIOR(P, s,  solSCH, solQCH, cp, startTime,0);
     env.end();
   return 0;
   }
@@ -133,9 +137,22 @@ int solToModel(const Problem& P, const Solution& s,
   return 0;
 }
 
-int displayCPAIOR(const Problem& P, const Solution& s, const IloCP& cp,  Clock::time_point t1, int solved){
+int displayCPAIOR(const Problem& P, const Solution& s, const Solution& solSCH, const Solution& solQCH, const IloCP& cp,  Clock::time_point t1, int solved){
   Clock::time_point t2 = Clock::now();
-  
+  if (solSCH.S[0].start!=-1){
+    std::cout << "s INIT_SOL_SCH "  << 1 << std::endl;
+    std::cout << "s FLOW_SOL_SCH "  << solSCH.getSumCompletion(P) << std::endl;
+    std::cout << "s QUAL_SOL_SCH "  << solSCH.getNbQualif(P) << std::endl;
+  }
+  else 
+    std::cout << "s INIT_SOL_SCH "  << 0 << std::endl;
+  if (solQCH.S[0].start!=-1){
+    std::cout << "s INIT_SOL_QCH "  << 1 << std::endl;
+    std::cout << "s FLOW_SOL_QCH "  << solQCH.getSumCompletion(P) << std::endl;
+    std::cout << "s QUAL_SOL_QCH "  << solQCH.getNbQualif(P) << std::endl;
+  }
+  else 
+    std::cout << "s INIT_SOL_QCH "  << 0 << std::endl;
   if (solved) {
     if ( cp.getObjGap() >= -0.00001 && cp.getObjGap() <= 0.00001)
       std::cout << "s OPTIMUM \n";

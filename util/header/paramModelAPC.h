@@ -6,10 +6,10 @@
 #define time_limit 30
 #endif
 
-#define VERBOSITY 1
+#define VERBOSITY 0
 //alpha et beta pour le weighted objectif.
 #define alpha_C 1 //prio flowtime alpha = beta = 1
-#define beta_Y  P.N * P.computeHorizon() //prio disqualif alpha = 1 et 
+#define beta_Y P.N * P.computeHorizon() //prio disqualif alpha = 1 et 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////    CP PARAMETERS //////////////////////////////////////

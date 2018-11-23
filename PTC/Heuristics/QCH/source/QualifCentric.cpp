@@ -25,7 +25,7 @@ int QCH(Problem P, Solution& s){
     //std::cout << " Phase 1 done \n La solution est valide ?" << s.isValid(P) << "\n" << s.toString(P);
     //s.toTikz(P);
     if (!intraChange(P, s, endLast)){
-      // std::cout << " Phase 2 done \n  La solution est valide ?" << s.isValid(P) << "\n" << s.toString(P); 
+      //std::cout << " Phase 2 done \n  La solution est valide ?" << s.isValid(P) << "\n" << s.toString(P); 
       //s.toTikz(P);
       return !interChange(P, s, endLast);
       return 1;
