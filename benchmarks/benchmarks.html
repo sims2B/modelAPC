@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-11-19 lun. 10:16 -->
+<!-- 2018-11-21 mer. 21:25 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Notes about the experimental protocol</title>
@@ -152,7 +152,12 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline1">Convert instances From TXT To OPL format</a></li>
 <li><a href="#orgheadline2">AWK Script : Extract Tikz</a></li>
 <li><a href="#orgheadline3">Extract and Compile Tikz</a></li>
-<li><a href="#orgheadline4">Compare algorithms</a></li>
+<li><a href="#orgheadline4">Compare algorithms</a>
+<ul>
+<li><a href="#orgheadline5">Read and summarize results : FLOW - QUAL</a></li>
+<li><a href="#orgheadline6">Read and summarize results : QUAL - FLOW</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -174,39 +179,118 @@ for the JavaScript code in this tag.
 <h2 id="orgheadline4">Compare algorithms</h2>
 <div class="outline-text-2" id="text-orgheadline4">
 <p>
-Read the results files
+Read and summarize the results files
+Build results data frame.
 </p>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">Read and summarize results : FLOW - QUAL</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <pre class="example">
 $modelCP1
-
-FEASIBLE  OPTIMUM  Unknown 
-     300      255       15 
+  Group.1 opt  feas   time  qual     flow
+1      20   0 1.000 30.015 6.111  331.928
+2      30   0 0.994 30.020 4.542  765.212
+3      40   0 1.000 30.020 2.200 1527.600
+4      50   0 1.000 30.031 2.333 2155.500
+5      60   0 0.900 30.037 3.333 2784.889
+6      70   0 0.900 30.044 3.556 3575.778
 
 $modelIP3
+  Group.1   opt feas   time  qual     flow
+1      20 0.967    1  6.434 6.111  331.794
+2      30 0.716    1 16.870 4.392  777.733
+3      40 0.867    1 11.621 2.267 1532.167
+4      50 0.567    1 19.807 2.300 2262.233
+5      60 0.057    1 30.644 2.434 3217.094
+6      70 0.051    1 31.221 2.115 4246.769
 
-Feasible  Optimal  Unknown 
-     402      144       24 
-
-$schedAPC
-
-segfault   FEASIBLE  OPTIMUM  Unknown 
-      13      236      305       16
+$scheAPC
+  Group.1   opt  feas   time  qual     flow
+1      20 0.653 1.000 17.248 6.024  333.820
+2      30 0.233 0.989 24.584 4.472  761.157
+3      40 0.600 1.000 20.712 2.267 1526.700
+4      50 0.100 1.000 29.307 2.200 2146.600
+5      60 0.000 0.900 30.050 2.667 2784.074
+6      70 0.000 0.911 30.067 2.622 3538.915
 </pre>
 
+<pre class="example">
+    MACHINES
+JOBS   3   4   5
+  20  60 120   0
+  30 120  30  30
+  40  30   0   0
+  50  30   0   0
+  60  60   0   0
+  70  30  60   0
+</pre>
+
+
 <p>
-Build results data frame.
-Compute the average linearized objective per number of jobs
+Number of instances for which each algorithm is the VBS.
 </p>
 <pre class="example">
 There were 49 warnings (use warnings() to see them)
-  Group.1 modelCP1.DISQUALIFIED modelIP3.DISQUALIFIED schedAPC.DISQUALIFIED
-1      20             0.6331050             1.1202183             0.5846082
-2      30             1.4153642             3.1784701             1.2127822
-3      40             0.6083408             0.9176692             0.2786837
-4      50             1.4503070             2.9373211             0.8586837
-5      60             3.4221583             7.5146587             2.8544054
-6      70             4.9777950             9.6004482             4.0121783
+  Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME scheAPC.FLOWTIME
+1      20               157               172              148
+2      30               124               123              110
+3      40                28                29               30
+4      50                22                19               23
+5      60                30                 5               24
+6      70                46                 5               39
 </pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">Read and summarize results : QUAL - FLOW</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<pre class="example">
+$modelCP1
+  Group.1   opt  feas   time  qual     flow
+1      20 0.694 1.000 25.724 8.394  386.444
+2      30 0.511 0.994 29.639 7.927  871.128
+3      40 0.633 1.000 29.979 4.400 1639.967
+4      50 0.333 1.000 30.017 4.567 2318.967
+5      60 0.083 0.900 30.018 6.574 3040.204
+6      70 0.044 0.911 30.026 6.695 3794.402
+
+$modelIP3
+  Group.1   opt feas   time  qual     flow
+1      20 0.544    1 17.047 7.900  381.189
+2      30 0.223    1 25.665 6.154  884.954
+3      40 0.233    1 26.159 4.133 1729.233
+4      50 0.000    1 30.091 3.133 2486.533
+5      60 0.000    1 31.450 2.509 3264.075
+6      70 0.000    1 31.779 2.167 4261.974
+
+$schedAPC
+  Group.1   opt  feas   time  qual     flow
+1      20 0.802 1.000 15.738 8.299  389.132
+2      30 0.572 0.989 25.499 8.202  912.837
+3      40 0.867 1.000 24.795 4.800 1807.167
+4      50 0.567 1.000 30.025 5.233 2524.933
+5      60 0.200 0.900 30.029 7.185 3174.722
+6      70 0.144 0.911 30.054 7.671 4091.207
+</pre>
+
+
+<p>
+Build results data frame.
+</p>
+<pre class="example">
+    MACHINES
+JOBS   3   4   5
+  20  60 120   0
+  30 120  30  30
+  40  30   0   0
+  50  30   0   0
+  60  60   0   0
+  70  30  60   0
+</pre>
+
 
 <p>
 Number of instances for which each algorithm is the VBS of disqualified.
@@ -221,7 +305,6 @@ There were 49 warnings (use warnings() to see them)
 5      60                    28                     0                    50
 6      70                    36                     0                    71
 </pre>
-
 
 <p>
 Number of instances for which each algorithm is the VBS for disqualified and flowtime.
@@ -239,9 +322,10 @@ There were 49 warnings (use warnings() to see them)
 </div>
 </div>
 </div>
+</div>
 <div id="postamble" class="status">
 <p class="author">Author: Arnaud Malapert</p>
-<p class="date">Created: 2018-11-19 lun. 10:16</p>
+<p class="date">Created: 2018-11-21 mer. 21:25</p>
 <p class="validation"></p>
 </div>
 </body>
