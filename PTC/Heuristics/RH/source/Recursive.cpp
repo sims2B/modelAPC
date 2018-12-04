@@ -6,7 +6,7 @@
 int displayCVS(const Problem& P, const Solution& s, bool& solved){
   if (solved){
     std::cout << "1;";
-    std::cout << s.getWeigthedObjectiveValue(P, alpha_C, beta_Y) << ";"
+    std::cout << s.getWeigthedObjectiveValue(P) << ";"
 	      << s.getSumCompletion(P) << ";"
 	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
 	      << s.getNbSetup(P);
@@ -50,8 +50,8 @@ int RH(const Problem& P, Solution& s_res, ptrHeur Heuristic){
 	      for (unsigned int j = 0; j < s.QualifLostTime[f].size(); ++j)
 		if (P.F[f].qualif[j] != Q.F[f].qualif[j])
 		  (P.F[f].threshold >= Cmax ? s_temp.QualifLostTime[f][j] = s_temp.QualifLostTime[f][j] : s_temp.QualifLostTime[f][j] = P.F[f].threshold);
-	    if (s_temp.getWeigthedObjectiveValue(Q, alpha, BETA)
-		< s_res.getWeigthedObjectiveValue(P, alpha, BETA)){
+	    if (s_temp.getWeigthedObjectiveValue(Q)
+		< s_res.getWeigthedObjectiveValue(P)){
 	      s_res = s_temp;
 	    }
 	  }

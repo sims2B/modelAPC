@@ -46,7 +46,7 @@ int LH(Problem P, Solution& s){
 int displayCVS(const Problem& P, const Solution& s, const int& solved){
   if (solved){
     std::cout << "1;";
-    std::cout << s.getWeigthedObjectiveValue(P,alpha,beta) << ";"
+    std::cout << s.getWeigthedObjectiveValue(P) << ";"
 	      << s.getSumCompletion(P) << ";"
 	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
 	      << s.getNbSetup(P) ;

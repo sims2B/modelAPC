@@ -113,8 +113,8 @@ int Solution::getRealNbDisqualif(const Problem& P) const{
   return sum;
 }
 
-int Solution::getWeigthedObjectiveValue(const Problem &P, const int & alpha, const int& beta) const{
-  return alpha * getSumCompletion(P) + beta * getNbDisqualif();
+int Solution::getWeigthedObjectiveValue(const Problem &P) const{
+  return alpha_C * getSumCompletion(P) + beta_Y * getNbDisqualif();
 }
 
 int Solution::getNbSetup(const Problem & P) const{

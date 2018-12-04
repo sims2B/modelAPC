@@ -32,7 +32,7 @@ int setParam(IloEnv&,IloCplex&);
 //////////////////////////////////////////
 //AFFICHAGE SOLUTION
 int displayCPAIOR(const Problem&, const Solution&, const Solution&, const Solution& , const IloCplex&, Clock::time_point,
-	IloNum, int solved);
+	IloNum, IloBool& solved);
 // fill an instance of solution with the solution found by the model
 int modelToSol(const Problem&, Solution&, const IloCplex&, const IloNumVar3DMatrix&,
 	       const IloNumVar3DMatrix&, const IloNumVarMatrix&);

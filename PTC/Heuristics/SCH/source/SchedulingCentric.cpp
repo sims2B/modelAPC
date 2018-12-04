@@ -9,7 +9,7 @@ namespace SchedulingCentric{
   int displayCVS(const Problem& P, const Solution& s, int& solved){
     if (solved){
       std::cout << "1;";
-      std::cout << s.getWeigthedObjectiveValue(P, alpha_C, beta_Y) << ";"
+      std::cout << s.getWeigthedObjectiveValue(P) << ";"
 		<< s.getSumCompletion(P) << ";"
 		<< s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
 		<< s.getNbSetup(P);

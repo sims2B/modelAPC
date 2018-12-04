@@ -19,33 +19,18 @@ int CP::solve(const Problem& P, Solution & s){
     
     Solution solSCH(P);
     Solution solQCH(P);
-    if (withCPStart){
-      if (SCH(P, solSCH)){
-	IloSolution sol(env);
-	solToModel(P, solSCH, masterTask, altTasks, disqualif, masterTask[P.N], sol);
-	cp.setStartingPoint(sol);
-	sol.end();
-      }
-      else solSCH.clear(P);
-	
-      if (QCH(P, solQCH)){
-	IloSolution sol(env);
-	solToModel(P, solQCH, masterTask, altTasks, disqualif, masterTask[P.N], sol);
-	cp.setStartingPoint(sol);
-	sol.end();
-      }
-      else solQCH.clear(P);
-    }
-    
+    if (withCPStart)
+      useCPStart(P,solSCH,solQCH,env,cp,masterTask, altTasks, disqualif, masterTask[P.N]);
+     
+    //  cp.setParameter(IloCP::LogVerbosity, IloCP::Terse);
     if (!VERBOSITY) cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
-
-    if (cp.solve()){
-      //printSol(P,cp,altTasks,disqualif);
+    
+    IloBool solCPFound = cp.solve();
+    if (solCPFound)
       modelToSol(P, s, cp, altTasks, disqualif);
-      displayCPAIOR(P, s,  solSCH, solQCH, cp, startTime,1);
-    }
-    else displayCPAIOR(P, s,  solSCH, solQCH, cp, startTime,0);
+    displayCPAIOR(P, s,  solSCH, solQCH, cp, startTime,solCPFound);
+    
     env.end();
   return 0;
   }
@@ -57,6 +42,31 @@ int CP::solve(const Problem& P, Solution & s){
   }
   env.end();
   return 1;
+}
+
+void useCPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env, IloCP& cp,
+		IloIntervalVarArray& masterTask, IloIntervalVarMatrix& altTasks,
+		IloIntervalVarMatrix& disqualif, IloIntervalVar& Cmax){
+  int nbHSol = 0;
+  if (SCH(P, solSCH)){
+    nbHSol++;
+    IloSolution sol(env);
+    solToModel(P, solSCH, masterTask, altTasks, disqualif, masterTask[P.N], sol);
+    cp.setStartingPoint(sol);
+    sol.end();
+  }
+  else solSCH.clear(P);
+	
+  if (QCH(P, solQCH)){
+     nbHSol++;
+    IloSolution sol(env);
+    solToModel(P, solQCH, masterTask, altTasks, disqualif, masterTask[P.N], sol);
+    cp.setStartingPoint(sol);
+    sol.end();
+  }
+  else solQCH.clear(P);
+  
+  std::cout << "d NBHSOLS "  << nbHSol << "\n";
 }
 
 int modelToSol(const Problem& P, Solution& s, const IloCP& cp,
@@ -135,57 +145,6 @@ int solToModel(const Problem& P, const Solution& s,
       }
   }
   return 0;
-}
-
-int displayCPAIOR(const Problem& P, const Solution& s, const Solution& solSCH, const Solution& solQCH, const IloCP& cp,  Clock::time_point t1, int solved){
-  Clock::time_point t2 = Clock::now();
-  if (solSCH.S[0].start!=-1){
-    std::cout << "s INIT_SOL_SCH "  << 1 << std::endl;
-    std::cout << "s FLOW_SOL_SCH "  << solSCH.getSumCompletion(P) << std::endl;
-    std::cout << "s QUAL_SOL_SCH "  << solSCH.getNbQualif(P) << std::endl;
-  }
-  else 
-    std::cout << "s INIT_SOL_SCH "  << 0 << std::endl;
-  if (solQCH.S[0].start!=-1){
-    std::cout << "s INIT_SOL_QCH "  << 1 << std::endl;
-    std::cout << "s FLOW_SOL_QCH "  << solQCH.getSumCompletion(P) << std::endl;
-    std::cout << "s QUAL_SOL_QCH "  << solQCH.getNbQualif(P) << std::endl;
-  }
-  else 
-    std::cout << "s INIT_SOL_QCH "  << 0 << std::endl;
-  if (solved) {
-    if ( cp.getObjGap() >= -0.00001 && cp.getObjGap() <= 0.00001)
-      std::cout << "s OPTIMUM \n";
-    else std::cout << "s FEASIBLE\n";
-  }
-  else std::cout << "s " << cp.getStatus() << "\n";
-  
-  std::cout << "d WCTIME " <<  cp.getInfo(IloCP::SolveTime) << "\n";
-
-  std::chrono::duration<double> duration =
-    std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-  std::cout << "d RUNTIME "<< duration.count() << "\n";
-  if (solved){
-  std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
-  std::cout << "d FLOWTIME " << s.getSumCompletion(P) << "\n";
-  std::cout << "d DISQUALIFIED "<< s.getRealNbDisqualif(P) << "\n";
-  std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
-  std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
-  std::cout << "d VALIDE "<< s.isValid(P) << "\n";
-  std::cout << "d GAP "  <<  cp.getObjGap()<< "\n";
-  }
-  std::cout << "d NBSOLS "  <<  cp.getInfo(IloCP::NumberOfSolutions)<< "\n";
-  std::cout << "d BRANCHES " <<  cp.getInfo(IloCP::NumberOfBranches) << "\n";
-  std::cout << "d FAILS "  <<  cp.getInfo(IloCP::NumberOfFails)<< "\n";
-  std::cout << "c VARIABLES " <<  cp.getInfo(IloCP::NumberOfVariables) << "\n";
-  std::cout << "c CONSTRAINTS " <<  cp.getInfo(IloCP::NumberOfConstraints) << "\n";
-  std::cout << "c MACHINES "<< P.M << "\n";
-  std::cout << "c FAMILIES "<< P.getFamilyNumber() << "\n";
-  std::cout << "c JOBS "<<P.N << "\n";
-
-  std::cout << std::endl;
-  if (solved)   s.toTikz(P);
- return 0;
 }
 
 int printSol(const Problem& P, const IloCP& cp, const IloIntervalVarMatrix& altTasks,
@@ -313,19 +272,19 @@ int createObjective(const Problem& P, IloEnv& env, IloModel& model,
   }
   
   if (!weighted){
-  IloNumExprArray objs(env);
-  if (prioFlow){
-    objs.add(IloSum(ends));
-    objs.add(IloSum(disQ));
-  }
-  else{
-    objs.add(IloSum(disQ));
-    objs.add(IloSum(ends));
-  }
+    IloNumExprArray objs(env);
+    if (prioFlow){
+      objs.add(IloSum(ends));
+      objs.add(IloSum(disQ));
+    }
+    else{
+      objs.add(IloSum(disQ));
+      objs.add(IloSum(ends));
+    }
     
-  IloMultiCriterionExpr myObj = IloStaticLex(env, objs);
-  model.add(IloMinimize(env, myObj));
-  objs.end();
+    IloMultiCriterionExpr myObj = IloStaticLex(env, objs);
+    model.add(IloMinimize(env, myObj));
+    objs.end();
   }
   else
     model.add(IloMinimize(env, alpha_C * IloSum(ends) + beta_Y * IloSum(disQ)));

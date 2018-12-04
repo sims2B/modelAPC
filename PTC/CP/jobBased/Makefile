@@ -21,6 +21,7 @@ LDFLAGS= -L$(CPLEXDIR)cpoptimizer/lib/x86-64_linux/static_pic \
 	 -L$(CPLEXDIR)concert/lib/x86-64_linux/static_pic
 LDLIBS= -lcp  -lilocplex -lcplex -lconcert -lm -pthread -ldl
 CPPFLAGS= -I./header/ \
+	  -I../solTreat/header/ \
 	  -I../../Problem/header/ \
 	  -I../../Heuristics/SCH/header/ \
 	  -I../../Heuristics/QCH/header/ \
@@ -35,6 +36,7 @@ DEBUG_FLAGS= -W  -Werror -Wall -gstabs
 ### PROPERTIES ########################################
 PROJECTNAME=bin/modelCP1
 SRCS=../../../util/source/utils.cpp\
+     ../solTreat/source/solTreat.cpp\
      ../../Problem/source/Family.cpp \
      ../../Problem/source/Problem.cpp \
      ../../Problem/source/Assignment.cpp \

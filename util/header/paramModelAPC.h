@@ -7,23 +7,14 @@
 #endif
 
 #define VERBOSITY 0
-//alpha et beta pour le weighted objectif.
-#define alpha_C 1 //prio flowtime alpha = beta = 1
-#define beta_Y P.N * P.computeHorizon() //prio disqualif alpha = 1 et 
+#define prioFlow 0 // ordre pour le lexico ( 1 => flow ; 0 => disqualif)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////    CP PARAMETERS //////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 #define withCPStart 1
-
-#define weighted 0 //0 => lexico ; 1 => weighted obj value (les valeurs de alpha 
-//et beta se règlent en haut)
-
-//beta = nbJob.Cmax (borne sup sur Cmax)
-
-// lexico 
-#define prioFlow 0 // ordre pour le lexico ( 1 => flow ; 0 => disqualif)
+#define weighted 0 //0 => lexico ; 1 => weighted obj value 
 
 #define pathToOPL "/home/nattafm/Dev/PTC/CP/OPL/schedAPC.mod"
 
@@ -32,3 +23,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #define withMIPStart 1
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////    DO NOT CHANGE //////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+//automatique alpha et beta pour le weighted objectif.
+#if prioFlow==1
+#define alpha_C 1
+#define beta_Y 1
+
+#elif prioFlow==0
+#define alpha_C 1 
+#define beta_Y P.N * P.computeHorizon() 
+
+#endif

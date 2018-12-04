@@ -12,7 +12,7 @@ int SA(const Problem& P, Solution& s, ptrHeur& computeSolInit){
     std::sort(s.S.begin(), s.S.end());
     Solution currentSol(P);
     Solution bestSol(s);
-    int objBest = bestSol.getWeigthedObjectiveValue(P, alpha, beta);
+    int objBest = bestSol.getWeigthedObjectiveValue(P);
     do{
       //std::cout << "temps écoulé : " << tpsEcoule << "\n temperature actuelle : " << currentTemp << "\n temperature change : " << t << std::endl;
       int cpt = 0;
@@ -21,13 +21,13 @@ int SA(const Problem& P, Solution& s, ptrHeur& computeSolInit){
 	if (generateNeighborSol(P, s, currentSol)){
 	  //std::cout << "\t \t la solution est valide ";
 	  int delta;
-	  if ((delta = currentSol.getWeigthedObjectiveValue(P, alpha, beta) -
-	       s.getWeigthedObjectiveValue(P, alpha, beta)) <= 0){
+	  if ((delta = currentSol.getWeigthedObjectiveValue(P) -
+	       s.getWeigthedObjectiveValue(P)) <= 0){
 	    s = currentSol;
-	    if (currentSol.getWeigthedObjectiveValue(P, alpha, beta) <
+	    if (currentSol.getWeigthedObjectiveValue(P) <
 		objBest){
 	      bestSol = currentSol;
-	      objBest = bestSol.getWeigthedObjectiveValue(P, alpha, beta);
+	      objBest = bestSol.getWeigthedObjectiveValue(P);
 	    }
 	  }
 	  else {
@@ -237,7 +237,7 @@ void acceptWithProba(Solution& s, const Solution& currentSol, const double curre
 int SAA::displayCVS(const Problem& P, const Solution& s, int& solved){
   if (solved){
     std::cout << "1;";
-    std::cout << s.getWeigthedObjectiveValue(P, alpha, beta) << ";"
+    std::cout << s.getWeigthedObjectiveValue(P) << ";"
 	      << s.getSumCompletion(P) << ";"
 	      << s.getNbDisqualif() << ";" << s.getRealNbDisqualif(P) << ";"
 	      << s.getNbSetup(P);

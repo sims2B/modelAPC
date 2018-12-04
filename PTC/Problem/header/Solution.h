@@ -38,7 +38,7 @@ struct Solution{
   int getNbDisqualif() const;
   int getNbQualif(const Problem &) const;
   int getRealNbDisqualif(const Problem& P) const;
-  int getWeigthedObjectiveValue(const Problem&, const int&, const int&) const;
+  int getWeigthedObjectiveValue(const Problem&) const;
   int getNbSetup(const Problem&) const;
   int getNbJobsOn(int m) const; 
   // return the ith jobs on m (if sorted)

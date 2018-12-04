@@ -5,6 +5,7 @@
 #include "QualifCentric.h"
 #include "paramModelAPC.h"
 #include <ilopl/iloopl.h>
+#include "solTreat.h"
 
 #ifndef SCHEDAPC_H
 #define SCHEDAPC_H
@@ -30,11 +31,9 @@ int modelToSol(const Problem &, Solution&, const IloEnv&, const IloCP&,const Ilo
 
 //A PARTIR D'UN OBJET SOLUTION, CREE UNE SOLUTION POUR LE MODELE CP (ET LUI DONNE)
 int solToModel(const Problem& P, Solution s, IloEnv&, IloOplModel&, IloCP&);
+void useCPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env,
+		IloOplModel& opl, IloCP& cp);
 
-
-//AFFICHAGE SOLUTION
-int displayCPAIOR(const Problem&, const Solution& , const Solution& , const Solution& , const IloCP&, Clock::time_point,
-	int solved);
 /*
 int displayCVS(const Problem& P, const Solution& s, const IloCP& cp, const IloNum& bestObj,const IloNum& timeBestSol);
 */

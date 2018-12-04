@@ -1,4 +1,5 @@
 #include "schedAPC.h"
+#include "utils.h"
 #include <algorithm>
 
 int solve(const Problem& P, Solution& s){
@@ -17,24 +18,21 @@ int solve(const Problem& P, Solution& s){
     IloOplDataSource dataSource(&ds);
     opl.addDataSource(dataSource);
     opl.generate();
-    if (!VERBOSITY)     cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    if (!VERBOSITY)  cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     cp.setParameter(IloCP::TimeLimit, time_limit);
     
       Solution solSCH(P);
       Solution solQCH(P);
-      if (withCPStart){
-	if (SCH(P, solSCH)) solToModel(P, solSCH, env,opl,cp);
-	else solSCH.clear(P);
-	if (QCH(P, solQCH)) solToModel(P, solQCH, env,opl,cp);
-	else solQCH.clear(P);
+      if (withCPStart)
+	useCPStart(P,solSCH,solQCH,env,opl,cp);
+
+      IloBool solCPFound = cp.solve();
+      if (solCPFound){
+	IloOplElement elmt = opl.getElement("mjobs");
+	modelToSol(P,s,env,cp,elmt);
       }
-    if (cp.solve()){
-      IloOplElement elmt = opl.getElement("mjobs");
-      modelToSol(P,s,env,cp,elmt);
-      displayCPAIOR(P, s, solSCH, solQCH,cp, startTime,1);
-    }
-    else displayCPAIOR(P, s, solSCH,solQCH,cp, startTime,0);
-    return 0;
+      displayCPAIOR(P, s, solSCH, solQCH,cp, startTime,solCPFound);
+      return 0;
   } catch (IloOplException & e) {
     std::cout << "### OPL exception: " << e.getMessage() << std::endl;
   } catch( IloException & e ) {
@@ -51,56 +49,22 @@ int solve(const Problem& P, Solution& s){
   return 127;
 }
 
-
-int displayCPAIOR(const Problem& P, const Solution& s, const Solution& solSCH, const Solution& solQCH, const IloCP& cp,  Clock::time_point t1, int solved){
-  Clock::time_point t2 = Clock::now();
-    if (solSCH.S[0].start!=-1){
-    std::cout << "s INIT_SOL_SCH "  << 1 << std::endl;
-    std::cout << "s FLOW_SOL_SCH "  << solSCH.getSumCompletion(P) << std::endl;
-    std::cout << "s QUAL_SOL_SCH "  << solSCH.getNbQualif(P) << std::endl;
+void useCPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env,
+		IloOplModel& opl, IloCP& cp){ 
+  int nbHSol = 0;
+  if (SCH(P, solSCH)) {
+    solToModel(P, solSCH, env,opl,cp);
+    nbHSol++;
   }
-  else 
-    std::cout << "s INIT_SOL_SCH "  << 0 << std::endl;
-  if (solQCH.S[0].start!=-1){
-    std::cout << "s INIT_SOL_QCH "  << 1 << std::endl;
-    std::cout << "s FLOW_SOL_QCH "  << solQCH.getSumCompletion(P) << std::endl;
-    std::cout << "s QUAL_SOL_QCH "  << solQCH.getNbQualif(P) << std::endl;
+  else solSCH.clear(P);
+  if (QCH(P, solQCH)){
+    solToModel(P, solQCH, env,opl,cp);
+    nbHSol++;
   }
-  else 
-    std::cout << "s INIT_SOL_QCH "  << 0 << std::endl;
-  if (solved) {
-    if ( cp.getObjGap() >= -0.00001 && cp.getObjGap() <= 0.00001)
-      std::cout << "s OPTIMUM \n";
-    else std::cout << "s FEASIBLE\n";
-  }
-  else std::cout << "s " << cp.getStatus() << "\n";
-  std::cout << "d WCTIME " <<  cp.getInfo(IloCP::SolveTime) << "\n";
-
-  std::chrono::duration<double> duration =
-    std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-  std::cout << "d RUNTIME "<< duration.count() << "\n";
-  if (solved){
-    std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
-    std::cout << "d FLOWTIME " << s.getSumCompletion(P) << "\n";
-    std::cout << "d DISQUALIFIED "<< s.getRealNbDisqualif(P) << "\n";
-    std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
-    std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
-    std::cout << "d VALIDE "<< s.isValid(P) << "\n";
-    std::cout << "d GAP "  <<  cp.getObjGap()<< "\n";
-  }
-  std::cout << "d NBSOLS "  <<  cp.getInfo(IloCP::NumberOfSolutions)<< "\n";
-  std::cout << "d BRANCHES " <<  cp.getInfo(IloCP::NumberOfBranches) << "\n";
-  std::cout << "d FAILS "  <<  cp.getInfo(IloCP::NumberOfFails)<< "\n";
-  std::cout << "c VARIABLES " <<  cp.getInfo(IloCP::NumberOfVariables) << "\n";
-  std::cout << "c CONSTRAINTS " <<  cp.getInfo(IloCP::NumberOfConstraints) << "\n";
-  std::cout << "c MACHINES "<< P.M << "\n";
-  std::cout << "c FAMILIES "<< P.getFamilyNumber() << "\n";
-  std::cout << "c JOBS "<<P.N << "\n";
-
-  std::cout << std::endl;
-  if (solved) s.toTikz(P);
-  return 0;
+  else solQCH.clear(P);
+  std::cout << "d NBHSOLS "  << nbHSol << "\n";
 }
+
 
 
 void MyCustomDataSource::read() const {

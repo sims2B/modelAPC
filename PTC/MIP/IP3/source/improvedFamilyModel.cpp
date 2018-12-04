@@ -30,11 +30,10 @@ int solve(const Problem& P, Solution& s){
       }
       startWC = cplex.getCplexTime();
       //solve!
-      if (cplex.solve()){
+      IloBool solMIPFound = cplex.solve();
+      if (solMIPFound)
 	modelToSol(P, s, cplex, x, y, Y);
-	displayCPAIOR(P, s, solSCH, solQCH,cplex, startRunTime, startWC, 1);
-      }
-      else displayCPAIOR(P, s, solSCH,solQCH,cplex,  startRunTime, startWC, 0);
+      displayCPAIOR(P, s, solSCH, solQCH,cplex, startRunTime, startWC, solMIPFound);
     } 
     env.end();
     return 0;
@@ -52,6 +51,7 @@ int solve(const Problem& P, Solution& s){
 
   int useMIPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env, IloCplex& cplex,
 		IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, IloNumVarMatrix& Y, IloNumVarArray& C){
+    int nbHSol = 0;
   if (SCH(P, solSCH)){
     IloNumVarArray startVar(env);
     IloNumArray startVal(env);
@@ -59,6 +59,7 @@ int solve(const Problem& P, Solution& s){
     cplex.addMIPStart(startVar, startVal);
     startVar.end();
     startVal.end();
+    nbHSol++;
   }
   else solSCH.clear(P);
   if (QCH(P, solQCH)){
@@ -68,10 +69,13 @@ int solve(const Problem& P, Solution& s){
     cplex.addMIPStart(startVar, startVal);
     startVar.end();
     startVal.end();
+    nbHSol++;
   }
   else solQCH.clear(P);
+  std::cout << "d NBHSOL " << nbHSol << std::endl;
   return 0;
 }
+
 int displayCVS(const Problem& P, const Solution& s, const IloCplex& cplex, const IloNum& start){
   IloNum time_exec = cplex.getCplexTime() - start;
   std::cout << time_exec << ";1;";
@@ -88,22 +92,8 @@ int displayCVS(const Problem& P, const Solution& s, const IloCplex& cplex, const
   return 0;
 }
 
-int displayCPAIOR(const Problem& P, const Solution& s,const Solution& solSCH, const Solution& solQCH, const IloCplex& cplex,  Clock::time_point t1, IloNum start, int solved){
+int displayCPAIOR(const Problem& P, const Solution& s,const Solution& solSCH, const Solution& solQCH, const IloCplex& cplex,  Clock::time_point t1, IloNum start, IloBool& solved){
   Clock::time_point t2 = Clock::now();
-  if (solSCH.S[0].start!=-1){
-    std::cout << "s INIT_SOL_SCH "  << 1 << std::endl;
-    std::cout << "s FLOW_SOL_SCH "  << solSCH.getSumCompletion(P) << std::endl;
-    std::cout << "s QUAL_SOL_SCH "  << solSCH.getNbQualif(P) << std::endl;
-  }
-  else 
-    std::cout << "s INIT_SOL_SCH "  << 0 << std::endl;
-  if (solQCH.S[0].start!=-1){
-    std::cout << "s INIT_SOL_QCH "  << 1 << std::endl;
-    std::cout << "s FLOW_SOL_QCH "  << solQCH.getSumCompletion(P) << std::endl;
-    std::cout << "s QUAL_SOL_QCH "  << solQCH.getNbQualif(P) << std::endl;
-  }
-  else 
-    std::cout << "s INIT_SOL_QCH "  << 0 << std::endl;
   std::cout << "s "  << cplex.getStatus() << std::endl;
   
   std::cout << "d WCTIME " <<cplex.getCplexTime() - start<< "\n";
@@ -112,15 +102,21 @@ int displayCPAIOR(const Problem& P, const Solution& s,const Solution& solSCH, co
     std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
   std::cout << "d RUNTIME "<< duration.count() << "\n";
   if (solved){
-  std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
+    std::cout << "d CMAX " << s.getMaxEnd(P) << "\n";
   std::cout << "d FLOWTIME " << s.getSumCompletion(P) << "\n";
   std::cout << "d DISQUALIFIED "<< s.getRealNbDisqualif(P) << "\n";
   std::cout << "d QUALIFIED "<< s.getNbQualif(P) << "\n";
   std::cout << "d SETUP "<< s.getNbSetup(P) << "\n";
   std::cout << "d VALIDE "<< s.isValid(P) << "\n";
-  }
-  std::cout << "d NBSOLS "  <<  cplex.getSolnPoolNsolns() << "\n";
   std::cout << "d GAP " << cplex.getMIPRelativeGap() << "\n";
+  int objSolMIP = s.getWeigthedObjectiveValue(P);
+  if (objSolMIP == solSCH.getWeigthedObjectiveValue(P) ||
+      objSolMIP == solQCH.getWeigthedObjectiveValue(P)  )
+    std::cout << "d NBSOLS 0 \n";
+  else
+    std::cout << "d NBSOLS "  <<  cplex.getSolnPoolNsolns() << "\n";
+  }
+  else std::cout << "d NBSOLS 0 \n";
   std::cout << "d NBNODES " << cplex.getNnodes() << "\n";
   std::cout << "c VARIABLES " <<  cplex.getNcols() << "\n";
   std::cout << "c CONSTRAINTS " <<  cplex.getNrows() << "\n";
