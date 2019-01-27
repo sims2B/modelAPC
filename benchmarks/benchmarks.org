@@ -44,15 +44,16 @@ k {} \;
 
 #+RESULTS:
 
-* Compare algorithms
+* Shared R functions
 
-Read and summarize the results files
+ - Read and summarize the results files
+ - Build results data frame.
+
 #+BEGIN_SRC R :results silent :session apc
   ReadResults <- function(resfiles) {
     ReadFile <- function(resfile) {
       df <- read.table(resfile, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE)
       df <- df[-ncol(df)]
-      df$o <- df$FLOWTIME - df$DISQUALIFIED
       return(df)
     }
     ## results <- lapply(resfiles, function(x) read.table(x, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE))
@@ -66,20 +67,15 @@ Read and summarize the results files
 
   SummaryResults <- function(df) {
     x <- cbind( 
-      opt = df$s == "OPTIMUM", 
-      feas = df$s == "OPTIMUM" | df$s == "FEASIBLE",
-      time = df$WCTIME, 
-      qual = df$QUALIFIED,
-      flow = df$FLOWTIME
+      feas = 100 *(df$s == "OPTIMUM" | df$s == "FEASIBLE"),
+      opt = 100 * (df$s == "OPTIMUM"), 
+      disq = df$DISQUALIFIED,
+      flow = df$FLOWTIME,
+      time = df$WCTIME
     )
-    round(aggregate(x, by = list(df$JOBS), mean, na.rm = TRUE), 3)
+    round(aggregate(x, by = list(df$JOBS), FUN = mean, na.rm = TRUE), 1)
   }
 
-#+END_SRC
-
-
-Build results data frame.
- #+BEGIN_SRC R :results silent :session apc
    MergeResults <- function(results, 
                             indBy = c("i", "JOBS", "MACHINES"),
                             indD = c("FLOWTIME", "DISQUALIFIED", "WCTIME") ) {
@@ -98,103 +94,26 @@ Build results data frame.
      )
      return(df)
    }
+ 
+   SummaryObjective <-   function(df) {
+     x <- df$FLOWTIME + df$DISQUALIFIED
+     round(aggregate(x, by = list(df$JOBS), FUN = mean, na.rm = TRUE), 1)
+   }
 
-   
  #+END_SRC
 
-** Read and summarize results : FLOW - QUAL
-   
- #+BEGIN_SRC R :results output :session apc
-   resfiles <- list.files('results/flow-qual', pattern = '*.res', full.names=TRUE)
-   resultsFQ <- ReadResults(resfiles)
-   lapply(resultsFQ, SummaryResults)
- #+END_SRC
 
- #+RESULTS:
- #+begin_example
- $modelCP1
-   Group.1 opt  feas   time  qual     flow
- 1      20   0 1.000 30.015 6.111  331.928
- 2      30   0 0.994 30.020 4.542  765.212
- 3      40   0 1.000 30.020 2.200 1527.600
- 4      50   0 1.000 30.031 2.333 2155.500
- 5      60   0 0.900 30.037 3.333 2784.889
- 6      70   0 0.900 30.044 3.556 3575.778
+* TODO Modification du format de sortie
+ - Cohérence entre les statuts
+ - Affichage des solutions initiales
+ - Calcul du statut en prenant en compte la solution initiale
+ - Manque des configurations dans IP3 quand le status est UNKONWN, par exemple les caractéristiques de l'instances.
 
- $modelIP3
-   Group.1   opt feas   time  qual     flow
- 1      20 0.967    1  6.434 6.111  331.794
- 2      30 0.716    1 16.870 4.392  777.733
- 3      40 0.867    1 11.621 2.267 1532.167
- 4      50 0.567    1 19.807 2.300 2262.233
- 5      60 0.057    1 30.644 2.434 3217.094
- 6      70 0.051    1 31.221 2.115 4246.769
-
- $scheAPC
-   Group.1   opt  feas   time  qual     flow
- 1      20 0.653 1.000 17.248 6.024  333.820
- 2      30 0.233 0.989 24.584 4.472  761.157
- 3      40 0.600 1.000 20.712 2.267 1526.700
- 4      50 0.100 1.000 29.307 2.200 2146.600
- 5      60 0.000 0.900 30.050 2.667 2784.074
- 6      70 0.000 0.911 30.067 2.622 3538.915
-#+end_example
-
- #+BEGIN_SRC R :results output :exports results :session apc
-   dfFQ <- MergeResults(resultsFQ)
-   table(dfFQ[c("JOBS","MACHINES")])
- #+END_SRC
-
- #+RESULTS:
- :     MACHINES
- : JOBS   3   4   5
- :   20  60 120   0
- :   30 120  30  30
- :   40  30   0   0
- :   50  30   0   0
- :   60  60   0   0
- :   70  30  60   0
-
-
- Number of instances for which each algorithm is the VBS.
- #+BEGIN_SRC R :results output :session apc
-   indF <- grep("FLOWTIME", colnames(dfFQ))
-   indQ <- grep("QUALIFIED", colnames(dfFQ))
-   x <- dfFQ[indF] - dfFQ[indQ]
-   y <- x == apply(x, 1, min , na.rm = TRUE)
-   x <- aggregate(y, by = list(dfFQ$JOBS), sum, na.rm = TRUE)
-   x
- #+END_SRC
-
- #+RESULTS:
- : There were 49 warnings (use warnings() to see them)
- :   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME scheAPC.FLOWTIME
- : 1      20               157               172              148
- : 2      30               124               123              110
- : 3      40                28                29               30
- : 4      50                22                19               23
- : 5      60                30                 5               24
- : 6      70                46                 5               39
+* DONE Read and summarize results : QUAL - FLOW ; 30 seconds 
+  CLOSED: [2018-11-26 lun. 10:28] SCHEDULED: <2018-11-24 sam.>
 
  #+BEGIN_SRC R :results output :session apc
-   y <- cbind(x[1], 100*x[-1]/ table(dfFQ$JOBS))
-   round(y,1)
- #+END_SRC
-
- #+RESULTS:
- :   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME scheAPC.FLOWTIME
- : 1      20              87.2              95.6             82.2
- : 2      30              68.9              68.3             61.1
- : 3      40              93.3              96.7            100.0
- : 4      50              73.3              63.3             76.7
- : 5      60              50.0               8.3             40.0
- : 6      70              51.1               5.6             43.3
-
-
-** Read and summarize results : QUAL - FLOW
-
- #+BEGIN_SRC R :results output :session apc
-   resfiles <- list.files('results/qual-flow', pattern = '*.res', full.names=TRUE)
+   resfiles <- list.files('results/qual-flow-30s-2411', pattern = '*.res', full.names=TRUE)
    resultsQF <- ReadResults(resfiles)
    lapply(resultsQF, SummaryResults)
  #+END_SRC
@@ -202,33 +121,49 @@ Build results data frame.
  #+RESULTS:
  #+begin_example
  $modelCP1
-   Group.1   opt  feas   time  qual     flow
- 1      20 0.694 1.000 25.724 8.394  386.444
- 2      30 0.511 0.994 29.639 7.927  871.128
- 3      40 0.633 1.000 29.979 4.400 1639.967
- 4      50 0.333 1.000 30.017 4.567 2318.967
- 5      60 0.083 0.900 30.018 6.574 3040.204
- 6      70 0.044 0.911 30.026 6.695 3794.402
+   Group.1  feas  opt disq   flow time
+ 1      20 100.0 69.4  0.6  385.0 25.7
+ 2      30  99.4 51.1  1.4  871.1 29.6
+ 3      40 100.0 63.3  0.6 1640.0 30.0
+ 4      50 100.0 33.3  1.4 2319.0 30.0
+ 5      60  90.0  8.3  3.4 3039.6 30.0
+ 6      70  91.1  4.4  5.0 3793.3 30.0
 
  $modelIP3
-   Group.1   opt feas   time  qual     flow
- 1      20 0.544    1 17.047 7.900  381.189
- 2      30 0.223    1 25.665 6.154  884.954
- 3      40 0.233    1 26.159 4.133 1729.233
- 4      50 0.000    1 30.091 3.133 2486.533
- 5      60 0.000    1 31.450 2.509 3264.075
- 6      70 0.000    1 31.779 2.167 4261.974
+   Group.1  feas  opt disq   flow time
+ 1      20 100.0 54.4  1.1  381.9 17.0
+ 2      30  97.2 21.7  3.1  885.0 25.8
+ 3      40 100.0 23.3  0.9 1729.3 26.2
+ 4      50 100.0  0.0  2.9 2473.3 30.1
+ 5      60  88.3  0.0  7.5 3275.2 31.6
+ 6      70  86.7  0.0  9.5 4260.2 32.0
 
  $schedAPC
-   Group.1   opt  feas   time  qual     flow
- 1      20 0.802 1.000 15.738 8.299  389.132
- 2      30 0.572 0.989 25.499 8.202  912.837
- 3      40 0.867 1.000 24.795 4.800 1807.167
- 4      50 0.567 1.000 30.025 5.233 2524.933
- 5      60 0.200 0.900 30.029 7.185 3174.722
- 6      70 0.144 0.911 30.054 7.671 4091.207
+   Group.1  feas  opt disq   flow time
+ 1      20 100.0 82.2  0.6  386.9 15.7
+ 2      30  98.9 56.7  1.2  910.9 25.6
+ 3      40 100.0 83.3  0.2 1811.5 24.6
+ 4      50 100.0 56.7  0.8 2553.7 30.0
+ 5      60  90.0 21.7  2.8 3198.7 30.0
+ 6      70  91.1 15.6  4.1 4034.2 30.1
 #+end_example
 
+#+BEGIN_SRC R
+  ## TODO Je dois faire le merge !
+  cmpQF <- data.frame(
+    Qualified = (resultsQF$schedAPC$DISQUALIFIED+1)/(resultsQF$modelCP1$DISQUALIFIED+1),
+    Flowtime =  resultsQF$schedAPC$FLOWTIME/resultsQF$modelCP1$FLOWTIME
+  )
+  library(ggthemes)
+  ggplot(cmpQF, aes(x=Qualified, y=Flowtime)) + 
+    scale_x_log10() + scale_y_log10() +
+    geom_point(size=3) +
+    theme_gdocs()
+
+
+#+END_SRC
+
+#+RESULTS:
 
  Build results data frame.
  #+BEGIN_SRC R :results output :exports results :session apc
@@ -252,20 +187,20 @@ Build results data frame.
  Number of instances for which each algorithm is the VBS of disqualified.
  #+BEGIN_SRC R :results output :session apc
    indF <- grep("FLOWTIME", colnames(dfQF))
-   indQ <- grep("QUALIFIED", colnames(dfQF))
+   indQ <- grep("DISQUALIFIED", colnames(dfQF))
    y <- dfQF[indQ] == apply(dfQF[indQ], 1, min , na.rm = TRUE)
    aggregate(y, by = list(dfQF$JOBS), sum, na.rm = TRUE)
  #+END_SRC
 
  #+RESULTS:
- : There were 49 warnings (use warnings() to see them)
+ : There were 12 warnings (use warnings() to see them)
  :   Group.1 modelCP1.DISQUALIFIED modelIP3.DISQUALIFIED schedAPC.DISQUALIFIED
- : 1      20                   175                   130                   164
- : 2      30                   137                    60                   175
+ : 1      20                   174                   131                   180
+ : 2      30                   139                    62                   174
  : 3      40                    19                    18                    30
- : 4      50                    14                     5                    30
- : 5      60                    28                     0                    50
- : 6      70                    36                     0                    71
+ : 4      50                    15                     5                    30
+ : 5      60                    25                     0                    50
+ : 6      70                    41                     0                    71
 
  Number of instances for which each algorithm is the VBS for disqualified and flowtime.
  #+BEGIN_SRC R :results output :session apc
@@ -276,15 +211,16 @@ Build results data frame.
  #+END_SRC
 
  #+RESULTS:
- : There were 49 warnings (use warnings() to see them)
+ : There were 12 warnings (use warnings() to see them)
  :   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME schedAPC.FLOWTIME
- : 1      20               156               100               152
- : 2      30               108                43               129
- : 3      40                19                 8                29
- : 4      50                 9                 1                23
- : 5      60                21                 0                33
- : 6      70                33                 0                51
+ : 1      20               155               100               163
+ : 2      30               107                42               128
+ : 3      40                19                 8                27
+ : 4      50                11                 2                22
+ : 5      60                20                 0                34
+ : 6      70                37                 0                47
 
+Percentage
  #+BEGIN_SRC R :results output :session apc
    y <- cbind(x[1], 100*x[-1]/ table(dfQF$JOBS))
    round(y,1)
@@ -292,10 +228,281 @@ Build results data frame.
 
  #+RESULTS:
  :   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME schedAPC.FLOWTIME
- : 1      20              86.7              55.6              84.4
- : 2      30              60.0              23.9              71.7
- : 3      40              63.3              26.7              96.7
- : 4      50              30.0               3.3              76.7
- : 5      60              35.0               0.0              55.0
- : 6      70              36.7               0.0              56.7
+ : 1      20              86.1              55.6              90.6
+ : 2      30              59.4              23.3              71.1
+ : 3      40              63.3              26.7              90.0
+ : 4      50              36.7               6.7              73.3
+ : 5      60              33.3               0.0              56.7
+ : 6      70              41.1               0.0              52.2
 
+* DONE Read and summarize results : FLOW - QUAL ; 30 seconds 
+  CLOSED: [2018-11-28 mer. 10:19]
+   
+ #+BEGIN_SRC R :results output :session apc
+   resfiles <- list.files('results/flow-qual-30s-2411', pattern = '*.res', full.names=TRUE)
+   resultsFQ <- ReadResults(resfiles)
+   lapply(resultsFQ, SummaryResults)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ $modelCP1
+   Group.1  feas opt disq   flow time
+ 1      20 100.0   0  2.9  331.9   30
+ 2      30  99.4   0  4.8  765.2   30
+ 3      40 100.0   0  2.8 1527.6   30
+ 4      50 100.0   0  3.7 2155.5   30
+ 5      60  90.0   0  6.6 2785.1   30
+ 6      70  90.0   0  8.1 3575.3   30
+
+ $modelIP3
+   Group.1  feas  opt disq   flow time
+ 1      20 100.0 96.7  2.9  331.8  6.4
+ 2      30  97.8 69.4  4.9  777.6 17.1
+ 3      40 100.0 90.0  2.7 1533.3 11.6
+ 4      50 100.0 60.0  3.7 2261.5 19.8
+ 5      60  88.3  5.0  7.5 3220.1 30.7
+ 6      70  86.7  4.4  9.5 4246.8 31.8
+
+ $schedAPC
+   Group.1  feas  opt disq   flow time
+ 1      20 100.0 65.6  2.9  331.8 17.7
+ 2      30  98.9 24.4  4.9  761.9 24.5
+ 3      40 100.0 60.0  2.7 1526.7 20.5
+ 4      50 100.0 10.0  3.9 2146.7 29.4
+ 5      60  90.0  0.0  7.4 2797.8 30.0
+ 6      70  91.1  0.0  9.0 3552.9 30.1
+#+end_example
+
+
+ #+BEGIN_SRC R :results output :session apc
+   lapply(resultsFQ, SummaryObjective)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ $modelCP1
+   Group.1      x
+ 1      20  334.8
+ 2      30  770.0
+ 3      40 1530.4
+ 4      50 2159.2
+ 5      60 2791.8
+ 6      70 3583.4
+
+ $modelIP3
+   Group.1      x
+ 1      20  334.7
+ 2      30  782.5
+ 3      40 1536.0
+ 4      50 2265.2
+ 5      60 3227.6
+ 6      70 4256.3
+
+ $schedAPC
+   Group.1      x
+ 1      20  334.7
+ 2      30  766.8
+ 3      40 1529.4
+ 4      50 2150.5
+ 5      60 2805.2
+ 6      70 3561.8
+#+end_example
+
+ #+BEGIN_SRC R :results output :exports results :session apc
+   dfFQ <- MergeResults(resultsFQ)
+   table(dfFQ[c("JOBS","MACHINES")])
+ #+END_SRC
+
+ #+RESULTS:
+ :     MACHINES
+ : JOBS   3   4   5
+ :   20  60 120   0
+ :   30 120  30  30
+ :   40  30   0   0
+ :   50  30   0   0
+ :   60  60   0   0
+ :   70  30  60   0
+
+
+ Number of instances for which each algorithm is the VBS.
+ #+BEGIN_SRC R :results output :session apc
+   indF <- grep("FLOWTIME", colnames(dfFQ))
+   indQ <- grep("DISQUALIFIED", colnames(dfFQ))
+   x <- dfFQ[indF] + dfFQ[indQ]
+   y <- x == apply(x, 1, min , na.rm = TRUE)
+   x <- aggregate(y, by = list(dfFQ$JOBS), sum, na.rm = TRUE)
+   x
+ #+END_SRC
+
+ #+RESULTS:
+ : There were 13 warnings (use warnings() to see them)
+ :   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME schedAPC.FLOWTIME
+ : 1      20               158               176               162
+ : 2      30               128               130               104
+ : 3      40                28                27                30
+ : 4      50                23                21                22
+ : 5      60                30                 5                22
+ : 6      70                47                 5                39
+
+ #+BEGIN_SRC R :results output :session apc
+   y <- cbind(x[1], 100*x[-1]/ table(dfFQ$JOBS))
+   round(y,1)
+ #+END_SRC
+
+ #+RESULTS:
+ :   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME schedAPC.FLOWTIME
+ : 1      20              87.8              97.8              90.0
+ : 2      30              71.1              72.2              57.8
+ : 3      40              93.3              90.0             100.0
+ : 4      50              76.7              70.0              73.3
+ : 5      60              50.0               8.3              36.7
+ : 6      70              52.2               5.6              43.3
+
+* STARTED Read and summarize results : FLOW - QUAL ; 600 seconds 
+
+ #+BEGIN_SRC R :results output :session apc
+   resfiles <- list.files('results/flow-qual-600s-2711', pattern = '*.res', full.names=TRUE)
+   resultsFQ <- ReadResults(resfiles)
+   resultsFQ <- lapply(resultsFQ, function(x) subset(x, x$JOBS == 60))
+   lapply(resultsFQ, SummaryResults)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ $modelCP1
+   Group.1 feas opt disq flow time
+ 1      60   90   0  6.9 2749  600
+
+ $modelIP3
+   Group.1 feas opt disq   flow  time
+ 1      60 98.3  55  7.3 2866.6 375.3
+
+ $schedAPC
+   Group.1 feas opt disq   flow  time
+ 1      60   90   0  7.3 2736.7 600.1
+#+end_example
+
+ #+BEGIN_SRC R :results output :session apc
+   lapply(resultsFQ, SummaryObjective)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ $modelCP1
+   Group.1      x
+ 1      60 2755.8
+
+ $modelIP3
+   Group.1      x
+ 1      60 2873.9
+
+ $schedAPC
+   Group.1    x
+ 1      60 2744
+#+end_example
+
+
+ Number of instances for which each algorithm is the VBS.
+ #+BEGIN_SRC R :results output :session apc
+   dfFQ <- MergeResults(resultsFQ)
+   indF <- grep("FLOWTIME", colnames(dfFQ))
+   indQ <- grep("DISQUALIFIED", colnames(dfFQ))
+   x <- dfFQ[indF] + dfFQ[indQ]
+   y <- x == apply(x, 1, min , na.rm = TRUE)
+   x <- aggregate(y, by = list(dfFQ$JOBS), sum, na.rm = TRUE)
+   x
+ #+END_SRC
+
+ #+RESULTS:
+ : Warning message:
+ : In FUN(newX[, i], ...) : aucun argument trouvé pour min ; Inf est renvoyé
+ :   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME schedAPC.FLOWTIME
+ : 1      60                20                45                20
+
+
+
+* STARTED Read and summarize results : QUAL - FLOW ; 600 seconds 
+
+ #+BEGIN_SRC R :results output :session apc
+   resfiles <- list.files('results/qual-flow-600s-2911', pattern = '*.res', full.names=TRUE)
+   resultsQF <- ReadResults(resfiles)
+   lapply(resultsQF, SummaryResults)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ $modelCP1
+   Group.1 feas  opt disq   flow time
+ 1      60   90 11.7  2.9 3051.2  600
+
+ $modelIP3
+   Group.1 feas opt disq   flow  time
+ 1      60   90   0  4.2 3396.2 600.3
+
+ $schedAPC
+   Group.1 feas  opt disq flow  time
+ 1      60   90 23.3  2.2 3213 600.1
+#+end_example
+
+ #+BEGIN_SRC R :results output :exports results :session apc
+   dfQF <- MergeResults(resultsQF)
+ #+END_SRC
+
+
+
+ #+RESULTS:
+
+
+ Number of instances for which each algorithm is the VBS of disqualified.
+ #+BEGIN_SRC R :results output :session apc
+   indF <- grep("FLOWTIME", colnames(dfQF))
+   indQ <- grep("DISQUALIFIED", colnames(dfQF))
+   y <- dfQF[indQ] == apply(dfQF[indQ], 1, min , na.rm = TRUE)
+   aggregate(y, by = list(dfQF$JOBS), sum, na.rm = TRUE)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ Warning messages:
+ 1: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+ 2: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+ 3: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+ 4: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+ 5: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+   Group.1 modelCP1.DISQUALIFIED modelIP3.DISQUALIFIED schedAPC.DISQUALIFIED
+ 1      60                    24                    11                    50
+#+end_example
+
+
+ Number of instances for which each algorithm is the VBS for disqualified and flowtime.
+ #+BEGIN_SRC R :results output :session apc
+   x <- dfQF[indF] / y
+   x <- x == apply(x, 1, min , na.rm = TRUE)
+   x <- aggregate(x, by = list(dfQF$JOBS), sum, na.rm = TRUE) 
+   x
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ Warning messages:
+ 1: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+ 2: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+ 3: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+ 4: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+ 5: In FUN(newX[, i], ...) :
+   aucun argument trouvé pour min ; Inf est renvoyé
+   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME schedAPC.FLOWTIME
+ 1      60                17                 2                37
+#+end_example
+
+ 
