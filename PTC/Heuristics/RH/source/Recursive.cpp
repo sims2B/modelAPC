@@ -19,7 +19,7 @@ int displayCVS(const Problem& P, const Solution& s, bool& solved){
 std::vector<bool> convert(int x, int size);
 // !!! ajouté les disqualifications à la solution, i.e. QualifLostTime?? !!!
 int RH(const Problem& P, Solution& s_res, ptrHeur Heuristic){
-  const int BETA = P.N * P.computeHorizon();
+  //  const int BETA = P.N * P.computeHorizon();
   Solution s(P);
   if (Heuristic(P, s)){
     std::cout << s.toString(P);
