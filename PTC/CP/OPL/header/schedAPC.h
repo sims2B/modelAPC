@@ -1,4 +1,5 @@
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wclass-memaccess"   
 
 #include "Solution.h"
 #include "SchedulingCentric.h"
