@@ -1,21 +1,13 @@
 #include "utils.h"
 
-
-
-
-std::string getBasename(const std::string& str){
-    //std::string str("abc:def:ghi:jkl"); -> exemple
-    std::istringstream split(str); // flux d'exatraction sur un std::string
-    std::vector<std::string> tokens;
-    for (std::string each; std::getline(split, each, '/'); tokens.push_back(each));
-    return tokens[tokens.size()-1];
+std::string getFilename(std::string filePath, bool withExtension, char seperator)
+{
+  std::size_t sepPos = filePath.rfind(seperator);
+  std::size_t dotPos = filePath.rfind('.');
+  std::size_t s = sepPos == std::string::npos ? 0 : sepPos + 1;
+  std::size_t e = (withExtension || dotPos == std::string::npos) ? filePath.size() : dotPos;
+  // std::cout << filePath <<  " " <<  withExtension << " "<<s << " " << e << std::endl;
+  return filePath.substr(s, e-s);
 }
 
-void printVector(std::string name , std::vector<int> v){
-  unsigned int i ;
-  std::cout << name << " : [ " ;
-  for (i = 0 ; i < v.size() - 1; i++)
-    std::cout << v[i] << " , ";
-  std::cout << v[i] << " ]\n";
-}
 

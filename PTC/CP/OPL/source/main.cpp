@@ -1,5 +1,6 @@
 #include "schedAPC.h"
 #include "utils.h"
+#include <filesystem> 
   
 int main(int,char* argv[]){
  
@@ -8,7 +9,7 @@ int main(int,char* argv[]){
     Problem P = readFromFile(instance);
     instance.close();
     //std::cout << P.toString();
-    std::cout << "i " << getBasename(argv[1]) << std::endl;
+    std::cout << "i " << getFilename(argv[1], false) << std::endl;
     Solution s(P);
 
     solve(P, s);

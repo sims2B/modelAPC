@@ -15,6 +15,8 @@ std::string getStatus(const IloBool& solFound, const IloCP& cp ){
 }
 
 
+
+
 int displayCPAIOR(const Problem& P, const Solution& s, const Solution& solSCH, const Solution& solQCH, const IloCP& cp,  Clock::time_point t1, const IloBool& solved){
   Clock::time_point t2 = Clock::now();
   std::cout << "s " << getStatus(solved,cp) << "\n";

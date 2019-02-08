@@ -3,14 +3,25 @@
 #include <sstream>
 #include <string>
 
-#define POSITIVE_ZERO 0.00001
-#define NEGATIVE_ZERO -0.00001
 
-void printVector(std::string name , std::vector<int> v);
-std::string getBasename(const std::string& str);
-inline int isNul(const double& num){
-return (num <= POSITIVE_ZERO && num >= NEGATIVE_ZERO);
-}
+/*
+ * Get File Name from a Path with or without extension
+ * From https://thispointer.com/c-how-to-get-filename-from-a-path-with-or-without-extension-boost-c17-filesytem-library/
+ */
+std::string getFilename(std::string filePath, bool withExtension = true, char seperator = '/');
+/* { */
+/* 	// Get last dot position */
+/* 	std::size_t dotPos = filePath.rfind('.'); */
+/* 	std::size_t sepPos = filePath.rfind(seperator); */
+ 
+/* 	if(sepPos != std::string::npos) */
+/* 	{ */
+/* 		return filePath.substr(sepPos + 1, filePath.size() - (withExtension || dotPos != std::string::npos ? 1 : dotPos) ); */
+/* 	} */
+/* 	return ""; */
+/* } */
+  
+  
 
 /*inline std::string to_string(int const val) {
 std::stringstream ss;
