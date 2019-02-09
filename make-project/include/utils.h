@@ -11,4 +11,6 @@
  */
 std::string getFilename(std::string filePath, bool withExtension = true, char seperator = '/');
 
+// Config readConfigFile(std::string pathname)
+  
 #endif

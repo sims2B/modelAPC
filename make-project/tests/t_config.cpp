@@ -20,6 +20,7 @@
    ----------------------------------------------------------------------------
 */
 
+#include <stdlib>
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>

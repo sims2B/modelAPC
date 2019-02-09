@@ -1,9 +1,16 @@
-#include "solverAPC.h"
+#include "heuristics.h"
+#include "utils.h"
 #include <iostream>
 
 int main(int,char* argv[]){
- 
-  // std::ifstream instance(argv[1], std::ios::in);
+  std::string configPath = argv[1];
+  std::string instancePath = argv[2];
+  // Read Instance From file
+  std::ifstream instance(instancePath, std::ios::in);
+  std::cout << "i " << getFilename(argv[1], false) << std::endl;
+  // Read Config From file
+  //libconfig::Config config;
+
   // if (instance.is_open()){
     // Problem P = readFromFile(instance);
     // instance.close();

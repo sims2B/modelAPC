@@ -106,7 +106,8 @@ struct Problem{
 
 };
 
-//Problem File Reader
 Problem readFromFile(std::ifstream&);
+
+// Problem readProblemFile(std::string pathname);
 
 #endif
