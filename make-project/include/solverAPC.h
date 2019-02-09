@@ -43,19 +43,19 @@ class VirtualSolverAPC {
   
  public:
   
-  virtual Status solve(libconfig::Config config);
+  virtual Status solve(libconfig::Config config) = 0;
 
-  virtual Problem getProblem();
+  virtual Problem getProblem() = 0;
   
-  virtual Status getStatus();
+  virtual Status getStatus() = 0;
 
-  virtual int getSolutionCount();
+  virtual int getSolutionCount() = 0;
 
   inline bool hasSolution() {
     return getSolutionCount() > 0;
   }
   
-  virtual Solution getSolution();
+  virtual Solution getSolution() = 0;
 
 };
 
