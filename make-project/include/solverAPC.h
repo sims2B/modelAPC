@@ -5,49 +5,92 @@
 #include "solution.h"
 #include "utils.h"
 #include <libconfig.h++>
+#include <vector>
 
-enum Status {UNSAT, SAT, OPTIMUM, UNKNOWN, ERROR};
+#define S_UNSAT "UNSAT"
+#define S_SAT "SAT"
+#define S_OPTIMUM "OPTIMUM"
+#define S_UNKNOWN "UNKNOWN"
+#define S_ERROR "ERROR"
 
-enum Heuristic {LIST, SCHED_CENTRIC};
 
-enum SolverType {HEURISTIC, CPLEX, SCHED1, SCHED2};
+#define T_HEURISTIC "HEURISTIC"
+#define T_CPLEX "CPLEX"
+#define T_SCHED1 "SCHED1" 
+#define T_SCHED2 "SCHED2"
 
-enum Objective {FLOWTIME, DISQUALIFIED};
+#define O_FLOWTIME "FLOWTIME"
+#define O_DISQUALIFIED "DISQUALIFIED"
 
-enum ObjectiveType {MONO, LEXICOGRAPHIC, WEIGHTED_SUM};
+#define M_MONO "MONO"
+#define M_LEXICOGRAPHIC "LEX"
+#define M_WEIGHTED_SUM "SUM"
 
-//  class ConfigAPC {
-//    private:
-//     libconfig::Config config;
 
-//   public:
-//     void readFromFile(std::string configPath);
-//     int getTimeLimit();
-//     int getWorkers();
-//     bool isVerbose();
+ class ConfigAPC {
+   private:
+    libconfig::Config config;
+
+  public:
+  bool readFile(std::string configPath);
+  inline int getTimeLimit() {
+    return getIntValue("solver", "timeLimit", -1);
+  }
+
+  inline int getWorkers() {
+    return getIntValue("solver", "workers", -1);
+  }
+
+  inline bool isVerbose() {
+    return getIntValue("solver", "verbose", 0);
+  }
+
+  std::string getSolverType() {
+    return getStringValue("solver", "type", T_HEURISTIC);
+  }
+
+  std::string getObjectiveType() {
+    return getStringValue("objective", "type", M_MONO);
+  }
+
+  std::string getPriorityObjective() {
+    return getStringValue("objective", "priority", O_FLOWTIME);
+  }
+
+  std::vector<std::string> getHeuristics();
+
+  std::string getModelPath() {
+    return getStringValue("cpo", "model", "schedAPC.mod");
+  }
+
+  bool withRelaxation1SF() {
+    return getIntValue("cpo", "relax1SF", 0);
+  }
+
+  void toDimacs();
+
+  
+  private:
+  int getIntValue(const char* name1, const char* name2, int defVal);
+  std::string getStringValue(const char* name1, const char* name2, std::string defVal);
     
-//     SolverType getSolverType();
 //     Heuristic getHeuritic();
 //     std::vector<Heuristic> getHeuritics();
 
 //     ObjectiveType getObjectiveType();
 //     Objective getPriorityObjective();
     
-//     std::string getModelPath();
-//     bool withRelaxation1SF();
-
-//     std::string toDimacs();
-//  };
+ };
 
 class VirtualSolverAPC {
   
  public:
   
-  virtual Status solve(libconfig::Config config) = 0;
+  virtual std::string solve(ConfigAPC config) = 0;
 
   virtual Problem getProblem() = 0;
   
-  virtual Status getStatus() = 0;
+  virtual std::string getStatus() = 0;
 
   virtual int getSolutionCount() = 0;
 
@@ -63,19 +106,19 @@ class VirtualSolverAPC {
 class AbstractSolverAPC : public VirtualSolverAPC {
  private:
   Problem problem;
-  Status status;
+  std::string status;
   Solution solution;
   int solutionCount;
  public:
 
-  AbstractSolverAPC(Problem problem) : problem(problem), status(Status::UNKNOWN), solution(Solution(problem)), solutionCount(0) {
+  AbstractSolverAPC(Problem problem) : problem(problem), status(S_UNKNOWN), solution(Solution(problem)), solutionCount(0) {
   }
   
   inline Problem getProblem() {
     return problem;
   }
 
-  inline Status getStatus() {
+  inline std::string getStatus() {
     return status;
   }
   

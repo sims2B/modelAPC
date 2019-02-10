@@ -1,6 +1,7 @@
 #include "heuristics.h"
 #include "utils.h"
 #include <iostream>
+#include <cstdlib>
 
 int main(int,char* argv[]){
   std::string configPath = argv[1];
@@ -8,9 +9,15 @@ int main(int,char* argv[]){
   // Read Instance From file
   std::ifstream instance(instancePath, std::ios::in);
   std::cout << "i " << getFilename(argv[1], false) << std::endl;
+  std::cout << "c CONFIG " << getFilename(argv[1], false) << std::endl;
   // Read Config From file
-  //libconfig::Config config;
+  ConfigAPC config;
+  if( ! config.readFile(configPath) ) {
+    std::cout << "s "<< S_ERROR << std::endl;
+    return(EXIT_FAILURE);
+  }
 
+  std::cout << config.getTimeLimit() << std::endl;
   // if (instance.is_open()){
     // Problem P = readFromFile(instance);
     // instance.close();
@@ -22,6 +29,6 @@ int main(int,char* argv[]){
     /*std::cout << s.toString(P);
       s.toTikz(P);*/
   //}
-  std::cout << "Unable to open file";
-  return 0;
+  std::cout << "s "<< S_UNKNOWN << std::endl;
+    return(EXIT_SUCCESS);
 }

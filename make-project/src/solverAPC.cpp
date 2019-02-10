@@ -1,2 +1,76 @@
-
+#include "solverAPC.h"
  
+bool ConfigAPC::readFile(std::string configPath) {
+try
+  {
+    config.readFile(configPath.c_str());
+    return(true);
+  }
+  catch(const libconfig::FileIOException &fioex)
+  {
+    std::cerr << "I/O error while reading file." << std::endl;
+    return(false);
+  }
+  catch(const libconfig::ParseException &pex)
+  {
+    std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
+              << " - " << pex.getError() << std::endl;
+    return(false);
+  }
+
+}
+
+
+int ConfigAPC::getIntValue(const char* name1, const char* name2, int defVal) {
+    const libconfig::Setting& root = config.getRoot();
+    try {
+        int intVal;
+        if(root[name1].lookupValue(name2, intVal)) {
+            return intVal;
+        }
+    } 
+    catch(const libconfig::SettingNotFoundException &nfex)
+      {
+        // Ignored 
+      }
+      return(defVal);
+}
+
+
+std::string ConfigAPC::getStringValue(const char* name1, const char* name2, std::string defVal) {
+    const libconfig::Setting& root = config.getRoot();
+    try {
+        std::string str;
+        if(root[name1].lookupValue(name2, str)) {
+            return str;
+        }
+    } 
+    catch(const libconfig::SettingNotFoundException &nfex)
+      {
+        // Ignored 
+      }
+      return(defVal);
+}
+
+ std::vector<std::string> ConfigAPC::getHeuristics() {
+    std::vector<std::string> heuristics;
+    try {
+        const libconfig::Setting& root = config.getRoot();  
+        const libconfig::Setting &hsettings = root["solver"].lookup("heuristics");   
+        for (int i = 0; i < hsettings.getLength(); ++i) {
+          heuristics.push_back(hsettings[i]);
+        }
+    } 
+    catch(const libconfig::SettingNotFoundException &nfex)
+      {
+        // Ignored 
+      }
+    return(heuristics);
+ }
+ 
+
+void ConfigAPC::toDimacs() {
+    std::cout << "c S_TYPE " << getSolverType() << std::endl
+    << "c O_TYPE " << getObjectiveType() << std::endl
+    << "c O_TYPE " << getPriorityObjective() << std::endl;
+}

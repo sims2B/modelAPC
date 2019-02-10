@@ -8,7 +8,7 @@ class ListHeuristic : public AbstractSolverAPC {
  ListHeuristic(Problem problem) : AbstractSolverAPC(problem) {
   }
 
-  Status solve(libconfig::Config config);
+  std::string solve(ConfigAPC config);
 };
 
 #endif
