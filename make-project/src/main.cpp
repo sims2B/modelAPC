@@ -4,8 +4,7 @@
 #include <cstdlib>
 
 VirtualSolverAPC* makeSolverAPC(Problem& problem, ConfigAPC& config) {
-     ListHeuristic* h = new ListHeuristic(problem);
-     return h;
+     return makeHeuristic(problem, H_SCHED);
 }
 
 int main(int,char* argv[]){

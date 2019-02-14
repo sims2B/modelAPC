@@ -15,10 +15,14 @@
 #define S_ERROR "ERROR"
 
 
-#define T_HEURISTIC "HEURISTIC"
+#define T_HEURISTIC "HEURISTICS"
 #define T_CPLEX "CPLEX"
 #define T_SCHED1 "SCHED1" 
 #define T_SCHED2 "SCHED2"
+
+#define H_LIST "LIST"
+#define H_SCHED "SCHED"
+#define H_QUALIF "QUALIF"
 
 #define O_FLOWTIME "FLOWTIME"
 #define O_DISQUALIFIED "DISQUALIFIED"
