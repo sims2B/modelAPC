@@ -68,6 +68,7 @@ Thumbs.db
 .project
 .oplproject
 .vscode/
+.deps/
 
 # other #
 #########

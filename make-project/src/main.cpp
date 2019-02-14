@@ -27,15 +27,11 @@ int main(int,char* argv[]){
   if(instance.is_open() ) {
     Problem P = readFromFile(instance);
     instance.close();
-     VirtualSolverAPC* solver = makeSolverAPC(problem, config);
-     solver->solve(config);
-     std::cout << "s "<< solver->getStatus() << std::endl;
-    
+    VirtualSolverAPC* solver = makeSolverAPC(problem, config);
+    solver->solve(config);
   } else {
     std::cout << "s "<< S_ERROR << std::endl;
     return(EXIT_FAILURE);
   }
-  
-  std::cout << "s "<< S_UNKNOWN << std::endl;
   return(EXIT_SUCCESS);
 }

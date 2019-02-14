@@ -42,7 +42,7 @@ void ListHeuristic::treat(const int m, const int f, std::vector<int> &endLast,st
   }
 }
 
-std::string ListHeuristic::solve(ConfigAPC& config) {
+void ListHeuristic::doSolve(ConfigAPC& config) {
     //init and variable
   const int F = problem.getFamilyNumber();
   int i ,f;
@@ -73,35 +73,38 @@ std::string ListHeuristic::solve(ConfigAPC& config) {
 	      i++;
       }
     }
-    if (feasible == false) return S_UNKNOWN;
+    if (feasible == false) {
+      return;
+    }
   }
   for (f = 0 ; f < F ; ++f)
     for (i = 0 ; i < problem.M ; ++i)
       if (problem.F[f].qualif[i] || endLast[i] <= solution.QualifLostTime[f][i]) solution.QualifLostTime[f][i] = std::numeric_limits<int>::max(); 
-  return S_SAT;
+  status= S_SAT;
+  solutionCount = 1;
 }
 
 
-std::string SchedCentricHeuristic::solve(ConfigAPC& config) {
-  return S_UNKNOWN;
+void SchedCentricHeuristic::doSolve(ConfigAPC& config) {
+  
 }
 
-std::string Heuristics::solve(ConfigAPC& config) {
-  std::vector<std::string> heuristics = config.getHeuristics();
-  for( std::string heuristic : heuristics) {
-     AbstractSolverAPC* solver = makeHeuristic(problem, heuristic);  
-     std::string status = solver->solve(config);
-     std::cout << "d " << heuristic << " " << status << std::endl;
-     if( status == S_SAT) {
-        this->status == S_SAT; 
-        this->solutionCount += 1;
-        // TODO Set solution if improving
-     } 
-  }
-  return this->status;
-}
+// std::string Heuristics::solve(ConfigAPC& config) {
+//   std::vector<std::string> heuristics = config.getHeuristics();
+//   for( std::string heuristic : heuristics) {
+//      AbstractSolverAPC* solver = makeHeuristic(problem, heuristic);  
+//      std::string status = solver->solve(config);
+//      std::cout << "d " << heuristic << " " << status << std::endl;
+//      if( status == S_SAT) {
+//         this->status == S_SAT; 
+//         this->solutionCount += 1;
+//         // TODO Set solution if improving
+//      } 
+//   }
+//   return this->status;
+// }
 
 AbstractSolverAPC* makeHeuristic(Problem problem, std::string name) {
   //SchedCentricHeuristic h(problem);
-  return new SchedCentricHeuristic(problem);
+  return new ListHeuristic(problem);
 }

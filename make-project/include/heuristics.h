@@ -8,7 +8,7 @@ class ListHeuristic : public AbstractSolverAPC {
  ListHeuristic(Problem problem) : AbstractSolverAPC(problem) {
   }
 
-  std::string solve(ConfigAPC& config);
+  void doSolve(ConfigAPC& config);
 
   private:
   int chooseFamily(int m, std::vector<int> toSchedule);
@@ -21,18 +21,9 @@ class SchedCentricHeuristic : public AbstractSolverAPC {
 
  public :
  SchedCentricHeuristic(Problem problem) : AbstractSolverAPC(problem) {
-  }
-
-  std::string solve(ConfigAPC& config);
-};
-
-class Heuristics : public AbstractSolverAPC {
-
- public :
- Heuristics(Problem problem) : AbstractSolverAPC(problem) {
  }
 
-  std::string solve(ConfigAPC& config);
+void doSolve(ConfigAPC& config);
 };
 
 
