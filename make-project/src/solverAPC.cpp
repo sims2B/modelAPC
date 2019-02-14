@@ -1,5 +1,20 @@
 #include "solverAPC.h"
  
+std::string ConfigAPC::getConfigName() {
+    const libconfig::Setting& root = config.getRoot();
+    try {
+        std::string str;
+        if(root.lookupValue("name", str)) {
+            return str;
+        }
+    } 
+    catch(const libconfig::SettingNotFoundException &nfex)
+      {
+        // Ignored 
+      }
+      return("NO_NAME");
+}
+
 bool ConfigAPC::readFile(std::string configPath) {
 try
   {
@@ -70,7 +85,11 @@ std::string ConfigAPC::getStringValue(const char* name1, const char* name2, std:
  
 
 void ConfigAPC::toDimacs() {
-    std::cout << "c S_TYPE " << getSolverType() << std::endl
-    << "c O_TYPE " << getObjectiveType() << std::endl
-    << "c O_TYPE " << getPriorityObjective() << std::endl;
+    // TODO Add Config Name !
+    std::cout 
+    << "c CONFIG_NAME " << getConfigName() << std::endl
+    << "c SOLVER " << getSolverType() << std::endl
+    << "c O_FUNC " << getObjectiveFunction() << std::endl
+    << "c O_FLOW " << getWeightFlowtime() << std::endl
+        << "c O_QUAL " << getWeightQualified() << std::endl; 
 }

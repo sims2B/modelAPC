@@ -36,6 +36,8 @@
   inline int getTimeLimit() {
     return getIntValue("solver", "timeLimit", -1);
   }
+  
+  std::string getConfigName();
 
   inline int getWorkers() {
     return getIntValue("solver", "workers", -1);
@@ -49,12 +51,16 @@
     return getStringValue("solver", "type", T_HEURISTIC);
   }
 
-  std::string getObjectiveType() {
-    return getStringValue("objective", "type", M_MONO);
+  std::string getObjectiveFunction() {
+    return getStringValue("objective", "function", M_MONO);
   }
 
-  std::string getPriorityObjective() {
-    return getStringValue("objective", "priority", O_FLOWTIME);
+  int getWeightFlowtime() {
+    return getIntValue("objective", "weightFlowtime", 1);
+  }
+
+  int getWeightQualified() {
+    return getIntValue("objective", "weightQualified", 1);
   }
 
   std::vector<std::string> getHeuristics();
@@ -86,25 +92,25 @@ class VirtualSolverAPC {
   
  public:
   
-  virtual std::string solve(ConfigAPC config) = 0;
+  virtual std::string solve(ConfigAPC& config) = 0;
 
-  virtual Problem getProblem() = 0;
+  virtual Problem getProblem() const = 0;
   
-  virtual std::string getStatus() = 0;
+  virtual std::string getStatus() const = 0;
 
-  virtual int getSolutionCount() = 0;
+  virtual int getSolutionCount() const = 0;
 
-  inline bool hasSolution() {
+  inline bool hasSolution() const {
     return getSolutionCount() > 0;
   }
   
-  virtual Solution getSolution() = 0;
+  virtual Solution getSolution() const = 0;
 
 };
 
 
 class AbstractSolverAPC : public VirtualSolverAPC {
- private:
+ protected:
   Problem problem;
   std::string status;
   Solution solution;
@@ -114,35 +120,40 @@ class AbstractSolverAPC : public VirtualSolverAPC {
   AbstractSolverAPC(Problem problem) : problem(problem), status(S_UNKNOWN), solution(Solution(problem)), solutionCount(0) {
   }
   
-  inline Problem getProblem() {
+  inline Problem getProblem() const {
     return problem;
   }
 
-  inline std::string getStatus() {
+  inline std::string getStatus() const {
     return status;
   }
   
-  inline int getSolutionCount() {
+  inline int getSolutionCount() const {
     return solutionCount;
   }
   
-  inline Solution getSolution() {
+  inline Solution getSolution() const {
     return solution;
   }
 
+protected:
+  //virtual void setUp() = 0;
+  //virtual void doSolve() = 0;
+  //virtual void tearDown() = 0;
+
 };
 
-class AbstractIloSolverAPC : public AbstractSolverAPC {
+// class AbstractIloSolverAPC : public AbstractSolverAPC {
   
-public :
-  AbstractIloSolverAPC(Problem problem) : AbstractSolverAPC(problem) {
-  }
+// public :
+//   AbstractIloSolverAPC(Problem problem) : AbstractSolverAPC(problem) {
+//   }
      
- protected:
-  virtual void setUp();
-  virtual void solveIlo();
-  virtual void tearDown();
-};
+//  protected:
+//   virtual void setUp() = 0;
+//   virtual void solveIlo() = 0;
+//   virtual void tearDown() = 0;
+// };
 
 
 
