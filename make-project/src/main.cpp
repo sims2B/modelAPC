@@ -4,7 +4,7 @@
 #include <cstdlib>
 
 VirtualSolverAPC* makeSolverAPC(Problem& problem, ConfigAPC& config) {
-     return makeHeuristic(problem, H_SCHED);
+     return makeHeuristic(problem, H_QUALIF);
 }
 
 int main(int,char* argv[]){
@@ -26,8 +26,12 @@ int main(int,char* argv[]){
   if(instance.is_open() ) {
     Problem P = readFromFile(instance);
     instance.close();
+    problem.toDimacs();
     VirtualSolverAPC* solver = makeSolverAPC(problem, config);
     solver->solve(config);
+    if(solver->hasSolution()) {
+      solver->getSolution().toDimacs(problem);
+    }
   } else {
     std::cout << "s "<< S_ERROR << std::endl;
     return(EXIT_FAILURE);

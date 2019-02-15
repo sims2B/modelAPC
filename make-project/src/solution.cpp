@@ -300,3 +300,12 @@ void Solution::toTikz(const Problem& P) const{
   }
   std::cout << "\\end{tikzpicture}\n";
 }
+
+void Solution::toDimacs(const Problem& problem) const {
+  std::cout << "d CMAX " << getMaxEnd(problem) << std::endl <<
+  "d FLOWTIME " << getSumCompletion(problem) << std::endl << 
+  "d DISQUALIFIED "<< getRealNbDisqualif(problem) << std::endl <<
+  "d QUALIFIED "<< getNbQualif(problem) << std::endl << 
+  "d SETUP "<< getNbSetup(problem) << std::endl <<
+  "d VALIDE "<< isValid(problem) << std::endl;
+}

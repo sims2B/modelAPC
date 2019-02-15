@@ -103,7 +103,8 @@ struct Problem{
   inline int isQualif(int i, int m) const{
     return this->F[this->famOf[i]].qualif[m];
   }
-
+  
+  void toDimacs() const;  
 };
 
 Problem readFromFile(std::ifstream&);

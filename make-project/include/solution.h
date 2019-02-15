@@ -31,6 +31,7 @@ typedef std::vector<Assignment> assignmentList;
 
 class Solution {
   //FIXME Change visibility of some fields and methods
+  //FIXME the problem should be sotred in a field ?
  public:
   //a solution is defined by a List of Assignment (containing for each task
   //its id, start time and affectation to a machine) and a matrix
@@ -68,6 +69,7 @@ class Solution {
 
   std::string toString(const Problem& P) const;
   void toTikz(const Problem&) const;
+  void toDimacs(const Problem&) const;
 
 };
 

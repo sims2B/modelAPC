@@ -15,7 +15,7 @@
 #define S_ERROR "ERROR"
 
 
-#define T_HEURISTIC "HEURISTICS"
+#define T_GREEDY "GREEDY"
 #define T_CPLEX "CPLEX"
 #define T_SCHED1 "SCHED1" 
 #define T_SCHED2 "SCHED2"
@@ -53,7 +53,7 @@
   }
 
   std::string getSolverType() {
-    return getStringValue("solver", "type", T_HEURISTIC);
+    return getStringValue("solver", "type", T_GREEDY);
   }
 
   std::string getObjectiveFunction() {

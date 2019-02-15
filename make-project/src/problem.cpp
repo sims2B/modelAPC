@@ -100,6 +100,12 @@ int Problem::getNf(int f) const{
   return res;
 }
 
+void Problem::toDimacs() const {
+  std::cout << "c MACHINES "<< M << std::endl
+  << "c FAMILIES "<< getFamilyNumber() << std::endl
+  << "c JOBS "<<N << std::endl;
+}
+
 //reader
 Problem readFromFile(std::ifstream& in){
   unsigned int i , F , N, M;
