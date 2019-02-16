@@ -97,8 +97,7 @@ void ListHeuristic::doSolve(ConfigAPC &config)
     for (i = 0; i < problem.M; ++i)
       if (problem.F[f].qualif[i] || endLast[i] <= solution.QualifLostTime[f][i])
         solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
-  status = S_SAT;
-  solutionCount = 1;
+  setSAT();
 }
 
 void SchedCentricHeuristic::treat(const int m, const int f,
@@ -253,9 +252,7 @@ void SchedCentricHeuristic::doSolve(ConfigAPC &config)
           solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
       }
     }
-
-  status = S_SAT;
-  solutionCount = 1;
+  setSAT();
 }
 
 // std::string Heuristics::solve(ConfigAPC& config) {
@@ -285,8 +282,7 @@ void QualifCentricHeuristic::doSolve(ConfigAPC &config)
     //std::cout << " Phase 2 done \n  La solution est valide ?" << s.isValid(P) << "\n" << s.toString(P);
     //s.toTikz(P);
     interChange(endLast);
-    status = S_SAT;
-    solutionCount = 1;
+    setSAT();
     }
 }
 
