@@ -4,7 +4,7 @@
 
 class ListHeuristic : public AbstractSolverAPC {
 
- public :
+ public:
  ListHeuristic(Problem problem) : AbstractSolverAPC(problem) {
   }
   protected:
@@ -19,7 +19,7 @@ class ListHeuristic : public AbstractSolverAPC {
 
 class SchedCentricHeuristic : public AbstractSolverAPC {
 
- public :
+ public:
  SchedCentricHeuristic(Problem problem) : AbstractSolverAPC(problem) {
  }
 protected:

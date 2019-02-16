@@ -1,10 +1,12 @@
-#include "heuristics.h"
 #include "utils.h"
+#include "heuristics.h"
+#include "cplexAPC.h"
 #include <iostream>
 #include <cstdlib>
 
 VirtualSolverAPC* makeSolverAPC(Problem& problem, ConfigAPC& config) {
-     return makeHeuristic(problem, H_QUALIF);
+     //return makeHeuristic(problem, H_QUALIF);
+     return new CplexSolverAPC(problem);
 }
 
 int main(int,char* argv[]){
