@@ -19,6 +19,7 @@ public:
     doSolve(config);
     timer.stopTimer();
     tearDown(config);
+    timer.toDimacs(); 
   };
 
 protected:

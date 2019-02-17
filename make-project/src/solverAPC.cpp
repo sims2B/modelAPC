@@ -10,6 +10,5 @@ void AbstractSolverAPC::setUp(ConfigAPC& config) {
 void AbstractSolverAPC::tearDown(ConfigAPC& config) {
    std::cout <<
    "s " << getStatus() << std::endl <<
-   "d NBSOLS " << getSolutionCount() << std::endl;
-   timer.toDimacs();  
+   "d NBSOLS " << getSolutionCount() << std::endl; 
 }
