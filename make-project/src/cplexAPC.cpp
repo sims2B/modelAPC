@@ -18,9 +18,10 @@ void CplexSolverAPC::solve(ConfigAPC &config)
 
         createModel(T, env, model, x, y, C, Y);
         IloCplex cplex(model);
+        //std::cout << config.isSilent() << std::endl;
         if (config.isSilent())
         {
-            cplex.setOut(env.getNullStream());
+             cplex.setOut(env.getNullStream());
         }
         setParam(env, cplex);
 

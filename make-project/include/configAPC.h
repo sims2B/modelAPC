@@ -12,10 +12,10 @@
 #define S_ERROR "ERROR"
 
 
-#define T_GREEDY "GREEDY"
+#define T_NONE "NONE"
 #define T_CPLEX "CPLEX"
-#define T_SCHED1 "SCHED1" 
-#define T_SCHED2 "SCHED2"
+#define T_CPO1 "CPO1" 
+#define T_CPO2 "CPO2"
 
 #define H_LIST "LIST"
 #define H_SCHED "SCHED"
@@ -54,7 +54,7 @@
   }
 
   std::string getSolverType() {
-    return getStringValue("solver", "type", T_GREEDY);
+    return getStringValue("solver", "type", T_NONE);
   }
 
   std::string getObjectiveFunction() {

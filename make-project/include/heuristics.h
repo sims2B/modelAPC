@@ -11,6 +11,13 @@ public:
   {
   }
 
+  void solveWithoutTimer(ConfigAPC &config)
+  {
+    setUp(config);
+    doSolve(config);
+    tearDown(config); 
+  };
+
   void solve(ConfigAPC &config)
   {
     timer.startTimer();
@@ -105,6 +112,6 @@ private:
   void computeFirstOccAfter(int m, int i, std::vector<int> &firstOccAfter);
 };
 
-AbstractSolverAPC *makeHeuristic(Problem &problem, std::string name);
+HeuristicAPC *makeHeuristic(Problem &problem, std::string name);
 
 #endif

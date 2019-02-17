@@ -9,17 +9,17 @@
 #include <iostream>
 
 
-#include "heuristics.h"
-#include "paramModelAPC.h"
+#include "solverAPC.h"
+#include "paramModelAPC.h" //TODO Remove
 
 
 typedef IloArray<IloNumVarArray> IloNumVarMatrix;
 typedef IloArray<IloNumVarMatrix> IloNumVar3DMatrix;
 
-class CplexSolverAPC : public AbstractSolverAPC {
+class CplexSolverAPC : public SeededSolverAPC {
 
   public:
-  CplexSolverAPC(Problem problem) : AbstractSolverAPC(problem) {
+  CplexSolverAPC(Problem problem, std::vector<Solution> solutionPool) : SeededSolverAPC(problem, solutionPool) {
   }
   
   void solve(ConfigAPC& config);
@@ -34,14 +34,10 @@ void setParam(IloEnv& env, IloCplex& cplex);
 void modelToSol(const IloCplex&, const IloNumVar3DMatrix&,
                const IloNumVar3DMatrix&, const IloNumVarMatrix&);
 
+// TODO Add the solution as a parameter
 void solToModel(IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, 
         IloNumVarMatrix& Y, IloNumVarArray& C, IloNumVarArray& startVar, 
         IloNumArray& startVal);
-
-// //display the solution found by cplex (value of the variable)
-// int displayCplexSolution(IloEnv&, IloCplex&, const IloNumVar3DMatrix&,
-//                          const IloNumVar3DMatrix&, const IloNumVarArray&,
-//                          const IloNumVarMatrix&);
 
 
 void createModel(int, IloEnv&, IloModel&, IloNumVar3DMatrix&,

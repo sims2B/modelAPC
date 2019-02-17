@@ -63,9 +63,7 @@ class SolverTimer {
 
   };
   
-
 };
-
 
 class AbstractSolverAPC : public VirtualSolverAPC {
  protected:
@@ -112,4 +110,13 @@ protected:
 
 };
 
+class SeededSolverAPC : public AbstractSolverAPC {
+  protected: 
+  std::vector<Solution> solutionPool;
+  
+  public:
+  SeededSolverAPC(Problem& problem, std::vector<Solution> solutionPool) : AbstractSolverAPC(problem), solutionPool(solutionPool) {
+  };
+
+};
 #endif

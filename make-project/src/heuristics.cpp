@@ -685,7 +685,7 @@ int QualifCentricHeuristic::updateTime(const int &i, const int &j, const int &fi
   return 0;
 }
 
-AbstractSolverAPC *makeHeuristic(Problem &problem, std::string name)
+HeuristicAPC* makeHeuristic(Problem &problem, std::string name)
 {
   if (name == H_LIST) 
     return new ListHeuristic(problem);
