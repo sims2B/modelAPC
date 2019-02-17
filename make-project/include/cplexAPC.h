@@ -22,12 +22,12 @@ class CplexSolverAPC : public AbstractSolverAPC {
   CplexSolverAPC(Problem problem) : AbstractSolverAPC(problem) {
   }
   
-  protected:
-  void doSolve(ConfigAPC& config);
+  void solve(ConfigAPC& config);
   
   private:
   void tearDown(IloCplex& cplex);
 
+//TODO Remove
 void setParam(IloEnv& env, IloCplex& cplex);
 
 // fill an instance of solution with the solution found by the model

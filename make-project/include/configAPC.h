@@ -49,6 +49,10 @@
     return getIntValue("solver", "verbose", 0);
   }
 
+  inline bool isSilent() {
+    return !isVerbose();
+  }
+
   std::string getSolverType() {
     return getStringValue("solver", "type", T_GREEDY);
   }

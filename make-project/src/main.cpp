@@ -5,8 +5,8 @@
 #include <cstdlib>
 
 VirtualSolverAPC* makeSolverAPC(Problem& problem, ConfigAPC& config) {
-     //return makeHeuristic(problem, H_QUALIF);
-     return new CplexSolverAPC(problem);
+     return makeHeuristic(problem, H_SCHED);
+     //return new CplexSolverAPC(problem);
 }
 
 int main(int,char* argv[]){
@@ -24,9 +24,8 @@ int main(int,char* argv[]){
   config.toDimacs();
   // Read Instance From file
   std::ifstream instance(instancePath, std::ios::in);
-  Problem problem = readFromFile(instance);
   if(instance.is_open() ) {
-    Problem P = readFromFile(instance);
+    Problem problem = readFromFile(instance);
     instance.close();
     problem.toDimacs();
     VirtualSolverAPC* solver = makeSolverAPC(problem, config);

@@ -5,7 +5,7 @@
 #include "configAPC.h"
 #include "solution.h"
 #include "utils.h"
-#include <time.h>
+#include <ctime>
 
 class VirtualSolverAPC {
   
@@ -17,7 +17,7 @@ class VirtualSolverAPC {
   
   virtual std::string getStatus() const = 0;
 
-  virtual double getRuntime() const = 0;
+  //virtual double getRuntime() const = 0;
 
   virtual int getSolutionCount() const = 0;
 
@@ -29,6 +29,43 @@ class VirtualSolverAPC {
 
 };
 
+class SolverTimer {
+   private:
+  std::clock_t startTime;
+  std::clock_t stageTime;
+  std::clock_t stopTime;
+ 
+  public:
+  void startTimer() {
+    startTime = std::clock();
+  };
+  void stageTimer() {
+    stageTime = std::clock();
+  };
+  void stopTimer() {
+    stopTime = std::clock();
+  };
+
+  float getSetupTime() {
+    return ((double) (stageTime - startTime)) / CLOCKS_PER_SEC;
+  };
+
+  float getSolveTime() {
+    return ((double) (stopTime - stageTime)) / CLOCKS_PER_SEC;
+  };
+  
+  float getTotalTime() {
+    return ((double) (stopTime - startTime)) / CLOCKS_PER_SEC;
+  };
+
+  void toDimacs() {
+     printf("d SETUP_TIME %.3f\nd RUNTIME %.3f\nd WCTIME %.3f\n", getSetupTime(), getSolveTime(), getTotalTime());
+
+  };
+  
+
+};
+
 
 class AbstractSolverAPC : public VirtualSolverAPC {
  protected:
@@ -36,13 +73,12 @@ class AbstractSolverAPC : public VirtualSolverAPC {
   std::string status;
   Solution solution;
   int solutionCount;
-  clock_t runtime;
+  SolverTimer timer;
  public:
 
   AbstractSolverAPC(Problem problem) : problem(problem), status(S_UNKNOWN), solution(Solution(problem)), solutionCount(0) {
   }
 
-  virtual void solve(ConfigAPC& config);
   
   inline Problem getProblem() const {
     return problem;
@@ -50,10 +86,6 @@ class AbstractSolverAPC : public VirtualSolverAPC {
 
   inline std::string getStatus() const {
     return status;
-  }
-
-  inline double getRuntime() const {
-    return ((double) runtime) / CLOCKS_PER_SEC;
   }
   
   inline int getSolutionCount() const {
@@ -66,7 +98,7 @@ class AbstractSolverAPC : public VirtualSolverAPC {
 
 protected:
   virtual void setUp(ConfigAPC& config);
-  virtual void doSolve(ConfigAPC& config) = 0;
+  
   virtual void tearDown(ConfigAPC& config);
 
   void setSAT(int solutionCount = 1) {
@@ -74,7 +106,10 @@ protected:
     this->solutionCount = solutionCount;
   };
 
-};
+  void setERROR() {
+    status = S_ERROR;
+  };
 
+};
 
 #endif

@@ -1,7 +1,9 @@
 #include "cplexAPC.h"
 
-void CplexSolverAPC::doSolve(ConfigAPC &config)
+void CplexSolverAPC::solve(ConfigAPC &config)
 {
+    timer.startTimer();
+    AbstractSolverAPC::setUp(config);
     try
     {
         const int F = problem.getFamilyNumber();
@@ -16,7 +18,10 @@ void CplexSolverAPC::doSolve(ConfigAPC &config)
 
         createModel(T, env, model, x, y, C, Y);
         IloCplex cplex(model);
-        // TODO if (!VERBOSITY)   cplex.setOut(env.getNullStream());
+        if (config.isSilent())
+        {
+            cplex.setOut(env.getNullStream());
+        }
         setParam(env, cplex);
 
         //Solution solSCH(P);
@@ -25,12 +30,13 @@ void CplexSolverAPC::doSolve(ConfigAPC &config)
         // useMIPStart(P, solSCH, solQCH, env, cplex, x, y, Y, C);
         //}
         //solve!
+        timer.stageTimer();
         IloBool solMIPFound = cplex.solve();
+        timer.stopTimer();
         if (solMIPFound)
         {
             modelToSol(cplex, x, y, Y);
-            status = S_SAT;
-            solutionCount += cplex.getSolnPoolNsolns();
+            setSAT(cplex.getSolnPoolNsolns());
             // Check if the optimum has been found
             tearDown(cplex);
         }
@@ -40,22 +46,22 @@ void CplexSolverAPC::doSolve(ConfigAPC &config)
     {
         std::cout << "Iloexception in solve" << e << std::endl;
         e.end();
-        status = S_ERROR;
+        setERROR();
     }
     catch (...)
     {
         std::cout << "Error unknown\n";
-        status = S_ERROR;
+        setERROR();
     }
+    AbstractSolverAPC::tearDown(config);
 }
 
-void CplexSolverAPC::tearDown(IloCplex& cplex)
+void CplexSolverAPC::tearDown(IloCplex &cplex)
 {
     std::cout << "c VARIABLES " << cplex.getNcols() << "\n";
     std::cout << "c CONSTRAINTS " << cplex.getNrows() << "\n";
     std::cout << "d GAP " << cplex.getMIPRelativeGap() << "\n";
     std::cout << "d NBNODES " << cplex.getNnodes() << "\n";
-    
 }
 //   int CplexSolverAPC::useMIPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env, IloCplex& cplex,
 // 		IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, IloNumVarMatrix& Y, IloNumVarArray& C){
@@ -82,43 +88,6 @@ void CplexSolverAPC::tearDown(IloCplex& cplex)
 //   else solQCH.clear(P);
 //   std::cout << "d NBHSOL " << nbHSol << std::endl;
 //   return 0;
-// }
-
-// int displayCPAIOR(const Problem& P, const Solution& s,const Solution& solSCH, const Solution& solQCH, const IloCplex& cplex,  Clock::time_point t1, IloNum start, IloBool& solved){
-//   Clock::time_point t2 = Clock::now();
-//   std::cout << "s "  << cplex.getStatus() << std::endl;
-
-//   std::cout << "d WCTIME " <<cplex.getCplexTime() - start<< "\n";
-
-//   std::chrono::duration<double> duration =
-//     std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-//   std::cout << "d RUNTIME "<< duration.count() << "\n";
-//   if (solved){
-//     std::cout << "d CMAX " << solution.getMaxEnd(P) << "\n";
-//   std::cout << "d FLOWTIME " << solution.getSumCompletion(P) << "\n";
-//   std::cout << "d DISQUALIFIED "<< solution.getRealNbDisqualif(P) << "\n";
-//   std::cout << "d QUALIFIED "<< solution.getNbQualif(P) << "\n";
-//   std::cout << "d SETUP "<< solution.getNbSetup(P) << "\n";
-//   std::cout << "d VALIDE "<< solution.isValid(P) << "\n";
-//   std::cout << "d GAP " << cplex.getMIPRelativeGap() << "\n";
-//   int objSolMIP = solution.getWeigthedObjectiveValue(P);
-//   if (objSolMIP == solSCH.getWeigthedObjectiveValue(P) ||
-//       objSolMIP == solQCH.getWeigthedObjectiveValue(P)  )
-//     std::cout << "d NBSOLS 0 \n";
-//   else
-//     std::cout << "d NBSOLS "  <<  cplex.getSolnPoolNsolns() << "\n";
-//   }
-//   else std::cout << "d NBSOLS 0 \n";
-//   std::cout << "d NBNODES " << cplex.getNnodes() << "\n";
-//   std::cout << "c VARIABLES " <<  cplex.getNcols() << "\n";
-//   std::cout << "c CONSTRAINTS " <<  cplex.getNrows() << "\n";
-//   std::cout << "c MACHINES "<< problem.M << "\n";
-//   std::cout << "c FAMILIES "<< problem.getFamilyNumber() << "\n";
-//   std::cout << "c JOBS "<<problem.N << "\n";
-
-//   std::cout << std::endl;
-//   if (solved) solution.toTikz(P);
-//  return 0;
 // }
 
 void CplexSolverAPC::setParam(IloEnv &env, IloCplex &cplex)
