@@ -11,22 +11,11 @@ public:
   {
   }
 
-  void solveWithoutTimer(ConfigAPC &config)
+  void solve(ConfigAPC &config)
   {
     setUp(config);
     doSolve(config);
     tearDown(config); 
-  };
-
-  void solve(ConfigAPC &config)
-  {
-    timer.startTimer();
-    setUp(config);
-    timer.stageTimer();
-    doSolve(config);
-    timer.stopTimer();
-    tearDown(config);
-    timer.toDimacs(); 
   };
 
 protected:

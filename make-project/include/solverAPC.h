@@ -5,7 +5,6 @@
 #include "configAPC.h"
 #include "solution.h"
 #include "utils.h"
-#include <ctime>
 
 class VirtualSolverAPC {
   
@@ -29,49 +28,12 @@ class VirtualSolverAPC {
 
 };
 
-class SolverTimer {
-   private:
-  std::clock_t startTime;
-  std::clock_t stageTime;
-  std::clock_t stopTime;
- 
-  public:
-  void startTimer() {
-    startTime = std::clock();
-  };
-  void stageTimer() {
-    stageTime = std::clock();
-  };
-  void stopTimer() {
-    stopTime = std::clock();
-  };
-
-  float getSetupTime() {
-    return ((double) (stageTime - startTime)) / CLOCKS_PER_SEC;
-  };
-
-  float getSolveTime() {
-    return ((double) (stopTime - stageTime)) / CLOCKS_PER_SEC;
-  };
-  
-  float getTotalTime() {
-    return ((double) (stopTime - startTime)) / CLOCKS_PER_SEC;
-  };
-
-  void toDimacs() {
-     printf("d SETUP_TIME %.3f\nd RUNTIME %.3f\nd WCTIME %.3f\n", getSetupTime(), getSolveTime(), getTotalTime());
-
-  };
-  
-};
-
 class AbstractSolverAPC : public VirtualSolverAPC {
  protected:
   Problem problem;
   std::string status;
   Solution solution;
   int solutionCount;
-  SolverTimer timer;
  public:
 
   AbstractSolverAPC(Problem problem) : problem(problem), status(S_UNKNOWN), solution(Solution(problem)), solutionCount(0) {

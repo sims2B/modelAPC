@@ -2,7 +2,6 @@
 
 void CplexSolverAPC::solve(ConfigAPC &config)
 {
-    timer.startTimer();
     AbstractSolverAPC::setUp(config);
     try
     {
@@ -31,9 +30,9 @@ void CplexSolverAPC::solve(ConfigAPC &config)
         // useMIPStart(P, solSCH, solQCH, env, cplex, x, y, Y, C);
         //}
         //solve!
-        timer.stageTimer();
+        //timer.stageTimer();
         IloBool solMIPFound = cplex.solve();
-        timer.stopTimer();
+        //timer.stopTimer();
         if (solMIPFound)
         {
             modelToSol(cplex, x, y, Y);
