@@ -8,7 +8,7 @@
 #define time_limit 30
 #endif
 
-#define VERBOSITY 0
+// #define VERBOSITY 0
 #define prioFlow 0 // ordre pour le lexico ( 1 => flow ; 0 => disqualif)
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@
 #define withCPStart 1
 #define weighted 0 //0 => lexico ; 1 => weighted obj value 
 
-#define pathToOPL "/home/nattafm/Dev/PTC/CP/OPL/schedAPC.mod"
+// #define pathToOPL "/home/nattafm/Dev/PTC/CP/OPL/schedAPC.mod"
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////    MIP PARAMETERS //////////////////////////////////////

@@ -2,49 +2,41 @@
 #include <algorithm>
 
 void CpoSolver1APC::solve(ConfigAPC& config) {
-
-}
-
-// int CP::solve(const Problem& P, Solution & s){
-//   IloEnv env;
-//   Clock::time_point startTime = Clock::now();
-//   try{
-//     IloModel model(env);
+  IloEnv env;
+  try{
+    IloModel model(env);
     
-//     IloIntervalVarArray masterTask(env, problem.N + 1);
-//     IloIntervalVarMatrix altTasks(env, problem.M);
-//     IloIntervalVarMatrix disqualif(env, problem.M);
-//     IloIntervalSequenceVarArray mchs(env, problem.M);
-//     createModel(P, env, model, masterTask, altTasks, disqualif, mchs);
-//     IloCP cp(model);
-
-    
-//     Solution solSCH(P);
-//     Solution solQCH(P);
-//     if (withCPStart)
-//       useCPStart(P,solSCH,solQCH,env,cp,masterTask, altTasks, disqualif, masterTask[problem.N]);
+    IloIntervalVarArray masterTask(env, problem.N + 1);
+    IloIntervalVarMatrix altTasks(env, problem.M);
+    IloIntervalVarMatrix disqualif(env, problem.M);
+    IloIntervalSequenceVarArray mchs(env, problem.M);
+    createModel(env, model, masterTask, altTasks, disqualif, mchs);
+    IloCP cp(model);
+    // Solution solSCH(P);
+    // Solution solQCH(P);
+    // if (withCPStart)
+    //   useCPStart(P,solSCH,solQCH,env,cp,masterTask, altTasks, disqualif, masterTask[problem.N]);
      
-//     //  cp.setParameter(IloCP::LogVerbosity, IloCP::Terse);
-//     if (!VERBOSITY) cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
-//     cp.setParameter(IloCP::TimeLimit, time_limit);
+    //  cp.setParameter(IloCP::LogVerbosity, IloCP::Terse);
+    if (config.isSilent()) cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
+    cp.setParameter(IloCP::TimeLimit, time_limit);
     
-//     IloBool solCPFound = cp.solve();
-//     if (solCPFound)
-//       modelToSol(P, s, cp, altTasks, disqualif);
-//     displayCPAIOR(P, s,  solSCH, solQCH, cp, startTime,solCPFound);
-    
-//     env.end();
-//   return 0;
-//   }
-//   catch (IloException &e){
-//     std::cout << "Iloexception in solve" << e << std::endl;
-//   }
-//   catch (...){
-//     std::cout << "Error unknown\n";
-//   }
-//   env.end();
-//   return 1;
-// }
+    IloBool solCPFound = cp.solve();
+    if (solCPFound) {
+      modelToSol(cp, altTasks, disqualif);
+      setSAT();
+    }
+  }
+  catch (IloException &e){
+    std::cout << "Iloexception in solve" << e << std::endl;
+    setERROR();
+  }
+  catch (...){
+    std::cout << "Error unknown\n";
+    setERROR();
+  }
+  env.end();
+}
 
 // void useCPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env, IloCP& cp,
 // 		IloIntervalVarArray& masterTask, IloIntervalVarMatrix& altTasks,
