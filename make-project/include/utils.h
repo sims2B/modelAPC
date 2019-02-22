@@ -4,7 +4,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <ctime>
+// CPU Time
+// #include <ctime>
+// Wall Clock Time
+#include <time.h>
 
 /*
  * Get File Name from a Path with or without extension
@@ -17,35 +20,34 @@ typedef struct TimeStamp {
     double elapsedTime; 
 } TimeStamp;
 
-// FIXME The timer returns really strange values ! Apparently, it returns cumulated time of all cores !
 class Timer {
     private:
-  std::clock_t startTime;
-  std::clock_t stageTime;
+  time_t startTime;
+  time_t stageTime;
   std::vector<TimeStamp> timestamps; 
 
   public:
   
   void start() {
-    startTime = std::clock();
+    startTime = time(NULL);
     stageTime = startTime;  
   };
 
   void stage() {
-    stageTime = std::clock();
+    stageTime = time(NULL);
   }  
   
   void stage(std::string label) {
-    std::clock_t currentTime = std::clock();
-    double elapsed = ((double) (currentTime - stageTime)) / CLOCKS_PER_SEC;
+    time_t currentTime = time(NULL);
+    double elapsed = difftime(currentTime, stageTime);
     TimeStamp stamp = {label, elapsed};
     timestamps.push_back(stamp);
     stageTime = currentTime;
   };
 
   void stop() {
-    std::clock_t stageTime = std::clock();
-    double elapsed = ((double) (stageTime - startTime))  / CLOCKS_PER_SEC;
+    time_t currentTime = time(NULL);
+    double elapsed = difftime(currentTime, startTime);
     TimeStamp stamp = {"WCTIME", elapsed};
     timestamps.push_back(stamp);
   };
