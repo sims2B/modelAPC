@@ -43,9 +43,9 @@ BINARIES  :=$(BINDIR)/solverAPC $(BINDIR)/generateinstancePTC
 CXX      :=g++
 CXXFLAGS :=-std=c++17 -Wall -Werror -DIL_STD
 ## -DIL_STD : avoid fatal error - iostream.h : No such file or directory
-LDFLAGS  :=  -L$(CPLEXDIR)/cplex/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/concert/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/cpoptimizer/lib/x86-64_linux/static_pic
-LDLIBS   :=-lm -lconfig++ -lcp -lilocplex -lcplex -lconcert  -lpthread -ldl
-INCLUDE  :=-I$(INCDIR)  -I$(CPLEXDIR)/cplex/include -I$(CPLEXDIR)/concert/include -I$(CPLEXDIR)/cpoptimizer/include 
+LDFLAGS  :=  -L$(CPLEXDIR)/cplex/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/concert/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/cpoptimizer/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/opl/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/opl/bin/x86-64_linux/
+LDLIBS   :=-lm -lconfig++ -lopl  -liljs -loplnl1 -lcp -lilocplex -lcplex1280 -lconcert -licuuc -licui18n -licuio -licudata -lpthread -ldl
+INCLUDE  :=-I$(INCDIR)  -I$(CPLEXDIR)/cplex/include -I$(CPLEXDIR)/concert/include -I$(CPLEXDIR)/cpoptimizer/include -I$(CPLEXDIR)/opl/include 
 ### TESTS-RELATED VARIABLES
 # Files containing the main() function
 TMAINFILES :=$(wildcard $(TSTDIR)/*.cpp)

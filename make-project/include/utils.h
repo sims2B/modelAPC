@@ -17,6 +17,7 @@ typedef struct TimeStamp {
     double elapsedTime; 
 } TimeStamp;
 
+// FIXME The timer returns really strange values ! Apparently, it returns cumulated time of all cores !
 class Timer {
     private:
   std::clock_t startTime;

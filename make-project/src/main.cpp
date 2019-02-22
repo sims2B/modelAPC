@@ -2,6 +2,7 @@
 #include "heuristics.h"
 #include "cplexAPC.h"
 #include "cpo1APC.h"
+#include "cpo2APC.h"
 #include <iostream>
 #include <cstdlib>
 #include <vector>
@@ -15,6 +16,7 @@ VirtualSolverAPC *makeSolverAPC(Problem &problem, ConfigAPC &config, std::vector
     return new CpoSolver1APC(problem, solutionPool);
   else if (type == T_CPO2)
   {
+     return new CpoSolver2APC(problem, solutionPool);
   }
   return NULL;
 }
@@ -65,7 +67,8 @@ int main(int, char *argv[])
     }
   }
   timer.stage("HEURISTICS_TIME");
-  VirtualSolverAPC *solver = makeSolverAPC(problem, config, solutionPool); // TODO Pass the timer as an argument
+  // TODO Pass the timer as an argument
+  VirtualSolverAPC *solver = makeSolverAPC(problem, config, solutionPool); 
   if (solver != NULL)
   {
     std::cout << std::endl;
@@ -76,7 +79,7 @@ int main(int, char *argv[])
     {
       solver->getSolution().toTikz(problem);
     }
-  }
+  } 
   timer.stop();
   timer.toDimacs();
   return (EXIT_SUCCESS);
