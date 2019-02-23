@@ -26,8 +26,11 @@ int exitOnFailure()
   std::cout << "s " << S_ERROR << std::endl;
   return (EXIT_FAILURE);
 }
-int main(int, char *argv[])
+int main(int argc, char *argv[])
 {
+  if(argc != 3) {
+     return exitOnFailure();
+  }
   // Print parameters
   std::string configPath = argv[1];
   std::string instancePath = argv[2];

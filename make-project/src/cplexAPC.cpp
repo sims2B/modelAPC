@@ -1,68 +1,40 @@
 #include "cplexAPC.h"
 
-void CplexSolverAPC::solve(ConfigAPC &config)
+bool CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
 {
-    AbstractSolverAPC::setUp(config);
-    try
-    {
-        const int F = problem.getFamilyNumber();
-        const int T = problem.computeHorizon();
-        IloEnv env;
-        IloModel model(env);
+    const int F = problem.getFamilyNumber();
+    const int T = problem.computeHorizon();
+    IloModel model(env);
 
-        IloNumVar3DMatrix x(env, F);
-        IloNumVar3DMatrix y(env, F);
-        IloNumVarArray C(env, F, 0, problem.N * (T + 1), ILOFLOAT);
-        IloNumVarMatrix Y(env, F);
+    IloNumVar3DMatrix x(env, F);
+    IloNumVar3DMatrix y(env, F);
+    IloNumVarArray C(env, F, 0, problem.N * (T + 1), ILOFLOAT);
+    IloNumVarMatrix Y(env, F);
 
-        createModel(T, env, model, x, y, C, Y);
-        IloCplex cplex(model);
-        //std::cout << config.isSilent() << std::endl;
-        if (config.isSilent())
-        {
-             cplex.setOut(env.getNullStream());
-        }
-        setParam(env, cplex);
+    createModel(T, env, model, x, y, C, Y);
+    IloCplex cplex(model);
+    if (config.isSilent())
+    {
+        cplex.setOut(env.getNullStream());
+    }
+    setParam(env, cplex);
 
-        //Solution solSCH(P);
-        //Solution solQCH(P);
-        //if (withMIPStart){
-        // useMIPStart(P, solSCH, solQCH, env, cplex, x, y, Y, C);
-        //}
-        //solve!
-        //timer.stageTimer();
-        IloBool solMIPFound = cplex.solve();
-        //timer.stopTimer();
-        if (solMIPFound)
-        {
-            modelToSol(cplex, x, y, Y);
-            setSAT(cplex.getSolnPoolNsolns());
-            // Check if the optimum has been found
-            tearDown(cplex);
-        }
-        env.end();
-    }
-    catch (IloException &e)
+    //timer.stageTimer();
+    IloBool solMIPFound = cplex.solve();
+    //timer.stopTimer();
+    if (solMIPFound)
     {
-        std::cout << "Iloexception in solve" << e << std::endl;
-        e.end();
-        setERROR();
+        modelToSol(cplex, x, y, Y);
+        solutionCount += cplex.getSolnPoolNsolns();
+        // Check if the optimum has been found
     }
-    catch (...)
-    {
-        std::cout << "Error unknown\n";
-        setERROR();
-    }
-    AbstractSolverAPC::tearDown(config);
+    tearDown(cplex);
+    auto status = cplex.getStatus();
+    return status != CPX_STAT_OPTIMAL &&
+        status != CPX_STAT_UNBOUNDED &&
+        status != CPX_STAT_INFEASIBLE;
 }
 
-void CplexSolverAPC::tearDown(IloCplex &cplex)
-{
-    std::cout << "c VARIABLES " << cplex.getNcols() << "\n";
-    std::cout << "c CONSTRAINTS " << cplex.getNrows() << "\n";
-    std::cout << "d GAP " << cplex.getMIPRelativeGap() << "\n";
-    std::cout << "d NBNODES " << cplex.getNnodes() << "\n";
-}
 //   int CplexSolverAPC::useMIPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env, IloCplex& cplex,
 // 		IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, IloNumVarMatrix& Y, IloNumVarArray& C){
 //     int nbHSol = 0;

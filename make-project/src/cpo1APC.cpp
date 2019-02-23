@@ -28,13 +28,17 @@ void CpoSolver1APC::solve(ConfigAPC& config) {
     }
   }
   catch (IloException &e){
-    std::cout << "Iloexception in solve" << e << std::endl;
-    setERROR();
-  }
-  catch (...){
-    std::cout << "Error unknown\n";
-    setERROR();
-  }
+  //   std::cout << "Iloexception in solve" << e << std::endl;
+  //   setERROR();
+   }
+  // catch (IloException &e){
+  //   std::cout << "Iloexception in solve" << e << std::endl;
+  //   setERROR();
+  // }
+  // catch (...){
+  //   std::cout << "Error unknown\n";
+  //   setERROR();
+  // }
   env.end();
 }
 

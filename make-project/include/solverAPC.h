@@ -66,6 +66,7 @@ protected:
     this->solutionCount = solutionCount;
   };
 
+  // TODO REmove method
   void setERROR() {
     status = S_ERROR;
   };
@@ -75,10 +76,19 @@ protected:
 class SeededSolverAPC : public AbstractSolverAPC {
   protected: 
   std::vector<Solution> solutionPool;
-  
+
+
   public:
   SeededSolverAPC(Problem& problem, std::vector<Solution> solutionPool) : AbstractSolverAPC(problem), solutionPool(solutionPool) {
   };
+
+  //   void solve(ConfigAPC &config)
+  // {
+  //   setUp(config);
+  //   doSolve(config);
+  //   tearDown(config); 
+  // };
+
 
 };
 #endif

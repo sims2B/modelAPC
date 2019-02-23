@@ -4,29 +4,27 @@
 // #pragma GCC diagnostic ignored "-Wdeprecated-declarations" // TODO ?
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 
-#include <ilcplex/ilocplex.h>
-#include <ilcplex/ilocplexi.h>
+
 #include <iostream>
+#include "iloSolverAPC.h"
+#include <ilcplex/ilocplexi.h>
 
-
-#include "solverAPC.h"
 #include "paramModelAPC.h" //TODO Remove
 
 
 typedef IloArray<IloNumVarArray> IloNumVarMatrix;
 typedef IloArray<IloNumVarMatrix> IloNumVar3DMatrix;
 
-class CplexSolverAPC : public SeededSolverAPC {
+class CplexSolverAPC : public IloSolverAPC {
 
   public:
-  CplexSolverAPC(Problem problem, std::vector<Solution> solutionPool) : SeededSolverAPC(problem, solutionPool) {
+  CplexSolverAPC(Problem problem, std::vector<Solution> solutionPool) : IloSolverAPC(problem, solutionPool) {
   }
   
-  void solve(ConfigAPC& config);
+  protected:
+  bool doSolve(IloEnv &env, ConfigAPC& config);
   
-  private:
-  void tearDown(IloCplex& cplex);
-
+  
 //TODO Remove
 void setParam(IloEnv& env, IloCplex& cplex);
 
