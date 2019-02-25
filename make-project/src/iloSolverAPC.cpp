@@ -1,16 +1,20 @@
 #include "iloSolverAPC.h"
 
+
 void IloSolverAPC::tearDown(IloCplex &cplex)
 {
     std::cout << "d STATUS "  << cplex.getStatus() << std::endl;
     std::cout << "c VARIABLES " << cplex.getNcols() << std::endl;
     std::cout << "c CONSTRAINTS " << cplex.getNrows() << std::endl;
-    std::cout << "d GAP " << cplex.getMIPRelativeGap() << std::endl;
+    if(cplex.getSolnPoolNsolns() > 0) {
+        std::cout << "d GAP " << cplex.getMIPRelativeGap() << std::endl;
+    }
     std::cout << "d NBNODES " << cplex.getNnodes() << std::endl;
 }
 
 void IloSolverAPC::tearDown(IloCP &cp)
 {
+
     std::cout << "c TODO ILO_CP_NOT_AVAIL"
               << "\n";
 }
@@ -53,12 +57,16 @@ void IloSolverAPC::solve(ConfigAPC &config)
         std::cout << "Error unknown\n";
         status = S_ERROR;
     }
-    // if(getSolutionCount() == solutionPool.size()) {
-    // Must find the best heuristic solution    
-    // }
-    //  if(hasSolution()) {
-    //    solution.toTikz(problem);
-    //  }
     env.end();
+    
+    if(hasSolution() ) {
+     if(getSolutionCount() == (int) solutionPool.size()) {
+        // TODO Must set the best solution in the pool
+        // DONE Restore the first solution
+         std::cout << ">>>> TODO RESTORE BEST HEURISTIC SOLUTION <<<<"  << std::endl;
+         solution = solutionPool[0];
+     }
+      solution.toTikz(problem);
+    }
     AbstractSolverAPC::tearDown(config);
 }

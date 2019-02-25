@@ -25,9 +25,6 @@ class CplexSolverAPC : public IloSolverAPC {
   bool doSolve(IloEnv &env, ConfigAPC& config);
   
   
-//TODO Remove
-void setParam(IloEnv& env, IloCplex& cplex);
-
 // fill an instance of solution with the solution found by the model
 void modelToSol(const IloCplex&, const IloNumVar3DMatrix&,
                const IloNumVar3DMatrix&, const IloNumVarMatrix&);

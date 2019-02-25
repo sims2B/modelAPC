@@ -1,5 +1,19 @@
 #include "cplexAPC.h"
 
+void configure(IloEnv &env, IloCplex& cplex, ConfigAPC& config) {
+    if (config.isSilent())
+    {
+        cplex.setOut(env.getNullStream());
+    }
+    int timeLimit = config.getTimeLimit(); 
+    if(timeLimit > 0) {
+          cplex.setParam(IloCplex::TiLim, timeLimit);
+    }
+    int workers = config.getWorkers(); 
+    if(workers > 0) {
+           cplex.setParam(IloCplex::Threads, workers);
+    }
+}
 bool CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
 {
     const int F = problem.getFamilyNumber();
@@ -13,11 +27,7 @@ bool CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
 
     createModel(T, env, model, x, y, C, Y);
     IloCplex cplex(model);
-    if (config.isSilent())
-    {
-        cplex.setOut(env.getNullStream());
-    }
-    setParam(env, cplex);
+    configure(env, cplex, config);
 
     //timer.stageTimer();
     IloBool solMIPFound = cplex.solve();
@@ -61,12 +71,6 @@ bool CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
 //   std::cout << "d NBHSOL " << nbHSol << std::endl;
 //   return 0;
 // }
-
-void CplexSolverAPC::setParam(IloEnv &env, IloCplex &cplex)
-{
-    cplex.setParam(IloCplex::TiLim, time_limit);
-    cplex.setParam(IloCplex::Threads, 2); // Pourquoi ?
-}
 
 void CplexSolverAPC::modelToSol(const IloCplex &cplex, const IloNumVar3DMatrix &x, const IloNumVar3DMatrix &y, const IloNumVarMatrix &Y)
 {

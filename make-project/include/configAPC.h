@@ -35,6 +35,7 @@
 
   public:
   bool readFile(std::string configPath);
+  
   inline int getTimeLimit() {
     return getIntValue("solver", "timeLimit", -1);
   }

@@ -75,13 +75,7 @@ int main(int argc, char *argv[])
   if (solver != NULL)
   {
     std::cout << std::endl;
-    timer.stage();
     solver->solve(config);
-    timer.stage("RUNTIME"); // In fact, Build and run times are mixed
-    if (solver->hasSolution())
-    {
-      solver->getSolution().toTikz(problem);
-    }
   } 
   timer.stop();
   timer.toDimacs();
