@@ -17,7 +17,7 @@ void configure(IloEnv &env, IloCplex &cplex, ConfigAPC &config)
         cplex.setParam(IloCplex::Threads, workers);
     }
 }
-bool CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
+void CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
 {
     const int F = problem.getFamilyNumber();
     const int T = problem.computeHorizon();
@@ -45,46 +45,12 @@ bool CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
     //timer.stopTimer();
     if (solMIPFound)
     {
-       std::cout << "SolMIPFound ! " <<std::endl;
         modelToSol(cplex, x, y, Y);
         solutionCount += cplex.getSolnPoolNsolns();
-        // Check if the optimum has been found
     }
     setStatus(cplex);
     tearDown(cplex);
-    // FIXME Handle more return code : FEASIBLE and INF OR UNBOUNDED
-    auto status = cplex.getStatus();
-    return status != CPX_STAT_OPTIMAL &&
-           status != CPX_STAT_UNBOUNDED &&
-           status != CPX_STAT_INFEASIBLE;
 }
-
-//   int CplexSolverAPC::useMIPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env, IloCplex& cplex,
-// 		IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, IloNumVarMatrix& Y, IloNumVarArray& C){
-//     int nbHSol = 0;
-//   if (SCH(P, solSCH)){
-//     IloNumVarArray startVar(env);
-//     IloNumArray startVal(env);
-//     solToModel(P,solSCH,x,y,Y,C,startVar,startVal);
-//     cplex.addMIPStart(startVar, startVal);
-//     startVar.end();
-//     startVal.end();
-//     nbHSol++;
-//   }
-//   else solSCH.clear(P);
-//   if (QCH(P, solQCH)){
-//     IloNumVarArray startVar(env);
-//     IloNumArray startVal(env);
-//     solToModel(P, solQCH, x,y,Y,C,startVar,startVal);
-//     cplex.addMIPStart(startVar, startVal);
-//     startVar.end();
-//     startVal.end();
-//     nbHSol++;
-//   }
-//   else solQCH.clear(P);
-//   std::cout << "d NBHSOL " << nbHSol << std::endl;
-//   return 0;
-// }
 
 void CplexSolverAPC::modelToSol(const IloCplex &cplex, const IloNumVar3DMatrix &x, const IloNumVar3DMatrix &y, const IloNumVarMatrix &Y)
 {

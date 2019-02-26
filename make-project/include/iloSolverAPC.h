@@ -16,7 +16,7 @@ class IloSolverAPC : public AbstractSolverAPC
 protected:
   std::vector<Solution> solutionPool;
 
-  virtual bool doSolve(IloEnv &env, ConfigAPC &config) = 0;
+  virtual void doSolve(IloEnv &env, ConfigAPC &config) = 0;
   
   void setStatus(IloCplex &cplex);
   void setStatus(bool hasSolution, bool hasReachedTimeLimit);

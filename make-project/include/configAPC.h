@@ -50,6 +50,10 @@
     return getIntValue("solver", "verbose", 0);
   }
 
+  inline bool useTikzExport() {
+    return getIntValue("solver", "tikz", 0);
+  }
+
   inline bool isSilent() {
     return !isVerbose();
   }

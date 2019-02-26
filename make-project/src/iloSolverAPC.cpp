@@ -128,7 +128,9 @@ void IloSolverAPC::solve(ConfigAPC &config)
             std::cout << ">>>> TODO RESTORE BEST HEURISTIC SOLUTION <<<<" << std::endl;
             solution = solutionPool[0];
         }
-        solution.toTikz(problem);
     }
     AbstractSolverAPC::tearDown(config);
+    if (hasSolution() && config.useTikzExport()) {
+        solution.toTikz(problem);
+    }
 }

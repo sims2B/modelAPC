@@ -22,7 +22,7 @@ class CplexSolverAPC : public IloSolverAPC {
   }
   
   protected:
-  bool doSolve(IloEnv &env, ConfigAPC& config);
+  void doSolve(IloEnv &env, ConfigAPC& config);
   
   
 // fill an instance of solution with the solution found by the model
