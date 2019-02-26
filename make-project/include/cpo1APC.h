@@ -6,41 +6,41 @@
 
 #include <ilcp/cp.h>
 
-#include "solverAPC.h"
+#include "iloSolverAPC.h"
 #include "paramModelAPC.h" //TODO Remove
 
 typedef IloArray<IloIntervalVarArray> IloIntervalVarMatrix;
 typedef IloArray<IloIntervalSequenceVar> IloIntervalSequenceVarArray;
 
-class CpoSolver1APC : public SeededSolverAPC
+class CpoSolver1APC : public IloSolverAPC
 {
 
   public:
-    CpoSolver1APC(Problem problem, std::vector<Solution> solutionPool) : SeededSolverAPC(problem, solutionPool)
+    CpoSolver1APC(Problem problem, std::vector<Solution> solutionPool) : IloSolverAPC(problem, solutionPool)
     {
     }
 
-    void solve(ConfigAPC &config);
+    void doSolve(IloEnv& env, ConfigAPC &config);
 
   private:
-    int modelToSol(const IloCP &, const IloIntervalVarMatrix &,
+    void modelToSol(const IloCP &, const IloIntervalVarMatrix &,
                    const IloIntervalVarMatrix &);
 
-    int solToModel(IloIntervalVarArray &masterTask, IloIntervalVarMatrix &altTasks,
+    void solToModel(Solution& solution, IloIntervalVarArray &masterTask, IloIntervalVarMatrix &altTasks,
                    IloIntervalVarMatrix &disqualif, IloIntervalVar &Cmax,
                    IloSolution &sol);
 
-    int createModel(IloEnv &, IloModel &, IloIntervalVarArray &,
+    void createModel(IloEnv &, IloModel &, IloIntervalVarArray &,
                     IloIntervalVarMatrix &, IloIntervalVarMatrix &,
                     IloIntervalSequenceVarArray &);
 
-    int createVariables(IloEnv &, IloIntervalVarArray &, IloIntervalVarMatrix &,
+    void createVariables(IloEnv &, IloIntervalVarArray &, IloIntervalVarMatrix &,
                         IloIntervalVarMatrix &, IloIntervalSequenceVarArray &);
 
-    int createObjective(IloEnv &, IloModel &, IloIntervalVarArray &,
+    void createObjective(IloEnv &, IloModel &, IloIntervalVarArray &,
                         IloIntervalVarMatrix &);
 
-    int createConstraints(IloEnv &, IloModel &, IloIntervalVarArray &,
+    void createConstraints(IloEnv &, IloModel &, IloIntervalVarArray &,
                           IloIntervalVarMatrix &, IloIntervalVarMatrix &,
                           IloIntervalSequenceVarArray &);
 };

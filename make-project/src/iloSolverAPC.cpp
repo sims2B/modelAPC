@@ -4,6 +4,7 @@ void IloSolverAPC::configure(IloEnv &env, IloCP &cp, ConfigAPC &config)
 {
     if (config.isSilent())
     {
+           std::cout << "c SILENT "  << std::endl;
         cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     }
     int timeLimit = config.getTimeLimit();
@@ -19,20 +20,21 @@ void IloSolverAPC::configure(IloEnv &env, IloCP &cp, ConfigAPC &config)
 }
 void IloSolverAPC::tearDown(IloCP &cp)
 {
+    std::cout << "d STATUS " << cp.getStatus() << std::endl;
     std::cout << "d BRANCHES " << cp.getInfo(IloCP::NumberOfBranches) << std::endl;
     std::cout << "d FAILS " << cp.getInfo(IloCP::NumberOfFails) << std::endl;
     std::cout << "c VARIABLES " << cp.getInfo(IloCP::NumberOfVariables) << std::endl;
     std::cout << "c CONSTRAINTS " << cp.getInfo(IloCP::NumberOfConstraints) << std::endl;
     if (cp.getInfo(IloCP::NumberOfSolutions) > 0)
     {
-        std::cout << "c CONSTRAINTS " << cp.getObjGap() << std::endl;
+        std::cout << "c GAP " << cp.getObjGap() << std::endl;
     }
 }
 
 void IloSolverAPC::configure(IloEnv &env, IloCplex &cplex, ConfigAPC &config)
 {
     if (config.isSilent())
-    {
+    {   
         cplex.setOut(env.getNullStream());
     }
     int timeLimit = config.getTimeLimit();
