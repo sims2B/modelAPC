@@ -7,16 +7,16 @@
 #include <cstdlib>
 #include <vector>
 
-VirtualSolverAPC *makeSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool)
+AbstractSolverAPC *makeSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool)
 {
   std::string type = config.getSolverType();
   if (type == T_CPLEX)
-    return new CplexSolverAPC(problem, solutionPool);
+    return new CplexSolverAPC(problem, config, solutionPool);
   else if (type == T_CPO1)
-    return new CpoSolver1APC(problem, solutionPool);
+    return new CpoSolver1APC(problem, config, solutionPool);
   else if (type == T_CPO2)
   {
-     return new CpoSolver2APC(problem, solutionPool);
+     return new CpoSolver2APC(problem, config, solutionPool);
   }
   return NULL;
 }
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
   {
     std::cout << std::endl
               << "d HEURISTIC " << heuristic << std::endl;
-    HeuristicAPC *solver = makeHeuristic(problem, heuristic);
+    HeuristicAPC *solver = makeHeuristic(problem, config, heuristic);
     solver->solve(config);
     if (solver->hasSolution())
     {
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
   }
   timer.stage("HEUR_TIME");
   // TODO Pass the timer as an argument
-  VirtualSolverAPC *solver = makeSolverAPC(problem, config, solutionPool); 
+  AbstractSolverAPC *solver = makeSolverAPC(problem, config, solutionPool); 
   if (solver != NULL)
   {
     std::cout << std::endl;

@@ -7,7 +7,7 @@ class HeuristicAPC : public AbstractSolverAPC
 {
 
 public:
-  HeuristicAPC(Problem problem) : AbstractSolverAPC(problem)
+  HeuristicAPC(Problem &problem, ConfigAPC &config) : AbstractSolverAPC(problem, config)
   {
   }
 
@@ -26,7 +26,7 @@ class ListHeuristic : public HeuristicAPC
 {
 
 public:
-  ListHeuristic(Problem problem) : HeuristicAPC(problem)
+  ListHeuristic(Problem &problem, ConfigAPC &config) : HeuristicAPC(problem, config)
   {
   }
 
@@ -43,7 +43,7 @@ class SchedCentricHeuristic : public HeuristicAPC
 {
 
 public:
-  SchedCentricHeuristic(Problem problem) : HeuristicAPC(problem)
+  SchedCentricHeuristic(Problem &problem, ConfigAPC &config) : HeuristicAPC(problem, config)
   {
   }
 
@@ -62,7 +62,7 @@ class QualifCentricHeuristic : public HeuristicAPC
 {
 
 public:
-  QualifCentricHeuristic(Problem problem) : HeuristicAPC(problem)
+  QualifCentricHeuristic(Problem &problem, ConfigAPC &config) : HeuristicAPC(problem, config)
   {
   }
 
@@ -101,6 +101,6 @@ private:
   void computeFirstOccAfter(int m, int i, std::vector<int> &firstOccAfter);
 };
 
-HeuristicAPC *makeHeuristic(Problem &problem, std::string name);
+HeuristicAPC *makeHeuristic(Problem &problem, ConfigAPC &config, std::string name);
 
 #endif

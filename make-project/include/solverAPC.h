@@ -6,38 +6,23 @@
 #include "solution.h"
 #include "utils.h"
 
-class VirtualSolverAPC {
-  
- public:
-  
-  virtual void solve(ConfigAPC& config) = 0;
 
-  virtual Problem getProblem() const = 0;
-  
-  virtual std::string getStatus() const = 0;
-
-  virtual int getSolutionCount() const = 0;
-
-  inline bool hasSolution() const {
-    return getSolutionCount() > 0;
-  }
-  
-  virtual Solution getSolution() const = 0;
-
-};
-
-class AbstractSolverAPC : public VirtualSolverAPC {
+class AbstractSolverAPC  {
  protected:
   Problem problem;
+  ConfigAPC& config;
   std::string status;
   Solution solution;
   int solutionCount;
  public:
 
-  AbstractSolverAPC(Problem problem) : problem(problem), status(S_UNKNOWN), solution(Solution(problem)), solutionCount(0) {
+  AbstractSolverAPC(Problem &problem, ConfigAPC &config) : problem(problem), config(config), status(S_UNKNOWN), solution(Solution(problem)), solutionCount(0) {
   }
+  virtual void solve(ConfigAPC &config) = 0;
 
-  // TODO inline Config getConfig() const ?
+  inline ConfigAPC& getConfig() const {
+    return config;
+  }
 
   inline Problem getProblem() const {
     return problem;
@@ -49,6 +34,10 @@ class AbstractSolverAPC : public VirtualSolverAPC {
   
   inline int getSolutionCount() const {
     return solutionCount;
+  }
+
+  inline bool hasSolution() const {
+    return getSolutionCount() > 0;
   }
   
   inline Solution getSolution() const {

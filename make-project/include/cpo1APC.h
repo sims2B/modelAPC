@@ -14,7 +14,7 @@ class CpoSolver1APC : public IloSolverAPC
 {
 
   public:
-    CpoSolver1APC(Problem problem, std::vector<Solution> solutionPool) : IloSolverAPC(problem, solutionPool)
+    CpoSolver1APC(Problem &problem, ConfigAPC &config, std::vector<Solution> solutionPool) : IloSolverAPC(problem, config, solutionPool)
     {
     }
 

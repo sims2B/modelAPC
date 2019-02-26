@@ -685,12 +685,12 @@ int QualifCentricHeuristic::updateTime(const int &i, const int &j, const int &fi
   return 0;
 }
 
-HeuristicAPC* makeHeuristic(Problem &problem, std::string name)
+HeuristicAPC* makeHeuristic(Problem &problem, ConfigAPC &config, std::string name)
 {
   if (name == H_LIST) 
-    return new ListHeuristic(problem);
+    return new ListHeuristic(problem, config);
   else if (name == H_QUALIF)
-    return new QualifCentricHeuristic(problem);
+    return new QualifCentricHeuristic(problem, config);
   else
-    return new SchedCentricHeuristic(problem);
+    return new SchedCentricHeuristic(problem, config);
 }

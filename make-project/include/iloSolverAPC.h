@@ -32,7 +32,7 @@ protected:
   void tearDown(IloCP &cp);
 
 public:
-  IloSolverAPC(Problem &problem, std::vector<Solution> solutionPool) : AbstractSolverAPC(problem), solutionPool(solutionPool){
+  IloSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> solutionPool) : AbstractSolverAPC(problem, config), solutionPool(solutionPool){
   };
 
   void solve(ConfigAPC &config);
