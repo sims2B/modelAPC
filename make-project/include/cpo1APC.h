@@ -4,8 +4,6 @@
 // #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 
-#include <ilcp/cp.h>
-
 #include "iloSolverAPC.h"
 #include "paramModelAPC.h" //TODO Remove
 

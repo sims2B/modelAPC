@@ -1,9 +1,7 @@
 #ifndef CPLEXAPC_H
 #define CPLEXAPC_H
 
-// #pragma GCC diagnostic ignored "-Wdeprecated-declarations" // TODO ?
 #pragma GCC diagnostic ignored "-Wignored-attributes"
-
 
 #include <iostream>
 #include "iloSolverAPC.h"

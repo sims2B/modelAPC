@@ -5,11 +5,8 @@
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 #pragma GCC diagnostic ignored "-Wregister"
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
-#include <ilcp/cp.h>
-#include <ilopl/iloopl.h>
 
 #include "iloSolverAPC.h"
-#include "paramModelAPC.h" //TODO Remove
 
 // TODO Avoid multiple typedef definitions in cpo[1-2]APC.h
 typedef IloArray<IloIntervalVarArray> IloIntervalVarMatrix;
