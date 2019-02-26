@@ -16,8 +16,6 @@ class VirtualSolverAPC {
   
   virtual std::string getStatus() const = 0;
 
-  //virtual double getRuntime() const = 0;
-
   virtual int getSolutionCount() const = 0;
 
   inline bool hasSolution() const {
@@ -39,7 +37,8 @@ class AbstractSolverAPC : public VirtualSolverAPC {
   AbstractSolverAPC(Problem problem) : problem(problem), status(S_UNKNOWN), solution(Solution(problem)), solutionCount(0) {
   }
 
-  
+  // TODO inline Config getConfig() const ?
+
   inline Problem getProblem() const {
     return problem;
   }
@@ -66,29 +65,6 @@ protected:
     this->solutionCount = solutionCount;
   };
 
-  // TODO REmove method
-  void setERROR() {
-    status = S_ERROR;
-  };
-
 };
 
-class SeededSolverAPC : public AbstractSolverAPC {
-  protected: 
-  std::vector<Solution> solutionPool;
-
-
-  public:
-  SeededSolverAPC(Problem& problem, std::vector<Solution> solutionPool) : AbstractSolverAPC(problem), solutionPool(solutionPool) {
-  };
-
-  //   void solve(ConfigAPC &config)
-  // {
-  //   setUp(config);
-  //   doSolve(config);
-  //   tearDown(config); 
-  // };
-
-
-};
 #endif

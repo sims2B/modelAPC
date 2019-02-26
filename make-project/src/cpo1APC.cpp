@@ -11,56 +11,26 @@ void CpoSolver1APC::doSolve(IloEnv &env, ConfigAPC &config)
   IloIntervalSequenceVarArray mchs(env, problem.M);
   createModel(env, model, masterTask, altTasks, disqualif, mchs);
   IloCP cp(model);
-  // Solution solSCH(P);
-  // Solution solQCH(P);
-  // if (withCPStart)
-  //   useCPStart(P,solSCH,solQCH,env,cp,masterTask, altTasks, disqualif, masterTask[problem.N]);
-
+  
   configure(env, cp, config);
   for (Solution sol : solutionPool)
-    {
-        IloSolution ilosol(env);
-        solToModel(sol, masterTask, altTasks, disqualif, masterTask[problem.N], ilosol);
-     cp.setStartingPoint(ilosol);
+  {
+    IloSolution ilosol(env);
+    solToModel(sol, masterTask, altTasks, disqualif, masterTask[problem.N], ilosol);
+    cp.setStartingPoint(ilosol);
     ilosol.end();
-    }
+  }
 
   IloBool solCPFound = cp.solve();
-   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
-  
+  solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
+
   if (solCPFound)
   {
     modelToSol(cp, altTasks, disqualif);
-   
   }
   setStatus(cp);
   tearDown(cp);
 }
-
-// void useCPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env, IloCP& cp,
-// 		IloIntervalVarArray& masterTask, IloIntervalVarMatrix& altTasks,
-// 		IloIntervalVarMatrix& disqualif, IloIntervalVar& Cmax){
-//   int nbHSol = 0;
-//   if (SCH(P, solSCH)){
-//     nbHSol++;
-//     IloSolution sol(env);
-//     solToModel(P, solSCH, masterTask, altTasks, disqualif, masterTask[problem.N], sol);
-//     cp.setStartingPoint(sol);
-//     sol.end();
-//   }
-//   else solSCH.clear(P);
-
-//   if (QCH(P, solQCH)){
-//      nbHSol++;
-//     IloSolution sol(env);
-//     solToModel(P, solQCH, masterTask, altTasks, disqualif, masterTask[problem.N], sol);
-//     cp.setStartingPoint(sol);
-//     sol.end();
-//   }
-//   else solQCH.clear(P);
-
-//   std::cout << "d NBHSOLS "  << nbHSol << "\n";
-// }
 
 void CpoSolver1APC::modelToSol(const IloCP &cp,
                                const IloIntervalVarMatrix &altTasks,
@@ -242,6 +212,7 @@ void CpoSolver1APC::createObjective(IloEnv &env, IloModel &model,
       }
   }
 
+  // TODO Use config !
   if (!weighted)
   {
     IloNumExprArray objs(env);

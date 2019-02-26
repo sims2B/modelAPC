@@ -15,6 +15,7 @@ void CpoSolver2APC::doSolve(IloEnv &env, ConfigAPC &config)
     opl.addDataSource(dataSource);
     opl.generate();
     configure(env, cp, config);
+    // FIXME ./bin/solverAPC example.cfg ../benchmarks/datasets/T4/T4_small/instance_10_2_3_10_5_Sthr_7.txt 
     for (Solution sol : solutionPool)
     {
         solToModel(sol, env, opl, cp);

@@ -213,6 +213,7 @@ void CplexSolverAPC::createConstraints(int T, IloEnv &env, IloModel &model,
         nf[q] = problem.getNf(q);
 
     //objective
+    // TODO Use config !
     IloExpr expr(env);
     for (f = 0; f < F; ++f)
         expr += alpha_C * C[f];

@@ -15,7 +15,9 @@ class IloSolverAPC : public AbstractSolverAPC
 {
 protected:
   std::vector<Solution> solutionPool;
-  
+
+  // Timer timer;
+
   void configure(IloEnv &env, IloCplex &cplex, ConfigAPC &config);
 
   void configure(IloEnv &env, IloCP &cp, ConfigAPC &config);

@@ -136,12 +136,15 @@ void IloSolverAPC::tearDown(IloCplex &cplex)
 
 void IloSolverAPC::solve(ConfigAPC &config)
 {
+    // TODO timer.stage();
     IloEnv env;
     try
     {
         setUp(config);
         solutionCount += solutionPool.size();
+        // TODO timer.stage("BUILD_TIME");
         doSolve(env, config);
+        // timer.stage("RUNTIME");
     }
     catch (IloOplException &e)
     {

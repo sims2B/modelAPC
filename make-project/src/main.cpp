@@ -50,7 +50,6 @@ int main(int argc, char *argv[])
   instance.close();
 
   // Log on Config and Problem
-  timer.stage("READING_TIME");
 
   config.toDimacs();
   problem.toDimacs();
@@ -69,7 +68,7 @@ int main(int argc, char *argv[])
       solutionPool.push_back(solver->getSolution());
     }
   }
-  timer.stage("HEURISTICS_TIME");
+  timer.stage("HEUR_TIME");
   // TODO Pass the timer as an argument
   VirtualSolverAPC *solver = makeSolverAPC(problem, config, solutionPool); 
   if (solver != NULL)
