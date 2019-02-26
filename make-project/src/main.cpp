@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     std::cout << std::endl
               << "d HEURISTIC " << heuristic << std::endl;
     HeuristicAPC *solver = makeHeuristic(problem, config, heuristic);
-    solver->solve(config);
+    solver->solve();
     if (solver->hasSolution())
     {
       solutionPool.push_back(solver->getSolution());
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
   if (solver != NULL)
   {
     std::cout << std::endl;
-    solver->solve(config);
+    solver->solve();
   } 
   timer.stop();
   timer.toDimacs();

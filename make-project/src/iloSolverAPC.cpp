@@ -134,13 +134,13 @@ void IloSolverAPC::tearDown(IloCplex &cplex)
     std::cout << "d NBNODES " << cplex.getNnodes() << std::endl;
 }
 
-void IloSolverAPC::solve(ConfigAPC &config)
+void IloSolverAPC::solve()
 {
     // TODO timer.stage();
+    setUp();
     IloEnv env;
     try
     {
-        setUp(config);
         solutionCount += solutionPool.size();
         // TODO timer.stage("BUILD_TIME");
         doSolve(env, config);
@@ -174,7 +174,8 @@ void IloSolverAPC::solve(ConfigAPC &config)
             solution = solutionPool[0];
         }
     }
-    AbstractSolverAPC::tearDown(config);
+    AbstractSolverAPC::tearDown();
+    // TODO move in tearDown
     if (hasSolution() && config.useTikzExport())
     {
         solution.toTikz(problem);

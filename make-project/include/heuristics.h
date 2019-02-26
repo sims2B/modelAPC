@@ -11,11 +11,11 @@ public:
   {
   }
 
-  void solve(ConfigAPC &config)
+  void solve()
   {
-    setUp(config);
+    setUp();
     doSolve(config);
-    tearDown(config); 
+    tearDown(); 
   };
 
 protected:

@@ -25,6 +25,7 @@ protected:
   virtual void doSolve(IloEnv &env, ConfigAPC &config) = 0;
   
   void setStatus(IloAlgorithm &iloAlgo);
+  
   void setStatus(bool hasSolution, bool hasReachedTimeLimit);
   
   void tearDown(IloCplex &cplex);
@@ -35,7 +36,7 @@ public:
   IloSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> solutionPool) : AbstractSolverAPC(problem, config), solutionPool(solutionPool){
   };
 
-  void solve(ConfigAPC &config);
+  void solve();
 };
 
 #endif

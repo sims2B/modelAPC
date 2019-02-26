@@ -18,7 +18,7 @@ class AbstractSolverAPC  {
 
   AbstractSolverAPC(Problem &problem, ConfigAPC &config) : problem(problem), config(config), status(S_UNKNOWN), solution(Solution(problem)), solutionCount(0) {
   }
-  virtual void solve(ConfigAPC &config) = 0;
+  virtual void solve() = 0;
 
   inline ConfigAPC& getConfig() const {
     return config;
@@ -45,9 +45,9 @@ class AbstractSolverAPC  {
   }
 
 protected:
-  virtual void setUp(ConfigAPC& config);
+  virtual void setUp();
   
-  virtual void tearDown(ConfigAPC& config);
+  virtual void tearDown();
 
   void setSAT(int solutionCount = 1) {
     status = S_SAT;
