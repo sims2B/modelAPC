@@ -24,11 +24,14 @@ void CpoSolver1APC::doSolve(IloEnv &env, ConfigAPC &config)
      cp.setStartingPoint(ilosol);
     ilosol.end();
     }
+
   IloBool solCPFound = cp.solve();
+   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
+  
   if (solCPFound)
   {
     modelToSol(cp, altTasks, disqualif);
-    solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
+   
   }
   setStatus(cp);
   tearDown(cp);

@@ -2,59 +2,35 @@
 
 #include <algorithm>
 
-void CpoSolver2APC::solve(ConfigAPC &config)
+void CpoSolver2APC::doSolve(IloEnv &env, ConfigAPC &config)
 {
-    AbstractSolverAPC::setUp(config);
-    IloEnv env;
-    try
+    IloOplErrorHandler handler(env, std::cout);
+    IloOplModelSource modelSource(env, config.getModelPath().c_str());
+    IloOplSettings settings(env, handler);
+    IloOplModelDefinition def(modelSource, settings);
+    IloCP cp(env);
+    IloOplModel opl(def, cp);
+    MyCustomDataSource ds(env, problem);
+    IloOplDataSource dataSource(&ds);
+    opl.addDataSource(dataSource);
+    opl.generate();
+    configure(env, cp, config);
+    for (Solution sol : solutionPool)
     {
-        IloOplErrorHandler handler(env, std::cout);
-        IloOplModelSource modelSource(env, config.getModelPath().c_str());
-        //IloOplModelSource modelSource(env, pathToOPL);
-        IloOplSettings settings(env, handler);
-        IloOplModelDefinition def(modelSource, settings);
-        IloCP cp(env);
-        IloOplModel opl(def, cp);
-        MyCustomDataSource ds(env, problem);
-        IloOplDataSource dataSource(&ds);
-        opl.addDataSource(dataSource);
-        opl.generate();
-        if (config.isSilent())
-        {
-            cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
-        }
-        cp.setParameter(IloCP::TimeLimit, time_limit);
+        solToModel(sol, env, opl, cp);
+    }
+    IloBool solCPFound = cp.solve();
+    solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
+  
+    if (solCPFound)
+    {
+        
+        IloOplElement elmt = opl.getElement("mjobs");
+        modelToSol(env, cp, elmt);
 
-        //   Solution solSCH(P);
-        //   Solution solQCH(P);
-        //   if (withCPStart)
-        // useCPStart(P,solSCH,solQCH,env,opl,cp);
-        IloBool solCPFound = cp.solve();
-        if (solCPFound)
-        {
-            IloOplElement elmt = opl.getElement("mjobs");
-            modelToSol(env, cp, elmt);
-            setSAT();
-        }  
     }
-    catch (IloOplException &e)
-    {
-        std::cout << "### OPL exception: " << e.getMessage() << std::endl;
-        setERROR();
-    }
-    catch (IloException &e)
-    {
-        std::cout << "### exception: ";
-        e.print(std::cout);
-        setERROR();
-    }
-    catch (...)
-    {
-        std::cout << "### UNEXPECTED ERROR ..." << std::endl;
-        setERROR();
-    }
-    env.end();
-    AbstractSolverAPC::tearDown(config);
+  setStatus(cp);
+  tearDown(cp);
 }
 
 void MyCustomDataSource::read() const
@@ -127,7 +103,7 @@ void MyCustomDataSource::read() const
     handler.endElement();
 }
 
-int CpoSolver2APC::solToModel(Solution& solution, IloEnv &env, IloOplModel &opl, IloCP &cp)
+void CpoSolver2APC::solToModel(Solution &solution, IloEnv &env, IloOplModel &opl, IloCP &cp)
 {
     IloSolution sol(env);
     solution.reaffectId(problem);
@@ -163,11 +139,9 @@ int CpoSolver2APC::solToModel(Solution& solution, IloEnv &env, IloOplModel &opl,
     }
 
     cp.setStartingPoint(sol);
-
-    return 0;
 }
 
-int CpoSolver2APC::modelToSol(const IloEnv &env, const IloCP &cp, const IloOplElement &elmt)
+void CpoSolver2APC::modelToSol(const IloEnv &env, const IloCP &cp, const IloOplElement &elmt)
 {
     IloInt i, j;
     IloIntervalVarMap mjobs = elmt.asIntervalVarMap();
@@ -189,5 +163,4 @@ int CpoSolver2APC::modelToSol(const IloEnv &env, const IloCP &cp, const IloOplEl
                 }
             }
     solution.repairDisqualif(problem);
-    return 0;
 }
