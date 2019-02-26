@@ -30,7 +30,7 @@ public:
   {
   }
 
-  void doSolve(IloEnv &env, ConfigAPC &config);
+  void doSolve(IloEnv &env);
 
 private:
   void modelToSol(const IloEnv &, const IloCP &, const IloOplElement &);

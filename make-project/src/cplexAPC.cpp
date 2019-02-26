@@ -1,7 +1,7 @@
 #include "cplexAPC.h"
 
 
-void CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
+void CplexSolverAPC::doSolve(IloEnv &env)
 {
     const int F = problem.getFamilyNumber();
     const int T = problem.computeHorizon();

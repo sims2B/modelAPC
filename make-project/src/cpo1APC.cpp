@@ -1,7 +1,7 @@
 #include "cpo1APC.h"
 #include <algorithm>
 
-void CpoSolver1APC::doSolve(IloEnv &env, ConfigAPC &config)
+void CpoSolver1APC::doSolve(IloEnv &env)
 {
   IloModel model(env);
 

@@ -51,7 +51,7 @@ void ListHeuristic::treat(const int m, const int f, std::vector<int> &endLast, s
   }
 }
 
-void ListHeuristic::doSolve(ConfigAPC &config)
+void ListHeuristic::doSolve()
 {
   //init and variable
   const int F = problem.getFamilyNumber();
@@ -194,7 +194,7 @@ int SchedCentricHeuristic::famWithMinThresh(const int &m, const int &t, std::vec
   return selected;
 }
 
-void SchedCentricHeuristic::doSolve(ConfigAPC &config)
+void SchedCentricHeuristic::doSolve()
 {
   const int F = problem.getFamilyNumber();
   int i, f, j;
@@ -255,22 +255,7 @@ void SchedCentricHeuristic::doSolve(ConfigAPC &config)
   setSAT();
 }
 
-// std::string Heuristics::solve(ConfigAPC& config) {
-//   std::vector<std::string> heuristics = config.getHeuristics();
-//   for( std::string heuristic : heuristics) {
-//      AbstractSolverAPC* solver = makeHeuristic(problem, heuristic);
-//      std::string status = solver->solve(config);
-//      std::cout << "d " << heuristic << " " << status << std::endl;
-//      if( status == S_SAT) {
-//         this->status == S_SAT;
-//         this->solutionCount += 1;
-//         // TODO Set solution if improving
-//      }
-//   }
-//   return this->status;
-// }
-
-void QualifCentricHeuristic::doSolve(ConfigAPC &config)
+void QualifCentricHeuristic::doSolve()
 {
   //FIXME REALLY NOT SURE ABOUT THIS ONE !
   std::vector<int> endLast(problem.M, 0);

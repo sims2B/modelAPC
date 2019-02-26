@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-void CpoSolver2APC::doSolve(IloEnv &env, ConfigAPC &config)
+void CpoSolver2APC::doSolve(IloEnv &env)
 {
     IloOplErrorHandler handler(env, std::cout);
     IloOplModelSource modelSource(env, config.getModelPath().c_str());

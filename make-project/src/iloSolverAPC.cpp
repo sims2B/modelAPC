@@ -143,7 +143,7 @@ void IloSolverAPC::solve()
     {
         solutionCount += solutionPool.size();
         // TODO timer.stage("BUILD_TIME");
-        doSolve(env, config);
+        doSolve(env);
         // timer.stage("RUNTIME");
     }
     catch (IloOplException &e)

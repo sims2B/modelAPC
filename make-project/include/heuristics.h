@@ -14,12 +14,12 @@ public:
   void solve()
   {
     setUp();
-    doSolve(config);
+    doSolve();
     tearDown(); 
   };
 
 protected:
-  virtual void doSolve(ConfigAPC &config) = 0;
+  virtual void doSolve() = 0;
 };
 
 class ListHeuristic : public HeuristicAPC
@@ -31,7 +31,7 @@ public:
   }
 
 protected:
-  void doSolve(ConfigAPC &config);
+  void doSolve();
 
 private:
   int chooseFamily(int m, std::vector<int> toSchedule);
@@ -48,7 +48,7 @@ public:
   }
 
 protected:
-  void doSolve(ConfigAPC &config);
+  void doSolve();
 
 private:
   void treat(const int, const int, std::vector<int> &, std::vector<int> &, std::vector<int> &);
@@ -67,7 +67,7 @@ public:
   }
 
 protected:
-  void doSolve(ConfigAPC &config);
+  void doSolve();
 
 private:
   int treat(const int, const int, std::vector<int> &, std::vector<int> &, std::vector<int> &);
