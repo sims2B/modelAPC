@@ -18,6 +18,7 @@ protected:
 
   virtual bool doSolve(IloEnv &env, ConfigAPC &config) = 0;
   
+  void setStatus(IloCplex &cplex);
   void setStatus(bool hasSolution, bool hasReachedTimeLimit);
   
   void tearDown(IloCplex &cplex);

@@ -1,17 +1,20 @@
 #include "cplexAPC.h"
 
-void configure(IloEnv &env, IloCplex& cplex, ConfigAPC& config) {
+void configure(IloEnv &env, IloCplex &cplex, ConfigAPC &config)
+{
     if (config.isSilent())
     {
         cplex.setOut(env.getNullStream());
     }
-    int timeLimit = config.getTimeLimit(); 
-    if(timeLimit > 0) {
-          cplex.setParam(IloCplex::TiLim, timeLimit);
+    int timeLimit = config.getTimeLimit();
+    if (timeLimit > 0)
+    {
+        cplex.setParam(IloCplex::TiLim, timeLimit);
     }
-    int workers = config.getWorkers(); 
-    if(workers > 0) {
-           cplex.setParam(IloCplex::Threads, workers);
+    int workers = config.getWorkers();
+    if (workers > 0)
+    {
+        cplex.setParam(IloCplex::Threads, workers);
     }
 }
 bool CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
@@ -28,21 +31,32 @@ bool CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
     createModel(T, env, model, x, y, C, Y);
     IloCplex cplex(model);
     configure(env, cplex, config);
-
+    for (Solution sol : solutionPool)
+    {
+        IloNumVarArray startVar(env);
+        IloNumArray startVal(env);
+        solToModel(sol, x, y, Y, C, startVar, startVal);
+        cplex.addMIPStart(startVar, startVal);
+        startVar.end();
+        startVal.end();
+    }
     //timer.stageTimer();
     IloBool solMIPFound = cplex.solve();
     //timer.stopTimer();
     if (solMIPFound)
     {
+       std::cout << "SolMIPFound ! " <<std::endl;
         modelToSol(cplex, x, y, Y);
         solutionCount += cplex.getSolnPoolNsolns();
         // Check if the optimum has been found
     }
+    setStatus(cplex);
     tearDown(cplex);
+    // FIXME Handle more return code : FEASIBLE and INF OR UNBOUNDED
     auto status = cplex.getStatus();
     return status != CPX_STAT_OPTIMAL &&
-        status != CPX_STAT_UNBOUNDED &&
-        status != CPX_STAT_INFEASIBLE;
+           status != CPX_STAT_UNBOUNDED &&
+           status != CPX_STAT_INFEASIBLE;
 }
 
 //   int CplexSolverAPC::useMIPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env, IloCplex& cplex,
@@ -120,7 +134,7 @@ void CplexSolverAPC::modelToSol(const IloCplex &cplex, const IloNumVar3DMatrix &
     solution.repairDisqualif(problem);
 }
 
-void CplexSolverAPC::solToModel(IloNumVar3DMatrix &x, IloNumVar3DMatrix &y, IloNumVarMatrix &Y, IloNumVarArray &C, IloNumVarArray &startVar, IloNumArray &startVal)
+void CplexSolverAPC::solToModel(Solution &solution, IloNumVar3DMatrix &x, IloNumVar3DMatrix &y, IloNumVarMatrix &Y, IloNumVarArray &C, IloNumVarArray &startVar, IloNumArray &startVal)
 {
     const int T = problem.computeHorizon();
     const int F = problem.getFamilyNumber();

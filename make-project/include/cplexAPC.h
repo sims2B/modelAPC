@@ -29,8 +29,7 @@ class CplexSolverAPC : public IloSolverAPC {
 void modelToSol(const IloCplex&, const IloNumVar3DMatrix&,
                const IloNumVar3DMatrix&, const IloNumVarMatrix&);
 
-// TODO Add the solution as a parameter
-void solToModel(IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, 
+void solToModel(Solution &solution, IloNumVar3DMatrix& x, IloNumVar3DMatrix& y, 
         IloNumVarMatrix& Y, IloNumVarArray& C, IloNumVarArray& startVar, 
         IloNumArray& startVal);
 
