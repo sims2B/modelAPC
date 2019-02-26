@@ -1,25 +1,53 @@
 #include "iloSolverAPC.h"
 
-void IloSolverAPC::tearDown(IloCplex &cplex)
+void IloSolverAPC::configure(IloEnv &env, IloCP &cp, ConfigAPC &config)
 {
-    std::cout << "d STATUS " << cplex.getStatus() << std::endl;
-    std::cout << "c VARIABLES " << cplex.getNcols() << std::endl;
-    std::cout << "c CONSTRAINTS " << cplex.getNrows() << std::endl;
-    if (cplex.getSolnPoolNsolns() > 0)
+    if (config.isSilent())
     {
-        std::cout << "d GAP " << cplex.getMIPRelativeGap() << std::endl;
+        cp.setParameter(IloCP::LogVerbosity, IloCP::Quiet);
     }
-    std::cout << "d NBNODES " << cplex.getNnodes() << std::endl;
+    int timeLimit = config.getTimeLimit();
+    if (timeLimit > 0)
+    {
+        cp.setParameter(IloCP::TimeLimit, timeLimit);
+    }
+    int workers = config.getWorkers();
+    if (workers > 0)
+    {
+        cp.setParameter(IloCP::Workers, workers);
+    }
 }
-
 void IloSolverAPC::tearDown(IloCP &cp)
 {
-
-    std::cout << "c TODO ILO_CP_NOT_AVAIL"
-              << "\n";
+    std::cout << "d BRANCHES " << cp.getInfo(IloCP::NumberOfBranches) << std::endl;
+    std::cout << "d FAILS " << cp.getInfo(IloCP::NumberOfFails) << std::endl;
+    std::cout << "c VARIABLES " << cp.getInfo(IloCP::NumberOfVariables) << std::endl;
+    std::cout << "c CONSTRAINTS " << cp.getInfo(IloCP::NumberOfConstraints) << std::endl;
+    if (cp.getInfo(IloCP::NumberOfSolutions) > 0)
+    {
+        std::cout << "c CONSTRAINTS " << cp.getObjGap() << std::endl;
+    }
 }
 
-void IloSolverAPC::setStatus(IloCplex &cplex)
+void IloSolverAPC::configure(IloEnv &env, IloCplex &cplex, ConfigAPC &config)
+{
+    if (config.isSilent())
+    {
+        cplex.setOut(env.getNullStream());
+    }
+    int timeLimit = config.getTimeLimit();
+    if (timeLimit > 0)
+    {
+        cplex.setParam(IloCplex::TiLim, timeLimit);
+    }
+    int workers = config.getWorkers();
+    if (workers > 0)
+    {
+        cplex.setParam(IloCplex::Threads, workers);
+    }
+}
+
+void IloSolverAPC::setStatus(IloAlgorithm &cplex)
 {
     auto cplexStatus = cplex.getStatus();
     if (solutionPool.size() > 0)
@@ -92,6 +120,18 @@ void IloSolverAPC::setStatus(bool hasSolution, bool hasReachedLimit)
     }
 }
 
+void IloSolverAPC::tearDown(IloCplex &cplex)
+{
+    std::cout << "d STATUS " << cplex.getStatus() << std::endl;
+    std::cout << "c VARIABLES " << cplex.getNcols() << std::endl;
+    std::cout << "c CONSTRAINTS " << cplex.getNrows() << std::endl;
+    if (cplex.getSolnPoolNsolns() > 0)
+    {
+        std::cout << "d GAP " << cplex.getMIPRelativeGap() << std::endl;
+    }
+    std::cout << "d NBNODES " << cplex.getNnodes() << std::endl;
+}
+
 void IloSolverAPC::solve(ConfigAPC &config)
 {
     IloEnv env;
@@ -130,7 +170,8 @@ void IloSolverAPC::solve(ConfigAPC &config)
         }
     }
     AbstractSolverAPC::tearDown(config);
-    if (hasSolution() && config.useTikzExport()) {
+    if (hasSolution() && config.useTikzExport())
+    {
         solution.toTikz(problem);
     }
 }

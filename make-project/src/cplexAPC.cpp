@@ -1,22 +1,6 @@
 #include "cplexAPC.h"
 
-void configure(IloEnv &env, IloCplex &cplex, ConfigAPC &config)
-{
-    if (config.isSilent())
-    {
-        cplex.setOut(env.getNullStream());
-    }
-    int timeLimit = config.getTimeLimit();
-    if (timeLimit > 0)
-    {
-        cplex.setParam(IloCplex::TiLim, timeLimit);
-    }
-    int workers = config.getWorkers();
-    if (workers > 0)
-    {
-        cplex.setParam(IloCplex::Threads, workers);
-    }
-}
+
 void CplexSolverAPC::doSolve(IloEnv &env, ConfigAPC &config)
 {
     const int F = problem.getFamilyNumber();
