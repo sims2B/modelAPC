@@ -47,15 +47,15 @@
   }
 
   inline bool isVerbose() {
-    return getIntValue("solver", "verbose", 0);
-  }
-
-  inline bool useTikzExport() {
-    return getIntValue("solver", "tikz", 0);
+    return getBoolValue("solver", "verbose", true);
   }
 
   inline bool isSilent() {
     return !isVerbose();
+  }
+
+  inline bool useTikzExport() {
+    return getBoolValue("solver", "tikz", false);
   }
 
   std::string getSolverType() {
@@ -81,13 +81,14 @@
   }
 
   bool withRelaxation1SF() {
-    return getIntValue("cpo", "relax1SF", 0);
+    return getBoolValue("cpo", "relax1SF", true);
   }
 
   void toDimacs();
 
   
   private:
+  bool getBoolValue(const char* name1, const char* name2, bool defVal);  
   int getIntValue(const char* name1, const char* name2, int defVal);
   std::string getStringValue(const char* name1, const char* name2, std::string defVal);
         

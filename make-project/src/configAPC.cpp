@@ -35,6 +35,21 @@ std::string ConfigAPC::getConfigName() {
       return("NO_NAME");
 }
 
+bool ConfigAPC::getBoolValue(const char* name1, const char* name2, bool defVal) {
+    const libconfig::Setting& root = config.getRoot();
+    try {
+        bool boolVal;
+        if(root[name1].lookupValue(name2, boolVal)) {
+            return boolVal;
+        }
+    } 
+    catch(const libconfig::SettingNotFoundException &nfex)
+      {
+        // Ignored 
+      }
+      return(defVal);
+}
+
 int ConfigAPC::getIntValue(const char* name1, const char* name2, int defVal) {
     const libconfig::Setting& root = config.getRoot();
     try {
