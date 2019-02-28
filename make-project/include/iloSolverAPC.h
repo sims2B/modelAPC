@@ -34,7 +34,7 @@ protected:
 
   void tearDown();
   
-  bool iloSolve(IloAlgorithm &iloAlgo);
+  IloBool iloSolve(IloAlgorithm &iloAlgo);
 
   virtual void doSolve(IloEnv &env) = 0;
 

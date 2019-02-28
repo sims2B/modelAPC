@@ -21,9 +21,8 @@ void CpoSolver1APC::doSolve(IloEnv &env)
     ilosol.end();
   }
 
-  IloBool solCPFound = cp.solve();
+  IloBool solCPFound = iloSolve(cp);
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
-
   if (solCPFound)
   {
     modelToSol(cp, altTasks, disqualif);

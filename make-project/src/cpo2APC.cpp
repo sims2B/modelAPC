@@ -20,9 +20,8 @@ void CpoSolver2APC::doSolve(IloEnv &env)
     {
         solToModel(sol, env, opl, cp);
     }
-    IloBool solCPFound = cp.solve();
+    IloBool solCPFound = iloSolve(cp);
     solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
-  
     if (solCPFound)
     {
         

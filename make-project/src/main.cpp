@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <vector>
 
+
 AbstractSolverAPC *makeSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool, Timer &timer)
 {
   std::string type = config.getSolverType();
@@ -28,6 +29,9 @@ int exitOnFailure()
 }
 int main(int argc, char *argv[])
 {
+  // Start Timer
+  Timer timer;
+  // Check arguments
   if(argc != 3) {
      return exitOnFailure();
   }
@@ -36,8 +40,6 @@ int main(int argc, char *argv[])
   std::string instancePath = argv[2];
   std::cout << "i " << getFilename(instancePath, false) << std::endl;
   std::cout << "c CONFIG " << getFilename(configPath, false) << std::endl;
-  Timer timer;
-  timer.start();
   // Read Config From file
   ConfigAPC config;
   if (!config.readFile(configPath))
@@ -69,14 +71,13 @@ int main(int argc, char *argv[])
     }
   }
   timer.stage("HEUR_TIME");
-  // TODO Pass the timer as an argument
   AbstractSolverAPC *solver = makeSolverAPC(problem, config, solutionPool, timer); 
   if (solver != NULL)
   {
     std::cout << std::endl;
     solver->solve();
   } 
-  timer.stop();
+  timer.stagewc();
   timer.toDimacs();
   return (EXIT_SUCCESS);
 }

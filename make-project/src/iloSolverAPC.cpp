@@ -146,7 +146,7 @@ void IloSolverAPC::tearDown(IloCplex &cplex)
     std::cout << "d NBNODES " << cplex.getNnodes() << std::endl;
 }
 
-bool IloSolverAPC::iloSolve(IloAlgorithm &algo) {
+IloBool IloSolverAPC::iloSolve(IloAlgorithm &algo) {
     timer.stage("BUILD_TIME");
     IloBool solFound = algo.solve();
     timer.stage("RUNTIME");
@@ -155,15 +155,12 @@ bool IloSolverAPC::iloSolve(IloAlgorithm &algo) {
 
 void IloSolverAPC::solve()
 {
-    timer.start();
     setUp();
     IloEnv env;
     try
     {
         solutionCount += solutionPool.size();
-        // TODO timer.stage("BUILD_TIME");
         doSolve(env);
-        // timer.stage("RUNTIME");
     }
     catch (IloOplException &e)
     {
