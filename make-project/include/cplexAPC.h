@@ -16,7 +16,7 @@ typedef IloArray<IloNumVarMatrix> IloNumVar3DMatrix;
 class CplexSolverAPC : public IloSolverAPC {
 
   public:
-  CplexSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> solutionPool) : IloSolverAPC(problem, config, solutionPool) {
+  CplexSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool, Timer &timer) : IloSolverAPC(problem, config, solutionPool, timer) {
   }
   
   protected:

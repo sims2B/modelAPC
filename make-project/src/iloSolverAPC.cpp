@@ -1,5 +1,9 @@
 #include "iloSolverAPC.h"
 
+void IloSolverAPC::setUp() {
+    timer.stage();
+    AbstractSolverAPC::setUp();
+}
 void IloSolverAPC::configure(IloEnv &env, IloCP &cp, ConfigAPC &config)
 {
     if (config.isSilent())
@@ -28,6 +32,14 @@ void IloSolverAPC::tearDown(IloCP &cp)
     if (cp.getInfo(IloCP::NumberOfSolutions) > 0)
     {
         std::cout << "c GAP " << cp.getObjGap() << std::endl;
+    }
+}
+
+void IloSolverAPC::tearDown() {
+    AbstractSolverAPC::tearDown();
+    if (hasSolution() && config.useTikzExport())
+    {
+        solution.toTikz(problem);
     }
 }
 
@@ -110,17 +122,17 @@ void IloSolverAPC::setStatus(IloAlgorithm &cplex)
     }
 }
 
-void IloSolverAPC::setStatus(bool hasSolution, bool hasReachedLimit)
-{
-    if (hasSolution)
-    {
-        status = hasReachedLimit ? S_SAT : S_OPTIMUM;
-    }
-    else
-    {
-        status = hasReachedLimit ? S_UNKNOWN : S_UNSAT;
-    }
-}
+// void IloSolverAPC::setStatus(bool hasSolution, bool hasReachedLimit)
+// {
+//     if (hasSolution)
+//     {
+//         status = hasReachedLimit ? S_SAT : S_OPTIMUM;
+//     }
+//     else
+//     {
+//         status = hasReachedLimit ? S_UNKNOWN : S_UNSAT;
+//     }
+// }
 
 void IloSolverAPC::tearDown(IloCplex &cplex)
 {
@@ -134,9 +146,16 @@ void IloSolverAPC::tearDown(IloCplex &cplex)
     std::cout << "d NBNODES " << cplex.getNnodes() << std::endl;
 }
 
+bool IloSolverAPC::iloSolve(IloAlgorithm &algo) {
+    timer.stage("BUILD_TIME");
+    IloBool solFound = algo.solve();
+    timer.stage("RUNTIME");
+    return solFound;
+}
+
 void IloSolverAPC::solve()
 {
-    // TODO timer.stage();
+    timer.start();
     setUp();
     IloEnv env;
     try
@@ -174,10 +193,6 @@ void IloSolverAPC::solve()
             solution = solutionPool[0];
         }
     }
-    AbstractSolverAPC::tearDown();
-    // TODO move in tearDown
-    if (hasSolution() && config.useTikzExport())
-    {
-        solution.toTikz(problem);
-    }
+    tearDown();
+    
 }

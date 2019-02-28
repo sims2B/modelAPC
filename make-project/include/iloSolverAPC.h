@@ -16,24 +16,30 @@ class IloSolverAPC : public AbstractSolverAPC
 protected:
   std::vector<Solution> solutionPool;
 
-  // Timer timer;
+  Timer &timer;
 
+  void setUp();
+  
   void configure(IloEnv &env, IloCplex &cplex, ConfigAPC &config);
 
   void configure(IloEnv &env, IloCP &cp, ConfigAPC &config);
 
   void setStatus(IloAlgorithm &iloAlgo);
   
-  void setStatus(bool hasSolution, bool hasReachedTimeLimit);
+  // void setStatus(bool hasSolution, bool hasReachedTimeLimit);
   
   void tearDown(IloCplex &cplex);
 
   void tearDown(IloCP &cp);
 
+  void tearDown();
+  
+  bool iloSolve(IloAlgorithm &iloAlgo);
+
   virtual void doSolve(IloEnv &env) = 0;
 
 public:
-  IloSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> solutionPool) : AbstractSolverAPC(problem, config), solutionPool(solutionPool){
+  IloSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool, Timer &timer) : AbstractSolverAPC(problem, config), solutionPool(solutionPool), timer(timer){
   };
 
   void solve();

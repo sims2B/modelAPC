@@ -45,10 +45,10 @@ class Timer {
     stageTime = currentTime;
   };
 
-  void stop() {
+  void stop(std::string label = "WCTIME") {
     time_t currentTime = time(NULL);
     double elapsed = difftime(currentTime, startTime);
-    TimeStamp stamp = {"WCTIME", elapsed};
+    TimeStamp stamp = {label, elapsed};
     timestamps.push_back(stamp);
   };
 

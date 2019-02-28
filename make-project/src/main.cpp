@@ -7,16 +7,16 @@
 #include <cstdlib>
 #include <vector>
 
-AbstractSolverAPC *makeSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool)
+AbstractSolverAPC *makeSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool, Timer &timer)
 {
   std::string type = config.getSolverType();
   if (type == T_CPLEX)
-    return new CplexSolverAPC(problem, config, solutionPool);
+    return new CplexSolverAPC(problem, config, solutionPool, timer);
   else if (type == T_CPO1)
-    return new CpoSolver1APC(problem, config, solutionPool);
+    return new CpoSolver1APC(problem, config, solutionPool, timer);
   else if (type == T_CPO2)
   {
-     return new CpoSolver2APC(problem, config, solutionPool);
+     return new CpoSolver2APC(problem, config, solutionPool, timer);
   }
   return NULL;
 }
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
   }
   timer.stage("HEUR_TIME");
   // TODO Pass the timer as an argument
-  AbstractSolverAPC *solver = makeSolverAPC(problem, config, solutionPool); 
+  AbstractSolverAPC *solver = makeSolverAPC(problem, config, solutionPool, timer); 
   if (solver != NULL)
   {
     std::cout << std::endl;

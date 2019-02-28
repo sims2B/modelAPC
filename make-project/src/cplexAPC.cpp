@@ -24,13 +24,13 @@ void CplexSolverAPC::doSolve(IloEnv &env)
         startVar.end();
         startVal.end();
     }
-    //timer.stageTimer();
+    timer.stage("BUILD_TIME");
     IloBool solMIPFound = cplex.solve();
-    //timer.stopTimer();
+    timer.stop("RUNTIME");
+     solutionCount += cplex.getSolnPoolNsolns();
     if (solMIPFound)
     {
         modelToSol(cplex, x, y, Y);
-        solutionCount += cplex.getSolnPoolNsolns();
     }
     setStatus(cplex);
     tearDown(cplex);
