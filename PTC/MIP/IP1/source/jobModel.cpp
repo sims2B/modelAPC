@@ -2,14 +2,14 @@
 
 int solve(const Problem& P, Solution& s){
   try{
-    IloNum start;
-    const int n = P.N;
-    const int T = P.computeHorizon();
+    IloNum getStart;
+    const int n = problem.N;
+    const int T = problem.computeHorizon();
     IloEnv env;
     IloModel model(env);
 
     IloNumVar3DMatrix x(env, n);
-    IloNumVar3DMatrix y(env, P.getFamilyNumber());
+    IloNumVar3DMatrix y(env, problem.getNbFams());
     IloNumVarArray C(env, n, 0, T + 1, ILOFLOAT);
 
     if (!createModel(P, T, env, model, x, y, C)){
@@ -17,13 +17,13 @@ int solve(const Problem& P, Solution& s){
 
       setParam(env, cplex);
 
-      start = cplex.getCplexTime();
+      getStart = cplex.getCplexTime();
 
       //solve!
       if (cplex.solve() || cplex.getStatus() == IloAlgorithm::Infeasible){
 	if (cplex.getStatus() == IloAlgorithm::Infeasible){
 
-	  int ret = displayCVS(P, s, cplex, start);
+	  int ret = displayCVS(P, s, cplex, getStart);
 	  //|| displayCplexSolution(P,env,cplex,x,y,C);
 	  env.end();
 	  return ret;
@@ -31,7 +31,7 @@ int solve(const Problem& P, Solution& s){
 	else {
 	  int ret =//displayCplexSolution(P,env,cplex,x,y,C)||
 	    modelToSol(P, s, cplex, x, y) ||
-	    displayCVS(P, s, cplex, start);
+	    displayCVS(P, s, cplex, getStart);
 	  env.end();
 	  return ret;
 	}
@@ -57,25 +57,25 @@ int displayCplexSolution(const Problem& P, IloEnv& env, IloCplex& cplex, const I
   IloNumArray v(env);
 
   // affichage de x et C
-  for (int i = 0; i < P.N; ++i) {
-    for (int j = 0; j < P.M; ++j)
-      if (P.isQualif(i, j)){
+  for (int i = 0; i < problem.N; ++i) {
+    for (int j = 0; j < problem.M; ++j)
+      if (problem.isQualif(i, j)){
 	IloInt t = 0;
-	while (t < x[i][j].getSize() - P.getDuration(i) &&
+	while (t < x[i][j].getSize() - problem.getDuration(i) &&
 	       IloRound(cplex.getValue(x[i][j][t])) != 1)
 	  ++t;
-	if (t < x[i][j].getSize() - P.getDuration(i)){
+	if (t < x[i][j].getSize() - problem.getDuration(i)){
 	  std::cout << "x[" << i << "][" << j << "]=";
-	  for (IloInt tau = 0; tau < x[i][j].getSize() - P.getDuration(i); ++tau)
+	  for (IloInt tau = 0; tau < x[i][j].getSize() - problem.getDuration(i); ++tau)
 	    std::cout << cplex.getValue(x[i][j][tau]) << " , ";
 	}
       }
     std::cout << "\n C[" << i << "]=" << cplex.getValue(C[i]) << std::endl;
   }
 
-  for (int f = 0; f < P.getFamilyNumber(); ++f)
-    for (int j = 0; j < P.M; ++j)
-      if (P.F[f].qualif[j]){
+  for (int f = 0; f < problem.getNbFams(); ++f)
+    for (int j = 0; j < problem.M; ++j)
+      if (problem.F[f].qualif[j]){
 	cplex.getValues(y[f][j], v);
 	std::cout << "y[" << f << "][" << j << "]=" << v << std::endl;
       }
@@ -83,8 +83,8 @@ int displayCplexSolution(const Problem& P, IloEnv& env, IloCplex& cplex, const I
   return 0;
 }
 
-int displayCplexResults(const IloCplex& cplex, const IloNum& start){
-  IloNum time_exec = cplex.getCplexTime() - start;
+int displayCplexResults(const IloCplex& cplex, const IloNum& getStart){
+  IloNum time_exec = cplex.getCplexTime() - getStart;
   std::cout << "Final status: \t" << cplex.getStatus() << " en "
 	    << time_exec << std::endl;
   if (!(cplex.getStatus() == IloAlgorithm::Infeasible)){
@@ -96,8 +96,8 @@ int displayCplexResults(const IloCplex& cplex, const IloNum& start){
 }
 
 
-int displayCVS(const Problem& P, const Solution& s, const IloCplex& cplex, const IloNum& start){
-  IloNum time_exec = cplex.getCplexTime() - start;
+int displayCVS(const Problem& P, const Solution& s, const IloCplex& cplex, const IloNum& getStart){
+  IloNum time_exec = cplex.getCplexTime() - getStart;
   std::cout << time_exec << ";";
   if (!(cplex.getStatus() == IloAlgorithm::Infeasible)){
     std::cout << "1;1;";
@@ -123,25 +123,25 @@ int setParam(IloEnv& env, IloCplex& cplex){
 int modelToSol(const Problem& P, Solution& s, IloCplex& cplex, IloNumVar3DMatrix& x,
 	       IloNumVar3DMatrix& y){
 
-  const int F = P.getFamilyNumber();
-  const int T = P.computeHorizon();
+  const int F = problem.getNbFams();
+  const int T = problem.computeHorizon();
   int i, j, t, f;
 
-  for (i = 0; i < P.N; ++i)
-    for (j = 0; j < P.M; ++j)
-      if (P.isQualif(i, j))
-	for (t = 0; t < x[i][j].getSize() - P.getDuration(i); ++t)
+  for (i = 0; i < problem.N; ++i)
+    for (j = 0; j < problem.M; ++j)
+      if (problem.isQualif(i, j))
+	for (t = 0; t < x[i][j].getSize() - problem.getDuration(i); ++t)
 	  if (IloRound(cplex.getValue(x[i][j][t])) == 1)
-	    s.S[i] = Assignment(t, j, i);
+	    s.assign[i] = Assignment(t, j, i);
 
   for (f = 0; f < F; ++f)
-    for (j = 0; j < P.M; ++j)
-      if (P.F[f].qualif[j]){
+    for (j = 0; j < problem.M; ++j)
+      if (problem.F[f].qualif[j]){
 	t = 0;
 	while (t < T && IloRound(cplex.getValue(y[f][j][t])) != 1)
 	  ++t;
 	if (t < T)
-	  s.QualifLostTime[f][j] = t;
+	  s.qualifLostTime[f][j] = t;
       }
   return 0;
 }
@@ -156,15 +156,15 @@ int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
   IloInt i, j;
 
 
-  for (i = 0; i < P.N; ++i){
-    x[i] = IloNumVarMatrix(env, P.M);
-    for (j = 0; j < P.M; ++j)
+  for (i = 0; i < problem.N; ++i){
+    x[i] = IloNumVarMatrix(env, problem.M);
+    for (j = 0; j < problem.M; ++j)
       x[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT);
   }
-  for (i = 0; i < P.getFamilyNumber(); ++i){
-    y[i] = IloNumVarMatrix(env, P.M);
-    for (j = 0; j < P.M; ++j){
-      (P.F[i].qualif[j] ? y[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT) :
+  for (i = 0; i < problem.getNbFams(); ++i){
+    y[i] = IloNumVarMatrix(env, problem.M);
+    for (j = 0; j < problem.M; ++j){
+      (problem.F[i].qualif[j] ? y[i][j] = IloNumVarArray(env, T, 0, 1, ILOINT) :
        y[i][j] = IloNumVarArray(env, T, 0, 0, ILOINT));
     }
   }
@@ -174,9 +174,9 @@ int createVars(const Problem& P, int T, IloEnv& env, IloNumVar3DMatrix& x,
 int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, IloNumVar3DMatrix& x,
 		      IloNumVar3DMatrix& y, IloNumVarArray& C){
   int i, j, t, f, tau;
-  const int m = P.M;
-  const int n = P.N;
-  const int F = P.getFamilyNumber();
+  const int m = problem.M;
+  const int n = problem.N;
+  const int F = problem.getNbFams();
 
   //objective
   IloExpr expr(env);
@@ -184,7 +184,7 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
     expr += alpha_C * C[i];
   for (f = 0; f < F; ++f)
     for (j = 0; j < m; ++j)
-      if (P.F[f].qualif[j])
+      if (problem.F[f].qualif[j])
 	expr += beta_Y * y[f][j][T - 1];
   model.add(IloMinimize(env, expr));
   expr.end();
@@ -194,8 +194,8 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
     IloExpr expr(env);
     for (j = 0; j < m; ++j){
       
-      if (P.isQualif(i, j)){
-	for (t = 0; t < T - P.getDuration(i); ++t)
+      if (problem.isQualif(i, j)){
+	for (t = 0; t < T - problem.getDuration(i); ++t)
 	  expr += x[i][j][t];
       }
     }
@@ -207,25 +207,25 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
   for (i = 0; i < n; ++i){
     IloExpr expr(env);
     for (j = 0; j < m; ++j){
-      if (P.isQualif(i, j)){
-	for (t = 0; t < T - P.getDuration(i); ++t)
+      if (problem.isQualif(i, j)){
+	for (t = 0; t < T - problem.getDuration(i); ++t)
 	  expr += (t * x[i][j][t]);
       }
     }
-    expr += P.getDuration(i);
+    expr += problem.getDuration(i);
     model.add(expr <= C[i]);
     expr.end();
   }
 
   //noOverlap on the same machine for to job of the same family
   for (f = 0; f < F; ++f)
-    for (t = P.F[f].duration; t < T; ++t)
+    for (t = problem.getDuration(f); t < T; ++t)
       for (j = 0; j < m; ++j)
-	if (P.F[f].qualif[j]){
+	if (problem.F[f].qualif[j]){
 	  IloExpr expr(env);
 	  for (i = 0; i < n; ++i)
-	    if (P.famOf[i] == f)
-	      for (tau = t - P.getDuration(i); tau < t; ++tau)
+	    if (problem.famOf[i] == f)
+	      for (tau = t - problem.getDuration(i); tau < t; ++tau)
 		expr += x[i][j][tau];
 	  model.add(expr <= 1);
 	  expr.end();
@@ -237,14 +237,14 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
     for (int i2 = i; i2 < n; ++i2){
       for (t = 0; t < T; ++t)
 	for (j = 0; j < m; ++j)
-	  if (P.famOf[i] != P.famOf[i2] &&
-	      !((P.isQualif(i, j) + P.isQualif(i2, j)) % 2)){
+	  if (problem.famOf[i] != problem.famOf[i2] &&
+	      !((problem.isQualif(i, j) + problem.isQualif(i2, j)) % 2)){
 	    //  std::cout << "("<<i << "," <<i2<<") : "<< j<< "," << t << std::endl; 
 	    IloExpr expr(env);
-	    for (tau = std::max(0, (int)t - P.getDuration(i) - P.getSetup(i2));
+	    for (tau = std::max(0, (int)t - problem.getDuration(i) - problem.getSetup(i2));
 		 tau < t; ++tau)
 	      expr += x[i][j][tau];
-	    for (tau = std::max(0, (int)t - P.getDuration(i2) - P.getSetup(i));
+	    for (tau = std::max(0, (int)t - problem.getDuration(i2) - problem.getSetup(i));
 		 tau >= 0 && tau < t; ++tau)
 	      expr += x[i2][j][tau];
 	    model.add(expr <= 1);
@@ -255,17 +255,17 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
   //threshold 
   for (f = 0; f < F; ++f)
     for (j = 0; j < m; ++j)
-      if (P.F[f].qualif[j]){
-	for (t = 0; t < std::min(T, P.F[f].threshold); ++t){
+      if (problem.F[f].qualif[j]){
+	for (t = 0; t < std::min(T, problem.getThreshold(f)); ++t){
 	  model.add(y[f][j][t] == 0);
 	}
-	for (t = P.F[f].threshold; t < T; ++t){
+	for (t = problem.getThreshold(f); t < T; ++t){
 	  IloExpr expr(env);
 	  for (i = 0; i < n; ++i)
-	    if (P.famOf[i] == f)
-	      for (tau = std::max(0, (int)t - P.F[f].threshold + 1); tau < t; ++tau)
+	    if (problem.famOf[i] == f)
+	      for (tau = std::max(0, (int)t - problem.getThreshold(f) + 1); tau < t; ++tau)
 		expr += x[i][j][tau];
-	  //expr= expr/P.F[f].threshold;
+	  //expr= expr/problem.getThreshold(f);
 	  expr += y[f][j][t];
 	  model.add(expr > 0);
 	  expr.end();
@@ -274,14 +274,14 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
 
   for (f = 0; f < F; ++f)
     for (j = 0; j < m; ++j)
-      if (P.F[f].qualif[j]){
-	for (t = P.F[f].threshold; t < T; ++t){
+      if (problem.F[f].qualif[j]){
+	for (t = problem.getThreshold(f); t < T; ++t){
 	  IloExpr expr(env);
 	  for (i = 0; i < n; ++i)
-	    if (P.famOf[i] == f)
-	      for (tau = std::max(0, (int)t - P.F[f].threshold + 1); tau < t; ++tau)
+	    if (problem.famOf[i] == f)
+	      for (tau = std::max(0, (int)t - problem.getThreshold(f) + 1); tau < t; ++tau)
 		expr += x[i][j][tau];
-	  expr = expr / P.F[f].threshold;
+	  expr = expr / problem.getThreshold(f);
 	  expr += y[f][j][t];
 	  model.add(expr <= 1);
 	  expr.end();
@@ -293,7 +293,7 @@ int createConstraints(const Problem& P, int T, IloEnv& env, IloModel& model, Ilo
   for (t = 1; t < T; ++t)
     for (f = 0; f < F; ++f)
       for (j = 0; j < m; ++j)
-	if (P.F[f].qualif[j])
+	if (problem.F[f].qualif[j])
 	  model.add(y[f][j][t - 1] <= y[f][j][t]);
 
 

@@ -8,10 +8,10 @@ int main(int, char* argv[]){
   Problem P = readFromFile(instance);
   instance.close();
 
-  std::cout << P.N << ";" << P.M << ";" << P.getFamilyNumber() << ";";
+  std::cout << problem.N << ";" << problem.M << ";" << problem.getNbFams() << ";";
   Solution s(P);
   QCHWithOutput(P, s);
-  std::cout << P.toString() << s.toString(P);
+  std::cout << problem.toString() << s.toString(P);
   s.toTikz(P);
   return 0;
 }

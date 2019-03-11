@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
   config.toDimacs();
   problem.toDimacs();
 
-  // Execute heuristics for warm start
+  // Execute heuristics for warm getStart
   timer.stage();
   std::vector<Solution> solutionPool;
   for (auto &heuristic : config.getHeuristics())

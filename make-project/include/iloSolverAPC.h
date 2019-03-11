@@ -5,11 +5,16 @@
 #pragma GCC diagnostic ignored "-Wregister"
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 
+//#define IL_STD
 #include <ilcplex/ilocplex.h>
 #include <ilcp/cp.h>
 #include <ilopl/iloopl.h>
 
 #include "solverAPC.h"
+
+
+typedef IloArray<IloIntervalVarArray> IloIntervalVarMatrix;
+typedef IloArray<IloIntervalSequenceVar> IloIntervalSequenceVarArray;
 
 class IloSolverAPC : public AbstractSolverAPC
 {

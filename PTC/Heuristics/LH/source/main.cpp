@@ -13,7 +13,7 @@ int main(int,char* argv[]){
   Problem P = readFromFile(instance);
   instance.close();
 
-  std::cout << P.N << ";" << P.M << ";" << P.getFamilyNumber() <<";" ;
+  std::cout << problem.N << ";" << problem.M << ";" << problem.getNbFams() <<";" ;
   Solution s(P);
   
   Clock::time_point t1 = Clock::now();
@@ -24,7 +24,7 @@ int main(int,char* argv[]){
   std::cout << duration.count() << ";";
   displayCVS(P,s,solved);
   std::cout << ";" << s.isValid(P) << std::endl;
-  std::cout << P.toString() << s.toString(P);
+  std::cout << problem.toString() << s.toString(P);
   s.toTikz(P);
   return 0;
 }

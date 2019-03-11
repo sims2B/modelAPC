@@ -14,7 +14,7 @@ int main(int, char* argv[]){
   Problem P = readFromFile(instance);
   instance.close();
 
-  std::cout << P.N << ";" << P.M << ";" << P.getFamilyNumber() << ";";
+  std::cout << problem.N << ";" << problem.M << ";" << problem.getNbFams() << ";";
   Solution s(P);
 
   ptrHeur heuristic;
@@ -29,7 +29,7 @@ int main(int, char* argv[]){
   SAA::displayCVS(P, s, solved);
   if (solved)	std::cout << ";" << s.isValid(P) << std::endl;
   else std::cout << "; \n;";
-  //	std::cout << P.toString()<< s.toString();
+  //	std::cout << problem.toString()<< s.toString();
   //	s.toTikz(P);
   return 0; 
 }

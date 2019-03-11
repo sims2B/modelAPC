@@ -12,6 +12,6 @@ void AbstractSolverAPC::tearDown() {
    "s " << getStatus() << std::endl <<
    "d NBSOLS " << getSolutionCount() << std::endl; 
    if(hasSolution()) {
-     solution.toDimacs(problem);         
+     solution.toDimacs();         
    }
 }

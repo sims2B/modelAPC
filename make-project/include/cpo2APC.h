@@ -9,8 +9,6 @@
 #include "iloSolverAPC.h"
 
 // TODO Avoid multiple typedef definitions in cpo[1-2]APC.h
-typedef IloArray<IloIntervalVarArray> IloIntervalVarMatrix;
-typedef IloArray<IloIntervalSequenceVar> IloIntervalSequenceVarArray;
 
 class MyCustomDataSource : public IloOplDataSourceBaseI
 {
@@ -35,7 +33,7 @@ public:
 private:
   void modelToSol(const IloEnv &, const IloCP &, const IloOplElement &);
 
-  void solToModel(Solution& , IloEnv&, IloOplModel &, IloCP &);
+  void solToModel(const Solution& , IloEnv&, IloOplModel &, IloCP &);
 };
 
 #endif

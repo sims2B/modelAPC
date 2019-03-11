@@ -1,678 +1,459 @@
 #include "heuristics.h"
 #include <algorithm>
 
-int ListHeuristic::chooseFamily(int m, std::vector<int> toSchedule)
-{
+int ListHeuristic::chooseFamily(int m) {
   int selected = -1;
-  for (int f = 0; f < problem.getFamilyNumber(); ++f)
-  {
-    if (problem.F[f].qualif[m] && toSchedule[f] != 0)
-    {
+  for (int f = 0; f < problem.getNbFams(); ++f) {
+    if (problem.isQualif(f, m) && problem.getNbJobs(f)) {
       if (selected == -1)
         selected = f;
-      else if (problem.F[f].threshold < problem.F[selected].threshold)
+      else if (problem.getThreshold(f) < problem.getThreshold(selected))
         selected = f;
-      else if (problem.F[f].threshold == problem.F[selected].threshold && problem.F[f].duration < problem.F[selected].duration)
+      else if (problem.getThreshold(f) == problem.getThreshold(selected) &&
+               problem.getDuration(f) < problem.getDuration(selected))
         selected = f;
     }
   }
   return selected;
 }
 
-void ListHeuristic::treat(const int m, const int f, std::vector<int> &endLast, std::vector<int> &toSchedule, std::vector<int> &nextOfFam)
-{
-  //remplissage de solution
-  (solution.QualifLostTime[f][m] == endLast[m] ? //if the last task on j is of family f
-       solution.S[nextOfFam[f]].start = endLast[m]
-                                               :                          //no setup
-       solution.S[nextOfFam[f]].start = endLast[m] + problem.F[f].setup); //otw setup
-  solution.S[nextOfFam[f]].machine = m;
-  solution.S[nextOfFam[f]].index = nextOfFam[f];
-  //update endLast
-  endLast[m] = solution.S[nextOfFam[f]].start + problem.F[f].duration;
-  solution.QualifLostTime[f][m] = endLast[m]; //update QualifLostTIme
-  toSchedule[f]--;                            //update nf (toSchedule)
-  //update nextOfFam
-  if (toSchedule[f] != 0)
-  {
-    nextOfFam[f]++;
-    while (problem.famOf[nextOfFam[f]] != f && nextOfFam[f] < problem.N)
-      nextOfFam[f]++;
-  }
-  //disqualification?
-  for (int f2 = 0; f2 < problem.getFamilyNumber(); ++f2)
-  { //forall families(!= f and qualified on m)
-    if (problem.F[f2].qualif[m] && f2 != f)
-      if (solution.QualifLostTime[f2][m] + problem.F[f2].threshold - problem.F[f2].duration < endLast[m] + problem.F[f2].setup)
-      {
-        (solution.QualifLostTime[f2][m] == 0 ? solution.QualifLostTime[f2][m] += problem.F[f2].threshold : solution.QualifLostTime[f2][m] += problem.F[f2].threshold - problem.F[f2].duration);
-        problem.F[f2].qualif[m] = 0;
+void ListHeuristic::schedule(const int m, const int f) {
+  int endMch = solution.getEnd(m);
+  // ajout d'un job de f sur la machine
+  (solution.getLastJob(m).getFam() == f
+       ? solution.addJob(Job(f, endMch, 1), m)
+       : solution.addJob(Job(f, endMch + problem.getSetup(f), 1), m));
+
+  problem.decreaseNbJobs(f);
+
+  updateDisqualif();
+}
+
+void ListHeuristic::updateDisqualif() {
+  for (int m = 0; m < problem.getNbMchs(); ++m) {
+    for (int f = 0; f < problem.getNbFams(); ++f) {
+      if (problem.isQualif(f, m)) {
+        int lastOf = solution.lastOf(f, m).getStart();
+        if (lastOf == -1) lastOf = 0;
+        if (solution.getEnd(m) - lastOf > problem.getThreshold(f)) {
+          solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
+          problem.disqualif(f, m);
+        }
       }
+    }
   }
 }
 
-void ListHeuristic::doSolve()
-{
-  //init and variable
-  const int F = problem.getFamilyNumber();
+void ListHeuristic::doSolve() {
+  // init and variable
+  Problem save(problem);
+  const int M = problem.getNbMchs();
   int i, f;
-  std::vector<int> endLast(problem.M, 0); //end time of the last task scheduled of m
-  std::vector<int> toSchedule(F, 0);      //number of task to schedule in f
-  std::vector<int> nextOfFam(F, -1);      //next i solution.t. fam(i) == f
-  for (f = 0; f < F; ++f)
-    toSchedule[f] = problem.getNf(f);
-  for (f = 0; f < F; ++f)
-  {
-    i = 0;
-    while (i < problem.N && problem.famOf[i] != f)
-      ++i;
-    nextOfFam[f] = i;
-  }
-  //qualifLostTime is used to store the end time of last occurence of a family on a machine.
-  for (f = 0; f < F; ++f)
-    for (i = 0; i < problem.M; ++i)
-      if (problem.F[f].qualif[i])
-        solution.QualifLostTime[f][i] = 0;
 
-  //algo
+  // algo
   i = 0;
-  while (i < problem.N)
-  {
+
+  while (i < problem.getNbJobs()) {
     bool feasible = false;
-    for (int j = 0; j < problem.M; ++j)
-    {
-      if ((f = chooseFamily(j, toSchedule)) != -1)
-      {
-        treat(j, f, endLast, toSchedule, nextOfFam);
+    for (int j = 0; j < M; ++j) {
+      if ((f = chooseFamily(j)) != -1) {
+        schedule(j, f);
         feasible = true;
         i++;
       }
     }
-    if (feasible == false)
-    {
+    if (feasible == false) {
       return;
     }
   }
-  for (f = 0; f < F; ++f)
-    for (i = 0; i < problem.M; ++i)
-      if (problem.F[f].qualif[i] || endLast[i] <= solution.QualifLostTime[f][i])
-        solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
+  problem = save;
   setSAT();
 }
 
-void SchedCentricHeuristic::treat(const int m, const int f,
-                                  std::vector<int> &endLast,
-                                  std::vector<int> &toSchedule,
-                                  std::vector<int> &nextOfFam)
-{
-  //remplissage de solution
-  (solution.QualifLostTime[f][m] == endLast[m] ? //if the last task on j is of family f
-       solution.S[nextOfFam[f]].start = endLast[m]
-                                               :                          //no setup
-       solution.S[nextOfFam[f]].start = endLast[m] + problem.F[f].setup); //otw setup
-  solution.S[nextOfFam[f]].machine = m;
-  solution.S[nextOfFam[f]].index = nextOfFam[f];
-  //update endLast
-  endLast[m] = solution.S[nextOfFam[f]].start + problem.F[f].duration;
-  solution.QualifLostTime[f][m] = endLast[m]; //update QualifLostTIme
-  toSchedule[f]--;                            //update nf (toSchedule)
-  //update nextOfFam
-  if (toSchedule[f] != 0)
-  {
-    nextOfFam[f]++;
-    while (problem.famOf[nextOfFam[f]] != f && nextOfFam[f] < problem.N)
-      nextOfFam[f]++;
-  }
-  //disqualification?
-  for (int f2 = 0; f2 < problem.getFamilyNumber(); ++f2)
-  { //forall families(!= f and qualified on m)
-    if (problem.F[f2].qualif[m] && f2 != f)
-    {
-      if (solution.QualifLostTime[f2][m] != 0)
-      {
-        if (solution.QualifLostTime[f2][m] + problem.F[f2].threshold - problem.F[f2].duration < endLast[m] + problem.F[f2].setup)
-        {
-          solution.QualifLostTime[f2][m] += problem.F[f2].threshold - problem.F[f2].duration;
-          problem.F[f2].qualif[m] = 0;
-        }
-      }
-      else
-      {
-        if (solution.QualifLostTime[f2][m] + problem.F[f2].threshold < endLast[m] + problem.F[f2].setup)
-        {
-          solution.QualifLostTime[f2][m] += problem.F[f2].threshold;
-          problem.F[f2].qualif[m] = 0;
+void SchedCentricHeuristic::schedule(const int m, const int f) {
+  int endMch = solution.getEnd(m);
+  // ajout d'un job de f sur la machine
+  (solution.getLastJob(m).getFam() == f
+       ? solution.addJob(Job(f, endMch, 1), m)
+       : solution.addJob(Job(f, endMch + problem.getSetup(f), 1), m));
+
+  problem.decreaseNbJobs(f);
+
+  updateDisqualif();
+}
+
+void SchedCentricHeuristic::updateDisqualif() {
+  for (int m = 0; m < problem.getNbMchs(); ++m) {
+    // update disqualification
+    for (int f = 0; f < problem.getNbFams(); ++f) {
+      if (problem.isQualif(f, m)) {
+        int lastOf = solution.lastOf(f, m).getStart();
+        if (lastOf == -1) lastOf = 0;
+        if (solution.getEnd(m) - lastOf > problem.getThreshold(f)) {
+          solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
+          problem.disqualif(f, m);
         }
       }
     }
   }
 }
 
-int SchedCentricHeuristic::remainingThresh(const int &f, const int &m, const int &t)
-{
-  return solution.QualifLostTime[f][m] + problem.F[f].threshold - t;
+int SchedCentricHeuristic::remainingThresh(const int &f, const int &m,
+                                           const int &t) {
+  return solution.getDisqualif(f, m) + problem.getThreshold(f) - t;
 }
 
-int SchedCentricHeuristic::chooseFamily(const int &m, const int &t, const int &current, std::vector<int> toSchedule)
-{
+int SchedCentricHeuristic::chooseFamily(const int &m) {
+  int current = solution.getLastJob(m).getFam();
   int critical, selected = -1;
-  //if there's no task on m, choose with the minimum threshold rule
-  if (current == -1)
-    selected = famWithMinThresh(m, 0, toSchedule);
-  else
-  {
-    //if there's no task of current left choose with the minimum remaining threshold rule
-    if (toSchedule[current] == 0)
-      return famWithMinThresh(m, t, toSchedule);
-    else
-    {
-      selected = current;
-      //select family with min remaining threshold
-      if ((critical = famWithMinThresh(m, t, toSchedule)) != -1)
-        if (remainingThresh(critical, m, t) - problem.F[critical].setup < problem.F[selected].duration)
-          selected = critical;
-    }
+  // if there's no task on m or no job of current to schedule
+  // choose with the minimum threshold rule
+  if (solution.getNbJobsOn(m) == 0 || problem.getNbJobs(current) == 0)
+    selected = famWithMinThresh(m, solution.getEnd(m));
+  else {
+    // if scheduled current does not produced a disqualification
+    // schedule a job of current
+    selected = current;
+    if ((critical = famWithMinThresh(m, solution.getEnd(m))) != -1)
+      if (remainingThresh(
+              critical, m,
+              solution.getEnd(
+                  m)) -  // if scheduled selected => disqulification of critical
+              problem.getSetup(critical) <
+          problem.getDuration(selected))
+        selected = critical;  // then schedule critical
   }
   return selected;
 }
 
-int SchedCentricHeuristic::famWithMinThresh(const int &m, const int &t, std::vector<int> toSchedule)
-{
+int SchedCentricHeuristic::famWithMinThresh(const int &m, const int &t) {
   int selected = -1;
-  for (int f = 0; f < problem.getFamilyNumber(); ++f)
-  {
-    if (problem.F[f].qualif[m] && toSchedule[f] != 0)
-    {
+  for (int f = 0; f < problem.getNbFams(); ++f) {
+    if (problem.isQualif(f, m) && problem.getNbJobs(f) != 0) {
       if (selected == -1)
         selected = f;
       else if (remainingThresh(f, m, t) < remainingThresh(selected, m, t))
         selected = f;
-      else if (remainingThresh(f, m, t) == remainingThresh(selected, m, t) && problem.F[f].duration < problem.F[selected].duration)
+      else if (remainingThresh(f, m, t) == remainingThresh(selected, m, t) &&
+               problem.getDuration(f) < problem.getDuration(selected))
         selected = f;
     }
   }
   return selected;
 }
 
-void SchedCentricHeuristic::doSolve()
-{
-  const int F = problem.getFamilyNumber();
+void SchedCentricHeuristic::doSolve() {
+  Problem save(problem);
+  const int M = problem.getNbMchs();
   int i, f, j;
-  std::vector<int> endLast(problem.M, 0); //end time of the last task scheduled of m
-  std::vector<int> toSchedule(F, 0);      //number of task to schedule in f
-  std::vector<int> nextOfFam(F, -1);
-  std::vector<int> lastFam(problem.M, -1); //next i s.t. fam(i) == f
-  for (f = 0; f < F; ++f)
-    toSchedule[f] = problem.getNf(f);
-  for (f = 0; f < F; ++f)
-  {
-    i = 0;
-    while (i < problem.N && problem.famOf[i] != f)
-      ++i;
-    nextOfFam[f] = i;
-  }
-  //qualifLostTime is used to store the end time of last occurence of a family on a machine.
-  for (f = 0; f < F; ++f)
-    for (i = 0; i < problem.M; ++i)
-      if (problem.F[f].qualif[i])
-        solution.QualifLostTime[f][i] = 0;
-  i = 0;
-  while (i < problem.N)
-  {
-    bool feasible = false;
 
-    for (j = 0; j < problem.M; ++j)
-    {
-      if ((f = chooseFamily(j, endLast[j], lastFam[j], toSchedule)) != -1)
-      {
+  i = 0;
+  while (i < problem.getNbJobs()) {
+    bool feasible = false;
+    for (j = 0; j < M; ++j) {
+      if ((f = chooseFamily(j)) != -1) {
         feasible = true;
-        lastFam[j] = f;
-        treat(j, f, endLast, toSchedule, nextOfFam);
+        schedule(j, f);
         ++i;
       }
     }
 
-    if (!feasible)
-      return;
+    if (!feasible) return;
   }
-  int Cmax = solution.getMaxEnd(problem);
-  for (f = 0; f < F; ++f)
-    for (i = 0; i < problem.M; ++i)
-    {
-      if (problem.F[f].qualif[i])
-      {
-        if (std::max(solution.QualifLostTime[f][i] - problem.F[f].duration, 0) + problem.F[f].threshold < Cmax)
-          (solution.QualifLostTime[f][i] == 0 ? solution.QualifLostTime[f][i] += problem.F[f].threshold : solution.QualifLostTime[f][i] += problem.F[f].threshold - problem.F[f].duration);
-        else
-          solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
-      }
-      else
-      {
-        if (solution.QualifLostTime[f][i] >= Cmax)
-          solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
-      }
-    }
+  problem = save;
   setSAT();
 }
 
-void QualifCentricHeuristic::doSolve()
-{
-  //FIXME REALLY NOT SURE ABOUT THIS ONE !
-  std::vector<int> endLast(problem.M, 0);
-  if (schedule(endLast))
-  {
-    //std::cout << " Phase 1 done \n La solution est valide ?" << s.isValid(P) << "\n" << s.toString(P);
-    //s.toTikz(P);
-    intraChange(endLast);
-    //std::cout << " Phase 2 done \n  La solution est valide ?" << s.isValid(P) << "\n" << s.toString(P);
-    //s.toTikz(P);
-    interChange(endLast);
+void QualifCentricHeuristic::doSolve() {
+  // FIXME REALLY NOT SURE ABOUT THIS ONE !
+  if (findSchedule()) {
+    intraChange();
+    interChange();
     setSAT();
-    }
+  }
 }
 
-int QualifCentricHeuristic::treat(const int m, const int f, std::vector<int> &endLast, std::vector<int> &toSchedule, std::vector<int> &nextOfFam)
-{
-  //remplissage de solution
-  (solution.QualifLostTime[f][m] == endLast[m] ? //if the last task on j is of family f
-       solution.S[nextOfFam[f]].start = endLast[m]
-                                               :                          //no setup
-       solution.S[nextOfFam[f]].start = endLast[m] + problem.F[f].setup); //otw setup
-  solution.S[nextOfFam[f]].machine = m;
-  solution.S[nextOfFam[f]].index = nextOfFam[f];
-  //update endLast
-  endLast[m] = solution.S[nextOfFam[f]].start + problem.F[f].duration;
-  solution.QualifLostTime[f][m] = endLast[m]; //update QualifLostTIme
-  toSchedule[f]--;                            //update nf (toSchedule)
-  //update nextOfFam
-  if (toSchedule[f] != 0)
-  {
-    nextOfFam[f]++;
-    while (problem.famOf[nextOfFam[f]] != f && nextOfFam[f] < problem.N)
-      nextOfFam[f]++;
-  }
-  //disqualification?
-  for (int f2 = 0; f2 < problem.getFamilyNumber(); ++f2)
-  { //forall families(!= f and qualified on m)
-    if (problem.F[f2].qualif[m] && f2 != f)
-    {
-      if (solution.QualifLostTime[f2][m] != 0)
-      {
-        if (solution.QualifLostTime[f2][m] + problem.F[f2].threshold - problem.F[f2].duration < endLast[m] + problem.F[f2].setup)
-        {
-          solution.QualifLostTime[f2][m] += problem.F[f2].threshold - problem.F[f2].duration;
-          problem.F[f2].qualif[m] = 0;
-        }
-      }
-      else
-      {
-        if (solution.QualifLostTime[f2][m] + problem.F[f2].threshold < endLast[m] + problem.F[f2].setup)
-        {
-          solution.QualifLostTime[f2][m] += problem.F[f2].threshold;
-          problem.F[f2].qualif[m] = 0;
+void QualifCentricHeuristic::schedule(const int m, const int f) {
+  int endMch = solution.getEnd(m);
+  // ajout d'un job de f sur la machine
+  (solution.getLastJob(m).getFam() == f
+       ? solution.addJob(Job(f, endMch, 1), m)
+       : solution.addJob(Job(f, endMch + problem.getSetup(f), 1), m));
+
+  problem.decreaseNbJobs(f);
+
+  updateDisqualif();
+}
+
+void QualifCentricHeuristic::updateDisqualif() {
+  for (int m = 0; m < problem.getNbMchs(); ++m) {
+    // update disqualification
+    for (int f = 0; f < problem.getNbFams(); ++f) {
+      if (problem.isQualif(f, m)) {
+        int lastOf = solution.lastOf(f, m).getStart();
+        if (lastOf == -1) lastOf = 0;
+        if (solution.getEnd(m) - lastOf > problem.getThreshold(f)) {
+          solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
+          problem.disqualif(f, m);
         }
       }
     }
   }
-  return 0;
 }
 
 int QualifCentricHeuristic::remainingThresh(const int &f, const int &m,
-                                            const int &t)
-{
-  return solution.QualifLostTime[f][m] + problem.F[f].threshold - t;
+                                            const int &t) {
+  return solution.getDisqualif(f, m) + problem.getThreshold(f) - t;
 }
 
-int QualifCentricHeuristic::schedule(std::vector<int> &endLast)
-{
-  const int F = problem.getFamilyNumber();
+int QualifCentricHeuristic::findSchedule() {
+  Problem save(problem);
   int i, f, j;
-  std::vector<int> toSchedule(F, 0); //number of task to schedule in f
-  std::vector<int> nextOfFam(F, -1);
-  for (f = 0; f < F; ++f)
-    toSchedule[f] = problem.getNf(f);
-  for (f = 0; f < F; ++f)
-  {
-    i = 0;
-    while (i < problem.N && problem.famOf[i] != f)
-      ++i;
-    nextOfFam[f] = i;
-  }
-  //qualifLostTime is used to store the end time of last occurence of a family on a machine.
-  for (f = 0; f < F; ++f)
-    for (i = 0; i < problem.M; ++i)
-      if (problem.F[f].qualif[i])
-        solution.QualifLostTime[f][i] = 0;
 
   i = 0;
-  while (i < problem.N)
-  {
+  while (i < problem.getNbJobs()) {
     bool feasible = false;
-    for (j = 0; j < problem.M; ++j)
-    {
-      if ((f = chooseFamily(j, endLast[j], toSchedule)) != -1)
-      {
+    for (j = 0; j < problem.getNbMchs(); ++j) {
+      if ((f = chooseFamily(j)) != -1) {
         feasible = true;
-        treat(j, f, endLast, toSchedule, nextOfFam);
+        schedule(j, f);
         ++i;
       }
     }
 
-    if (!feasible)
-      return 0;
+    if (!feasible) return 0;
   }
-
-  int Cmax = solution.getMaxEnd(problem);
-  for (f = 0; f < F; ++f)
-    for (i = 0; i < problem.M; ++i)
-    {
-      if (problem.F[f].qualif[i])
-      {
-        if (std::max(solution.QualifLostTime[f][i] - problem.F[f].duration, 0) + problem.F[f].threshold < Cmax)
-          (solution.QualifLostTime[f][i] == 0 ? solution.QualifLostTime[f][i] += problem.F[f].threshold : solution.QualifLostTime[f][i] += problem.F[f].threshold - problem.F[f].duration);
-        else
-          solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
-      }
-      else
-      {
-        if (solution.QualifLostTime[f][i] >= Cmax)
-          solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
-      }
-    }
+  problem = save;
   return 1;
 }
 
-int QualifCentricHeuristic::chooseFamily(const int &m, const int &t,
-                                         std::vector<int> toSchedule)
-{
+int QualifCentricHeuristic::chooseFamily(const int &m) {
   int selected = -1;
-  for (int f = 0; f < problem.getFamilyNumber(); ++f)
-  {
-    if (problem.F[f].qualif[m] && toSchedule[f] != 0)
-    {
+  for (int f = 0; f < problem.getNbFams(); ++f) {
+    if (problem.isQualif(f, m) && problem.getNbJobs(f) != 0) {
       if (selected == -1)
         selected = f;
-      else if (remainingThresh(f, m, t) < remainingThresh(selected, m, t))
+      else if (remainingThresh(f, m, solution.getEnd(m)) <
+               remainingThresh(selected, m, solution.getEnd(m)))
         selected = f;
-      else if (remainingThresh(f, m, t) == remainingThresh(selected, m, t) && problem.F[f].duration < problem.F[selected].duration)
+      else if (remainingThresh(f, m, solution.getEnd(m)) ==
+                   remainingThresh(selected, m, solution.getEnd(m)) &&
+               problem.getDuration(f) < problem.getDuration(selected))
         selected = f;
     }
   }
   return selected;
 }
 
-int QualifCentricHeuristic::intraChange(std::vector<int> &endLast)
-{
-  int k, j, i = 0;
-  const int F = problem.getFamilyNumber();
-  for (k = 0; k < problem.M; ++k)
-  { //sur chaque machine
-    if (solution.getNbJobsOn(k) > 2)
-    {
-      std::vector<int> moved(problem.N, 0);
-      std::vector<int> firstOcc(F, -1);
-      i = 0;
-      //compute firstOcc of each family
-      while (i < problem.N)
-      {
-        if (solution.S[i].machine == k &&
-            (firstOcc[problem.famOf[i]] == -1 ||
-             solution.S[firstOcc[problem.famOf[i]]].start + problem.getDuration(firstOcc[problem.famOf[i]]) == solution.S[i].start))
-          firstOcc[problem.famOf[solution.S[i].index]] = i;
-        ++i;
-      }
-      //intraChange movement
+void QualifCentricHeuristic::intraChange() {
+  const int F = problem.getNbFams();
+  for (int k = 0; k < problem.getNbMchs(); ++k) {  // sur chaque machine
+    if (solution.getNbJobsOn(k) > 2) {
+      std::vector<int> moved(
+          F, 0);  // le nombre max de chgmt pour une famille est sa taille
+
+      // intraChange movement
       bool update;
-      do
-      {
+      do {
         update = false;
-        j = getLastOn(k, endLast[k]); //recupere l'index du dernier élément
-        i = firstOcc[problem.famOf[solution.S[j].index]];
-        if (i != -1 && i != j && !moved[solution.S[j].index] && !addDisqualif(i, j, k, k, 1))
-        {
+        Job j = solution.getLastJob(k);  // recupere le dernier job schedule
+        Job i = solution.firstOf(j.getFam(),
+                                 k);  // et le premier job de la meme famille
+        if (!(i == j) && moved[j.getFam()] < problem.getNbJobs(j.getFam()) &&
+            !addDisqualif(i, j, k)) {
           update = true;
-          moved[solution.S[j].index] = 1;
-          updateTime(i, j, j, k, k, endLast);
-          firstOcc[problem.famOf[solution.S[j].index]] = j;
+          moved[j.getFam()]++;
+          updateTime(i, j, k);
         }
       } while (update);
     }
-    int Cmax = solution.getMaxEnd(problem);
-    for (int f = 0; f < problem.getFamilyNumber(); ++f)
-      for (i = 0; i < problem.M; ++i)
-      {
-        if (solution.QualifLostTime[f][i] >= Cmax)
-          solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
-      }
   }
+  // comme on a updater le cmax, on a pu supprimer des disqualifications => maj
+  int Cmax = solution.getMaxEnd();
+  for (int f = 0; f < problem.getNbFams(); ++f)
+    for (int i = 0; i < problem.getNbMchs(); ++i) {
+      if (solution.getDisqualif(f, i) >= Cmax)
+        solution.setDisqualif(std::numeric_limits<int>::max(), f, i);
+    }
+}
 
+int QualifCentricHeuristic::addDisqualif(const Job &i, const Job &j,
+                                         const int &m) {
+  const int F = problem.getNbFams();
+
+  for (int f = 0; f < F; ++f) {
+    if (f != i.getFam() && problem.isQualif(f, m)) {
+      Job firstOcc = solution.firstOf(f, m);
+      if (firstOcc.getStart() != -1) {
+        if (firstOcc.getStart() > i.getStart()) {
+          if (firstOcc.getStart() > problem.getThreshold(f)) return 1;
+        } else {
+          Job nextOcc = solution.nextOf(firstOcc, f, m);
+          if (nextOcc.getStart() - firstOcc.getStart() > problem.getThreshold(f))
+            return 1;
+        }
+      }
+    }
+  }
   return 0;
 }
 
-int QualifCentricHeuristic::interChange(std::vector<int> &endLast)
-{
-  int k, i, j;
-  std::sort(solution.S.begin(), solution.S.end());
-  for (k = 0; k < problem.M; ++k)
-  { // pour chaque machine
-    if (solution.getNbJobsOn(k) > 1)
-    {
+void QualifCentricHeuristic::updateTime(const Job &i, const Job &j,
+                                        const int &k) {
+  // update data for j, save j and remove j from the schedule
+  Job j2(j.getFam(), i.getStart() + problem.getDuration(j.getFam()), j.getIndex());
+  solution.removeLastJob(k);
+
+  // shift all task after i by p_f(j)
+  for (int l = 0; l < solution.getNbJobsOn(k); ++l) {
+    Job cur = solution.getJobs(l, k);
+    if (cur.getStart() > i.getStart()) {
+      cur.shift(problem.getDuration(j2));
+    }
+  }
+
+  // add updated j to the schedule
+  solution.addJob(j2, k);
+}
+
+void QualifCentricHeuristic::interChange() {
+  int k, nbJobs;
+  Job deb(-1), fin(-1);
+
+  for (k = 0; k < problem.getNbMchs(); ++k) {  // pour chaque machine
+    if (solution.getNbJobsOn(k) > 1) {
       bool update;
-      do
-      { // tant qu'on fait un move
+      do {  // tant qu'on fait un move
         update = false;
-        // recuperer la derniere tache sur k (si il y en a une)
-        if ((j = getLastOn(k, endLast[k])) != problem.N)
-        {
-          int firstOfLast = getBeginOfLasts(j);
-          int machineSelected = -1;
-          int jobSelected = -1;
+        getLastGroup(deb, fin, k, nbJobs);
+        int machineSelected = -1;
+        int jobSelected = -1;
+        findJobMachineMatch(k, deb, fin, machineSelected, jobSelected, nbJobs);
 
-          findJobMachineMatch(k, j, firstOfLast, endLast, machineSelected, jobSelected);
-
-          if (machineSelected != -1 && jobSelected != -1)
-          {
-            update = true;
-            updateTime(jobSelected, j, firstOfLast, k, machineSelected, endLast);
-            std::sort(solution.S.begin(), solution.S.end());
-          }
+        if (machineSelected != -1 && jobSelected != -1) {
+          update = true;
+          updateTime(jobSelected, deb, nbJobs, k, machineSelected);
         }
       } while (update);
     }
-
-    int Cmax = solution.getMaxEnd(problem);
-    for (int f = 0; f < problem.getFamilyNumber(); ++f)
-      for (i = 0; i < problem.M; ++i)
-      {
-        if (solution.QualifLostTime[f][i] >= Cmax)
-          solution.QualifLostTime[f][i] = std::numeric_limits<int>::max();
-      }
   }
-  return 0;
+
+  int Cmax = solution.getMaxEnd();
+  for (int f = 0; f < problem.getNbFams(); ++f)
+    for (int i = 0; i < problem.getNbJobs(); ++i) {
+      if (solution.getDisqualif(f, i) >= Cmax)
+        solution.setDisqualif(std::numeric_limits<int>::max(), f, i);
+    }
 }
 
-void QualifCentricHeuristic::findJobMachineMatch(int k, int j, int firstOfLast, const std::vector<int> &endLast, int &machineSelected, int &jobSelected)
-{
-  for (int m = 0; m < problem.M; ++m)
-  {
-    if (problem.isQualif(solution.S[j].index, m) && k != m)
-    { // sur quelle machine je la met...
-      int i = 0;
-      while (i < problem.N)
-      {
-        if (solution.S[i].machine == m && problem.famOf[solution.S[i].index] == problem.famOf[solution.S[j].index]) //...et avec quelle tache
-          if (!addDisqualif(i, firstOfLast, m, k, j - firstOfLast + 1) && !addCompletion(solution.S[i].index, j - firstOfLast + 1, k, m, endLast))
-            if (machineSelected == -1 || endLast[m] < endLast[machineSelected])
-            {
+void QualifCentricHeuristic::findJobMachineMatch(int k, const Job &deb,
+                                                 const Job &fin,
+                                                 int &machineSelected,
+                                                 int &jobSelected, int nbJobs) {
+  for (int m = 0; m < problem.getNbMchs(); ++m) {
+    if (problem.isQualif(fin.getFam(), m) &&
+        k != m) {  // sur quelle machine je la met...
+      for (int i = 0; i < solution.getNbJobsOn(m); ++i) {
+        Job jobi = solution.getJobs(i, m);
+        if (jobi.getFam() == fin.getFam())  // et avec quelle tache
+          if (!addDisqualif(deb, jobi, m, k, nbJobs) &&
+              !addCompletion(jobi, nbJobs, k, m))
+            if (machineSelected == -1 ||
+                solution.getEnd(m) < solution.getEnd(machineSelected)) {
               jobSelected = i;
               machineSelected = m;
             }
-        ++i;
       }
     }
   }
-}
-
-int QualifCentricHeuristic::addCompletion(const int &i, const int &nbJobs, const int &k, const int &m, std::vector<int> endLast)
-{
-  return (endLast[k] <= endLast[m] + nbJobs * problem.getDuration(i));
-}
-
-int QualifCentricHeuristic::getLastOn(const int &k, const int &t)
-{
-  int i = 0;
-  while (i < problem.N && (solution.S[i].machine != k || solution.S[i].start + problem.getDuration(solution.S[i].index) != t))
-    ++i;
-  return i;
-}
-
-int QualifCentricHeuristic::getBeginOfLasts(const int &last)
-{
-  int i = last;
-  while (i >= 0 && problem.famOf[solution.S[i].index] == problem.famOf[solution.S[last].index])
-    --i;
-  return i + 1;
 }
 
 // i sur machine m ; j sur machine k
-int QualifCentricHeuristic::addDisqualif(const int &i, const int &j, const int &m,
-                                         const int &k, const int &nbJobs)
-{
-  const int F = problem.getFamilyNumber();
-  std::vector<int> firstOccAfter(F, problem.N);
-  std::vector<int> lastOccBef(F, -1);
+int QualifCentricHeuristic::addDisqualif(const Job &deb, const Job &jobi,
+                                         const int &m, const int &k,
+                                         int nbJobs) {
+  const int F = problem.getNbFams();
 
-  //adding j on m add a disqualif?
+  // adding jobs [deb,fin] on m add a disqualif?
+  for (int f = 0; f < F; ++f) {
+    if (f != jobi.getFam() && problem.isQualif(f, m)) {
+      Job firstOcc = solution.firstOf(f, m);
 
-  //compute last occurence of each familiy before i on m
-  computeLastOccBefore(m, i, lastOccBef);
-  //compute first occurence of each familiy after i on m
-  computeFirstOccAfter(m, i, firstOccAfter);
-
-  //we just have two check if the "qualification" still holds between the last occ
-  //of f before i and the first one after i
-  for (int f = 0; f < F; ++f)
-  {
-    if (f != problem.famOf[solution.S[i].index] && problem.F[f].qualif[m])
-    {
-      if (lastOccBef[f] == -1)
-      {
-        if (firstOccAfter[f] < problem.N)
-          if (solution.S[firstOccAfter[f]].start + nbJobs * problem.getDuration(solution.S[i].index) > problem.F[f].threshold)
+      if (firstOcc.getStart() != -1) {
+        if (firstOcc.getStart() > jobi.getStart()) {
+          if (firstOcc.getStart() + problem.getDuration(deb) * nbJobs >
+              problem.getThreshold(f))
             return 1;
+        }
+
+        else {
+          Job nextOcc = solution.nextOf(firstOcc, f, m);
+          if (nextOcc.getStart() > jobi.getStart() &&
+              nextOcc.getStart() + problem.getDuration(deb) * nbJobs -
+                      firstOcc.getStart() >
+                  problem.getThreshold(f))
+            return 1;
+        }
       }
-      else if (firstOccAfter[f] < problem.N)
-        if (solution.S[firstOccAfter[f]].start + nbJobs * problem.getDuration(solution.S[i].index) -
-                solution.S[lastOccBef[f]].start >
-            problem.F[f].threshold)
-          return 1;
     }
   }
-  //removing j on k add a disqualif?
-  lastOccBef[problem.famOf[solution.S[j].index]] = -1;
-  for (int cur = 0; cur < problem.N; ++cur)
-  {
-    if (j != cur && problem.famOf[solution.S[j].index] == problem.famOf[solution.S[cur].index] && solution.S[cur].machine == k && solution.S[cur].start < solution.S[j].start)
-    {
-      if (lastOccBef[problem.famOf[solution.S[cur].index]] == -1)
-        lastOccBef[problem.famOf[solution.S[cur].index]] = cur;
-      else if (solution.S[lastOccBef[problem.famOf[solution.S[cur].index]]].start < solution.S[cur].start)
-        lastOccBef[problem.famOf[solution.S[cur].index]] = cur;
-    }
+
+  // removing [deb,fin] on k add a disqualif?
+  Job prev = solution.getPreviousOcc(deb, deb.getFam(), k);
+  // compute future cmax
+  int cmax = 0;
+  for (int i = 0; i < problem.getNbMchs(); ++i) {
+    if (i == k && cmax < solution.getEnd(k) - nbJobs * problem.getDuration(deb))
+      cmax = solution.getEnd(k) - nbJobs * problem.getDuration(deb);
+    if (i == m && cmax < solution.getEnd(m) + nbJobs * problem.getDuration(deb))
+      cmax = solution.getEnd(m) + nbJobs * problem.getDuration(deb);
+    else if (cmax < solution.getEnd(i))
+      cmax = solution.getEnd(i);
   }
-  int Cmax = 0;
-  if (k == m)
-    Cmax = solution.getMaxEnd(problem);
-  else
-  {
-    for (int l = 0; l < problem.M; ++l)
-    {
-      if (l == k)
-        Cmax = std::max(Cmax, solution.getRealEnd(problem, k) - nbJobs * problem.getDuration(solution.S[i].index));
-      else if (l == m)
-        Cmax = std::max(Cmax, solution.getRealEnd(problem, m) + nbJobs * problem.getDuration(solution.S[i].index));
-      else
-        Cmax = std::max(Cmax, solution.getRealEnd(problem, l));
-    }
-  }
-  if (lastOccBef[problem.famOf[solution.S[j].index]] == -1)
-  {
-    if (problem.F[problem.famOf[solution.S[j].index]].threshold < Cmax)
-      return 1;
-  }
-  else if (solution.S[lastOccBef[problem.famOf[solution.S[j].index]]].start + problem.F[problem.famOf[solution.S[j].index]].threshold < Cmax)
-    return 1;
+  if (cmax - prev.getStart() > problem.getThreshold(deb)) return 1;
   return 0;
 }
 
-void QualifCentricHeuristic::computeLastOccBefore(int m, int i, std::vector<int> &lastOccBef)
-{
-  for (int cur = 0; cur < problem.N; ++cur)
-    if (solution.S[cur].machine == m && solution.S[cur].start < solution.S[i].start)
-    {
-      if (lastOccBef[problem.famOf[solution.S[cur].index]] == -1)
-        lastOccBef[problem.famOf[solution.S[cur].index]] = cur;
-      else if (solution.S[lastOccBef[problem.famOf[solution.S[cur].index]]].start < solution.S[cur].start)
-        lastOccBef[problem.famOf[solution.S[cur].index]] = cur;
-    }
+int QualifCentricHeuristic::addCompletion(const Job &i, const int &nbJobs,
+                                          const int &k, const int &m) {
+  return (solution.getEnd(k) <=
+          solution.getEnd(m) + nbJobs * problem.getDuration(i));
 }
 
-void QualifCentricHeuristic::computeFirstOccAfter(int m, int i, std::vector<int> &firstOccAfter)
-{
-  for (int cur = 0; cur < problem.N; ++cur)
-  {
-    if (solution.S[cur].machine == m && solution.S[cur].start > solution.S[i].start)
-    {
-      if (firstOccAfter[problem.famOf[solution.S[cur].index]] == problem.N)
-        firstOccAfter[problem.famOf[solution.S[cur].index]] = cur;
-      else if (solution.S[firstOccAfter[problem.famOf[solution.S[cur].index]]].start > solution.S[cur].start)
-        firstOccAfter[problem.famOf[solution.S[cur].index]] = cur;
-    }
+void QualifCentricHeuristic::getLastGroup(Job &deb, Job &fin, int k,
+                                          int &nbJobs) {
+  fin=solution.getLastJob(k);
+  uint i = solution.getNbJobsOn(k);
+  while (i >= 0 && solution.getJobs(i, k).getFam() == fin.getFam()) --i;
+  deb = solution.getJobs(i + 1, k);
+  nbJobs = solution.getNbJobsOn(k) - 1 - i + 1;
+}
+
+void QualifCentricHeuristic::updateTime(const Job &i, const Job &deb,
+                                        int nbJobs, int k, int m) {
+  int j;
+  // remove nbJobs last Job on k
+  for (j = 0; j < nbJobs; ++j) solution.removeLastJob(k);
+
+  // add nbJobs jobs of family f(i) after i and shift all jobs after
+  // 1/ shift every job after i
+  j = 0;
+  while (!(solution.getJobs(j, m) == i)) j++;
+  while (j < solution.getNbJobsOn(m)) {
+    solution.getJobs(j, m).shift(nbJobs * problem.getDuration(i));
+  }
+  // 2/ add nbJobs of f(i) after i
+  Job curr = i;
+  for (j = 0; j < nbJobs; ++j) {
+    Job temp(problem.getFam(i), curr.getStart() + problem.getDuration(i), -1);
+    solution.addJob(temp, m);
+    curr = temp;
   }
 }
 
-int QualifCentricHeuristic::updateTime(const int &i, const int &j, const int &firstOfLast,
-                                       const int &k, const int &m, std::vector<int> &endLast)
-{
-  int cur = 0;
-  int nbJobs = j - firstOfLast + 1;
-  std::vector<int> update(problem.getFamilyNumber(), 0);
-  solution.S[firstOfLast].start = solution.S[i].start + problem.getDuration(solution.S[i].index);
-  solution.S[firstOfLast].machine = m;
-  // ???
-  for (cur = firstOfLast + 1; cur <= j; ++cur)
-  {
-    solution.S[cur].start = solution.S[cur - 1].start + problem.getDuration(solution.S[cur - 1].index);
-    solution.S[cur].machine = m;
-  }
-
-  cur = 0;
-  endLast[m] += nbJobs * problem.getDuration(solution.S[j].index);
-  endLast[k] = 0;
-  while (cur < problem.N)
-  {
-    // shift all the task after j by nbJobs * p_j on m
-    if (solution.S[cur].machine == m && solution.S[cur].start >= solution.S[firstOfLast].start)
-    {
-      if (firstOfLast > cur || cur > j)
-        solution.S[cur].start += nbJobs * problem.getDuration(solution.S[j].index);
-      if (solution.QualifLostTime[problem.famOf[solution.S[cur].index]][m] < std::numeric_limits<int>::max() && !update[problem.famOf[solution.S[cur].index]])
-      {
-        update[problem.famOf[solution.S[cur].index]] = 1;
-        solution.QualifLostTime[problem.famOf[solution.S[cur].index]][m] += nbJobs * problem.getDuration(solution.S[j].index);
-      }
-    }
-    //update endLast on k
-    if (solution.S[cur].machine == k && endLast[k] < solution.S[cur].start + problem.getDuration(solution.S[cur].index))
-      endLast[k] = solution.S[cur].start + problem.getDuration(solution.S[cur].index);
-    ++cur;
-  }
-  return 0;
-}
-
-HeuristicAPC* makeHeuristic(Problem &problem, ConfigAPC &config, std::string name)
-{
-  if (name == H_LIST) 
+HeuristicAPC *makeHeuristic(Problem &problem, ConfigAPC &config,
+                            std::string name) {
+  if (name == H_LIST)
     return new ListHeuristic(problem, config);
   else if (name == H_QUALIF)
     return new QualifCentricHeuristic(problem, config);

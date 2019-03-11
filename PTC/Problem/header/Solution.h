@@ -14,25 +14,25 @@ typedef std::vector<Assignment> assignmentList;
 
 struct Solution{
   //a solution is defined by a List of Assignment (containing for each task
-  //its id, start time and affectation to a machine) and a matrix
+  //its id, getStart time and affectation to a machine) and a matrix
   //(family x machines) containing the time where a machine m become disqualified for a
   //family f (0 if the machine is not qualified from the beginning) if it exists
   //and +oo otherwise
   assignmentList S;
-  std::vector<std::vector<int>> QualifLostTime;
+  std::vector<std::vector<int>> qualifLostTime;
 
-  //construct right size vector (resize). QualifLostTime initialized with +oo.
+  //construct right size vector (resize). qualifLostTime initialized with +oo.
    Solution(const Problem&);
    void clear(const Problem &P);
-  //last start time on machine j
+  //last getStart time on machine j
    int getEnd(int j) const; 
    int getRealEnd(const Problem& P, int j) const;
   //compute CMax
   int getMaxEnd(const Problem& P) const;
   int getSumCompletion(const Problem&) const;
   void repairDisqualif(const Problem&);
-  //compute the matrix of last job of family f on machine m (start time)
-  //the solution must be sorted by 1/machine; 2/start
+  //compute the matrix of last job of family f on machine m (getStart time)
+  //the solution must be sorted by 1/machine; 2/getStart
   std::vector<std::vector<int>> computeLastOf(const Problem & P) const;
 
   int getNbDisqualif() const;

@@ -9,7 +9,7 @@
 #endif
 
 #ifndef BETA
-#define beta 1// P.N*P.computeHorizon()
+#define beta 1// problem.N*problem.computeHorizon()
 #endif
 
 //parametre du recuit
@@ -31,8 +31,8 @@ using Clock = std::chrono::high_resolution_clock;
 typedef int(*ptrHeur)(Problem,Solution&);
 
 /////////////////////////////////////////////////////////////////////////////////////
-//// ATTENTION!! SOLUTION TRIEE!!! (s ne doit pas forcément etre triée en entrée ////
-/// mais est triée dans l'algo et les opérations doivent conservées ce tri!! ////////
+//// ATTENTION!! SOLUTION TRIEE!!! (s ne doit pas forcï¿½ment etre triï¿½e en entrï¿½e ////
+/// mais est triï¿½e dans l'algo et les opï¿½rations doivent conservï¿½es ce tri!! ////////
 /////////////////////////////////////////////////////////////////////////////////////
 
 int SA(const Problem& P, Solution& s, ptrHeur&); 

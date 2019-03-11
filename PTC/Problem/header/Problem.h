@@ -52,7 +52,7 @@ struct Problem{
   int computeHorizon() const;
   
   //get the number of family
-  inline int getFamilyNumber() const{
+  inline int getNbFams() const{
     return (int)this->F.size();
   }
   //get a task duration

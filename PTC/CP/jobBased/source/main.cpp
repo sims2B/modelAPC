@@ -10,7 +10,7 @@ int main(int,char* argv[]){
   if (instance.is_open()){
     Problem P = readFromFile(instance);
     instance.close();
-    //std::cout << P.toString();
+    //std::cout << problem.toString();
     std::cout << "i " << getFilename(argv[1], false) << std::endl;
     Solution s(P);
 

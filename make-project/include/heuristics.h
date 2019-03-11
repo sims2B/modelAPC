@@ -3,104 +3,88 @@
 
 #include "solverAPC.h"
 
-class HeuristicAPC : public AbstractSolverAPC
-{
+class HeuristicAPC : public AbstractSolverAPC {
+ public:
+  HeuristicAPC(Problem &problem, ConfigAPC &config)
+      : AbstractSolverAPC(problem, config) {}
 
-public:
-  HeuristicAPC(Problem &problem, ConfigAPC &config) : AbstractSolverAPC(problem, config)
-  {
-  }
-
-  void solve()
-  {
+  void solve() {
     setUp();
     doSolve();
-    tearDown(); 
+    tearDown();
   };
 
-protected:
+ protected:
   virtual void doSolve() = 0;
 };
 
-class ListHeuristic : public HeuristicAPC
-{
+class ListHeuristic : public HeuristicAPC {
+ public:
+  ListHeuristic(Problem &problem, ConfigAPC &config)
+      : HeuristicAPC(problem, config) {}
 
-public:
-  ListHeuristic(Problem &problem, ConfigAPC &config) : HeuristicAPC(problem, config)
-  {
-  }
-
-protected:
+ protected:
   void doSolve();
 
-private:
-  int chooseFamily(int m, std::vector<int> toSchedule);
-
-  void treat(const int m, const int f, std::vector<int> &endLast, std::vector<int> &toSchedule, std::vector<int> &nextOfFam);
+ private:
+  int chooseFamily(int m);
+  void updateDisqualif();
+  void schedule(const int m, const int f);
 };
 
-class SchedCentricHeuristic : public HeuristicAPC
-{
+class SchedCentricHeuristic : public HeuristicAPC {
+ public:
+  SchedCentricHeuristic(Problem &problem, ConfigAPC &config)
+      : HeuristicAPC(problem, config) {}
 
-public:
-  SchedCentricHeuristic(Problem &problem, ConfigAPC &config) : HeuristicAPC(problem, config)
-  {
-  }
-
-protected:
+ protected:
   void doSolve();
 
-private:
-  void treat(const int, const int, std::vector<int> &, std::vector<int> &, std::vector<int> &);
+ private:
+  void schedule(const int, const int);
   int remainingThresh(const int &, const int &, const int &);
-  int chooseFamily(const int &m, const int &t, const int &current, std::vector<int> toSchedule);
-  //return the family index with the minimum remaining threshold on m at time t
-  int famWithMinThresh(const int &m, const int &t, std::vector<int> toSchedule);
+  void updateDisqualif();
+  int chooseFamily(const int &m);
+  int famWithMinThresh(const int &m, const int &t);
 };
 
-class QualifCentricHeuristic : public HeuristicAPC
-{
+class QualifCentricHeuristic : public HeuristicAPC {
+ public:
+  QualifCentricHeuristic(Problem &problem, ConfigAPC &config)
+      : HeuristicAPC(problem, config) {}
 
-public:
-  QualifCentricHeuristic(Problem &problem, ConfigAPC &config) : HeuristicAPC(problem, config)
-  {
-  }
-
-protected:
+ protected:
   void doSolve();
 
-private:
-  int treat(const int, const int, std::vector<int> &, std::vector<int> &, std::vector<int> &);
+ private:
+  void schedule(const int, const int);
   int remainingThresh(const int &, const int &, const int &);
 
   /////////////// PHASE 1 //////////////////
-  int schedule(std::vector<int> &endLast);
-  //return the family with the minimum remaining threshold
-  int chooseFamily(const int &m, const int &t, std::vector<int> toSchedule);
+  int findSchedule();
+  // return the family with the minimum remaining threshold
+  int chooseFamily(const int &m);
+  void updateDisqualif();
 
   ///////////// PHASE 2 //////////////////
-  // TODO Return void ?
-  int intraChange(std::vector<int> &endLast);
+  void intraChange();
+  void updateTime(const Job &i, const Job &j, const int &k);
+  int addDisqualif(const Job &i, const Job &j, const int &m);
 
   ///////////// PHASE 3 /////////////////
 
   // TODO Return void ?
-  int interChange(std::vector<int> &endLast);
-  int addCompletion(const int &i, const int &nbJobs, const int &k,
-                    const int &m, std::vector<int> endLast);
-  int getBeginOfLasts(const int &last);
-  void findJobMachineMatch(int k, int j, int firstOfLast, const std::vector<int> &endLast, int &machineSelected, int &jobSelected);
-  ///////////// COMMON //////////////////
+  void interChange();
+  void getLastGroup(Job& deb, Job& fin, int k, int& nbJobs);
+  void findJobMachineMatch(int k, const Job& deb, const Job& fin,
+                           int &machineSelected, int &jobSelected, int nbJobs);
 
-  //cherche sur la machine k le job qui finit à l'instant t (on l'utilise avec le completion
-  // time de la machine pour avoir la derniere tache)
-  int getLastOn(const int &k, const int &t);
-  int addDisqualif(const int &i, const int &j, const int &m, const int &k, const int &nbJobs);
-  int updateTime(const int &i, const int &j, const int &firstOfLast, const int &k, const int &m, std::vector<int> &endLast);
-  void computeLastOccBefore(int m, int i, std::vector<int> &lastOccBef);
-  void computeFirstOccAfter(int m, int i, std::vector<int> &firstOccAfter);
+  int addCompletion(const Job &i, const int &nbJobs, const int &k, const int &m);
+  int addDisqualif(const Job &i, const Job &j, const int &m, const int &k, int);
+  void updateTime(const Job& i, const Job &deb, int nbJobs, int k, int m);
 };
 
-HeuristicAPC *makeHeuristic(Problem &problem, ConfigAPC &config, std::string name);
+HeuristicAPC *makeHeuristic(Problem &problem, ConfigAPC &config,
+                            std::string name);
 
 #endif

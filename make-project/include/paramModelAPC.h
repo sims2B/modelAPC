@@ -28,7 +28,7 @@
 
 #elif prioFlow==0
 #define alpha_C 1 
-#define beta_Y problem.N * problem.computeHorizon() 
+#define beta_Y problem.getNbJobs() * problem.computeHorizon() 
 
 #endif
 

@@ -35,7 +35,7 @@ int displayCplexResults(const IloCplex&, const IloNum&);
 //special result display for CVS format (time;solved;feas;opt;objValue;SumCompletion;nbDisqualif;RealNbDisqualif;nbSetup;CplexGap)
 //
 int displayCVS(const Problem& P, const Solution& s,
-	       const IloCplex& cplex,const IloNum& start);
+	       const IloCplex& cplex,const IloNum& getStart);
 
 //////////////////////////////////////////
 ////////////  MODEL CREATION /////////////

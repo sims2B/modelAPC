@@ -4,80 +4,80 @@
 #include "paramModelAPC.h"
 #include "problem.h"
 
-class Assignment{
-  //FIXME Change visibility of some fields and methods
- public:
-
-  int start;
-  int machine;
-  int index;
-
-  Assignment();
-  Assignment(int,int,int);
-};
-
-bool operator==(const Assignment&, const Assignment&);
-bool operator<(const Assignment& a1, const Assignment& a2);
-bool mchsComp(const Assignment&, const Assignment&);
-
-bool startComp(const Assignment&, const Assignment&);
-bool idComp(const Assignment&, const Assignment&);
-
 // TODO Try to avoid the restriction on the max number of families !
+// REP : c'est just limitant pour le tikz! Je me sert uniquement de la borne
+// pour définir les couleurs.
 #define nbFamMax 5
-const std::string tikzColor[nbFamMax] = { "blue", "green", "orange", "purple","red"};
-typedef std::vector<Assignment> assignmentList;
-
+const std::string tikzColor[nbFamMax] = {"blue", "green", "orange", "purple",
+                                         "red"};
+typedef std::vector<std::vector<Job>> JobMatrix;
+typedef std::vector<std::vector<int>> IntMatrix;
 
 class Solution {
-  //FIXME Change visibility of some fields and methods
-  //FIXME the problem should be stored in a field ?
+  // FIXME Change visibility of some fields and methods
+  // FIXME the problem should be stored in a field ?
+
+ private:
+  Problem problem;
+  JobMatrix assign;
+  IntMatrix qualifLostTime;
+
  public:
-  //a solution is defined by a List of Assignment (containing for each task
-  //its id, start time and affectation to a machine) and a matrix
-  //(family x machines) containing the time where a machine m become disqualified for a
-  //family f (0 if the machine is not qualified from the beginning) if it exists
-  //and +oo otherwise
-  assignmentList S;
-  std::vector<std::vector<int>> QualifLostTime;
+  Solution(const Problem&);  // construct right size vector (resize).
+                             // qualifLostTime initialized with +oo.
+  void clear();
 
-  //construct right size vector (resize). QualifLostTime initialized with +oo.
-   Solution(const Problem&);
-   void clear(const Problem &P);
-  //last start time on machine j
-   int getEnd(int j) const; 
-   int getRealEnd(const Problem& P, int j) const;
-  //compute CMax
-  int getMaxEnd(const Problem& P) const;
-  int getSumCompletion(const Problem&) const;
-  void repairDisqualif(const Problem&);
-  //compute the matrix of last job of family f on machine m (start time)
-  //the solution must be sorted by 1/machine; 2/start
-  std::vector<std::vector<int>> computeLastOf(const Problem & P) const;
+  void addJob(const Job& j, int m);
+  void removeLastJob(int m);
+  void removeJob(const Job& i, int m);
+  inline Job getLastJob(int j) const { return assign[j][assign[j].size() - 1]; }
+  int getLastStart(int j) const;  // last getStart time on machine j
+  int getEnd(int j) const;
+  int getMaxEnd() const;  // compute CMax
+  int getSumCompletion() const;
+  void repairDisqualif();
 
+  Job lastOf(int f, int m) const;  // return last job of f scheduled on m (if
+  // not return job(f,-1,-1))
+  Job firstOf(int f, int m) const;  // return last job of f scheduled on m (if
+  // not return job(f,-1,-1)
+  void getFirstOcc(Job& j, int f, int& m)
+      const;  // pour le model CP : etant donnée une famille, renvoie le premier
+              // job de la famille et la machine sur la quelle le job est
+              // schedule
+  Job getPreviousOcc(const Job&, int f, int m) const;
+
+  Job nextOf(int i, int f, int m) const;
+  Job nextOf(const Job& i, int f, int m) const;
+
+  int getTotalNbDisqualif() const;
+  int getNbQualif() const;
   int getNbDisqualif() const;
-  int getNbQualif(const Problem &) const;
-  int getRealNbDisqualif(const Problem& P) const;
-  int getWeigthedObjectiveValue(const Problem&) const;
-  int getNbSetup(const Problem&) const;
-  int getNbJobsOn(int m) const; 
-  // return the ith jobs on m (if sorted)
-  int getJobs(int i, int m) const; 
-  int reaffectId(const Problem &P);
-  //return 1 if the solution satisfies all the constraints of the problem
-  int isValid(const Problem&) const;
+  int getWeigthedObjectiveValue() const;
+  int getNbSetup(int m) const;
+  int getNbSetup() const;
+  int getNbJobsOn(int m) const;
 
-  std::string toString(const Problem& P) const;
-  void toTikz(const Problem&) const;
-  void toDimacs(const Problem&) const;
+  Job getJobs(int i, int m) const;  // return the ith jobs on m (if sorted)
 
+  inline void setDisqualif(int val, int f, int m) {
+    qualifLostTime[f][m] = val;
+  }
+  inline int getDisqualif(int f, int m) const { return qualifLostTime[f][m]; }
+
+  int isValid() const;  // return 1 if the solution satisfies all the
+                        // constraints of the problem
+
+  std::string toString() const;
+  void toTikz() const;
+  void toDimacs() const;
 };
 
 // bool compareLexFQ(const Solution&, const Solution&);
 
 // bool compareLexQF(const Solution&, const Solution&);
 
-// bool compareWSum(const Solution&, const Solution&); // TODO will need a struct or class for the coefficients
-
+// bool compareWSum(const Solution&, const Solution&); // TODO will need a
+// struct or class for the coefficients
 
 #endif

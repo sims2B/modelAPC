@@ -28,7 +28,7 @@ int displayCplexSolution(const Problem&, IloEnv&, IloCplex&, const IloNumVar3DMa
 			 const IloNumVar3DMatrix&, const IloNumVarArray&);
 //display results : time, status, objective, gap
 int displayCplexResults(const IloCplex&, const IloNum&);
-int displayCVS(const Problem& P, const Solution& s,const IloCplex& cplex,const IloNum& start);
+int displayCVS(const Problem& P, const Solution& s,const IloCplex& cplex,const IloNum& getStart);
 
 //////////////////////////////////////////
 ////////////  MODEL CREATION /////////////

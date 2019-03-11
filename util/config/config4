@@ -10,7 +10,7 @@
 #define VERBOSITY 1
 //alpha et beta pour le weighted objectif.
 #define alpha_C 1 //prio flowtime alpha = beta = 1
-#define beta_Y  1 //P.N * P.computeHorizon() 
+#define beta_Y  1 //problem.N * problem.computeHorizon() 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////    CP PARAMETERS //////////////////////////////////////

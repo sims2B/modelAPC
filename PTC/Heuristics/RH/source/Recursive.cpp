@@ -17,19 +17,19 @@ int displayCVS(const Problem& P, const Solution& s, bool& solved){
 }
 
 std::vector<bool> convert(int x, int size);
-// !!! ajouté les disqualifications à la solution, i.e. QualifLostTime?? !!!
+// !!! ajouté les disqualifications à la solution, i.e. qualifLostTime?? !!!
 int RH(const Problem& P, Solution& s_res, ptrHeur Heuristic){
-  //  const int BETA = P.N * P.computeHorizon();
+  //  const int BETA = problem.N * problem.computeHorizon();
   Solution s(P);
   if (Heuristic(P, s)){
     std::cout << s.toString(P);
     s.toTikz(P);
     s_res = s;
     int nbDisqualif = 0;
-    std::vector<std::tuple<int, int>> disqualif(P.M*P.getFamilyNumber());
-    for (unsigned int f = 0; f < s.QualifLostTime.size(); ++f)
-      for (unsigned int j = 0; j < s.QualifLostTime[f].size(); ++j)
-	if (s.QualifLostTime[f][j] < std::numeric_limits<int>::max()){
+    std::vector<std::tuple<int, int>> disqualif(problem.M*problem.getNbFams());
+    for (unsigned int f = 0; f < s.qualifLostTime.size(); ++f)
+      for (unsigned int j = 0; j < s.qualifLostTime[f].size(); ++j)
+	if (s.qualifLostTime[f][j] < std::numeric_limits<int>::max()){
 	  std::tuple<int, int> lost(f, j);
 	  disqualif[nbDisqualif] = lost;
 	  nbDisqualif++;
@@ -46,10 +46,10 @@ int RH(const Problem& P, Solution& s_res, ptrHeur Heuristic){
 	  if (Heuristic(Q, s_temp)){
 	    // MAJ qualifLostTime w.r.t. P (modif in Q)
 	    int Cmax = s_temp.getMaxEnd(P);
-	    for (unsigned int f = 0; f < s.QualifLostTime.size(); ++f)
-	      for (unsigned int j = 0; j < s.QualifLostTime[f].size(); ++j)
-		if (P.F[f].qualif[j] != Q.F[f].qualif[j])
-		  (P.F[f].threshold >= Cmax ? s_temp.QualifLostTime[f][j] = s_temp.QualifLostTime[f][j] : s_temp.QualifLostTime[f][j] = P.F[f].threshold);
+	    for (unsigned int f = 0; f < s.qualifLostTime.size(); ++f)
+	      for (unsigned int j = 0; j < s.qualifLostTime[f].size(); ++j)
+		if (problem.F[f].qualif[j] != Q.F[f].qualif[j])
+		  (problem.getThreshold(f) >= Cmax ? s_temp.qualifLostTime[f][j] = s_temp.qualifLostTime[f][j] : s_temp.qualifLostTime[f][j] = problem.getThreshold(f));
 	    if (s_temp.getWeigthedObjectiveValue(Q)
 		< s_res.getWeigthedObjectiveValue(P)){
 	      s_res = s_temp;

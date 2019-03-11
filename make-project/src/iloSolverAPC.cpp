@@ -39,7 +39,7 @@ void IloSolverAPC::tearDown() {
     AbstractSolverAPC::tearDown();
     if (hasSolution() && config.useTikzExport())
     {
-        solution.toTikz(problem);
+        solution.toTikz();
     }
 }
 

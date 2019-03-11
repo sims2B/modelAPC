@@ -1141,7 +1141,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 8 bytes in 1 blocks are still reachable in loss record 78 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -4046,7 +4046,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 16 bytes in 1 blocks are still reachable in loss record 313 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -4055,7 +4055,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 16 bytes in 1 blocks are still reachable in loss record 314 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -4064,7 +4064,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 16 bytes in 1 blocks are still reachable in loss record 315 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -4073,7 +4073,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 16 bytes in 1 blocks are still reachable in loss record 316 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -4082,7 +4082,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 16 bytes in 1 blocks are still reachable in loss record 317 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -4091,7 +4091,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 16 bytes in 1 blocks are still reachable in loss record 318 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -4100,7 +4100,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 16 bytes in 1 blocks are still reachable in loss record 319 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8297,7 +8297,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7EBFD15: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
 ==31083==    by 0x64DBE3: global constructors keyed to stringutils.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 640 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8307,7 +8307,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0D18: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 641 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8317,7 +8317,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0D7D: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 642 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8327,7 +8327,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0F4A: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 643 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8337,7 +8337,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0FBE: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 644 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8347,7 +8347,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1032: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 645 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8357,7 +8357,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A10A6: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 646 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8367,7 +8367,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A111A: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 647 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8377,7 +8377,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1202: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 648 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8387,7 +8387,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A12EA: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 649 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8397,7 +8397,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A135E: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 26 bytes in 1 blocks are still reachable in loss record 650 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8524,7 +8524,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7EBFD15: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
 ==31083==    by 0x64DC22: global constructors keyed to stringutils.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 660 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8534,7 +8534,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0B74: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 661 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8544,7 +8544,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0BE0: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 662 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8554,7 +8554,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0C48: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 663 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8564,7 +8564,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0CAD: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 664 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8574,7 +8574,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0DEE: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 665 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8584,7 +8584,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0E62: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 666 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8594,7 +8594,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0ED6: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 667 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8604,7 +8604,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1616: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 668 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8614,7 +8614,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1772: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 669 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8624,7 +8624,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1A2A: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 670 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8633,7 +8633,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7EBFD15: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
 ==31083==    by 0x86051E: global constructors keyed to OptionList.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 27 bytes in 1 blocks are still reachable in loss record 671 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8721,7 +8721,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A118E: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 678 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8731,7 +8731,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1276: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 679 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8741,7 +8741,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A13D2: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 680 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8751,7 +8751,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1446: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 681 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8761,7 +8761,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A14BA: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 682 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8771,7 +8771,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A15A2: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 683 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8781,7 +8781,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A168A: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 684 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8791,7 +8791,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1BFA: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 685 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8801,7 +8801,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1DCA: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 686 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8810,7 +8810,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7EBFD15: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
 ==31083==    by 0x86055D: global constructors keyed to OptionList.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 28 bytes in 1 blocks are still reachable in loss record 687 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8875,7 +8875,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A152E: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 29 bytes in 1 blocks are still reachable in loss record 692 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8885,7 +8885,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1942: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 29 bytes in 1 blocks are still reachable in loss record 693 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8895,7 +8895,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1B12: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 29 bytes in 1 blocks are still reachable in loss record 694 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8905,7 +8905,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1B86: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 29 bytes in 1 blocks are still reachable in loss record 695 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8915,7 +8915,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1CE2: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 29 bytes in 1 blocks are still reachable in loss record 696 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -8925,7 +8925,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1D56: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 29 bytes in 1 blocks are still reachable in loss record 697 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -9027,7 +9027,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A17E6: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 30 bytes in 1 blocks are still reachable in loss record 705 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -9037,7 +9037,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A185A: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 30 bytes in 1 blocks are still reachable in loss record 706 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -9047,7 +9047,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A18CE: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 30 bytes in 1 blocks are still reachable in loss record 707 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -9057,7 +9057,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1A9E: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 30 bytes in 1 blocks are still reachable in loss record 708 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -9067,7 +9067,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1C6E: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 30 bytes in 1 blocks are still reachable in loss record 709 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -9076,7 +9076,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7EBFD15: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
 ==31083==    by 0x860595: global constructors keyed to OptionList.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 30 bytes in 1 blocks are still reachable in loss record 710 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -9180,7 +9180,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A16FE: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 31 bytes in 1 blocks are still reachable in loss record 718 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -9269,7 +9269,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A19B6: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 32 bytes in 1 blocks are still reachable in loss record 725 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11368,7 +11368,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7EBFD15: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
 ==31083==    by 0x63D78E: global constructors keyed to scripting.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 35 bytes in 1 blocks are still reachable in loss record 905 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11403,7 +11403,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7EBFD15: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
 ==31083==    by 0x50279C: global constructors keyed to ilooplproject.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 36 bytes in 1 blocks are still reachable in loss record 908 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11413,7 +11413,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A1E3E: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 36 bytes in 1 blocks are still reachable in loss record 909 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11514,7 +11514,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 917 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11523,7 +11523,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 918 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11532,7 +11532,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 919 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11541,7 +11541,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 920 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11550,7 +11550,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 921 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11559,7 +11559,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 922 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11568,7 +11568,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 923 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11577,7 +11577,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 924 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11586,7 +11586,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 925 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11595,7 +11595,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 926 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11604,7 +11604,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 927 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11613,7 +11613,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 928 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11622,7 +11622,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 929 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11631,7 +11631,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 930 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11640,7 +11640,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 931 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11649,7 +11649,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 932 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11658,7 +11658,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 933 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11667,7 +11667,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 934 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11676,7 +11676,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 935 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11685,7 +11685,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 936 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11694,7 +11694,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 937 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11703,7 +11703,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 938 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11712,7 +11712,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 939 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11721,7 +11721,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 940 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11730,7 +11730,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 941 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11739,7 +11739,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 942 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11748,7 +11748,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 943 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11757,7 +11757,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 944 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11766,7 +11766,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 945 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11775,7 +11775,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 946 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11784,7 +11784,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 947 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11793,7 +11793,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 948 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11802,7 +11802,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 949 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11811,7 +11811,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 950 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11820,7 +11820,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 951 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11829,7 +11829,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 952 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11838,7 +11838,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 953 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11847,7 +11847,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925A1E: _IljConfigClassLoader::_IljConfigClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ED14: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 954 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -11855,7 +11855,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0xCBA0F5: IlcCPONewClassId() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0xA0C57E: global constructors keyed to fltvar.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 40 bytes in 1 blocks are still reachable in loss record 955 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -13269,7 +13269,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 48 bytes in 1 blocks are still reachable in loss record 1,065 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -13279,7 +13279,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 48 bytes in 1 blocks are still reachable in loss record 1,066 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -13289,7 +13289,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 48 bytes in 1 blocks are still reachable in loss record 1,067 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -13299,7 +13299,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 48 bytes in 1 blocks are still reachable in loss record 1,068 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -13309,7 +13309,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 48 bytes in 1 blocks are still reachable in loss record 1,069 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -13319,7 +13319,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 48 bytes in 1 blocks are still reachable in loss record 1,070 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -13329,7 +13329,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x925AA6: _IljMutexClassLoader::_IljMutexClassLoader() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x49ECD0: global constructors keyed to ilooplerrorhandler.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 48 bytes in 1 blocks are still reachable in loss record 1,071 of 2,653
 ==31083==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27873,7 +27873,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x4E802A: global constructors keyed to ilooplprinter.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,206 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27882,7 +27882,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x5BE86F: global constructors keyed to maphelper.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,207 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27891,7 +27891,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x66CD86: global constructors keyed to values.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,208 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27900,7 +27900,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x74A4D1: global constructors keyed to extras.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,209 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27910,7 +27910,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0594: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,210 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27920,7 +27920,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A0B5E: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,211 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27930,7 +27930,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x7A199A: __static_initialization_and_destruction_0(int, int) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x7A1EBB: global constructors keyed to globals.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,212 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27939,7 +27939,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x8276F1: global constructors keyed to ilooplutils.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,213 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27948,7 +27948,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x8E5ED3: global constructors keyed to hstring.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,214 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27957,7 +27957,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x90C659: global constructors keyed to libmsg.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,215 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27966,7 +27966,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x92888F: global constructors keyed to hprimfun.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,216 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27975,7 +27975,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0xF23199: global constructors keyed to ilcscaptimetablei.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,217 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27984,7 +27984,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x11D06FD: global constructors keyed to iloiterator.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,218 of 2,653
 ==31083==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -27993,7 +27993,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x129B837: global constructors keyed to evaluator.cpp (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 1,040 bytes in 1 blocks are still reachable in loss record 2,219 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -28120,7 +28120,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x40138A4: _dl_allocate_tls (dl-tls.c:539)
 ==31083==    by 0x79D626E: allocate_stack (allocatestack.c:588)
 ==31083==    by 0x79D626E: pthread_create@@GLIBC_2.2.5 (pthread_create.c:539)
-==31083==    by 0x1050BBF: IlcThreadBase::start(void* (*)(void*), IlcThreadAttributes*, void*) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
+==31083==    by 0x1050BBF: IlcThreadBase::getStart(void* (*)(void*), IlcThreadAttributes*, void*) (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0xCB01C0: IlcParallel::SynchronizedMaster::startWorkers() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x9E1357: IlcParallelEngineI::createMaster() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
 ==31083==    by 0x9E1BFF: IlcParallelEngineI::startSearch() (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
@@ -31249,7 +31249,7 @@ Le nombre de Machines disqualifiées est : 0 et la sum des completion times vaut
 ==31083==    by 0x86CA298: __internal_atexit (cxa_atexit.c:35)
 ==31083==    by 0x86CA298: __cxa_atexit (cxa_atexit.c:58)
 ==31083==    by 0x12AA97C: __libc_csu_init (in /home/mnattaf/Dev/PTC/CP/OPL/bin/schedAPC)
-==31083==    by 0x86B07BE: (below main) (libc-start.c:247)
+==31083==    by 0x86B07BE: (below main) (libc-getStart.c:247)
 ==31083== 
 ==31083== 4,280 bytes in 1 blocks are still reachable in loss record 2,462 of 2,653
 ==31083==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)

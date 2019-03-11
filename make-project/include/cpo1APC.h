@@ -5,42 +5,39 @@
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 
 #include "iloSolverAPC.h"
-#include "paramModelAPC.h" //TODO Remove
+#include "paramModelAPC.h"  //TODO Remove
 
-typedef IloArray<IloIntervalVarArray> IloIntervalVarMatrix;
-typedef IloArray<IloIntervalSequenceVar> IloIntervalSequenceVarArray;
 
-class CpoSolver1APC : public IloSolverAPC
-{
+class CpoSolver1APC : public IloSolverAPC {
+ public:
+  CpoSolver1APC(Problem &problem, ConfigAPC &config,
+                std::vector<Solution> &solutionPool, Timer &timer)
+      : IloSolverAPC(problem, config, solutionPool, timer) {}
 
-  public:
-    CpoSolver1APC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool, Timer &timer) : IloSolverAPC(problem, config, solutionPool, timer)
-    {
-    }
+  void doSolve(IloEnv &env);
 
-    void doSolve(IloEnv& env);
+ private:
+  void modelToSol(const IloCP &, const IloIntervalVarMatrix &,
+                  const IloIntervalVarMatrix &);
 
-  private:
-    void modelToSol(const IloCP &, const IloIntervalVarMatrix &,
-                   const IloIntervalVarMatrix &);
+  void solToModel(const Solution &solution, IloIntervalVarArray &masterTask,
+                  IloIntervalVarMatrix &altTasks,
+                  IloIntervalVarMatrix &disqualif, IloIntervalVar &Cmax,
+                  IloSolution &sol);
 
-    void solToModel(Solution& solution, IloIntervalVarArray &masterTask, IloIntervalVarMatrix &altTasks,
-                   IloIntervalVarMatrix &disqualif, IloIntervalVar &Cmax,
-                   IloSolution &sol);
+  void createModel(IloEnv &, IloModel &, IloIntervalVarArray &,
+                   IloIntervalVarMatrix &, IloIntervalVarMatrix &,
+                   IloIntervalSequenceVarArray &);
 
-    void createModel(IloEnv &, IloModel &, IloIntervalVarArray &,
-                    IloIntervalVarMatrix &, IloIntervalVarMatrix &,
-                    IloIntervalSequenceVarArray &);
+  void createVariables(IloEnv &, IloIntervalVarArray &, IloIntervalVarMatrix &,
+                       IloIntervalVarMatrix &, IloIntervalSequenceVarArray &);
 
-    void createVariables(IloEnv &, IloIntervalVarArray &, IloIntervalVarMatrix &,
-                        IloIntervalVarMatrix &, IloIntervalSequenceVarArray &);
+  void createObjective(IloEnv &, IloModel &, IloIntervalVarArray &,
+                       IloIntervalVarMatrix &);
 
-    void createObjective(IloEnv &, IloModel &, IloIntervalVarArray &,
-                        IloIntervalVarMatrix &);
-
-    void createConstraints(IloEnv &, IloModel &, IloIntervalVarArray &,
-                          IloIntervalVarMatrix &, IloIntervalVarMatrix &,
-                          IloIntervalSequenceVarArray &);
+  void createConstraints(IloEnv &, IloModel &, IloIntervalVarArray &,
+                         IloIntervalVarMatrix &, IloIntervalVarMatrix &,
+                         IloIntervalSequenceVarArray &);
 };
 
 #endif

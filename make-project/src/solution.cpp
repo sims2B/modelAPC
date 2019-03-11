@@ -1,311 +1,336 @@
 #include "solution.h"
 
-#include <limits>
 #include <algorithm>
+#include <cassert>
+#include <limits>
 
+Solution::Solution(const Problem& p) : problem(p) {
+  const int nbFam = problem.getNbFams();
+  const int m = problem.getNbMchs();
+  assign.resize(m);
+  for (int i = 0; i < m; ++i) assign[i].reserve(problem.getNbJobs());
 
-Assignment::Assignment() : start(-1), machine(-1), index(-1){}
-
-
-Assignment::Assignment(int _start, int _mach, int _index) : start(_start), machine(_mach), index(_index){}
-
-bool operator==(const Assignment& a1, const Assignment& a2){
-  return (a1.start == a2.start && a1.machine == a2.machine);  
-}
-
-bool operator<(const Assignment& a1, const Assignment& a2){
-	return (a1.machine < a2.machine || (a1.machine == a2.machine && a1.start < a2.start));
-}
-
-bool mchsComp(const Assignment& a1, const Assignment& a2){
-  return (a1.machine < a2.machine || (a1.machine == a2.machine && a1.start < a2.start));
-}
-
-bool startComp(const Assignment& a1, const Assignment& a2){
-	return (a1.start < a2.start || (a1.start == a2.start && a1.index < a2.index));
-}
-
-bool idComp(const Assignment& a1, const Assignment& a2){
-	return (a1.index < a2.index);
-}
-
-Solution::Solution(const Problem& P){
-  const int nbFam = P.getFamilyNumber();
-  S.resize(P.N);
-  QualifLostTime.resize(nbFam);
+  qualifLostTime.resize(nbFam);
   for (int f = 0; f < nbFam; ++f)
-    QualifLostTime[f].resize(P.M, std::numeric_limits<int>::max());
+    qualifLostTime[f].resize(problem.getNbMchs(),
+                             std::numeric_limits<int>::max());
 }
 
-void Solution::clear(const Problem &P){
-  const int nbFam = P.getFamilyNumber();
-  S.clear();
-  QualifLostTime.clear();
+void Solution::clear() {
+  const int m = problem.getNbMchs();
+  for (int i = 0; i < m; ++i) assign[i].clear();
+  assign.clear();
+  assign.resize(m);
+  for (int i = 0; i < m; ++i) assign[i].reserve(problem.getNbJobs());
 
-  S.resize(P.N);
-  QualifLostTime.resize(nbFam);
+  const int nbFam = problem.getNbFams();
+  qualifLostTime.clear();
+  qualifLostTime.resize(nbFam);
   for (int f = 0; f < nbFam; ++f)
-    QualifLostTime[f].resize(P.M, std::numeric_limits<int>::max());
+    qualifLostTime[f].resize(problem.getNbMchs(),
+                             std::numeric_limits<int>::max());
 }
-int Solution::getEnd(int j) const{
+
+void Solution::addJob(const Job& j, int m) {
+  std::vector<Job>::iterator it = assign[m].begin();
+
+  while (it < assign[m].end() && (*it).getStart() < j.getStart()) ++it;
+
+  if (it == assign[m].end())
+    assign[m].push_back(j);
+  else
+    assign[m].insert(it, j);
+}
+
+void Solution::removeLastJob(int m) {
+  assert(!assign[m].empty());
+  assign[m].pop_back();
+}
+
+void Solution::removeJob(const Job& i , int m) {
+  std::vector<Job>::iterator it = assign[m].begin() ; 
+  while (it != assign[m].end() && !(*it == i )) it++;
+  assign[m].erase(it);
+}
+
+
+int Solution::getLastStart(int j) const { return getLastJob(j).getStart(); }
+
+int Solution::getEnd(int j) const {
+  if (getNbJobsOn(j) == 0) return 0;
+  int idLast = assign[j].size() - 1;
+  return assign[j][idLast].getStart() + problem.getDuration(assign[j][idLast]);
+}
+
+int Solution::getMaxEnd() const {
   int max = 0;
-  for (unsigned int i = 0; i < S.size(); ++i)
-    if (S[i].machine == j && S[i].start > max)
-      max = S[i].start;
+  for (unsigned int i = 0; i < assign.size(); ++i)
+    (getEnd(i) > max ? max = getEnd(i) : max = max);
   return max;
 }
 
-int Solution::getRealEnd(const Problem& P, int j) const{
-  int max = 0;
-  for (unsigned int i = 0; i < S.size(); ++i)
-    if (S[i].machine == j && S[i].start + P.getDuration(S[i].index) > max)
-      max = S[i].start + P.getDuration(S[i].index);
-  return max;
-}
-
-int Solution::getMaxEnd(const Problem& P) const{
-  int max = 0;
-  for (unsigned int i = 0; i < S.size(); ++i)
-    if (S[i].start + P.getDuration(S[i].index)> max)
-      max = S[i].start + P.getDuration(S[i].index);
-  return max;
-}
-
-int Solution::getSumCompletion(const Problem &P) const{
+int Solution::getSumCompletion() const {
   int sum = 0;
-  for (unsigned int i = 0; i < S.size(); ++i)
-    sum += S[i].start + P.getDuration(S[i].index);
+  for (unsigned int j = 0; j < assign.size(); ++j)
+    for (uint i = 0; i < assign[j].size(); ++i)
+      if (assign[j][i].getFam() != -1)
+        sum += assign[j][i].getStart() + problem.getDuration(assign[j][i]);
   return sum;
 }
 
-std::vector<std::vector<int>> Solution::computeLastOf(const Problem & P) const{
-  const int F = P.getFamilyNumber();
-  int j, f, i = 0;
-  std::vector<std::vector<int>> lastOf(P.M);
-
-  for (j = 0; j < P.M; ++j){
-    lastOf[j].resize(F);
-    for (f = 0; f < F; ++f)
-      (P.F[f].qualif[j] ? lastOf[j][f] = 0 : lastOf[j][f] = std::numeric_limits<int>::max());
-  }
-  while (i < P.N){
-    lastOf[S[i].machine][P.famOf[S[i].index]] = S[i].start;
-    ++i;
-  }
-  return lastOf;
+Job Solution::lastOf(int f, int m) const {
+  Job j(f);
+  for (uint i = 0; i < assign[m].size(); ++i)
+    if (assign[m][i].getFam() == f) j = assign[m][i];
+  return j;
+}
+Job Solution::firstOf(int f, int m) const {
+  Job j(f);
+  for (uint i = 0; i < assign[m].size(); ++i)
+    if (assign[m][i].getFam() == f) {
+      j = assign[m][i];
+      break;
+    }
+  return j;
 }
 
-void Solution::repairDisqualif(const Problem& P){
-  const int F = P.getFamilyNumber();
-  std::vector<std::vector<int>> lastOf = computeLastOf(P);
+void Solution::getFirstOcc(Job& j, int f, int& m) const {
+  int startMin = getMaxEnd();
+  for (int k = 0; k < problem.getNbMchs(); ++k) {
+    Job first = firstOf(f, k);
+    if (first.getStart() != -1) {
+      if (first.getStart() < startMin) {
+        m = k;
+        j = first;
+      }
+    }
+  }
+}
 
-  int Cmax = getMaxEnd(P);
+Job Solution::getPreviousOcc(const Job& j, int f, int m) const {
+  int i = assign[m].size();
+  while (i > 0 && !(getJobs(i, m) == j)) i--;
+  while (i > 0 && !(getJobs(i, m).getFam() == f)) i--;
+  if (i == 0)
+    return Job(f);
+  else
+    return getJobs(i, m);
+}
+
+Job Solution::nextOf(int i, int f, int m) const {
+  while (i < (int)assign[m].size() && assign[m][i].getFam() != f) ++i;
+  if (i < (int)assign[m].size())
+    return assign[m][i];
+  else
+    return Job(f);
+}
+
+Job Solution::nextOf(const Job& j, int f, int m) const {
+  uint i = 0;
+  while (!(assign[m][i] == j)) i++;
+  while (i < assign[m].size() && assign[m][i].getFam() != f) ++i;
+  if (i < assign[m].size())
+    return assign[m][i];
+  else
+    return Job(f);
+}
+
+void Solution::repairDisqualif() {
+  const int F = problem.getNbFams();
+
+  int Cmax = getMaxEnd();
   for (int f = 0; f < F; ++f)
-    for (int j = 0; j < P.M; ++j){
-      if (P.F[f].qualif[j]){
-	if (lastOf[j][f] + P.F[f].threshold < Cmax)
-	  (lastOf[j][f] == 0 ? QualifLostTime[f][j] = P.F[f].threshold : QualifLostTime[f][j] = lastOf[j][f] + P.F[f].threshold );
-	else QualifLostTime[f][j] = std::numeric_limits<int>::max();
+    for (int j = 0; j < problem.getNbMchs(); ++j) {
+      if (problem.isQualif(f, j)) {
+        Job last = lastOf(f, j);
+        if (last.getStart() == -1)
+          qualifLostTime[f][j] = problem.getThreshold(f);
+        else if (last.getStart() + problem.getThreshold(f) < Cmax)
+          qualifLostTime[f][j] = last.getStart() + problem.getThreshold(f);
+        else
+          qualifLostTime[f][j] = std::numeric_limits<int>::max();
       }
     }
 }
 
-int Solution::getNbDisqualif() const{
+int Solution::getTotalNbDisqualif() const {
   int sum = 0;
-  for (unsigned int f = 0; f < QualifLostTime.size(); ++f)
-    for (unsigned int j = 0; j < QualifLostTime[f].size(); ++j)
-      if (QualifLostTime[f][j] < std::numeric_limits<int>::max())
-	sum++;
+  for (unsigned int f = 0; f < qualifLostTime.size(); ++f)
+    for (unsigned int j = 0; j < qualifLostTime[f].size(); ++j)
+      if (qualifLostTime[f][j] < std::numeric_limits<int>::max()) sum++;
   return sum;
 }
 
-int Solution::getNbQualif(const Problem& P) const{
+int Solution::getNbQualif() const {
   int sum = 0;
-  for (unsigned int f = 0; f < QualifLostTime.size(); ++f)
-    for (unsigned int j = 0; j < QualifLostTime[f].size(); ++j)
-      if (P.F[f].qualif[j] && QualifLostTime[f][j] >= std::numeric_limits<int>::max())
-	sum++;
+  for (unsigned int f = 0; f < qualifLostTime.size(); ++f)
+    for (unsigned int j = 0; j < qualifLostTime[f].size(); ++j)
+      if (problem.isQualif(f, j) &&
+          qualifLostTime[f][j] >= std::numeric_limits<int>::max())
+        sum++;
   return sum;
 }
 
-int Solution::getRealNbDisqualif(const Problem& P) const{
+int Solution::getNbDisqualif() const {
   int sum = 0;
-  int Cmax = getMaxEnd(P);
-  for (unsigned int f = 0; f < QualifLostTime.size(); ++f)
-    for (unsigned int j = 0; j < QualifLostTime[f].size(); ++j)
-      if (QualifLostTime[f][j] < Cmax)
-	sum++;
+  int Cmax = getMaxEnd();
+  for (unsigned int f = 0; f < qualifLostTime.size(); ++f)
+    for (unsigned int j = 0; j < qualifLostTime[f].size(); ++j)
+      if (qualifLostTime[f][j] < Cmax) sum++;
   return sum;
 }
 
-int Solution::getWeigthedObjectiveValue(const Problem &problem) const{
-  return alpha_C * getSumCompletion(problem) + beta_Y * getNbDisqualif();
+int Solution::getWeigthedObjectiveValue() const {
+  return alpha_C * getSumCompletion() + beta_Y * getNbDisqualif();
 }
 
-int Solution::getNbSetup(const Problem & P) const{
-  Solution s2 = *(this);
-  std::sort(s2.S.begin(), s2.S.end(),mchsComp);
+int Solution::getNbSetup(int m) const {
   int nbSet = 0;
-
-  for (int i = 0; i < P.N - 1; ++i)
-    if (s2.S[i].machine == s2.S[i + 1].machine && P.famOf[s2.S[i].index] != P.famOf[s2.S[i + 1].index])
-      nbSet++;
+  for (uint i = 0; i < assign[m].size() - 1; ++i)
+    if (assign[m][i].getFam() != assign[m][i + 1].getFam()) nbSet++;
   return nbSet;
 }
 
-int Solution::getNbJobsOn(int m) const{
-  int cpt = 0;
-  for (unsigned int i = 0; i < S.size(); ++i){
-    if (S[i].machine == m)
-      cpt++;
-  }
-  return cpt;
+int Solution::getNbSetup() const {
+  int nbSet = 0;
+  for (uint m = 0; m < assign.size(); ++m) nbSet += getNbSetup(m);
+  return nbSet;
 }
 
-int Solution::getJobs(int i, int m) const{
-  unsigned int cur = 0;
-  while (cur < S.size() && i > 0){
-    if (S[cur].machine == m)
-      i--;
-    cur++;
-  }
-  return cur - 1;
-}
+int Solution::getNbJobsOn(int m) const { return assign[m].size(); }
 
+Job Solution::getJobs(int i, int m) const { return assign[m][i]; }
 
-//sort the solution in order to satisfy min_id = min_start (for CP warmStart)
-int Solution::reaffectId(const Problem &P){
-  std::sort(S.begin(), S.end(), startComp);
-  std::vector<int> id;
-  std::vector<int> sortedId;
-  for (int f = 0; f < P.getFamilyNumber(); ++f){
-    for (int i = 0; i < P.N; ++i)
-      if (P.famOf[S[i].index] == f) {
-	id.push_back(i);
-	sortedId.push_back(S[i].index);
-      }
-    std::sort(sortedId.begin(), sortedId.end());
-    for (uint i = 0; i < sortedId.size(); ++i)
-      S[id[i]].index = sortedId[i];
-  }
-  return 0;
-}
-
-//return 1 if interval [a,b] intersect [c,d]
-int intersect(const int& a, const int& b, const int& c, const int& d){
-  int t1 = std::max(c, a);
-  int t2 = std::min(d, b);
-  if (t1 >= t2) return 0;
-  else return 1;
-}
-
-int Solution::isValid(const Problem &P) const{
+int Solution::isValid() const {
   int i, j;
-  const int n = P.N;
-  const int F = P.getFamilyNumber();
-  std::vector<int> executed(P.N, 0);
+  std::vector<int> toDo(problem.getNbFams() - 1, 0);
 
-  //std::cout << "all the tasks are executed\n";
-  for (i = 0; i < P.N; ++i)
-    executed[S[i].index] = 1;
-  for (i = 0; i < P.N; ++i)
-    if (!executed[i])
-      return 0;
+  // all task executed
+  for (j = 0; j < problem.getNbMchs(); ++j)
+    for (i = 0; i < getNbJobsOn(j); ++i)
+      if (assign[j][i].getFam() != -1) toDo[assign[j][i].getFam()]++;
+  for (uint k = 0; k < toDo.size(); ++k)
+    if (toDo[k] != problem.getNf(k)) return 0;
 
-  //std::cout << "two tasks not executed in parallel on the same machine\n";
-  for (i = 0; i < n; ++i)
-    for (j = i + 1; j < n; ++j)
-      if (S[i].machine == S[j].machine
-	  && ((S[i].start <= S[j].start && S[i].start + P.getDuration(S[i].index) > S[j].start)
-	      || (S[i].start <= S[j].start && S[i].start + P.getDuration(S[i].index) > S[j].start)))
-	return 0;
+  // overlap
+  for (j = 0; j < problem.getNbMchs(); ++j)
+    if (getNbJobsOn(j) != 0)
+      for (i = 0; i < getNbJobsOn(j) - 1; i++)
+        if (assign[j][i].getStart() + problem.getDuration(assign[j][i]) >
+            assign[j][i + 1].getStart())
+          return 0;
 
-  //std::cout << "setup time\n";
-  for (i = 0; i < n; ++i)
-    for (j = i + 1; j < n; ++j)
-      if (S[i].machine == S[j].machine && P.famOf[S[i].index] != P.famOf[S[j].index])
-	if (S[i].start + P.getDuration(S[i].index) + P.getSetup(S[j].index) > S[j].start
-	    && S[j].start + P.getDuration(S[j].index) + P.getSetup(S[i].index) > S[i].start)
-	  return 0;
+  // setup
+  for (j = 0; j < problem.getNbMchs(); ++j)
+    if (getNbJobsOn(j) != 0)
+      for (i = 0; i < getNbJobsOn(j) - 1; ++i) {
+        int setup = 0;
+        if (assign[j][i].getFam() != assign[j][i + 1].getFam())
+          setup = problem.getSetup(assign[j][i + 1]);
+        if (assign[j][i].getStart() + problem.getDuration(assign[j][i]) +
+                setup >
+            assign[j][i + 1].getStart())
+          return 0;
+      }
 
-  //std::cout << "when the task is processed, the machine is still qualified\n";
-  for (i = 0; i < n; ++i)
-    if (S[i].start + P.getDuration(S[i].index) > QualifLostTime[P.famOf[S[i].index]][S[i].machine])
-      return 0;
+  // std::cout << "when the task is processed, the machine is still
+  // qualified\n";
 
-  //std::cout << "the machine j becomes disqualified for f if there is no task of f in an interval gamma_f\n";
-  const int Cmax = getMaxEnd(P);
-  for (j = 0; j < P.M; ++j)
-    for (int f = 0; f < F; ++f)
-      if (P.F[f].qualif[j])
-	for (int t = P.F[f].threshold; t < Cmax; ++t){
-	  i = 0;
-	  while (i < n && !(P.famOf[S[i].index] == f && S[i].machine == j && S[i].start > t - P.F[f].threshold && S[i].start <= t))
-	    ++i;
-	  if (i >= n && QualifLostTime[f][j] > t){
-	    //std::cout << "probleme sur " << f << " " << j << " au tps " << t << std::endl;
-	    return 0;
-	  }
-	}
+  for (j = 0; j < problem.getNbMchs(); ++j)
+    if (getNbJobsOn(j) != 0)
+      for (i = 0; i <getNbJobsOn(j) - 1; ++i) {
+        if (assign[j][i].getStart() + problem.getDuration(assign[j][i]) >
+            qualifLostTime[assign[j][i].getFam()][j])
+          return 0;
+      }
 
-  //std::cout << " no more than gamma_f between to task of the same family\n";
-  for (i = 0; i < n; ++i){
-    j = 0;
-    bool vu = false;
-    while (j < n && (i == j || P.famOf[S[i].index] != P.famOf[S[j].index] || S[i].machine != S[j].machine
-		     || !(S[j].start > S[i].start && S[j].start <= S[i].start + P.getThreshold(S[i].index)))){
-      if (i != j && P.famOf[S[j].index] == P.famOf[S[i].index] && S[i].machine == S[j].machine && S[j].start > S[i].start) vu = true;
-      ++j;
+  // std::cout << "the machine j becomes disqualified for f if there is no
+  // task of f in an interval gamma_f\n";
+  const int Cmax = getMaxEnd();
+
+  for (j = 0; j < problem.getNbMchs(); ++j)
+    for (int f = 0; f < problem.getNbFams(); ++f)
+      if (problem.isQualif(f, j))
+        for (int t = problem.getThreshold(f); t < Cmax; ++t) {
+          i = 0;
+          while (i < getNbJobsOn(j) &&
+                 !(assign[j][i].getFam() == f &&
+                   assign[j][i].getStart() > t - problem.getThreshold(f) &&
+                   assign[j][i].getStart() <= t))
+            ++i;
+          if (i >= getNbJobsOn(j) && qualifLostTime[f][j] > t) return 0;
+        }
+
+  // std::cout << " no more than gamma_f between to task of the same
+  // family\n";
+  for (j = 0; j < problem.getNbMchs(); ++j) {
+    for (i = 0; i <getNbJobsOn(j); ++i) {
+      Job next = nextOf(i, assign[j][i].getFam(), j);
+      if (next.getStart() != -1) {
+        if (next.getStart() - assign[j][i].getStart() >
+            problem.getThreshold(assign[j][i]))
+          return 0;
+      }
     }
-    if (vu)
-      if (j >= n)
-	return 0;
   }
   return 1;
 }
 
-
-std::string Solution::toString(const Problem& P) const{
-  std::string res = "Une solution est : \n - les dates de début des tâches : \n";
-  for (unsigned int i = 0; i < S.size(); ++i)
-    res += " * la tache " + std::to_string(S[i].index) + " commence au temps " + std::to_string(S[i].start)
-      /*+ " et finit au temps "
-	+ std::std::to_string(S[i].start + P.getDuration(i))*/
-      + " sur la machine " + std::to_string(S[i].machine) + "\n";
+std::string Solution::toString() const {
+  std::string res =
+      "Une solution est : \n - les dates de début des tâches sont: "
+      "\n";
+  for (uint j = 0; j < assign.size(); ++j) {
+    res += " sur la machine " + std::to_string(j) + ": \n";
+    for (uint i = 0; i < assign[j].size(); ++i) {
+      res += assign[j][i].toString();
+    }
+  }
   res += " - Les familles ayant perdues leur qualification sont :\n";
-  for (unsigned int f = 0; f < QualifLostTime.size(); ++f){
-    res += " * la famille " + std::to_string(f) + " a perdu sa qualif sur les machines:\n ";
-    for (unsigned int j = 0; j < QualifLostTime[f].size(); ++j)
-      if (QualifLostTime[f][j] < std::numeric_limits<int>::max())
-	res += "\t - " + std::to_string(j) + " au temps " + std::to_string(QualifLostTime[f][j]) + "\n";
+  for (unsigned int f = 0; f < qualifLostTime.size(); ++f) {
+    res += " * la famille " + std::to_string(f) +
+           " a perdu sa qualif sur les machines:\n ";
+    for (unsigned int j = 0; j < qualifLostTime[f].size(); ++j)
+      if (qualifLostTime[f][j] < std::numeric_limits<int>::max())
+        res += "\t - " + std::to_string(j) + " au temps " +
+               std::to_string(qualifLostTime[f][j]) + "\n";
     res += "\n";
   }
-  res += "Le nombre de Machines disqualifiées est : " + std::to_string(getNbDisqualif()) + " et la sum des completion times vaut :" + std::to_string(getSumCompletion(P)) + "\n";
+
+  res += "Le nombre de Machines disqualifiées est : " +
+         std::to_string(getNbDisqualif()) +
+         " et la sum des completion times vaut :" +
+         std::to_string(getSumCompletion()) + "\n";
   return res;
 }
 
-void Solution::toTikz(const Problem& P) const{
-  std::cout << "\\begin{tikzpicture}\n" <<
-    "\\node (O) at (0,0) {};\n" <<
-    "\\draw[->] (O.center) -- ( " << getMaxEnd(P) + 1 << ",0);\n" <<
-    "\\draw[->] (O.center) -- (0, " << (P.getFamilyNumber() * 0.5 + 0.5) << ");\n";
-  for (int t = 5; t <= getMaxEnd(P); t = t + 5)
-    std::cout << "\\draw (" << t << ",0) -- (" << t << ",-0.1) node[below] {$" << t << "$} ;\n";
-  for (unsigned int i = 0; i < S.size(); ++i){
-    std::cout << "\\draw[fill = " << tikzColor[P.famOf[S[i].index]] <<
-      "!80!black!80]  (" << S[i].start << "," << (S[i].machine * 0.5) <<
-      ") rectangle (" << S[i].start + P.getDuration(S[i].index) << ","
-	      << (S[i].machine * 0.5 + 0.5) << ") node[midway] {$" <<
-      S[i].index << "$};\n";
+void Solution::toTikz() const {
+  std::cout << "\\begin{tikzpicture}\n"
+            << "\\node (O) at (0,0) {};\n"
+            << "\\draw[->] (O.center) -- ( " << getMaxEnd() + 1 << ",0);\n"
+            << "\\draw[->] (O.center) -- (0, "
+            << (problem.getNbMchs() * 0.5 + 0.5) << ");\n";
+  for (int t = 5; t <= getMaxEnd(); t = t + 5)
+    std::cout << "\\draw (" << t << ",0) -- (" << t << ",-0.1) node[below] {$"
+              << t << "$} ;\n";
+  for (uint j = 0; j < assign.size(); ++j) {
+    for (uint i = 0; i < assign[j].size(); ++i) {
+      std::cout << "\\draw[fill = " << tikzColor[assign[j][i].getFam()]
+                << "!80!black!80]  (" << assign[j][i].getStart() << ","
+                << ((int)j * 0.5) << ") rectangle ("
+                << assign[j][i].getStart() + problem.getDuration(assign[j][i])
+                << "," << ((int)j * 0.5 + 0.5) << ") node[midway] {$"
+                << assign[j][i].getFam() << "$};\n";
+    }
   }
   std::cout << "\\end{tikzpicture}\n";
 }
 
-void Solution::toDimacs(const Problem& problem) const {
-  std::cout << "d CMAX " << getMaxEnd(problem) << std::endl <<
-  "d FLOWTIME " << getSumCompletion(problem) << std::endl << 
-  "d DISQUALIFIED "<< getRealNbDisqualif(problem) << std::endl <<
-  "d QUALIFIED "<< getNbQualif(problem) << std::endl << 
-  "d SETUP "<< getNbSetup(problem) << std::endl <<
-  "d VALIDE "<< isValid(problem) << std::endl;
+void Solution::toDimacs() const {
+  std::cout << "d CMAX " << getMaxEnd() << std::endl
+            << "d FLOWTIME " << getSumCompletion() << std::endl
+            << "d DISQUALIFIED " << getNbDisqualif() << std::endl
+            << "d QUALIFIED " << getNbQualif() << std::endl
+            << "d SETUP " << getNbSetup() << std::endl
+            << "d VALIDE " << isValid() << std::endl;
 }

@@ -46,9 +46,9 @@ int displayCPAIOR(const Problem& P, const Solution& s, const Solution& solSCH, c
   std::cout << "d FAILS "  <<  cp.getInfo(IloCP::NumberOfFails)<< "\n";
   std::cout << "c VARIABLES " <<  cp.getInfo(IloCP::NumberOfVariables) << "\n";
   std::cout << "c CONSTRAINTS " <<  cp.getInfo(IloCP::NumberOfConstraints) << "\n";
-  std::cout << "c MACHINES "<< P.M << "\n";
-  std::cout << "c FAMILIES "<< P.getFamilyNumber() << "\n";
-  std::cout << "c JOBS "<< P.N << "\n";
+  std::cout << "c MACHINES "<< problem.M << "\n";
+  std::cout << "c FAMILIES "<< problem.getNbFams() << "\n";
+  std::cout << "c JOBS "<< problem.N << "\n";
 
   std::cout << std::endl;
   if (solved)   s.toTikz(P);

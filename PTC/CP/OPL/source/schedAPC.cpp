@@ -69,10 +69,10 @@ void useCPStart(const Problem &P, Solution& solSCH, Solution& solQCH,IloEnv& env
 
 void MyCustomDataSource::read() const {
   IloOplDataHandler handler = getDataHandler();
-  const int F = P.getFamilyNumber();
+  const int F = problem.getNbFams();
   // initialize the int 'simpleInt'
   handler.startElement("nbM");
-  handler.addIntItem(P.M);
+  handler.addIntItem(problem.M);
   handler.endElement();
   handler.startElement("nbF");
   handler.addIntItem(F);
@@ -82,21 +82,21 @@ void MyCustomDataSource::read() const {
   handler.startElement("fsizes");
   handler.startArray();
   for (int f = 0 ; f < F ; ++f){
-    handler.addIntItem(P.getNf(f));
+    handler.addIntItem(problem.getNf(f));
   }
   handler.endArray();
   handler.endElement();
   handler.startElement("durations");
   handler.startArray();
   for (int f = 0 ; f < F ; ++f){
-    handler.addIntItem(P.F[f].duration);
+    handler.addIntItem(problem.getDuration(f));
   }
   handler.endArray();
   handler.endElement();
   handler.startElement("thresholds");
   handler.startArray();
   for (int f = 0 ; f < F ; ++f){
-    handler.addIntItem(P.F[f].threshold);
+    handler.addIntItem(problem.getThreshold(f));
   }
   handler.endArray();
   handler.endElement();
@@ -108,7 +108,7 @@ void MyCustomDataSource::read() const {
     handler.startArray();
     for (int j = 0 ; j < F ; j++)
       if (f == j) handler.addIntItem(0);
-      else handler.addIntItem(P.F[j].setup);
+      else handler.addIntItem(problem.F[j].setup);
     handler.endArray();
   }  
   handler.endArray();
@@ -118,8 +118,8 @@ void MyCustomDataSource::read() const {
   handler.startArray();
   for (int f = 0 ; f < F ; f++) {
     handler.startArray();
-    for (int j = 0 ; j < P.M ; j++)
-      if (P.F[f].qualif[j]) handler.addIntItem(1);
+    for (int j = 0 ; j < problem.M ; j++)
+      if (problem.F[f].qualif[j]) handler.addIntItem(1);
       else handler.addIntItem(0);
     handler.endArray();
   }  
@@ -133,7 +133,7 @@ int solToModel(const Problem& P, Solution s,
 	       IloEnv& env, IloOplModel& opl, IloCP& cp){
   IloSolution sol(env);
   s.reaffectId(P);
-  std::sort(s.S.begin(),s.S.end(),idComp);
+  std::sort(s.assign.begin(),s.assign.end(),idComp);
   
   sol.setValue((opl.getElement("flowtime")).asIntVar(), s.getSumCompletion(P));
   sol.setEnd((opl.getElement("cmax")).asIntervalVar(), s.getMaxEnd(P));
@@ -141,19 +141,19 @@ int solToModel(const Problem& P, Solution s,
   sol.setValue((opl.getElement("qualified")).asIntVar(), s.getNbQualif(P));
 	
   IloIntervalVarMap jobs = opl.getElement("jobs").asIntervalVarMap();
-  for (IloInt j = 1 ; j <= P.N ; ++j){
+  for (IloInt j = 1 ; j <= problem.N ; ++j){
     IloIntervalVar job_j = jobs.get(j);
-    sol.setStart(job_j,s.S[j-1].start);
+    sol.setStart(job_j,s.S[j-1].getStart());
   }
  	
   IloIntervalVarMap mjobs = opl.getElement("mjobs").asIntervalVarMap();
-  for (IloInt j = 0; j < P.N ; ++j){
+  for (IloInt j = 0; j < problem.N ; ++j){
     IloIntervalVarMap sub = mjobs.getSub(j + 1);
-    for (IloInt k = 0 ; k < P.M; ++k){
+    for (IloInt k = 0 ; k < problem.M; ++k){
       IloIntervalVar alt_job = sub.get(k + 1);
-      if (s.S[j].machine == k){
+      if (s.assign[j].getMachine == k){
 	sol.setPresent(alt_job);
-	//	sol.setStart(alt_job, s.S[j].start);
+	//	sol.setStart(alt_job, s.assign[j].getStart());
       }
       else sol.setAbsent(alt_job);
     }
@@ -168,18 +168,18 @@ int solToModel(const Problem& P, Solution s,
 int modelToSol(const Problem &P, Solution& s, const IloEnv& env, const IloCP& cp, const IloOplElement& elmt){
   IloInt i ,j;
   IloIntervalVarMap mjobs = elmt.asIntervalVarMap();
-  IloIntervalVarMatrix dk(env,P.N);
-  for (i = 0 ; i < P.N ; ++i){
+  IloIntervalVarMatrix dk(env,problem.N);
+  for (i = 0 ; i < problem.N ; ++i){
     dk[i] = mjobs[i + 1].asNewIntervalVarArray();
   }
   
-  for (i = 0; i < P.N; ++i)
-    for (j = 0; j < P.M; ++j)
-      if (P.isQualif(i, j)){
+  for (i = 0; i < problem.N; ++i)
+    for (j = 0; j < problem.M; ++j)
+      if (problem.isQualif(i, j)){
 	if (cp.isPresent(dk[i][j])){
-	  s.S[i].index = i;
-	  s.S[i].start = (int)cp.getStart(dk[i][j]);
-	  s.S[i].machine = j;
+	  s.assign[i].getIndex() = i;
+	  s.assign[i].getStart() = (int)cp.getStart()(dk[i][j]);
+	  s.assign[i].getMachine = j;
 	}
       }
   s.repairDisqualif(P);

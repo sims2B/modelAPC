@@ -33,7 +33,7 @@ BINDIR :=bin
 TSTDIR :=tests
 DEPDIR :=.deps
 ### USER IBM ILOG CPLEX DIRECTORY
-CPLEXDIR=/opt/ibm/ILOG/CPLEX_Studio128
+CPLEXDIR=/home/nattafm/Library/CPLEX_128
 ### PROGRAM-RELATED VARIABLES
 # Files containing the main() function
 MAINFILES :=$(SRCDIR)/main.cpp $(SRCDIR)/generate.cpp
@@ -45,7 +45,7 @@ CXXFLAGS :=-std=c++17 -Wall -Werror -DIL_STD
 ## -DIL_STD : avoid fatal error - iostream.h : No such file or directory
 ## GDB : add option -g 
 LDFLAGS  :=  -L$(CPLEXDIR)/cplex/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/concert/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/cpoptimizer/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/opl/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/opl/bin/x86-64_linux/
-LDLIBS   :=-lm -lconfig++ -lopl  -liljs -loplnl1 -lcp -lilocplex -lcplex1280 -lconcert -licuuc -licui18n -licuio -licudata -lpthread -ldl
+LDLIBS   :=-lm  -lconfig++ -lopl  -liljs -loplnl1 -lcp -lilocplex -lcplex1280 -lconcert -licuuc -licui18n -licuio -licudata -lpthread -ldl
 INCLUDE  :=-I$(INCDIR)  -I$(CPLEXDIR)/cplex/include -I$(CPLEXDIR)/concert/include -I$(CPLEXDIR)/cpoptimizer/include -I$(CPLEXDIR)/opl/include 
 ### TESTS-RELATED VARIABLES
 # Files containing the main() function

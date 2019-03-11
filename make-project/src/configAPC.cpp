@@ -84,8 +84,9 @@ std::string ConfigAPC::getStringValue(const char* name1, const char* name2, std:
  std::vector<std::string> ConfigAPC::getHeuristics() {
     std::vector<std::string> heuristics;
     try {
-        const libconfig::Setting& root = config.getRoot();  
-        const libconfig::Setting &hsettings = root["solver"].lookup("heuristics");   
+        const libconfig::Setting& root = config.getRoot(); 
+        const libconfig::Setting& rootSolver =  root["solver"];
+        const libconfig::Setting& hsettings = rootSolver.lookup("heuristics");   
         for (int i = 0; i < hsettings.getLength(); ++i) {
           heuristics.push_back(hsettings[i]);
         }

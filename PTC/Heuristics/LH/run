@@ -22,15 +22,15 @@ selected : 0
 endLast : [ 0 , 0 , 0 ]
 toSchedule : [ 1 , 5 ]
 nextOfFam : [ 1 , 0 ]
-QualifLostTime 0  : [ 0 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 0 , 2147483647 , 0 ]
+qualifLostTime 0  : [ 0 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 0 , 2147483647 , 0 ]
 **********After treat******** 
  j = 0 ; f = 0
 endLast : [ 4 , 0 , 0 ]
 toSchedule : [ 0 , 5 ]
 nextOfFam : [ 1 , 0 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 0 , 2147483647 , 0 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 0 , 2147483647 , 0 ]
 selected : -1
 selected : 1
 **********Before treat******** 
@@ -38,30 +38,30 @@ selected : 1
 endLast : [ 4 , 0 , 0 ]
 toSchedule : [ 0 , 5 ]
 nextOfFam : [ 1 , 0 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 0 , 2147483647 , 0 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 0 , 2147483647 , 0 ]
 **********After treat******** 
  j = 2 ; f = 1
 endLast : [ 4 , 0 , 4 ]
 toSchedule : [ 0 , 4 ]
 nextOfFam : [ 1 , 2 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 0 , 2147483647 , 4 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 0 , 2147483647 , 4 ]
 selected : 1
 **********Before treat******** 
  j = 0 ; f = 1
 endLast : [ 4 , 0 , 4 ]
 toSchedule : [ 0 , 4 ]
 nextOfFam : [ 1 , 2 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 0 , 2147483647 , 4 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 0 , 2147483647 , 4 ]
 **********After treat******** 
  j = 0 ; f = 1
 endLast : [ 10 , 0 , 4 ]
 toSchedule : [ 0 , 3 ]
 nextOfFam : [ 1 , 3 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 10 , 2147483647 , 4 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 10 , 2147483647 , 4 ]
 selected : -1
 selected : 1
 **********Before treat******** 
@@ -69,30 +69,30 @@ selected : 1
 endLast : [ 10 , 0 , 4 ]
 toSchedule : [ 0 , 3 ]
 nextOfFam : [ 1 , 3 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 10 , 2147483647 , 4 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 10 , 2147483647 , 4 ]
 **********After treat******** 
  j = 2 ; f = 1
 endLast : [ 10 , 0 , 8 ]
 toSchedule : [ 0 , 2 ]
 nextOfFam : [ 1 , 4 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 10 , 2147483647 , 8 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 10 , 2147483647 , 8 ]
 selected : 1
 **********Before treat******** 
  j = 0 ; f = 1
 endLast : [ 10 , 0 , 8 ]
 toSchedule : [ 0 , 2 ]
 nextOfFam : [ 1 , 4 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 10 , 2147483647 , 8 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 10 , 2147483647 , 8 ]
 **********After treat******** 
  j = 0 ; f = 1
 endLast : [ 14 , 0 , 8 ]
 toSchedule : [ 0 , 1 ]
 nextOfFam : [ 1 , 5 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 14 , 2147483647 , 8 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 14 , 2147483647 , 8 ]
 selected : -1
 selected : 1
 **********Before treat******** 
@@ -100,15 +100,15 @@ selected : 1
 endLast : [ 14 , 0 , 8 ]
 toSchedule : [ 0 , 1 ]
 nextOfFam : [ 1 , 5 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 14 , 2147483647 , 8 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 14 , 2147483647 , 8 ]
 **********After treat******** 
  j = 2 ; f = 1
 endLast : [ 14 , 0 , 12 ]
 toSchedule : [ 0 , 0 ]
 nextOfFam : [ 1 , 5 ]
-QualifLostTime 0  : [ 4 , 0 , 2147483647 ]
-QualifLostTime 1  : [ 14 , 2147483647 , 12 ]
+qualifLostTime 0  : [ 4 , 0 , 2147483647 ]
+qualifLostTime 1  : [ 14 , 2147483647 , 12 ]
 Hurray!
 Objective value:	52
 valide? 	0
