@@ -73,7 +73,7 @@ void MyCustomDataSource::read() const {
       if (f == j)
         handler.addIntItem(0);
       else
-        handler.addIntItem(problem.getSetup(f));
+        handler.addIntItem(problem.getSetup(j));
     handler.endArray();
   }
   handler.endArray();
@@ -128,7 +128,7 @@ void CpoSolver2APC::solToModel(const Solution &solution, IloEnv &env,
       Job a(f);
       int mch;
       copie.getFirstOcc(a, f, mch);
-      copie.removeJob(a,mch);
+      copie.removeJob(a, mch);
       IloIntervalVarMap sub = mjobs.getSub(j + 1);
       for (IloInt k = 0; k < problem.getNbMchs(); ++k) {
         IloIntervalVar alt_job = sub.get(k + 1);
@@ -145,19 +145,26 @@ void CpoSolver2APC::solToModel(const Solution &solution, IloEnv &env,
 
 void CpoSolver2APC::modelToSol(const IloEnv &env, const IloCP &cp,
                                const IloOplElement &elmt) {
-  IloInt i, j;
+  IloInt i, j,f;
   IloIntervalVarMap mjobs = elmt.asIntervalVarMap();
   IloIntervalVarMatrix dk(env, problem.getNbJobs());
   for (i = 0; i < problem.getNbJobs(); ++i) {
     dk[i] = mjobs[i + 1].asNewIntervalVarArray();
   }
-
-  for (i = 0; i < problem.getNbJobs(); ++i)
-    for (j = 0; j < problem.getNbMchs(); ++j)
-      if (problem.isQualif(i, j))
-        if (cp.isPresent(dk[i][j]))
-          solution.addJob(
-              Job(problem.getFamily(i), (int)cp.getStart(dk[i][j]), i), j);
-
+  for (j = 0; j < problem.getNbMchs(); ++j) {
+    int deb, fin = 0;
+    for (f = 0; f < problem.getNbFams(); ++f) {
+      deb = fin;
+      fin = deb + problem.getNbJobs(f);
+      if (problem.isQualif(f, j)) {
+        for (i = deb; i < fin; ++i) {
+          if (cp.isPresent(dk[i][j])) {
+            solution.addJob(
+                Job(problem.getFamily(i), (int)cp.getStart(dk[i][j]), -1), j);
+          }
+        }
+      }
+    }
+  }
   solution.repairDisqualif();
 }

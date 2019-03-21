@@ -30,7 +30,7 @@ class Solution {
   void addJob(const Job& j, int m);
   void removeLastJob(int m);
   void removeJob(const Job& i, int m);
-  inline Job getLastJob(int j) const { return assign[j][assign[j].size() - 1]; }
+  Job getLastJob(int j) const; 
   int getLastStart(int j) const;  // last getStart time on machine j
   int getEnd(int j) const;
   int getMaxEnd() const;  // compute CMax
@@ -47,8 +47,8 @@ class Solution {
               // schedule
   Job getPreviousOcc(const Job&, int f, int m) const;
 
-  Job nextOf(int i, int f, int m) const;
-  Job nextOf(const Job& i, int f, int m) const;
+  Job nextOf(int i, int f, int m) const; //return first Job of f scheduled after job at ith pos
+  Job nextOf(const Job& i, int f, int m) const; //return first Job of f scheduled after j
 
   int getTotalNbDisqualif() const;
   int getNbQualif() const;
@@ -58,8 +58,8 @@ class Solution {
   int getNbSetup() const;
   int getNbJobsOn(int m) const;
 
-  Job getJobs(int i, int m) const;  // return the ith jobs on m (if sorted)
-
+  Job getJobs(int i, int m) const;  // return the ith jobs on m (start at 0)
+  void shiftJob(int i , int m , int shift);
   inline void setDisqualif(int val, int f, int m) {
     qualifLostTime[f][m] = val;
   }

@@ -1,7 +1,51 @@
 #include "heuristics.h"
 #include <algorithm>
 
-int ListHeuristic::chooseFamily(int m) {
+void HeuristicAPC::schedule(const int f, const int m) {
+  int endMch = solution.getEnd(m);
+  // ajout d'un job de f sur la machine
+  if (!solution.getNbJobsOn(m))
+    solution.addJob(Job(f, 0, 1), m);
+  else
+    (solution.getLastJob(m).getFam() == f
+         ? solution.addJob(Job(f, endMch, 1), m)
+         : solution.addJob(Job(f, endMch + problem.getSetup(f), 1), m));
+
+  problem.decreaseNbJobs(f);
+
+  updateDisqualifLocal(m);
+}
+
+void HeuristicAPC::updateDisqualifLocal(int m) {
+  for (int f = 0; f < problem.getNbFams(); ++f) {
+    if (problem.isQualif(f, m)) {
+      int lastOf = solution.lastOf(f, m).getStart();
+
+      if (lastOf == -1) lastOf = 0;
+      if (solution.getEnd(m) + problem.getSetup(f) - lastOf > problem.getThreshold(f)) {
+        solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
+        problem.disqualif(f, m);
+      }
+    }
+  }
+}
+
+void HeuristicAPC::updateDisqualifGlobal() {
+  int cmax = solution.getMaxEnd();
+  for (int m = 0; m < problem.getNbMchs(); ++m) {
+    for (int f = 0; f < problem.getNbFams(); ++f) {
+      if (problem.isQualif(f, m)) {
+        int lastOf = solution.lastOf(f, m).getStart();
+
+        if (lastOf == -1) lastOf = 0;
+        if (cmax - lastOf > problem.getThreshold(f))
+          solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
+      }
+    }
+  }
+}
+
+int ListHeuristic::chooseFamily(int m) const {
   int selected = -1;
   for (int f = 0; f < problem.getNbFams(); ++f) {
     if (problem.isQualif(f, m) && problem.getNbJobs(f)) {
@@ -17,47 +61,20 @@ int ListHeuristic::chooseFamily(int m) {
   return selected;
 }
 
-void ListHeuristic::schedule(const int m, const int f) {
-  int endMch = solution.getEnd(m);
-  // ajout d'un job de f sur la machine
-  (solution.getLastJob(m).getFam() == f
-       ? solution.addJob(Job(f, endMch, 1), m)
-       : solution.addJob(Job(f, endMch + problem.getSetup(f), 1), m));
-
-  problem.decreaseNbJobs(f);
-
-  updateDisqualif();
-}
-
-void ListHeuristic::updateDisqualif() {
-  for (int m = 0; m < problem.getNbMchs(); ++m) {
-    for (int f = 0; f < problem.getNbFams(); ++f) {
-      if (problem.isQualif(f, m)) {
-        int lastOf = solution.lastOf(f, m).getStart();
-        if (lastOf == -1) lastOf = 0;
-        if (solution.getEnd(m) - lastOf > problem.getThreshold(f)) {
-          solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
-          problem.disqualif(f, m);
-        }
-      }
-    }
-  }
-}
-
 void ListHeuristic::doSolve() {
   // init and variable
   Problem save(problem);
   const int M = problem.getNbMchs();
   int i, f;
+  i = 0;
+  std::cout << "*************resolution LH\n";
 
   // algo
-  i = 0;
-
   while (i < problem.getNbJobs()) {
     bool feasible = false;
     for (int j = 0; j < M; ++j) {
       if ((f = chooseFamily(j)) != -1) {
-        schedule(j, f);
+        schedule(f, j);
         feasible = true;
         i++;
       }
@@ -66,59 +83,34 @@ void ListHeuristic::doSolve() {
       return;
     }
   }
+  updateDisqualifGlobal();
   problem = save;
   setSAT();
 }
 
-void SchedCentricHeuristic::schedule(const int m, const int f) {
-  int endMch = solution.getEnd(m);
-  // ajout d'un job de f sur la machine
-  (solution.getLastJob(m).getFam() == f
-       ? solution.addJob(Job(f, endMch, 1), m)
-       : solution.addJob(Job(f, endMch + problem.getSetup(f), 1), m));
-
-  problem.decreaseNbJobs(f);
-
-  updateDisqualif();
+int SchedCentricHeuristic::remainingThresh(const int &f, const int &m) const {
+  int lastStart = solution.lastOf(f, m).getStart();
+  if (lastStart == -1)
+    return problem.getThreshold(f) - solution.getEnd(m);
+  else
+    return lastStart + problem.getThreshold(f) - solution.getEnd(m);
 }
 
-void SchedCentricHeuristic::updateDisqualif() {
-  for (int m = 0; m < problem.getNbMchs(); ++m) {
-    // update disqualification
-    for (int f = 0; f < problem.getNbFams(); ++f) {
-      if (problem.isQualif(f, m)) {
-        int lastOf = solution.lastOf(f, m).getStart();
-        if (lastOf == -1) lastOf = 0;
-        if (solution.getEnd(m) - lastOf > problem.getThreshold(f)) {
-          solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
-          problem.disqualif(f, m);
-        }
-      }
-    }
-  }
-}
-
-int SchedCentricHeuristic::remainingThresh(const int &f, const int &m,
-                                           const int &t) {
-  return solution.getDisqualif(f, m) + problem.getThreshold(f) - t;
-}
-
-int SchedCentricHeuristic::chooseFamily(const int &m) {
+int SchedCentricHeuristic::chooseFamily(const int &m) const {
   int current = solution.getLastJob(m).getFam();
   int critical, selected = -1;
   // if there's no task on m or no job of current to schedule
   // choose with the minimum threshold rule
   if (solution.getNbJobsOn(m) == 0 || problem.getNbJobs(current) == 0)
-    selected = famWithMinThresh(m, solution.getEnd(m));
+    selected = famWithMinThresh(m);
   else {
     // if scheduled current does not produced a disqualification
     // schedule a job of current
     selected = current;
-    if ((critical = famWithMinThresh(m, solution.getEnd(m))) != -1)
+    if ((critical = famWithMinThresh(m)) != -1)
       if (remainingThresh(
-              critical, m,
-              solution.getEnd(
-                  m)) -  // if scheduled selected => disqulification of critical
+              critical,
+              m) -  // if scheduled selected => disqulification of critical
               problem.getSetup(critical) <
           problem.getDuration(selected))
         selected = critical;  // then schedule critical
@@ -126,15 +118,15 @@ int SchedCentricHeuristic::chooseFamily(const int &m) {
   return selected;
 }
 
-int SchedCentricHeuristic::famWithMinThresh(const int &m, const int &t) {
+int SchedCentricHeuristic::famWithMinThresh(const int &m) const {
   int selected = -1;
   for (int f = 0; f < problem.getNbFams(); ++f) {
     if (problem.isQualif(f, m) && problem.getNbJobs(f) != 0) {
       if (selected == -1)
         selected = f;
-      else if (remainingThresh(f, m, t) < remainingThresh(selected, m, t))
+      else if (remainingThresh(f, m) < remainingThresh(selected, m))
         selected = f;
-      else if (remainingThresh(f, m, t) == remainingThresh(selected, m, t) &&
+      else if (remainingThresh(f, m) == remainingThresh(selected, m) &&
                problem.getDuration(f) < problem.getDuration(selected))
         selected = f;
     }
@@ -147,63 +139,49 @@ void SchedCentricHeuristic::doSolve() {
   const int M = problem.getNbMchs();
   int i, f, j;
 
+  std::cout << "*************resolution SCH\n";
   i = 0;
   while (i < problem.getNbJobs()) {
     bool feasible = false;
     for (j = 0; j < M; ++j) {
       if ((f = chooseFamily(j)) != -1) {
         feasible = true;
-        schedule(j, f);
+        schedule(f, j);
         ++i;
       }
     }
 
     if (!feasible) return;
   }
+  updateDisqualifGlobal();
   problem = save;
   setSAT();
 }
 
 void QualifCentricHeuristic::doSolve() {
   // FIXME REALLY NOT SURE ABOUT THIS ONE !
-  if (findSchedule()) {
-    intraChange();
-    interChange();
+
+  std::cout << "*************resolution QCH\n";
+  if (findSchedule()) {/* 
+    std::cout << "\n after phase 1 \\\\ \n";
+    solution.toTikz();
+    //  std::cout << solution.toString(); */
+    intraChange();/* 
+    std::cout << "\n after phase 2 \\\\ \n";
+    solution.toTikz(); */
+    interChange();/* 
+    std::cout << "\n after phase 3 \\\\ \n";
+    solution.toTikz(); */
     setSAT();
   }
 }
 
-void QualifCentricHeuristic::schedule(const int m, const int f) {
-  int endMch = solution.getEnd(m);
-  // ajout d'un job de f sur la machine
-  (solution.getLastJob(m).getFam() == f
-       ? solution.addJob(Job(f, endMch, 1), m)
-       : solution.addJob(Job(f, endMch + problem.getSetup(f), 1), m));
-
-  problem.decreaseNbJobs(f);
-
-  updateDisqualif();
-}
-
-void QualifCentricHeuristic::updateDisqualif() {
-  for (int m = 0; m < problem.getNbMchs(); ++m) {
-    // update disqualification
-    for (int f = 0; f < problem.getNbFams(); ++f) {
-      if (problem.isQualif(f, m)) {
-        int lastOf = solution.lastOf(f, m).getStart();
-        if (lastOf == -1) lastOf = 0;
-        if (solution.getEnd(m) - lastOf > problem.getThreshold(f)) {
-          solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
-          problem.disqualif(f, m);
-        }
-      }
-    }
-  }
-}
-
-int QualifCentricHeuristic::remainingThresh(const int &f, const int &m,
-                                            const int &t) {
-  return solution.getDisqualif(f, m) + problem.getThreshold(f) - t;
+int QualifCentricHeuristic::remainingThresh(const int &f, const int &m) const {
+  int lastStart = solution.lastOf(f, m).getStart();
+  if (lastStart == -1)
+    return problem.getThreshold(f) - solution.getEnd(m);
+  else
+    return lastStart + problem.getThreshold(f) - solution.getEnd(m);
 }
 
 int QualifCentricHeuristic::findSchedule() {
@@ -216,28 +194,27 @@ int QualifCentricHeuristic::findSchedule() {
     for (j = 0; j < problem.getNbMchs(); ++j) {
       if ((f = chooseFamily(j)) != -1) {
         feasible = true;
-        schedule(j, f);
+        schedule(f, j);
         ++i;
       }
     }
 
     if (!feasible) return 0;
   }
+  updateDisqualifGlobal();
   problem = save;
   return 1;
 }
 
-int QualifCentricHeuristic::chooseFamily(const int &m) {
+int QualifCentricHeuristic::chooseFamily(const int &m) const {
   int selected = -1;
   for (int f = 0; f < problem.getNbFams(); ++f) {
     if (problem.isQualif(f, m) && problem.getNbJobs(f) != 0) {
       if (selected == -1)
         selected = f;
-      else if (remainingThresh(f, m, solution.getEnd(m)) <
-               remainingThresh(selected, m, solution.getEnd(m)))
+      else if (remainingThresh(f, m) < remainingThresh(selected, m))
         selected = f;
-      else if (remainingThresh(f, m, solution.getEnd(m)) ==
-                   remainingThresh(selected, m, solution.getEnd(m)) &&
+      else if (remainingThresh(f, m) == remainingThresh(selected, m) &&
                problem.getDuration(f) < problem.getDuration(selected))
         selected = f;
     }
@@ -248,8 +225,9 @@ int QualifCentricHeuristic::chooseFamily(const int &m) {
 void QualifCentricHeuristic::intraChange() {
   const int F = problem.getNbFams();
   for (int k = 0; k < problem.getNbMchs(); ++k) {  // sur chaque machine
+
     if (solution.getNbJobsOn(k) > 2) {
-      std::vector<int> moved(
+      std::vector<int> nbMove(
           F, 0);  // le nombre max de chgmt pour une famille est sa taille
 
       // intraChange movement
@@ -259,10 +237,10 @@ void QualifCentricHeuristic::intraChange() {
         Job j = solution.getLastJob(k);  // recupere le dernier job schedule
         Job i = solution.firstOf(j.getFam(),
                                  k);  // et le premier job de la meme famille
-        if (!(i == j) && moved[j.getFam()] < problem.getNbJobs(j.getFam()) &&
+        if (!(i == j) && nbMove[j.getFam()] < problem.getNbJobs(j.getFam()) &&
             !addDisqualif(i, j, k)) {
           update = true;
-          moved[j.getFam()]++;
+          nbMove[j.getFam()]++;
           updateTime(i, j, k);
         }
       } while (update);
@@ -270,28 +248,40 @@ void QualifCentricHeuristic::intraChange() {
   }
   // comme on a updater le cmax, on a pu supprimer des disqualifications => maj
   int Cmax = solution.getMaxEnd();
-  for (int f = 0; f < problem.getNbFams(); ++f)
+  for (int f = 0; f < F; ++f)
     for (int i = 0; i < problem.getNbMchs(); ++i) {
       if (solution.getDisqualif(f, i) >= Cmax)
         solution.setDisqualif(std::numeric_limits<int>::max(), f, i);
     }
 }
 
+// j move next to i
 int QualifCentricHeuristic::addDisqualif(const Job &i, const Job &j,
-                                         const int &m) {
+                                         const int &m) const {
   const int F = problem.getNbFams();
 
   for (int f = 0; f < F; ++f) {
-    if (f != i.getFam() && problem.isQualif(f, m)) {
-      Job firstOcc = solution.firstOf(f, m);
-      if (firstOcc.getStart() != -1) {
-        if (firstOcc.getStart() > i.getStart()) {
-          if (firstOcc.getStart() > problem.getThreshold(f)) return 1;
-        } else {
-          Job nextOcc = solution.nextOf(firstOcc, f, m);
-          if (nextOcc.getStart() - firstOcc.getStart() > problem.getThreshold(f))
+    if (f == i.getFam()) {
+      Job lastOccOfF = solution.getPreviousOcc(j, f, m);
+      if (solution.getMaxEnd() - lastOccOfF.getStart() >
+          problem.getThreshold(j))
+        return 1;
+    }
+
+    else if (problem.isQualif(f, m)) {
+      Job firstOccBeforeI = solution.getPreviousOcc(i, f, m);
+      int nextStartOfF = solution.nextOf(i, f, m).getStart();
+
+      if (firstOccBeforeI.getStart() != -1) {
+        if (nextStartOfF != -1) {  // next = -1?
+          if (nextStartOfF - firstOccBeforeI.getStart() +
+                  problem.getDuration(j) >
+              problem.getThreshold(f))
             return 1;
         }
+      } else if (nextStartOfF != -1) {
+        if (nextStartOfF + problem.getDuration(j) > problem.getThreshold(f))
+          return 1;
       }
     }
   }
@@ -301,14 +291,14 @@ int QualifCentricHeuristic::addDisqualif(const Job &i, const Job &j,
 void QualifCentricHeuristic::updateTime(const Job &i, const Job &j,
                                         const int &k) {
   // update data for j, save j and remove j from the schedule
-  Job j2(j.getFam(), i.getStart() + problem.getDuration(j.getFam()), j.getIndex());
+  Job j2(j.getFam(), i.getStart() + problem.getDuration(j.getFam()),
+         j.getIndex());
   solution.removeLastJob(k);
-
   // shift all task after i by p_f(j)
   for (int l = 0; l < solution.getNbJobsOn(k); ++l) {
     Job cur = solution.getJobs(l, k);
     if (cur.getStart() > i.getStart()) {
-      cur.shift(problem.getDuration(j2));
+      solution.shiftJob(l, k, problem.getDuration(j));
     }
   }
 
@@ -322,15 +312,15 @@ void QualifCentricHeuristic::interChange() {
 
   for (k = 0; k < problem.getNbMchs(); ++k) {  // pour chaque machine
     if (solution.getNbJobsOn(k) > 1) {
+      // tant qu'on fait un move
       bool update;
-      do {  // tant qu'on fait un move
+      do {
         update = false;
         getLastGroup(deb, fin, k, nbJobs);
         int machineSelected = -1;
-        int jobSelected = -1;
+        Job jobSelected(-1);
         findJobMachineMatch(k, deb, fin, machineSelected, jobSelected, nbJobs);
-
-        if (machineSelected != -1 && jobSelected != -1) {
+        if (machineSelected != -1 && jobSelected.getFam() != -1) {
           update = true;
           updateTime(jobSelected, deb, nbJobs, k, machineSelected);
         }
@@ -340,8 +330,8 @@ void QualifCentricHeuristic::interChange() {
 
   int Cmax = solution.getMaxEnd();
   for (int f = 0; f < problem.getNbFams(); ++f)
-    for (int i = 0; i < problem.getNbJobs(); ++i) {
-      if (solution.getDisqualif(f, i) >= Cmax)
+    for (int i = 0; i < problem.getNbMchs(); ++i) {
+      if (solution.lastOf(f, i).getStart() + problem.getThreshold(f) >= Cmax)
         solution.setDisqualif(std::numeric_limits<int>::max(), f, i);
     }
 }
@@ -349,7 +339,8 @@ void QualifCentricHeuristic::interChange() {
 void QualifCentricHeuristic::findJobMachineMatch(int k, const Job &deb,
                                                  const Job &fin,
                                                  int &machineSelected,
-                                                 int &jobSelected, int nbJobs) {
+                                                 Job &jobSelected,
+                                                 int nbJobs) const {
   for (int m = 0; m < problem.getNbMchs(); ++m) {
     if (problem.isQualif(fin.getFam(), m) &&
         k != m) {  // sur quelle machine je la met...
@@ -360,7 +351,7 @@ void QualifCentricHeuristic::findJobMachineMatch(int k, const Job &deb,
               !addCompletion(jobi, nbJobs, k, m))
             if (machineSelected == -1 ||
                 solution.getEnd(m) < solution.getEnd(machineSelected)) {
-              jobSelected = i;
+              jobSelected = jobi;
               machineSelected = m;
             }
       }
@@ -368,30 +359,55 @@ void QualifCentricHeuristic::findJobMachineMatch(int k, const Job &deb,
   }
 }
 
-// i sur machine m ; j sur machine k
+int QualifCentricHeuristic::computeNewCmax(const Job &deb, const int &k,
+                                           const int &m,
+                                           const int &nbJobs) const {
+  int cmax = 0;
+  for (int i = 0; i < problem.getNbMchs(); ++i) {
+    if (i == k) {
+      if (cmax < solution.getEnd(k) - nbJobs * problem.getDuration(deb))
+        cmax = solution.getEnd(k) - nbJobs * problem.getDuration(deb);
+    } else if (i == m) {
+      if (cmax < solution.getEnd(m) + nbJobs * problem.getDuration(deb))
+        cmax = solution.getEnd(m) + nbJobs * problem.getDuration(deb);
+    } else {
+      if (cmax < solution.getEnd(i)) cmax = solution.getEnd(i);
+    }
+  }
+  return cmax;
+}
+
+// remove [deb, deb+nbJobs] from k, add them after to jobi on m
 int QualifCentricHeuristic::addDisqualif(const Job &deb, const Job &jobi,
                                          const int &m, const int &k,
-                                         int nbJobs) {
+                                         int nbJobs) const {
   const int F = problem.getNbFams();
-
+  int cmax = computeNewCmax(deb, k, m, nbJobs);
   // adding jobs [deb,fin] on m add a disqualif?
   for (int f = 0; f < F; ++f) {
     if (f != jobi.getFam() && problem.isQualif(f, m)) {
-      Job firstOcc = solution.firstOf(f, m);
+      Job firstOccBeforeI = solution.getPreviousOcc(jobi, f, m);
+      int nextStartOfF = solution.nextOf(jobi, f, m).getStart();
 
-      if (firstOcc.getStart() != -1) {
-        if (firstOcc.getStart() > jobi.getStart()) {
-          if (firstOcc.getStart() + problem.getDuration(deb) * nbJobs >
+      if (firstOccBeforeI.getStart() != -1) {
+        if (nextStartOfF != -1) {  // next = -1?
+          if (nextStartOfF + problem.getDuration(deb) * nbJobs -
+                  firstOccBeforeI.getStart() >
               problem.getThreshold(f))
             return 1;
+        } else {
+          if (solution.getDisqualif(f, m) == infinity &&
+              cmax - firstOccBeforeI.getStart() > problem.getThreshold(f))
+            return 1;
         }
-
-        else {
-          Job nextOcc = solution.nextOf(firstOcc, f, m);
-          if (nextOcc.getStart() > jobi.getStart() &&
-              nextOcc.getStart() + problem.getDuration(deb) * nbJobs -
-                      firstOcc.getStart() >
-                  problem.getThreshold(f))
+      } else {
+        if (nextStartOfF != -1) {
+          if (nextStartOfF + problem.getDuration(deb) * nbJobs >
+              problem.getThreshold(f))
+            return 1;
+        } else {
+          if (solution.getDisqualif(f, m) == infinity &&
+              cmax > problem.getThreshold(f))
             return 1;
         }
       }
@@ -400,48 +416,42 @@ int QualifCentricHeuristic::addDisqualif(const Job &deb, const Job &jobi,
 
   // removing [deb,fin] on k add a disqualif?
   Job prev = solution.getPreviousOcc(deb, deb.getFam(), k);
-  // compute future cmax
-  int cmax = 0;
-  for (int i = 0; i < problem.getNbMchs(); ++i) {
-    if (i == k && cmax < solution.getEnd(k) - nbJobs * problem.getDuration(deb))
-      cmax = solution.getEnd(k) - nbJobs * problem.getDuration(deb);
-    if (i == m && cmax < solution.getEnd(m) + nbJobs * problem.getDuration(deb))
-      cmax = solution.getEnd(m) + nbJobs * problem.getDuration(deb);
-    else if (cmax < solution.getEnd(i))
-      cmax = solution.getEnd(i);
-  }
-  if (cmax - prev.getStart() > problem.getThreshold(deb)) return 1;
+  if (prev.getStart() != -1) {
+    if (cmax - prev.getStart() > problem.getThreshold(deb)) return 1;
+  } else if (cmax > problem.getThreshold(deb))
+    return 1;
+
   return 0;
 }
 
 int QualifCentricHeuristic::addCompletion(const Job &i, const int &nbJobs,
-                                          const int &k, const int &m) {
+                                          const int &k, const int &m) const {
   return (solution.getEnd(k) <=
           solution.getEnd(m) + nbJobs * problem.getDuration(i));
 }
 
 void QualifCentricHeuristic::getLastGroup(Job &deb, Job &fin, int k,
                                           int &nbJobs) {
-  fin=solution.getLastJob(k);
-  uint i = solution.getNbJobsOn(k);
+  fin = solution.getLastJob(k);
+  int i = solution.getNbJobsOn(k) - 1;
   while (i >= 0 && solution.getJobs(i, k).getFam() == fin.getFam()) --i;
   deb = solution.getJobs(i + 1, k);
-  nbJobs = solution.getNbJobsOn(k) - 1 - i + 1;
+  nbJobs = solution.getNbJobsOn(k) - 1 - i;
 }
-
+// remove [deb, deb+nbJobs] from k, add them after to jobi on m
 void QualifCentricHeuristic::updateTime(const Job &i, const Job &deb,
                                         int nbJobs, int k, int m) {
   int j;
-  // remove nbJobs last Job on k
+  // remove nbJobs last nbJobs on k
   for (j = 0; j < nbJobs; ++j) solution.removeLastJob(k);
 
   // add nbJobs jobs of family f(i) after i and shift all jobs after
   // 1/ shift every job after i
   j = 0;
   while (!(solution.getJobs(j, m) == i)) j++;
-  while (j < solution.getNbJobsOn(m)) {
-    solution.getJobs(j, m).shift(nbJobs * problem.getDuration(i));
-  }
+  for (j = j + 1; j < solution.getNbJobsOn(m); ++j)
+    solution.shiftJob(j, m, nbJobs * problem.getDuration(i));
+
   // 2/ add nbJobs of f(i) after i
   Job curr = i;
   for (j = 0; j < nbJobs; ++j) {

@@ -12,7 +12,7 @@ void CpoSolver1APC::doSolve(IloEnv &env) {
   IloIntervalSequenceVarArray mchs(env, M);
   createModel(env, model, masterTask, altTasks, disqualif, mchs);
   IloCP cp(model);
-
+  cp.exportModel("modelCPO1.cpo");
   configure(env, cp, config);
   for (Solution sol : solutionPool) {
     IloSolution ilosol(env);
@@ -33,28 +33,30 @@ void CpoSolver1APC::doSolve(IloEnv &env) {
 void CpoSolver1APC::modelToSol(const IloCP &cp,
                                const IloIntervalVarMatrix &altTasks,
                                const IloIntervalVarMatrix &disqualif) {
-  int i, j;
+  int i, j, f;
   const int m = problem.getNbMchs();
   const int F = problem.getNbFams();
 
-  int deb, fin = 0;
-  for (int f = 0; f < problem.getNbFams(); ++f) {
-    deb = fin;
-    fin = deb + problem.getNbJobs();
-    for (i = deb; i < fin; ++i)
-      for (j = 0; j < m; ++j)
-        if (problem.isQualif(i, j)) {
+  for (j = 0; j < m; ++j) {
+    int deb, fin = 0;
+    for (f = 0; f < problem.getNbFams(); ++f) {
+      deb = fin;
+      fin = deb + problem.getNbJobs(f);
+      if (problem.isQualif(f, j)) {
+        for (i = deb; i < fin; ++i) {
           if (cp.isPresent(altTasks[j][i])) {
             solution.addJob(Job(f, (int)cp.getStart(altTasks[j][i]), -1), j);
           }
         }
+      }
+    }
   }
 
-  for (i = 0; i < F; ++i)
+  for (f = 0; f < F; ++f)
     for (j = 0; j < m; ++j)
-      if (problem.isQualif(i, j))
-        if (cp.isPresent(disqualif[j][i]))
-          solution.setDisqualif((int)cp.getStart(disqualif[j][i]), i, j);
+      if (problem.isQualif(f, j))
+        if (cp.isPresent(disqualif[j][f]))
+          solution.setDisqualif((int)cp.getStart(disqualif[j][f]), f, j);
 }
 
 void CpoSolver1APC::solToModel(const Solution &solution,
@@ -69,28 +71,28 @@ void CpoSolver1APC::solToModel(const Solution &solution,
   for (int m = 0; m < problem.getNbMchs(); ++m)
     for (int j = 0; j < solution.getNbJobsOn(m); ++j)
       solList.push_back(solution.getJobs(j, m));
-  std::sort(solList.begin(), solList.end());
+  std::sort(solList.begin(),
+            solList.end());  // tri par famille (f0,f0,f0,....,f1,f1,f1,...)
 
   // masterTask
   for (int i = 0; i < problem.getNbJobs(); ++i)
     sol.setStart(masterTask[i], solList[i].getStart());
 
   // disqualif
+  int cmax = solution.getMaxEnd();
   for (int j = 0; j < M; ++j) {
     for (int f = 0; f < F; ++f)
-      if (problem.isQualif(f, j)) {
-        if (solution.getDisqualif(f, j) < std::numeric_limits<int>::max())
-          sol.setPresent(disqualif[j][f]);
-        else
-          sol.setAbsent(disqualif[j][f]);
-      }
+      if (problem.isQualif(f, j) && solution.getDisqualif(f, j) < cmax)
+        sol.setPresent(disqualif[j][f]);
+      else
+        sol.setAbsent(disqualif[j][f]);
   }
   // Cmax
-  sol.setStart(masterTask[problem.getNbJobs()], solution.getMaxEnd());
+  sol.setStart(masterTask[problem.getNbJobs()], cmax);
 
-  // altTask 
-Solution copie(solution);
-   int deb, fin = 0;
+  // altTask
+  Solution copie(solution);
+  int deb, fin = 0;
   for (int f = 0; f < problem.getNbFams(); ++f) {
     deb = fin;
     fin = deb + problem.getNbJobs(f);
@@ -98,14 +100,14 @@ Solution copie(solution);
       Job a(f);
       int mch;
       copie.getFirstOcc(a, f, mch);
-      copie.removeJob(a,mch);
+      copie.removeJob(a, mch);
       for (IloInt k = 0; k < problem.getNbMchs(); ++k) {
         if (mch == k) {
           sol.setPresent(altTasks[k][j]);
           sol.setStart(altTasks[k][j], a.getStart());
         } else
           sol.setAbsent(altTasks[k][j]);
-      }  
+      }
     }
   }
 }
@@ -138,19 +140,23 @@ void CpoSolver1APC::createVariables(IloEnv &env,
     masterTask[i].setEndMax(T);
   }
   masterTask[n] = IloIntervalVar(env, (IloInt)0);
+  masterTask[i].setName("cmax");
   masterTask[n].setEndMax(T);
 
   for (j = 0; j < m; ++j) {
     altTasks[j] = IloIntervalVarArray(env);
-    for (int f = 0; f < problem.getNbFams(); ++f)
-      if (problem.isQualif(f, j))
-        for (i = 0; i < problem.getNbJobs(f); ++i) {
-          IloIntervalVar alt(env, problem.getDuration(f));
-          snprintf(name, 27, "alt_%d_%d", j, i);
-          alt.setName(name);
-          alt.setOptional();
-          altTasks[j].add(alt);
-        }
+    int deb, fin = 0;
+    for (int f = 0; f < problem.getNbFams(); ++f) {
+      deb = fin;
+      fin = deb + problem.getNbJobs(f);
+      for (i = deb; i < fin; ++i) {
+        IloIntervalVar alt(env, problem.getDuration(f));
+        snprintf(name, 27, "alt_%d_%d", j, i);
+        alt.setName(name);
+        alt.setOptional();
+        altTasks[j].add(alt);
+      }
+    }
   }
 
   for (j = 0; j < m; ++j) {
@@ -160,9 +166,7 @@ void CpoSolver1APC::createVariables(IloEnv &env,
       deb = fin;
       fin = deb + problem.getNbJobs(f);
       for (i = deb; i < fin; ++i) {
-        if (problem.isQualif(f, j)) {
-          types[i] = f;
-        }
+        types[i] = f;
       }
     }
     mchs[j] = IloIntervalSequenceVar(env, altTasks[j], types);
@@ -170,14 +174,13 @@ void CpoSolver1APC::createVariables(IloEnv &env,
 
   for (j = 0; j < m; ++j) {
     disqualif[j] = IloIntervalVarArray(env);
-    for (i = 0; i < problem.getNbFams(); ++i)
-      if (problem.isQualif(i, j)) {
-        IloIntervalVar qual(env, (IloInt)0);
-        snprintf(name, 27, "disQ_%d_%d", j, i);
-        qual.setName(name);
-        qual.setOptional();
-        disqualif[j].add(qual);
-      }
+    for (i = 0; i < problem.getNbFams(); ++i) {
+      IloIntervalVar qual(env, (IloInt)0);
+      snprintf(name, 27, "disQ_%d_%d", j, i);
+      qual.setName(name);
+      qual.setOptional();
+      disqualif[j].add(qual);
+    }
   }
 }
 
@@ -224,7 +227,7 @@ void CpoSolver1APC::createConstraints(IloEnv &env, IloModel &model,
                                       IloIntervalVarMatrix &altTasks,
                                       IloIntervalVarMatrix &disqualif,
                                       IloIntervalSequenceVarArray &mchs) {
-  int i, j, f;
+  int i, j, f, deb, fin;
   const int n = problem.getNbJobs();
   const int m = problem.getNbMchs();
   const int F = problem.getNbFams();
@@ -236,13 +239,20 @@ void CpoSolver1APC::createConstraints(IloEnv &env, IloModel &model,
     model.add(IloAlternative(env, masterTask[i], members));
   }
 
-  // unqualified (i,j) are absent
-  for (i = 0; i < n; ++i) {
-    for (j = 0; j < m; ++j)
-      if (!problem.isQualif(problem.getFamily(i), j))
-        model.add(!IloPresenceOf(env, altTasks[j][i]));
-  }
+  // unqualified (f(i),j) => altTasks' are absent
 
+  for (j = 0; j < m; ++j) {
+    deb = 0;
+    fin = 0;
+    for (f = 0; f < F; ++f) {
+      deb = fin;
+      fin = deb + problem.getNbJobs(f);
+      if (!problem.isQualif(f, j))
+        for (i = deb; i < fin; ++i)
+          model.add(!IloPresenceOf(env, altTasks[j][i]));
+    }
+  }
+  // unqualified (f(i),j) => disqualif' are absent
   for (j = 0; j < m; ++j) {
     for (f = 0; f < F; ++f)
       if (!problem.isQualif(f, j))
@@ -259,51 +269,59 @@ void CpoSolver1APC::createConstraints(IloEnv &env, IloModel &model,
 
   // threshold ( disqualif last executed of family on a machine)
   for (j = 0; j < m; j++) {
-    for (f = 0; f < F; ++f)
+    deb = 0;
+    fin = 0;
+    for (f = 0; f < F; ++f) {
+      deb = fin;
+      fin = deb + problem.getNbJobs(f);
       if (problem.isQualif(f, j)) {
-        for (i = 0; i < n; ++i)
-          if (problem.getFamily(i) == f)
-            model.add(IloStartBeforeStart(env, altTasks[j][i], disqualif[j][f],
-                                          problem.getThreshold(f)));
-      }
-  }
-
-  // threshold (if a task of f is executed on j, then an other one of f has to
-  // be executed before gamma_f OR the machine j becomes disqualified for f OR
-  // no other task is scheduled on j (end_j)
-  for (j = 0; j < m; j++) {
-    for (i = 0; i < n; ++i) {
-      if (problem.isQualif(i, j)) {
-        IloOr c(env);
-        for (int i2 = i + 1; i2 < n; ++i2) {
-          if (problem.isQualif(i2, j)) {
-            if (problem.getFamily(i) == problem.getFamily(i2))
-              c = c ||
-                  (IloPresenceOf(env, altTasks[j][i2]) &&
-                   IloStartOf(altTasks[j][i2]) <=
-                       IloStartOf(altTasks[j][i]) + problem.getThreshold(i));
-          }
+        for (i = deb; i < fin; ++i) {
+          model.add(IloStartBeforeStart(env, altTasks[j][i], disqualif[j][f],
+                                        problem.getThreshold(f)));
         }
-        c = c || IloStartOf(altTasks[j][i]) + problem.getThreshold(i) ==
-                     IloStartOf(disqualif[j][problem.getFamily(i)]);
-
-        c = c || IloStartOf(altTasks[j][i]) + problem.getThreshold(i) >=
-                     IloStartOf(masterTask[n]);
-
-        model.add(IloIfThen(env, IloPresenceOf(env, altTasks[j][i]), c));
       }
     }
   }
 
-  // the machine becomes disqualified for f OR end_j <= gamma_f
-  // if there is  no task of family f executed on a qualified machine j,
+  // threshold (if a task of f is executed on j, then an other one of f
+  // has to be executed before gamma_f OR the machine j becomes
+  // disqualified for f OR no other task is scheduled on j (end_j)
   for (j = 0; j < m; j++) {
-    int deb, fin = 0;
-    for (f = 0; f < F; ++f)
+    deb = 0;
+    fin = 0;
+    for (f = 0; f < F; ++f) {
+      deb = fin;
+      fin = deb + problem.getNbJobs(f);
+      if (problem.isQualif(f, j)) {
+        for (i = deb; i < fin; ++i) {
+          IloOr c(env);
+          for (int i2 = i + 1; i2 < fin; ++i2) {
+            c = c || (IloPresenceOf(env, altTasks[j][i2]) &&
+                      IloStartOf(altTasks[j][i2]) <=
+                          IloStartOf(altTasks[j][i]) + problem.getThreshold(f));
+          }
+          c = c || IloStartOf(altTasks[j][i]) + problem.getThreshold(f) ==
+                       IloStartOf(disqualif[j][f]);
+
+          c = c || IloStartOf(altTasks[j][i]) + problem.getThreshold(f) >=
+                       IloStartOf(masterTask[n]);
+
+          model.add(IloIfThen(env, IloPresenceOf(env, altTasks[j][i]), c));
+        }
+      }
+    }
+  }
+  // the machine becomes disqualified for f OR end_j <= gamma_f
+  // if there is  no task of family f executed on a qualified machine
+  // j,
+  for (j = 0; j < m; j++) {
+    deb = 0;
+    fin = 0;
+    for (f = 0; f < F; ++f) {
+      deb = fin;
+      fin = deb + problem.getNbJobs(f);
       if (problem.isQualif(f, j)) {
         IloOr c(env);
-        deb = fin;
-        fin = deb + problem.getNbJobs(f);
         for (i = deb; i < fin; ++i) {
           c = c || (IloPresenceOf(env, altTasks[j][i]) &&
                     IloStartOf(altTasks[j][i]) <= problem.getThreshold(f));
@@ -313,23 +331,37 @@ void CpoSolver1APC::createConstraints(IloEnv &env, IloModel &model,
         c = c || IloStartOf(masterTask[n]) <= problem.getThreshold(f);
         model.add(c);
       }
+    }
   }
 
   // end_j is the last task on j
   for (j = 0; j < m; j++) {
-    for (i = 0; i < n; ++i)
-      if (problem.isQualif(i, j)) {
-        model.add(IloEndBeforeStart(env, altTasks[j][i], masterTask[n]));
+    deb = 0;
+    fin = 0;
+    for (f = 0; f < F; ++f) {
+      deb = fin;
+      fin = deb + problem.getNbJobs(f);
+      if (problem.isQualif(f, j)) {
+        for (i = deb; i < fin; ++i) {
+          model.add(IloEndBeforeStart(env, altTasks[j][i], masterTask[n]));
+        }
       }
+    }
   }
 
   // ordonne les getStart des taches d'une même famille (optionnelle)
   // (version globale)
-
-  for (i = 0; i < n; ++i) {
-    int j = i + 1;
-    while (j < n && problem.getFamily(i) != problem.getFamily(j)) ++j;
-    if (j < n)
-      model.add(IloStartBeforeStart(env, masterTask[i], masterTask[j]));
+  deb = 0;
+  fin = 0;
+  for (f = 0; f < F; ++f) {
+    deb = fin;
+    fin = deb + problem.getNbJobs(f);
+    for (i = deb; i < fin; ++i) {
+      int j = i + 1;
+      while (j < fin) {
+        model.add(IloStartBeforeStart(env, masterTask[i], masterTask[j]));
+        j++;
+      }
+    }
   }
 }

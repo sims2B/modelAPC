@@ -5,18 +5,7 @@
 #include <iostream>
 #include <vector>
 
-// parametre pour la generation d'instance!!
-// min/max duration
-const int Pmax = 10;
-const int Pmin = 1;
-// min/max setup
-const int Smax = 5;
-const int Smin = 1;
-// threshold
-const int nbCat = 3;      // small, meduim and big
-const int cat = 3;        // 1 = small, 2 = meduim , 3 = big
-const int sizeMin = cat;  // "minimum threshold for at least sizeMin task"
-                          // (small => 1 ; medium => 2 ; big => 3)
+const int infinity = std::numeric_limits<int>::max();
 
 class Job {
  private:
@@ -33,7 +22,7 @@ class Job {
   inline int getStart() const { return start; }
   inline int getIndex() const { return index; }
 
-  inline void shift(int s){start+=s;};
+  inline void shiftStart(int s){start += s;};
 
   std::string toString() const;
 };
@@ -123,7 +112,7 @@ class Problem {
   inline int getSetup(int f) const { return F[f].getSetup(); }
   inline int getThreshold(int f) const { return F[f].getThreshold(); }
   inline int isQualif(int f, int m) const { return F[f].isQualif(m); }
-  inline int getNbJobs(int f) { return F[f].getNbJobs(); }
+  inline int getNbJobs(int f) const { return F[f].getNbJobs(); }
   inline int getDuration(Job i) const { return F[i.getFam()].getDuration(); }
 
   int getSetup(Job i) const { return F[i.getFam()].getSetup(); }

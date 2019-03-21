@@ -47,12 +47,11 @@ void Solution::removeLastJob(int m) {
   assign[m].pop_back();
 }
 
-void Solution::removeJob(const Job& i , int m) {
-  std::vector<Job>::iterator it = assign[m].begin() ; 
-  while (it != assign[m].end() && !(*it == i )) it++;
+void Solution::removeJob(const Job& i, int m) {
+  std::vector<Job>::iterator it = assign[m].begin();
+  while (it != assign[m].end() && !(*it == i)) it++;
   assign[m].erase(it);
 }
-
 
 int Solution::getLastStart(int j) const { return getLastJob(j).getStart(); }
 
@@ -78,6 +77,13 @@ int Solution::getSumCompletion() const {
   return sum;
 }
 
+Job Solution::getLastJob(int j) const {
+  if (assign[j].empty())
+    return Job(-1);
+  else
+    return assign[j][assign[j].size() - 1];
+}
+
 Job Solution::lastOf(int f, int m) const {
   Job j(f);
   for (uint i = 0; i < assign[m].size(); ++i)
@@ -98,27 +104,31 @@ void Solution::getFirstOcc(Job& j, int f, int& m) const {
   int startMin = getMaxEnd();
   for (int k = 0; k < problem.getNbMchs(); ++k) {
     Job first = firstOf(f, k);
-    if (first.getStart() != -1) {
-      if (first.getStart() < startMin) {
+    if (first.getStart() != -1 && first.getStart() < startMin) {
         m = k;
         j = first;
-      }
+        startMin = first.getStart();
     }
   }
 }
 
 Job Solution::getPreviousOcc(const Job& j, int f, int m) const {
   int i = assign[m].size();
-  while (i > 0 && !(getJobs(i, m) == j)) i--;
-  while (i > 0 && !(getJobs(i, m).getFam() == f)) i--;
-  if (i == 0)
+  do {
+    i--;
+  } while (!(getJobs(i, m) == j));
+  i--;
+  while (i >= 0 && !(getJobs(i, m).getFam() == f)) i--;
+  if (i < 0)
     return Job(f);
   else
     return getJobs(i, m);
 }
 
 Job Solution::nextOf(int i, int f, int m) const {
-  while (i < (int)assign[m].size() && assign[m][i].getFam() != f) ++i;
+  do {
+    i++;
+  } while (i < (int)assign[m].size() && assign[m][i].getFam() != f);
   if (i < (int)assign[m].size())
     return assign[m][i];
   else
@@ -126,10 +136,13 @@ Job Solution::nextOf(int i, int f, int m) const {
 }
 
 Job Solution::nextOf(const Job& j, int f, int m) const {
-  uint i = 0;
-  while (!(assign[m][i] == j)) i++;
-  while (i < assign[m].size() && assign[m][i].getFam() != f) ++i;
-  if (i < assign[m].size())
+  int i = -1;
+  do {
+    i++;
+  } while (!(assign[m][i] == j));
+  i++;
+  while (i < (int)assign[m].size() && assign[m][i].getFam() != f) ++i;
+  if (i < (int)assign[m].size())
     return assign[m][i];
   else
     return Job(f);
@@ -201,9 +214,13 @@ int Solution::getNbJobsOn(int m) const { return assign[m].size(); }
 
 Job Solution::getJobs(int i, int m) const { return assign[m][i]; }
 
+void Solution::shiftJob(int i, int m, int shift) {
+  assign[m][i].shiftStart(shift);
+}
+
 int Solution::isValid() const {
   int i, j;
-  std::vector<int> toDo(problem.getNbFams() - 1, 0);
+  std::vector<int> toDo(problem.getNbFams(), 0);
 
   // all task executed
   for (j = 0; j < problem.getNbMchs(); ++j)
@@ -211,6 +228,7 @@ int Solution::isValid() const {
       if (assign[j][i].getFam() != -1) toDo[assign[j][i].getFam()]++;
   for (uint k = 0; k < toDo.size(); ++k)
     if (toDo[k] != problem.getNf(k)) return 0;
+  //  std::cout << "all task executed\n";
 
   // overlap
   for (j = 0; j < problem.getNbMchs(); ++j)
@@ -220,6 +238,7 @@ int Solution::isValid() const {
             assign[j][i + 1].getStart())
           return 0;
 
+  // std::cout << "overlap ok\n";
   // setup
   for (j = 0; j < problem.getNbMchs(); ++j)
     if (getNbJobsOn(j) != 0)
@@ -232,20 +251,23 @@ int Solution::isValid() const {
             assign[j][i + 1].getStart())
           return 0;
       }
+  // std::cout << "setup ok\n";
 
-  // std::cout << "when the task is processed, the machine is still
-  // qualified\n";
+  // when the task is processed, the machine is still
+  // qualified
 
   for (j = 0; j < problem.getNbMchs(); ++j)
     if (getNbJobsOn(j) != 0)
-      for (i = 0; i <getNbJobsOn(j) - 1; ++i) {
+      for (i = 0; i < getNbJobsOn(j) - 1; ++i) {
         if (assign[j][i].getStart() + problem.getDuration(assign[j][i]) >
             qualifLostTime[assign[j][i].getFam()][j])
           return 0;
       }
+  // std::cout << "when the task is processed, the machine is still
+  // qualified\n";
 
-  // std::cout << "the machine j becomes disqualified for f if there is no
-  // task of f in an interval gamma_f\n";
+  // the machine j becomes disqualified for f if there is no
+  // task of f in an interval gamma_f;
   const int Cmax = getMaxEnd();
 
   for (j = 0; j < problem.getNbMchs(); ++j)
@@ -258,13 +280,20 @@ int Solution::isValid() const {
                    assign[j][i].getStart() > t - problem.getThreshold(f) &&
                    assign[j][i].getStart() <= t))
             ++i;
-          if (i >= getNbJobsOn(j) && qualifLostTime[f][j] > t) return 0;
+          if (i >= getNbJobsOn(j) && qualifLostTime[f][j] > t) {
+            std::cout << " pb sur f = " << f << "on " << j << "at time " << t
+                      << std::endl;
+            return 0;
+          }
         }
+  // std::cout << "the machine j becomes disqualified for f if there is no  task
+  // "
+  //             "of f in an interval gamma_f\n";
 
-  // std::cout << " no more than gamma_f between to task of the same
-  // family\n";
+  // no more than gamma_f between to task of the same
+  // family;
   for (j = 0; j < problem.getNbMchs(); ++j) {
-    for (i = 0; i <getNbJobsOn(j); ++i) {
+    for (i = 0; i < getNbJobsOn(j); ++i) {
       Job next = nextOf(i, assign[j][i].getFam(), j);
       if (next.getStart() != -1) {
         if (next.getStart() - assign[j][i].getStart() >
@@ -273,6 +302,7 @@ int Solution::isValid() const {
       }
     }
   }
+  // std::cout << "no more than gamma_f between to task of the same family\n ";
   return 1;
 }
 

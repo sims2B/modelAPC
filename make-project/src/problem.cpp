@@ -84,8 +84,10 @@ Family readFamily(std::ifstream& in, int M) {
 
 Family oldReader(std::ifstream& in, int M, int size) {
   int d, s, t;
-  std::vector<int> qualif;
+ 
+  std::vector<int> qualif(M,0);
   in >> d >> t >> s ;
+ 
   for (int i = 0; i < M; ++i) {
     int q;
     in >> q;
@@ -168,9 +170,9 @@ Problem oldReader(std::ifstream& in){
   unsigned int i , nbF , N, M;
   int temp;
   familyList F;
-  F.reserve(nbF);
 
   in >> N >> M >> nbF;
+  F.reserve(nbF);
 
   std::vector<int> famSize(nbF,0);
   for (i = 0 ; i < N ; ++i){
@@ -178,6 +180,6 @@ Problem oldReader(std::ifstream& in){
     famSize[temp]++;
   }
 
-  for (i = 0; i < nbF; ++i) F.push_back(oldReader(in, M, nbF ));
+  for (i = 0; i < nbF; ++i) F.push_back(oldReader(in, M, famSize[i] ));
   return Problem(N, M, F);
 }

@@ -140,7 +140,6 @@ Problem generateProblem(const int& n, const int& m, const int& F,
   return P;
 }
 // common
-
 void affectFamily(Problem& problem, const int& n, const int& F) {
   int nbRes = n;
   std::random_device rd;
@@ -157,7 +156,6 @@ void affectFamily(Problem& problem, const int& n, const int& F) {
   }
   for (f = 0; f < F; ++f) problem.setNbJobs(nF[f], f);
 }
-
 // Abdoul
 void generateFamilies(Problem& P /*, const int& n*/, const int& m,
                       const int& F) {
@@ -252,14 +250,21 @@ Problem generateProblem(const int& n, const int& m, const int& F) {
   return P;
 }
 
+//argv[1] = nbJobs , argv[2] = nbMach, argv[3] = nbFam, argv[4] = sumQUalif (sum_m sum_f qualif[f][m])
 int main(int, char* argv[]) {
-  // TODO Explain arguments and improve naming ?
-  std::ofstream output("inst_" + (std::string)argv[1] + "_1_" +
-                           (std::string)argv[2] + "_10_" +
-                           (std::string)argv[2] + "_Bthr.txt",
+  // TODO verifier 
+  int n= atoi(argv[1]);
+  int m = atoi(argv[2]);
+  int f = atoi(argv[3]);
+  int sumQualif = atoi(argv[4]);
+
+  std::ofstream output("inst_" + std::to_string(n) +
+                           std::to_string(m) +  std::to_string(f) + std::to_string(Pmax) + 
+                           std::to_string(sumQualif) + 
+                          "_Bthr.txt",
                        std::ios::out);
   Problem problem =
-      generateProblem(atoi(argv[1]), 1, atoi(argv[2]), 10, atoi(argv[2]));
+      generateProblem(n, m, f, Pmax, sumQualif);
   problem.writeInFile(output);
   return 0;
 }

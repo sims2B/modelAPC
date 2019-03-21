@@ -1,0 +1,11 @@
+i instance_20_4_4_10_11_Mthr_5
+c CONFIG example_mn
+c CONFIG_NAME tests_all
+c SOLVER CPO1
+c O_FUNC LEX
+c O_FLOW 1
+c O_QUAL -1
+c MACHINES 4
+c FAMILIES 4
+c JOBS 20
+
