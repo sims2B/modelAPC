@@ -78,11 +78,11 @@ dexpr int disqualified = sum(f in F, m in M) qualifications[f][m] - qualified;
  // The type triplet is required for transition times  
  tuple triplet {int id1; int id2; int value;};
  // Setup times between two jobs of different families
- {triplet} setupTimes = { <i, j, setupassign[i][j]> | i in F, j in F};
+ {triplet} setupTimes = { <i, j, setups[i][j]> | i in F, j in F};
  
  
 // A qualification job represents the time interval immediatly following the job 
-// during which the machine is qualified to getStart another job of the same family.  
+// during which the machine is qualified to start another job of the same family.  
 dvar interval qjobs[j in J][M] optional in HQ size thresholds[families[j]];
 
 // The qualification profile is greater than 1 if the machine m is qualified for the family f.
@@ -180,7 +180,7 @@ subject to {
  				startBeforeStart(qjobs[j-1][m], qjobs[j][m], durations[f]); 
  					forall(i in JF[f].s..j-1) { 				
  						// Total ordering of jobs of the same family
- 						before(machines[m], mjobassign[i][m], mjobs[j][m]);				 	
+ 						before(machines[m], mjobs[i][m], mjobs[j][m]);				 	
  				 	}		
  				}		
  			}				
