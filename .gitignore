@@ -8,6 +8,7 @@
 *.so
 *.lo
 *.Plo
+bin/*
 './*/bin/*'
 /**/bin
 
