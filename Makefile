@@ -33,7 +33,8 @@ BINDIR :=bin
 TSTDIR :=tests
 DEPDIR :=.deps
 ### USER IBM ILOG CPLEX DIRECTORY
-CPLEXDIR=/home/nattafm/Library/CPLEX_128
+#CPLEXDIR=/home/nattafm/Library/CPLEX_128
+CPLEXDIR=/opt/ibm/ILOG/CPLEX_Studio128/
 ### PROGRAM-RELATED VARIABLES
 # Files containing the main() function
 MAINFILES :=$(SRCDIR)/main.cpp $(SRCDIR)/generate.cpp
