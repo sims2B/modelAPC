@@ -364,3 +364,11 @@ void Solution::toDimacs() const {
             << "d SETUP " << getNbSetup() << std::endl
             << "d VALIDE " << isValid() << std::endl;
 }
+
+bool compareLexFQ(const Solution& s1, const Solution& s2){
+  return (s1.getSumCompletion() < s2.getSumCompletion() || (s1.getSumCompletion() == s2.getSumCompletion() && s1.getNbDisqualif()<s2.getNbDisqualif()));
+}
+
+bool compareLexQF(const Solution& s1, const Solution& s2){
+  return (s1.getNbDisqualif() < s2.getNbDisqualif() || (s1.getNbDisqualif() == s2.getNbDisqualif() && s1.getSumCompletion()<s2.getSumCompletion()));
+}

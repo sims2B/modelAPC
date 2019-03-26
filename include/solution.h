@@ -73,9 +73,9 @@ class Solution {
   void toDimacs() const;
 };
 
-// bool compareLexFQ(const Solution&, const Solution&);
+ bool compareLexFQ(const Solution&, const Solution&);
 
-// bool compareLexQF(const Solution&, const Solution&);
+bool compareLexQF(const Solution&, const Solution&);
 
 // bool compareWSum(const Solution&, const Solution&); // TODO will need a
 // struct or class for the coefficients

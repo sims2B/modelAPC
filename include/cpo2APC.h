@@ -31,6 +31,7 @@ public:
   void doSolve(IloEnv &env);
 
 private:
+void createObj(IloEnv&, IloOplModel &, IloCP &);
   void modelToSol(const IloEnv &, const IloCP &, const IloOplElement &);
 
   void solToModel(const Solution& , IloEnv&, IloOplModel &, IloCP &);

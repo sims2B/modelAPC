@@ -20,6 +20,7 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   for (Solution sol : solutionPool) {
     solToModel(sol, env, opl, cp);
   }
+  createObj(env, opl, cp);
   IloBool solCPFound = iloSolve(cp);
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
   if (solCPFound) {
@@ -94,6 +95,41 @@ void MyCustomDataSource::read() const {
   handler.endElement();
 }
 
+void CpoSolver2APC::createObj(IloEnv &env, IloOplModel &opl, IloCP &cp) {
+  IloModel model = cp.getModel();
+  IloIntVar qualif = opl.getElement("qualified").asIntVar();
+  IloIntVar flow = opl.getElement("flowtime").asIntVar();
+
+  if (config.getObjectiveFunction() == "MONO") {
+    if (config.getWeightFlowtime() > config.getWeightQualified())
+      model.add(IloMinimize(env, flow));
+    else
+      model.add(IloMaximize(env, qualif));
+  }
+
+  else if (config.getObjectiveFunction() == "LEX") {
+    IloNumExprArray objs(env);
+    if (config.getWeightFlowtime() > config.getWeightQualified()) {
+      objs.add(flow);
+      objs.add(-1 * qualif);
+    } else {
+      objs.add(-1 * qualif);
+      objs.add(flow);
+    }
+    IloMultiCriterionExpr myObj = IloStaticLex(env, objs);
+    model.add(IloMinimize(env, myObj));
+    objs.end();
+  }
+
+  else {
+    if (config.getWeightFlowtime() > config.getWeightQualified())
+      model.add(IloMinimize(env, flow - qualif));
+    else {
+      double beta = problem.getNbJobs() * problem.computeHorizon();
+      model.add(IloMinimize(env, flow - beta * qualif));
+    }
+  }
+}
 void CpoSolver2APC::solToModel(const Solution &solution, IloEnv &env,
                                IloOplModel &opl, IloCP &cp) {
   IloSolution sol(env);
@@ -145,7 +181,7 @@ void CpoSolver2APC::solToModel(const Solution &solution, IloEnv &env,
 
 void CpoSolver2APC::modelToSol(const IloEnv &env, const IloCP &cp,
                                const IloOplElement &elmt) {
-  IloInt i, j,f;
+  IloInt i, j, f;
   IloIntervalVarMap mjobs = elmt.asIntervalVarMap();
   IloIntervalVarMatrix dk(env, problem.getNbJobs());
   for (i = 0; i < problem.getNbJobs(); ++i) {
