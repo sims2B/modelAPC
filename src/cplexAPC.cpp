@@ -41,7 +41,7 @@ void CplexSolverAPC::modelToSol(const IloCplex &cplex,
   for (f = 0; f < F; ++f)
     for (m = 0; m < problem.getNbMchs(); ++m)
       if (problem.isQualif(f, m))
-        for (t = 0; t < problem.getDuration(f); ++t) {
+        for (t = 0; t < T - problem.getDuration(f); ++t) {
           if (IloRound(cplex.getValue(x[f][m][t])) == 1)
             solution.addJob(Job(f, t, -1), m);
         }
@@ -119,6 +119,7 @@ void CplexSolverAPC::createModel(int T, IloEnv &env, IloModel &model,
                                  IloNumVar3DMatrix &x, IloNumVar3DMatrix &y,
                                  IloNumVarArray &C, IloNumVarMatrix &Y) {
   createVars(T, env, x, y, Y);
+  createObj(env, model, C, Y);
   createConstraints(T, env, model, x, y, C, Y);
 }
 
@@ -163,6 +164,37 @@ void CplexSolverAPC::createVars(int T, IloEnv &env, IloNumVar3DMatrix &x,
   }
 }
 
+void CplexSolverAPC::createObj(IloEnv &env, IloModel &model, IloNumVarArray &C,
+                               IloNumVarMatrix &Y) {
+  assert(config.getObjectiveFunction() != "LEX" &&
+         "Lexical objective not compatible with MIP");
+
+  IloExpr expr1(env);
+  IloExpr expr2(env);
+  for (int f = 0; f < problem.getNbFams(); ++f) {
+    expr1 += C[f];
+    for (int j = 0; j < problem.getNbMchs(); ++j)
+      if (problem.isQualif(f, j)) expr2 += Y[f][j];
+  }
+
+  if (config.getObjectiveFunction() == "MONO") {
+    if (config.getWeightFlowtime() > config.getWeightQualified())
+      model.add(IloMinimize(env, expr1));
+    else
+      model.add(IloMinimize(env, expr2));
+  } else {
+    if (config.getWeightFlowtime() > config.getWeightQualified())
+      model.add(IloMinimize(env, expr1 + expr2));
+    else {
+      double beta = problem.getNbJobs() * problem.computeHorizon();
+      model.add(IloMinimize(env, expr1 + beta * expr2));
+    }
+  }
+
+  expr1.end();
+  expr2.end();
+}
+
 void CplexSolverAPC::createConstraints(int T, IloEnv &env, IloModel &model,
                                        IloNumVar3DMatrix &x,
                                        IloNumVar3DMatrix &y, IloNumVarArray &C,
@@ -174,13 +206,6 @@ void CplexSolverAPC::createConstraints(int T, IloEnv &env, IloModel &model,
 
   // objective
   // TODO Use config !
-  IloExpr expr(env);
-  for (f = 0; f < F; ++f) expr += alpha_C * C[f];
-  for (f = 0; f < F; ++f)
-    for (j = 0; j < M; ++j)
-      if (problem.isQualif(f, j)) expr += beta_Y * Y[f][j];
-  model.add(IloMinimize(env, expr));
-  expr.end();
 
   // each job is scheduled once
   for (f = 0; f < F; ++f) {

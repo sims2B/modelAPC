@@ -4,7 +4,7 @@
 #include <cassert>
 #include <limits>
 
-Solution::Solution(const Problem& p) : problem(p) {
+Solution::Solution(const Problem& p) : problem(p){
   const int nbFam = problem.getNbFams();
   const int m = problem.getNbMchs();
   assign.resize(m);
@@ -199,7 +199,7 @@ int Solution::getWeigthedObjectiveValue() const {
 
 int Solution::getNbSetup(int m) const {
   int nbSet = 0;
-  for (uint i = 0; i < assign[m].size() - 1; ++i)
+  for (int i = 0; i < (int)assign[m].size() - 1; ++i)
     if (assign[m][i].getFam() != assign[m][i + 1].getFam()) nbSet++;
   return nbSet;
 }

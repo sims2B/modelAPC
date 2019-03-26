@@ -34,7 +34,7 @@ TSTDIR :=tests
 DEPDIR :=.deps
 ### USER IBM ILOG CPLEX DIRECTORY
 #CPLEXDIR=/home/nattafm/Library/CPLEX_128
-CPLEXDIR=/opt/ibm/ILOG/CPLEX_Studio128/
+CPLEXDIR=/home/nattafm/Library/CPLEX_128
 ### PROGRAM-RELATED VARIABLES
 # Files containing the main() function
 MAINFILES :=$(SRCDIR)/main.cpp $(SRCDIR)/generate.cpp
@@ -42,7 +42,7 @@ MAINFILES :=$(SRCDIR)/main.cpp $(SRCDIR)/generate.cpp
 BINARIES  :=$(BINDIR)/solverAPC $(BINDIR)/generateinstancePTC
 # Compiler & linker flags
 CXX      :=g++
-CXXFLAGS :=-std=c++17 -Wall -Werror -DIL_STD -g
+CXXFLAGS :=-std=c++17 -Wall -Werror -DIL_STD 
 ## -DIL_STD : avoid fatal error - iostream.h : No such file or directory
 ## GDB : add option -g 
 LDFLAGS  :=  -L$(CPLEXDIR)/cplex/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/concert/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/cpoptimizer/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/opl/lib/x86-64_linux/static_pic -L$(CPLEXDIR)/opl/bin/x86-64_linux/ -L/usr/lib/x86_64-linux-gnu/

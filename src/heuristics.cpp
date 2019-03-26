@@ -1,5 +1,28 @@
 #include "heuristics.h"
 #include <algorithm>
+#include <cassert>
+
+HeuristicAPC::HeuristicAPC(Problem &problem, ConfigAPC &config)
+    : AbstractSolverAPC(problem, config) {
+  assert(config.getObjectiveFunction() != "LEX" &&
+         "Lexical objective not compatible with heuristics");
+  if (config.getObjectiveFunction() == "MONO") {
+    if (config.getWeightFlowtime() > config.getWeightQualified()) {
+      alpha = 1;
+      beta = 0;
+    } else {
+      beta = 1;
+      alpha = 0;
+    }
+  } else {
+    alpha = 1;
+    if (config.getWeightFlowtime() > config.getWeightQualified())
+      beta = 1;
+    else
+      beta = problem.computeHorizon() * problem.getNbJobs();
+  }
+}
+
 
 void HeuristicAPC::schedule(const int f, const int m) {
   int endMch = solution.getEnd(m);
@@ -22,7 +45,8 @@ void HeuristicAPC::updateDisqualifLocal(int m) {
       int lastOf = solution.lastOf(f, m).getStart();
 
       if (lastOf == -1) lastOf = 0;
-      if (solution.getEnd(m) + problem.getSetup(f) - lastOf > problem.getThreshold(f)) {
+      if (solution.getEnd(m) + problem.getSetup(f) - lastOf >
+          problem.getThreshold(f)) {
         solution.setDisqualif(lastOf + problem.getThreshold(f), f, m);
         problem.disqualif(f, m);
       }
@@ -162,16 +186,18 @@ void QualifCentricHeuristic::doSolve() {
   // FIXME REALLY NOT SURE ABOUT THIS ONE !
 
   std::cout << "*************resolution QCH\n";
-  if (findSchedule()) {/* 
-    std::cout << "\n after phase 1 \\\\ \n";
-    solution.toTikz();
-    //  std::cout << solution.toString(); */
-    intraChange();/* 
-    std::cout << "\n after phase 2 \\\\ \n";
-    solution.toTikz(); */
-    interChange();/* 
-    std::cout << "\n after phase 3 \\\\ \n";
-    solution.toTikz(); */
+  if (findSchedule()) {
+    /*  std::cout << "\n after phase 1 \\\\ \n";
+     solution.toTikz();
+     std::cout << solution.toString(); */
+    intraChange(); /*
+     std::cout << "\n after phase 2 \\\\ \n";
+     solution.toTikz();
+     std::cout << solution.toString(); */
+    interChange(); /*
+     std::cout << "\n after phase 3 \\\\ \n";
+     solution.toTikz();
+     std::cout << solution.toString(); */
     setSAT();
   }
 }

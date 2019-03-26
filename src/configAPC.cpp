@@ -75,8 +75,8 @@ std::vector<std::string> ConfigAPC::getHeuristics() {
     const libconfig::Setting& root = config.getRoot();
     const libconfig::Setting& rootSolver = root["solver"];
     const libconfig::Setting& hsettings = rootSolver.lookup("heuristics");
-   for (int i = 0; i < hsettings.getLength(); ++i) {
-      heuristics.push_back(/*hsettings[i]*/"");
+    for (int i = 0; i < hsettings.getLength(); ++i) {
+      heuristics.push_back(hsettings[i].c_str());
     }
   } catch (const libconfig::SettingNotFoundException& nfex) {
     // Ignored

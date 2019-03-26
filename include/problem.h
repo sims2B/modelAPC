@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <limits>
 
 const int infinity = std::numeric_limits<int>::max();
 
@@ -69,8 +70,7 @@ Family readFamily(std::ifstream &, int M);
 Family oldReader(std::ifstream &, int M, int size);
 
 typedef std::vector<Family> familyList;
-// WARNING!!!! Family in F are "ordered", don't change their order
-// FIXME in this, why is it even possible to change their order !!!
+
 class Problem {
   // a problem is then defined by its number of taks, its number of machines and
   // a list of families (containing duration, setup, threshold, number of task

@@ -12,7 +12,6 @@ void CpoSolver1APC::doSolve(IloEnv &env) {
   IloIntervalSequenceVarArray mchs(env, M);
   createModel(env, model, masterTask, altTasks, disqualif, mchs);
   IloCP cp(model);
-  cp.exportModel("modelCPO1.cpo");
   configure(env, cp, config);
   for (Solution sol : solutionPool) {
     IloSolution ilosol(env);
@@ -201,25 +200,40 @@ void CpoSolver1APC::createObjective(IloEnv &env, IloModel &model,
         disQ.add(((IloInt)1 - IloSizeOf(disqualif[j][i], (IloInt)1)));
   }
 
-  // TODO Use config !
-  if (!weighted) {
+  if (config.getObjectiveFunction() == "MONO") {
+    if (config.getWeightFlowtime() > config.getWeightQualified())
+      model.add(IloMinimize(env, ends));
+    else
+      model.add(IloMinimize(env, disQ));
+  } 
+  
+  else if (config.getObjectiveFunction() == "LEX") {
     IloNumExprArray objs(env);
-    if (prioFlow) {
+    if (config.getWeightFlowtime() > config.getWeightQualified()) {
       objs.add(IloSum(ends));
       objs.add(IloSum(disQ));
     } else {
       objs.add(IloSum(disQ));
       objs.add(IloSum(ends));
     }
-
     IloMultiCriterionExpr myObj = IloStaticLex(env, objs);
     model.add(IloMinimize(env, myObj));
     objs.end();
-  } else
-    model.add(IloMinimize(env, alpha_C * IloSum(ends) + beta_Y * IloSum(disQ)));
+  } 
+  
+  else {
+    if (config.getWeightFlowtime() > config.getWeightQualified())
+      model.add(IloMinimize(env, IloSum(ends) + IloSum(disQ)));
+    else {
+      double beta = problem.getNbJobs() * problem.computeHorizon();
+      model.add(IloMinimize(env, IloSum(ends) + beta * IloSum(disQ)));
+    }
+  }
+  // TODO Use config !
+}
 
-  ends.end();
-  disQ.end();
+ends.end();
+disQ.end();
 }
 
 void CpoSolver1APC::createConstraints(IloEnv &env, IloModel &model,

@@ -4,9 +4,11 @@
 #include "solverAPC.h"
 
 class HeuristicAPC : public AbstractSolverAPC {
+ protected:
+ double alpha;
+ double beta;
  public:
-  HeuristicAPC(Problem &problem, ConfigAPC &config)
-      : AbstractSolverAPC(problem, config) {}
+  HeuristicAPC(Problem &problem, ConfigAPC &config);
 
   void solve() {
     setUp();

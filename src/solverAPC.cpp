@@ -8,10 +8,9 @@ void AbstractSolverAPC::setUp() {
 }
 
 void AbstractSolverAPC::tearDown() {
-   std::cout <<
-   "s " << getStatus() << std::endl <<
-   "d NBSOLS " << getSolutionCount() << std::endl; 
-   if(hasSolution()) {
-     solution.toDimacs();         
-   }
+  std::cout << "s " << getStatus() << std::endl
+            << "d NBSOLS " << getSolutionCount() << std::endl;
+  if (hasSolution()) {
+    solution.toDimacs();
+  }
 }

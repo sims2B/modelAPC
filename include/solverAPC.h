@@ -16,12 +16,12 @@ class AbstractSolverAPC {
 
  public:
   AbstractSolverAPC(Problem& problem, ConfigAPC& config)
-      : problem(problem),
-        config(config),
-        status(S_UNKNOWN),
-        solution(Solution(problem)),
-        solutionCount(0) {}
-        
+    : problem(problem),
+      config(config),
+      status(S_UNKNOWN),
+      solution(Solution(problem)),
+      solutionCount(0) {}
+      
   virtual void solve() = 0;
 
   inline ConfigAPC& getConfig() const { return config; }
