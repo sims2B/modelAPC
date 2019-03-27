@@ -70,6 +70,14 @@
     return getIntValue("objective", "weightFlowtime", 1);
   }
 
+  bool isFlowtimePriority() {
+    return getWeightFlowtime() > getWeightQualified(); 
+  }
+
+  bool isQualifiedPriority() {
+    return getWeightFlowtime() <= getWeightQualified(); 
+  }
+
   int getWeightQualified() {
     return getIntValue("objective", "weightQualified", 1);
   }
