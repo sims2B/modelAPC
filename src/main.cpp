@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
   // Execute heuristics for warm getStart
   timer.stage();
   std::vector<Solution> solutionPool;
-   std::vector<std::string> heuristics = {/*"LIST", "SCHED" , */"QUALIF"};
+  std::vector<std::string> heuristics = config.getHeuristics();
   for (auto &heuristic : heuristics) {
     std::cout << std::endl << "d HEURISTIC " << heuristic << std::endl;
     HeuristicAPC *solver = makeHeuristic(problem, config, heuristic);

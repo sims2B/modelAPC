@@ -4,8 +4,6 @@
 
 HeuristicAPC::HeuristicAPC(Problem &problem, ConfigAPC &config)
     : AbstractSolverAPC(problem, config) {
-  assert(config.getObjectiveFunction() != "LEX" &&
-         "Lexical objective not compatible with heuristics");
   if (config.getObjectiveFunction() == "MONO") {
     if (config.getWeightFlowtime() > config.getWeightQualified()) {
       alpha = 1;
@@ -91,8 +89,6 @@ void ListHeuristic::doSolve() {
   const int M = problem.getNbMchs();
   int i, f;
   i = 0;
-  std::cout << "*************resolution LH\n";
-
   // algo
   while (i < problem.getNbJobs()) {
     bool feasible = false;
@@ -163,7 +159,6 @@ void SchedCentricHeuristic::doSolve() {
   const int M = problem.getNbMchs();
   int i, f, j;
 
-  std::cout << "*************resolution SCH\n";
   i = 0;
   while (i < problem.getNbJobs()) {
     bool feasible = false;
@@ -185,7 +180,6 @@ void SchedCentricHeuristic::doSolve() {
 void QualifCentricHeuristic::doSolve() {
   // FIXME REALLY NOT SURE ABOUT THIS ONE !
 
-  std::cout << "*************resolution QCH\n";
   if (findSchedule()) {
     /*  std::cout << "\n after phase 1 \\\\ \n";
      solution.toTikz();
