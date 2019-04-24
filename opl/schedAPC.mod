@@ -5,6 +5,9 @@
  *********************************************/
 using CP;
 
+///////////////////////////////
+///// Data ////////////////////
+///////////////////////////////
  // Number of machines
  int nbM = ...;
  range M = 1..nbM;
@@ -36,14 +39,12 @@ int qualifCount[f in F] = sum(m in M) qualifications[f][m];
  pair JF[f in F] = <sum(p in 1..f-1) fsizes[p] + 1, sum(p in 1..f) fsizes[p]>;
  // The family of a job
  int families[J];
-  
- execute INIT_FAMILIES {
  
+ execute INIT_FAMILIES {
   	var i = 1;
  	for(var f in F) {
  		for (var j=0; j < fsizes[f]; j++) { 	
- 	    	families[i++] = f;
- 	    	
+ 	    	families[i++] = f;	    	
  	  }
  	}
 }
@@ -56,31 +57,49 @@ range H = 0..cmaxUB;
 range HQ = 0..cmaxUB+max(f in F) thresholds[f];
 //TODO Write a test case with a single machine 
 
+///////////////////////////////
+///// Variables ///////////////
+///////////////////////////////
+
+//////////////////
+// Objectives 
+
 // the makespan of the schedule
 dvar interval cmax in H size cmaxLB..cmaxUB; 
 // the flowtime of the schedule
 dvar int+ flowtime;
+
 // The number of qualifications at the makespan
 dvar int+ qualified;
 dexpr int disqualified = sum(f in F, m in M) qualifications[f][m] - qualified;
+
+////////////////////////
+///// Cumulative Jobs 
+
  // the jobs to schedule
  dvar interval jobs[j in J] in H size durations[families[j]];
+ 
+  // cumul function that is a relaxation of the parallel machines 
+ cumulFunction cumProfile = sum(j in J) pulse(jobs[j], 1);
+
+////////////////////////
+///// Parallel Jobs 
+ 
  // optional variables that model the different execution modes of a job, 
  // the different machines on which it can be scheduled
  dvar interval mjobs[j in J][M] optional in H size durations[families[j]];
- 
+
 // sequence variables that represent the unary machines  
  dvar sequence machines[m in M] in all(j in J) mjobs[j][m] types families;
- 
- // cumul function that is a relaxation of the parallel machines 
- cumulFunction cumProfile = sum(j in J) pulse(jobs[j], 1);
- 
+
  // The type triplet is required for transition times  
  tuple triplet {int id1; int id2; int value;};
  // Setup times between two jobs of different families
  {triplet} setupTimes = { <i, j, setups[i][j]> | i in F, j in F};
  
- 
+////////////////////////
+///// Qualif. Jobs 
+  
 // A qualification job represents the time interval immediatly following the job 
 // during which the machine is qualified to start another job of the same family.  
 dvar interval qjobs[j in J][M] optional in HQ size thresholds[families[j]];
@@ -92,6 +111,17 @@ cumulFunction qualifProfiles[f in F][m in M] = pulse(0, thresholds[f] + duration
 // A dummy job that indicates that the machine is qualified for a family at Cmax. 
 //TODO Restrict domain
 dvar interval qcmax[F][M] optional in HQ size HQ;
+
+////////////////////////
+/////  Relaxation  
+
+int useRelaxation1SF = 1;
+
+// the number of jobs of each family for each machine
+dvar int+ nFamM[F][M];
+// the flowtime of the machines
+dvar int+ flowtimeM[M];
+
 
 ///////////////////////////////
 // Search Configuration ///////
@@ -117,12 +147,23 @@ execute SEARCH {
   		//cp.setSearchPhases(f.searchPhase(mjobs)); 
 }
 
-//minimize staticLex(-qualified, flowtime);
+
+///////////////////////////////
+// Objective //////////////////
+///////////////////////////////
+
+minimize staticLex(-qualified, flowtime);
 
 //minimize flowtime - qualified;
 //minimize flowtime;
 
+///////////////////////////////
+// Constraints ////////////////
+///////////////////////////////
+
 subject to {
+		
+		// TODO Enforce that the first task of each machine starts at 0 ? 
 		
 		ctCmax:
 		span(cmax, jobs); 
@@ -139,6 +180,35 @@ subject to {
  		ctQualLB:
  		qualified >= 1;
  		
+ 		if(useRelaxation1SF != 0 ) {
+ 		////////////////////////
+		/////  Relaxation 1|s|F  
+ 		 		
+ 		// Flowtime per machine  
+ 		forall(m in M) { 	
+ 	 		ctFlowM: 
+ 	 			flowtimeM[m] == sum(j in J) endOf(mjobs[j][m]);
+		 }
+		 
+		 // Redundant flowtime
+ 		ctFlow2:
+		flowtime == sum(m in M) flowtimeM[m];
+		}		
+		
+		forall(f in F) { 	
+ 	 		// Count the number of jobs per family for each machine.
+ 	 		forall(m in M) { 
+ 	 			ctNFamM:	
+ 	 			nFamM[f][m] == sum(j in JF[f].s..JF[f].e) presenceOf(mjobs[j][m]);
+   			}
+   			// Redundant count of the total number of jobs per family;
+   			
+   			sum(m in M) nFamM[f][m] == fsizes[f]; 	 		
+  		} 	 	
+
+ 		////////////////////////
+		/////  Parallel Machines  
+	    		 
  		 // Assignement to parallel machines
  		forall(j in J) {
  			ctAssign:  		
@@ -150,7 +220,9 @@ subject to {
  	 		ctMachines: 
  	 		  noOverlap(machines[m], setupTimes); 		 
  		 }
- 		 
+ 		////////////////////////
+		/////  Cumulative  
+	     		 
  		// Cumulative relaxation constraint
  		ctRelax: 
  		cumProfile <= nbM;
@@ -172,6 +244,9 @@ subject to {
  			}				
  		}
  		
+  		/////////////////////////
+		///// Machine Precedences  
+ 		
  	 	// Precedence constraints between jobs of the same family processed by the same machine 
  	 	forall(m in M) {
  	 		forall(f in F) {
@@ -185,6 +260,8 @@ subject to {
  				}		
  			}				
  		}
+ 		////////////////////////
+		/////  Qualifications  
  		
  		// Some machines are not qualified to process a family
 		forall(f in F) {
@@ -234,6 +311,10 @@ subject to {
 
 }
 
+
+///////////////////////////////
+// Postprocess ////////////////
+///////////////////////////////
 
 execute POSTPROCESS{
     // http://www-01.ibm.com/support/knowledgecenter/SS6MYV_3.3.0/ilog.odms.ide.odme.help/html/refjavaopl/html/ilog/cp/IloCP.IntInfo.html  
