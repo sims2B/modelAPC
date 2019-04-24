@@ -3,7 +3,11 @@
 
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 
+#ifndef __INTELLISENSE__ // code that generates an error squiggle
+// FIX : missing include generic.h 
 #include <ilcplex/ilocplexi.h>
+#endif
+
 #include <iostream>
 #include "iloSolverAPC.h"
 

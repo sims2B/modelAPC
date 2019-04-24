@@ -26,6 +26,8 @@ void IlcRelax1SFConstraintI::initSPT() {
     f[i].optional = x.getMax() - x.getMin();
     f[i].weight = WMPT(f[i]);
   }
+  //FIXME Could not use this, should use a WSPT comparator that depends on the nomber of jobs in a block ...
+  // More complicated ...
   std::sort(f.begin()++, f.end(), compareDuration);
 
 #ifdef DEBUG

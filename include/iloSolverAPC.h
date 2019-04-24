@@ -6,9 +6,13 @@
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 
 //#define IL_STD
+#ifndef __INTELLISENSE__ // code that generates an error squiggle
+// FIX : missing include generic.h 
 #include <ilcplex/ilocplex.h>
 #include <ilcp/cp.h>
 #include <ilopl/iloopl.h>
+#endif
+
 #include <algorithm>
 
 #include "solverAPC.h"

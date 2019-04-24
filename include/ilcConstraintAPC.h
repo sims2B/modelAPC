@@ -5,8 +5,11 @@
 #pragma GCC diagnostic ignored "-Wregister"
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 
+#ifndef __INTELLISENSE__ // code that generates an error squiggle #endif
+// FIX : missing include generic.h 
 #include <ilcp/cp.h>
 #include <ilcp/cpext.h>
+#endif
 #include <vector>
 
 // VFamily represents a partial assignments of jobs of a familly to a machine
