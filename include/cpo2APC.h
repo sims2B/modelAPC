@@ -7,6 +7,7 @@
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 
 #include "iloSolverAPC.h"
+#include "ilcConstraintAPC.h"
 
 // TODO Avoid multiple typedef definitions in cpo[1-2]APC.h
 

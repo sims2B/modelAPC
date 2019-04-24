@@ -89,7 +89,7 @@
   }
 
   bool withRelaxation1SF() {
-    return getBoolValue("cpo", "relax1SF", true);
+    return getBoolValue("cpo", "withRelax1SF", true);
   }
 
   void toDimacs();

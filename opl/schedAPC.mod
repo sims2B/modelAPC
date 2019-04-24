@@ -151,8 +151,10 @@ execute SEARCH {
 ///////////////////////////////
 // Objective //////////////////
 ///////////////////////////////
+// The objective definition must be commented for the C++ project
+// They are only for the OPL project.
 
-minimize staticLex(-qualified, flowtime);
+//minimize staticLex(-qualified, flowtime);
 
 //minimize flowtime - qualified;
 //minimize flowtime;
