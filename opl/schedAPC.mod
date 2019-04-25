@@ -115,7 +115,8 @@ dvar interval qcmax[F][M] optional in HQ size HQ;
 ////////////////////////
 /////  Relaxation  
 
-int useRelaxation1SF = 1;
+//int withRelaxation1SF = 1;
+int withRelaxation1SF = ...;
 
 // the number of jobs of each family for each machine
 dvar int+ nFamM[F][M];
@@ -182,7 +183,7 @@ subject to {
  		ctQualLB:
  		qualified >= 1;
  		
- 		if(useRelaxation1SF != 0 ) {
+ 		if(withRelaxation1SF != 0 ) {
  		////////////////////////
 		/////  Relaxation 1|s|F  
  		 		
@@ -195,7 +196,7 @@ subject to {
 		 // Redundant flowtime
  		ctFlow2:
 		flowtime == sum(m in M) flowtimeM[m];
-		}		
+				
 		
 		forall(f in F) { 	
  	 		// Count the number of jobs per family for each machine.
@@ -206,7 +207,8 @@ subject to {
    			// Redundant count of the total number of jobs per family;
    			
    			sum(m in M) nFamM[f][m] == fsizes[f]; 	 		
-  		} 	 	
+  		} 	
+  		}  		 	
 
  		////////////////////////
 		/////  Parallel Machines  

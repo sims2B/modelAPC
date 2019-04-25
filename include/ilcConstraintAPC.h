@@ -23,6 +23,7 @@ typedef struct VFamily {
 } VFamily;
 
 // Block represents the schedule of jobs of a family without setups on a machine
+// Name it RUN as in the reference paper
 typedef struct Block {
   int start;
   int duration;
@@ -32,8 +33,6 @@ typedef struct Block {
 } Block;
 
 #define WMPT(f) ((double)f.duration + ((double)f.setup) / ((double)f.required))
-// Compares two intervals according to durations. Ties are broken by the setups.
-extern bool compareDuration(VFamily f1, VFamily f2);
 
 typedef std::vector<Block> Schedule;
 typedef std::vector<VFamily> Families;

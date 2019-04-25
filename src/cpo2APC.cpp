@@ -62,7 +62,7 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   IloOplModelDefinition def(modelSource, settings);
   IloCP cp(env);
   IloOplModel opl(def, cp);
-  MyCustomDataSource ds(env, problem);
+  MyCustomDataSource ds(env, problem, config);
   IloOplDataSource dataSource(&ds);
   opl.addDataSource(dataSource);
   opl.generate();
@@ -87,6 +87,10 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
 void MyCustomDataSource::read() const {
   IloOplDataHandler handler = getDataHandler();
   const int F = problem.getNbFams();
+  // initialize the relaxation 1SF flag
+  handler.startElement("withRelaxation1SF");
+  handler.addIntItem( config.withRelaxation1SF() ? 1 : 0);
+  handler.endElement(); 
   // initialize the int 'simpleInt'
   handler.startElement("nbM");
   handler.addIntItem(problem.getNbMchs());
