@@ -17,7 +17,7 @@ void IlcRelax1SFConstraintI::post () {
 }
 
 // set domains and count total number of required jobs
-void IlcRelax1SFConstraintI::initSPT() {
+void IlcRelax1SFConstraintI::initSWMPT() {
   s[0].next = 0;
   for(int i = 1; i <= _n; i++) {
     s[0].next += _x[i-1].getMin();
@@ -40,7 +40,7 @@ void IlcRelax1SFConstraintI::initSPT() {
   
 }
 
-void IlcRelax1SFConstraintI::scheduleEmptyBlock(int i) {
+void IlcRelax1SFConstraintI::scheduleEmptyRun(int i) {
   s[i].start = s[i-1].end;
   s[i].duration = 0;
   s[i].end =s[i].start;
@@ -48,7 +48,7 @@ void IlcRelax1SFConstraintI::scheduleEmptyBlock(int i) {
   s[i].next = s[i-1].next;
 }
 
-int IlcRelax1SFConstraintI::scheduleBlock(int i, int setup) {
+int IlcRelax1SFConstraintI::scheduleRun(int i, int setup) {
   s[i].start = s[i-1].end + setup;
   s[i].duration = f[i].required * f[i].duration;
   s[i].end = s[i].start + s[i].duration;
@@ -61,23 +61,23 @@ int IlcRelax1SFConstraintI::scheduleBlock(int i, int setup) {
   return flowtime;
 }
 
-IloInt IlcRelax1SFConstraintI::sequenceSPT() {
-  initSPT();
+IloInt IlcRelax1SFConstraintI::sequenceSWMPT() {
+  initSWMPT();
   int flowtime = 0;
   int i = 1;
   if(s[0].next > 0) {
     // Schedule blocks
-    flowtime += scheduleBlock(i, 0); // no initial setup
+    flowtime += scheduleRun(i, 0); // no initial setup
     i++;
     while(i <= _n && f[i].required > 0) {
-      flowtime += scheduleBlock(i, f[i].setup);
+      flowtime += scheduleRun(i, f[i].setup);
       i++;
     }
   }
   // Schedule empty blocks
   while(i <= _n) {
     // TODO Remove ? Could be in conflict with the insertion rules.
-    scheduleEmptyBlock(i);
+    scheduleEmptyRun(i);
     i++;
   }
   return flowtime;
@@ -86,7 +86,7 @@ IloInt IlcRelax1SFConstraintI::sequenceSPT() {
 
 void IlcRelax1SFConstraintI::propagate () {
   // TODO Try to Check the delta domains to avoid useless propagation
-  IloInt flowtime = sequenceSPT();
+  IloInt flowtime = sequenceSWMPT();
 #ifdef DEBUG
   printf("PROPAGATE %d %d -> %d\n", (int) _f.getMin(), (int) _f.getMax(), (int) flowtime);
 #endif

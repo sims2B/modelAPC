@@ -24,17 +24,17 @@ typedef struct VFamily {
 
 // Block represents the schedule of jobs of a family without setups on a machine
 // Name it RUN as in the reference paper
-typedef struct Block {
+typedef struct Run {
   int start;
   int duration;
   int end;
   int pred;
   int next;
-} Block;
+} Run;
 
 #define WMPT(f) ((double)f.duration + ((double)f.setup) / ((double)f.required))
 
-typedef std::vector<Block> Schedule;
+typedef std::vector<Run> Schedule;
 typedef std::vector<VFamily> Families;
 
 // This is simply a constraint that is pushed and that calls the execute()
@@ -65,7 +65,7 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
 
     // Create blocks and families
     for (int i = 0; i <= _n; i++) {
-      s.push_back(Block{0, 0, 0, 0, 0});
+      s.push_back(Run{0, 0, 0, 0, 0});
     }
 
     f.push_back(VFamily{-1, 0, 0, 0, 0, 0});
@@ -81,11 +81,11 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   void varDemon();
 
  private:
-  void initSPT();
-  void scheduleEmptyBlock(int i);
-  int scheduleBlock(int i, int setup);
+  void initSWMPT();
+  void scheduleEmptyRun(int i);
+  int scheduleRun(int i, int setup);
 
-  IloInt sequenceSPT();
+  IloInt sequenceSWMPT();
 };
 
 
