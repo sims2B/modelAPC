@@ -7,10 +7,10 @@ bool testSequenceSMPT(SequenceSMPT &seq, int flowtime) {
   seq.printSequence();
   std::cout << std::endl;
  
-  return seq.searching() == flowtime ;
-  // && seq.searching(flowtime + flowtime /10)
-  // && seq.searching(flowtime) 
-  // && !seq.searching(flowtime - 1);
+  return seq.searching() == flowtime 
+   && seq.searching(flowtime + flowtime /10)
+   && seq.searching(flowtime) 
+   && (flowtime <= 0 || !seq.searching(flowtime - 1));
 }
 
 bool testSequence0() {
