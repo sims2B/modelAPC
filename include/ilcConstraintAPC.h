@@ -12,18 +12,16 @@
 #endif
 #include <vector>
 
-// VFamily represents a partial assignments of jobs of a familly to a machine
+// VFamily represents the assignment of jobs in the same family to a machine.
 typedef struct VFamily {
   int index;
   int setup;
   int duration;
   int required;
-  int optional;
+  int optional; // to remove
   double weight;
 } VFamily;
 
-// Block represents the schedule of jobs of a family without setups on a machine
-// Name it RUN as in the reference paper
 typedef struct Run {
   int start;
   int duration;
@@ -32,7 +30,13 @@ typedef struct Run {
   int next;
 } Run;
 
+typedef struct SequenceData {
+  int makespan;
+  int flowtime;
+} SequenceData;
+
 #define WMPT(f) ((double)f.duration + ((double)f.setup) / ((double)f.required))
+#define FLOW(f) ((f.required * (f.required + 1) / 2)*f.duration)
 
 typedef std::vector<Run> Schedule;
 typedef std::vector<VFamily> Families;
@@ -44,9 +48,8 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   IlcInt _n;
   IlcIntVarArray _x;
   IlcIntVar _f;
-  // TODO Remove _d and _s
-  IlcIntArray _d;
-  IlcIntArray _s;
+  //IlcIntArray _d;
+  //IlcIntArray _s;
   Schedule s;
   Families f;
 
@@ -57,9 +60,10 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
       : IlcConstraintI(cp),
         _n(families.getSize()),
         _x(families),
-        _f(flowtime),
-        _d(durations),
-        _s(setups) {
+        _f(flowtime)
+  //      _d(durations),
+  //      _s(setups) 
+  {
     s.reserve(_n + 1);
     f.reserve(_n + 1);
 
