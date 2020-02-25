@@ -46,23 +46,33 @@ bool testSequence1() {
   int n = 5;
   int durations[] = {4, 2, 3, 2, 4};
   int setups[] = {1, 2, 3, 1, 5};
-  int required[] = {3, 2, 1, 0, 5};
   SequenceSMPT seq(n, durations, setups);
+
+  int required[] = {3, 2, 1, 0, 5};
   for (int i = 1; i <= n; i++) {
      seq.setRequired(i, required[i-1]);
    }
-  return testSequenceSMPT(seq, 100);
+  if( !testSequenceSMPT(seq, 260)) return false;
+
+  for (int i = 1; i <= n; i++) {
+     seq.setRequired(i, 1);
+  }
+  if(! testSequenceSMPT(seq, 58)) return false;
+
+  for (int i = 1; i <= n; i++) {
+     seq.setRequired(i, 0);
+  }
+  if(! testSequenceSMPT(seq, 0)) return false;
+
+  return true;
 }
 
 int main()
 {
-   if(!testSequence0()) {
+  if(!testSequence0() || !testSequence1()) {
+    std::cout << std::endl << "TEST FAILURE" << std::endl; 
     return(EXIT_FAILURE);   
    }
-
-  //  if(!testSequence1()) {
-  //   return(EXIT_FAILURE);   
-  //  }
- std::cout << std::endl << "TEST SUCCESS" << std::endl; 
+  std::cout << std::endl << "TEST SUCCESS" << std::endl; 
   return(EXIT_SUCCESS);
 }
