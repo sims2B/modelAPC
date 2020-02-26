@@ -59,11 +59,9 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   void varDemon();
 
  private:
-  void initSWMPT();
-  void scheduleEmptyRun(int i);
-  int scheduleRun(int i, int setup);
-
-  IloInt sequenceSWMPT();
+  void initSequence();
+  void reduceMaxFamily(int i);
+  
 };
 
 
