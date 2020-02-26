@@ -6,24 +6,24 @@
 
 IlcConstraint IlcRelax1SFConstraint(IloCPEngine cp, IlcIntVarArray families,
                                     IlcIntVar flowtime, IlcIntArray durations,
-                                    IlcIntArray setups) {
+                                    IlcIntArray setups, IloInt propagationMask) {
   return new (cp.getHeap())
-      IlcRelax1SFConstraintI(cp, families, flowtime, durations, setups);
+      IlcRelax1SFConstraintI(cp, families, flowtime, durations, setups, propagationMask);
 }
 
-ILOCPCONSTRAINTWRAPPER4(IloRelax1SFConstraint, cp, IloIntVarArray, families,
+ILOCPCONSTRAINTWRAPPER5(IloRelax1SFConstraint, cp, IloIntVarArray, families,
                         IloIntVar, flowtime, IloIntArray, durations,
-                        IloIntArray, setups) {
+                        IloIntArray, setups, IloInt, propagationMask) {
   use(cp, families);
   use(cp, flowtime);
   return IlcRelax1SFConstraint(
       cp, cp.getIntVarArray(families), cp.getIntVar(flowtime),
-      cp.getIntArray(durations), cp.getIntArray(setups));
+      cp.getIntArray(durations), cp.getIntArray(setups), propagationMask);
 }
 
 
 void useRelax1SFConstraint(const Problem &problem, IloEnv& env,
-		IloOplModel& opl, IloCP& cp){
+		IloOplModel& opl, IloCP& cp, IloInt propagationMask){
 
   
   IloIntVarMap familyM = opl.getElement("nFamM").asIntVarMap();
@@ -50,8 +50,7 @@ void useRelax1SFConstraint(const Problem &problem, IloEnv& env,
       families[j-1] = familyM.getSub(j).get(i);
     }
     IloIntVar flowtime = flowtimeM.get(i);
-
-   cp.getModel().add(IloRelax1SFConstraint(env,families, flowtime, durations, setups, "IloRelax1SFConstraint"));
+   cp.getModel().add(IloRelax1SFConstraint(env, families, flowtime, durations, setups, propagationMask, "IloRelax1SFConstraint"));
   }
   }
 
@@ -72,7 +71,7 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   }
   createObj(env, opl, cp);
   if(config.withRelaxation1SF()) {
-    useRelax1SFConstraint(problem, env, opl, cp);
+    useRelax1SFConstraint(problem, env, opl, cp, (IloInt) config.withRelaxation1SF());
   }
   IloBool solCPFound = iloSolve(cp);
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
@@ -177,7 +176,6 @@ void CpoSolver2APC::createObj(IloEnv &env, IloOplModel &opl, IloCP &cp) {
     model.add(IloMinimize(env, myObj));
     objs.end();
   }
-
   else {
     if (config.getWeightFlowtime() > config.getWeightQualified())
       model.add(IloMinimize(env, flow - qualif));

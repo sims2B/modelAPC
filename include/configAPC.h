@@ -88,8 +88,8 @@
     return getStringValue("cpo", "model", "schedAPC.mod");
   }
 
-  bool withRelaxation1SF() {
-    return getBoolValue("cpo", "withRelax1SF", true);
+  int withRelaxation1SF() {
+    return getIntValue("cpo", "withRelax1SF", 3);
   }
 
   void toDimacs();

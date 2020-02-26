@@ -27,22 +27,26 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   //IlcIntArray _d;
   //IlcIntArray _s;
   SequenceSMPT s;
+  int propagationMask;
   
  public:
   IlcRelax1SFConstraintI(IloCPEngine cp, IlcIntVarArray families,
                          IlcIntVar flowtime, IlcIntArray durations,
-                         IlcIntArray setups)
+                         IlcIntArray setups, int propagationMask)
       : IlcConstraintI(cp),
         _n(families.getSize()),
         _x(families),
         _f(flowtime),
-        s(toVector(durations), toVector(setups))
+        s(toVector(durations), toVector(setups)),
+        propagationMask(propagationMask)
   //      _d(durations),
   //      _s(setups) 
   {
+    //std::cout << "MASK " << propagationMask << std::endl;
   }
 
-  ~IlcRelax1SFConstraintI() {}
+  ~IlcRelax1SFConstraintI() {
+  }
 
   static std::vector<int> toVector(IlcIntArray t) {
     const int n = t.getSize();

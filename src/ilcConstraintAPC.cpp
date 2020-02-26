@@ -3,7 +3,6 @@
 #include <algorithm>
 
 #define DEBUG
-#define FILTER_FAMILY
 
 bool compareWeights(FamilyRun f1, FamilyRun f2) { return f1.getWeight() < f2.getWeight(); }
 
@@ -46,25 +45,25 @@ void IlcRelax1SFConstraintI::reduceMaxFamily(int i) {
 
 void IlcRelax1SFConstraintI::propagate() {
   initSequence();
-  IloInt flowtime = s.searching();
 // #ifdef DEBUG
 //   std::cout << "FLOWTIME " <<  _f;
 // #endif
-  _f.setMin(flowtime);
+  _f.setMin(s.searching());
 //   #ifdef DEBUG
 //   std::cout << " -> " <<  _f << std::endl;
 // #endif
-
-#ifdef FILTER_FAMILY
-  for (int i = 1; i <= _n; i++) {
-    const int oldMax = _x[i-1].getMax(); 
+ 
+if(propagationMask & 2) {
+    for (int i = 1; i <= _n; i++) {
+   // const int oldMax = _x[i-1].getMax(); 
     if(! _x[i-1].isFixed()) reduceMaxFamily(i);
-    const int newMax = _x[i-1].getMax(); 
-    if(newMax != oldMax) {
-     std::cout << "N_F" <<  i << ": " << oldMax << " -> " << newMax << std::endl;
-   }
+  //  const int newMax = _x[i-1].getMax(); 
+  //   if(newMax != oldMax) {
+  //    std::cout << "N_F" <<  i << ": " << oldMax << " -> " << newMax << std::endl;
+  //  }
+  
+    }
   } 
-#endif  
 }
 
 void IlcRelax1SFConstraintI::varDemon() { push(); }
