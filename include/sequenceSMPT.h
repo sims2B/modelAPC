@@ -110,7 +110,21 @@ class SequenceSMPT {
   std::vector<FamilyRun*> runs;
 
  public:
+  SequenceSMPT(std::vector<int> durations, std::vector<int> setups) : n(durations.size()), nreq(0) {
+    const int n = durations.size();
+    sequence.reserve(n + 1);  
+    FamilyRun* run = new FamilyRun();
+    sequence.push_back(run);
+    for (int i = 0; i < n; i++) {
+      sequence.push_back(new FamilyRun(i + 1, setups[i], durations[i]));
+      //sequence.push_back(new FamilyRun(i + 1, 0, 0));
+    }
+    // Copying vector by copy function 
+    copy(sequence.begin(), sequence.end(), back_inserter(runs)); 
+  }
+
   SequenceSMPT(int n, int durations[], int setups[]) : n(n), nreq(0) {
+    sequence.reserve(n + 1);  
     FamilyRun* run = new FamilyRun();
     sequence.push_back(run);
     runs.push_back(run);
@@ -119,7 +133,6 @@ class SequenceSMPT {
       runs.push_back(sequence[i + 1]);
     }
   }
-
   ~SequenceSMPT() {
     for (int i = 0; i <= n; i++) {
       delete (sequence[i]);

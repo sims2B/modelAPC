@@ -5,6 +5,7 @@
 #pragma GCC diagnostic ignored "-Wregister"
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 
+#include "sequenceSMPT.h"
 #ifndef __INTELLISENSE__ // code that generates an error squiggle #endif
 // FIX : missing include generic.h 
 #include <ilcp/cp.h>
@@ -12,34 +13,9 @@
 #endif
 #include <vector>
 
-// VFamily represents the assignment of jobs in the same family to a machine.
-typedef struct VFamily {
-  int index;
-  int setup;
-  int duration;
-  int required;
-  int optional; // to remove
-  double weight;
-} VFamily;
+// #define WMPT(f) ((double)f.duration + ((double)f.setup) / ((double)f.required))
+// #define FLOW(f) ((f.required * (f.required + 1) / 2)*f.duration)
 
-typedef struct Run {
-  int start;
-  int duration;
-  int end;
-  int pred;
-  int next;
-} Run;
-
-typedef struct SequenceData {
-  int makespan;
-  int flowtime;
-} SequenceData;
-
-#define WMPT(f) ((double)f.duration + ((double)f.setup) / ((double)f.required))
-#define FLOW(f) ((f.required * (f.required + 1) / 2)*f.duration)
-
-typedef std::vector<Run> Schedule;
-typedef std::vector<VFamily> Families;
 
 // This is simply a constraint that is pushed and that calls the execute()
 // function of the above custom inferencer
@@ -50,9 +26,8 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   IlcIntVar _f;
   //IlcIntArray _d;
   //IlcIntArray _s;
-  Schedule s;
-  Families f;
-
+  SequenceSMPT s;
+  
  public:
   IlcRelax1SFConstraintI(IloCPEngine cp, IlcIntVarArray families,
                          IlcIntVar flowtime, IlcIntArray durations,
@@ -60,26 +35,25 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
       : IlcConstraintI(cp),
         _n(families.getSize()),
         _x(families),
-        _f(flowtime)
+        _f(flowtime),
+        s(toVector(durations), toVector(setups))
   //      _d(durations),
   //      _s(setups) 
   {
-    s.reserve(_n + 1);
-    f.reserve(_n + 1);
-
-    // Create blocks and families
-    for (int i = 0; i <= _n; i++) {
-      s.push_back(Run{0, 0, 0, 0, 0});
-    }
-
-    f.push_back(VFamily{-1, 0, 0, 0, 0, 0});
-    for (int i = 1; i <= _n; i++) {
-      f.push_back(
-          VFamily{i - 1, (int)setups[i - 1], (int)durations[i - 1], 0, 0, 0});
-    }
   }
 
   ~IlcRelax1SFConstraintI() {}
+
+  static std::vector<int> toVector(IlcIntArray t) {
+    const int n = t.getSize();
+    std::vector<int> v; 
+    v.reserve(n);
+    for (int i = 0; i < n; i++) {
+      v.push_back(t[i]);
+    }
+    return v;
+  }
+
   virtual void post();
   virtual void propagate();
   void varDemon();
