@@ -8,6 +8,16 @@
 #+HTML_HEAD:    <link rel="stylesheet" type="text/css" href="http://www.i3s.unice.fr/~malapert/css/worg.min.css" />
 #+PROPERTY: exports results
 * Tasks                                                            :noexport:
+* Create directory ~instances~
+
+#+BEGIN_SRC sh
+rm -fr instances/*
+PATTERN=../datasets/N[2-4]0/M[3-4]/*_[SMB]thr_[0-1].txt
+ln $PATTERN instances
+#+END_SRC
+
+#+RESULTS:
+
 * Convert instances From TXT To OPL format
 
 * AWK Script : Extract Tikz  
@@ -67,7 +77,7 @@ k {} \;
 
   SummaryResults <- function(df) {
     x <- cbind( 
-      feas = 100 *(df$s == "OPTIMUM" | df$s == "FEASIBLE"),
+      feas = 100 *(df$s == "OPTIMUM" | df$s == "FEASIBLE" | df$s == "SAT"),
       opt = 100 * (df$s == "OPTIMUM"), 
       disq = df$DISQUALIFIED,
       flow = df$FLOWTIME,
@@ -109,6 +119,33 @@ k {} \;
  - Calcul du statut en prenant en compte la solution initiale
  - Manque des configurations dans IP3 quand le status est UNKONWN, par exemple les caractéristiques de l'instances.
 
+* STARTED Read and summarize results 
+ #+BEGIN_SRC R :results output :session apc
+   resfiles <- list.files('results', pattern = '*.res', full.names=TRUE)
+   resultsQF <- ReadResults(resfiles)
+   lapply(resultsQF, SummaryResults)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ $with1SF_3
+   Group.1 feas   opt disq  flow time
+ 1      20  100 100.0  3.3 329.7  2.5
+ 2      30  100  66.7  4.7 893.6 15.0
+
+ $with1SF
+   Group.1 feas   opt disq  flow time
+ 1      20  100 100.0  3.3 329.7  3.1
+ 2      30  100  58.3  4.6 893.6 16.0
+
+ $without1SF
+   Group.1  feas   opt disq  flow time
+ 1      20 100.0 100.0  3.3 329.7  5.9
+ 2      30  91.7  41.7  3.8 897.1 20.8
+ #+end_example
+
+
+ 
 * DONE Read and summarize results : QUAL - FLOW ; 30 seconds 
   CLOSED: [2018-11-26 lun. 10:28] SCHEDULED: <2018-11-24 sam.>
 
@@ -359,7 +396,7 @@ Percentage
  : 5      60              50.0               8.3              36.7
  : 6      70              52.2               5.6              43.3
 
-* STARTED Read and summarize results : FLOW - QUAL ; 600 seconds 
+* DONE Read and summarize results : FLOW - QUAL ; 600 seconds 
 
  #+BEGIN_SRC R :results output :session apc
    resfiles <- list.files('results/flow-qual-600s-2711', pattern = '*.res', full.names=TRUE)
@@ -421,8 +458,7 @@ Percentage
  : 1      60                20                45                20
 
 
-
-* STARTED Read and summarize results : QUAL - FLOW ; 600 seconds 
+* DONE Read and summarize results : QUAL - FLOW ; 600 seconds 
 
  #+BEGIN_SRC R :results output :session apc
    resfiles <- list.files('results/qual-flow-600s-2911', pattern = '*.res', full.names=TRUE)

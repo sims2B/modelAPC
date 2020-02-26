@@ -17,10 +17,11 @@ bin/*
 ############
 *.csv
 *.ods
-'*res*'
+*.res
 
 # instance files #
 ##################
+*/instances/
 *.dat
 *.sm.heurW
 *.sm
@@ -28,6 +29,8 @@ bin/*
 *.rcp
 *.rcp.heurW
 *.rcp.sol
+
+
 
 
 # Packages #
