@@ -25,7 +25,7 @@ void IlcRelax1SFConstraintI::initSequence() {
   s.sequencing();
 }
 
-void IlcRelax1SFConstraintI::reduceMaxFamily(int i) {
+void IlcRelax1SFConstraintI::reduceCardFamily(int i) {
   const int min = _x[i-1].getMin();
   int max = _x[i-1].getMax();
   const int flow = _f.getMax();
@@ -43,6 +43,11 @@ void IlcRelax1SFConstraintI::reduceMaxFamily(int i) {
   s.setRequired(i, min);
 }
 
+void IlcRelax1SFConstraintI::initExtendedSequence() {
+
+}
+void IlcRelax1SFConstraintI::reduceCardMachine() {
+}
 void IlcRelax1SFConstraintI::propagate() {
   initSequence();
 // #ifdef DEBUG
@@ -56,7 +61,7 @@ void IlcRelax1SFConstraintI::propagate() {
 if(propagationMask & 2) {
     for (int i = 1; i <= _n; i++) {
    // const int oldMax = _x[i-1].getMax(); 
-    if(! _x[i-1].isFixed()) reduceMaxFamily(i);
+    if(! _x[i-1].isFixed()) reduceCardFamily(i);
   //  const int newMax = _x[i-1].getMax(); 
   //   if(newMax != oldMax) {
   //    std::cout << "N_F" <<  i << ": " << oldMax << " -> " << newMax << std::endl;
@@ -64,6 +69,11 @@ if(propagationMask & 2) {
   
     }
   } 
+
+  if(propagationMask & 4) {
+    initExtendedSequence();
+    reduceCardMachine();
+  }
 }
 
 void IlcRelax1SFConstraintI::varDemon() { push(); }

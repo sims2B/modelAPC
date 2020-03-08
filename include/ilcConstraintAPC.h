@@ -13,10 +13,6 @@
 #endif
 #include <vector>
 
-// #define WMPT(f) ((double)f.duration + ((double)f.setup) / ((double)f.required))
-// #define FLOW(f) ((f.required * (f.required + 1) / 2)*f.duration)
-
-
 // This is simply a constraint that is pushed and that calls the execute()
 // function of the above custom inferencer
 class IlcRelax1SFConstraintI : public IlcConstraintI {
@@ -27,8 +23,10 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   //IlcIntArray _d;
   //IlcIntArray _s;
   SequenceSMPT s;
+  SequenceSMPT se;
   int propagationMask;
-  
+  std::vector<int> orderSPT;
+
  public:
   IlcRelax1SFConstraintI(IloCPEngine cp, IlcIntVarArray families,
                          IlcIntVar flowtime, IlcIntArray durations,
@@ -37,12 +35,20 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
         _n(families.getSize()),
         _x(families),
         _f(flowtime),
-        s(toVector(durations), toVector(setups)),
+        s(toVector(durations), toVector(setups), false),
+        se(toVector(durations), toVector(setups), true),
         propagationMask(propagationMask)
   //      _d(durations),
   //      _s(setups) 
   {
-    //std::cout << "MASK " << propagationMask << std::endl;
+    for (int i = 1; i <= _n; i++) {
+      orderSPT.push_back(i);
+    }
+    sort( orderSPT.begin(),orderSPT.end(), [&](int i,int j){return durations[i-1]<durations[j-1];} );
+    // for (int i = 0; i < _n; i++) {
+    //   std::cout << orderSPT[i] << " " << durations[orderSPT[i]-1] << " " << durations[i] << std::endl;
+    // }
+    // std::cout << std::endl << "MASK " << propagationMask << std::endl;
   }
 
   ~IlcRelax1SFConstraintI() {
@@ -58,13 +64,18 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
     return v;
   }
 
+
   virtual void post();
   virtual void propagate();
   void varDemon();
 
  private:
   void initSequence();
-  void reduceMaxFamily(int i);
+  void initExtendedSequence();
+  
+  void reduceCardFamily(int i);
+  
+  void reduceCardMachine();
   
 };
 
