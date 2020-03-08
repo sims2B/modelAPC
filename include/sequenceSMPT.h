@@ -26,7 +26,7 @@ class FamilyRun {
   int pred;
   int next;
   int endtime;
-  int flowtime; // TODO Remove var
+  int flowtime;  // TODO Remove var
 
  public:
   FamilyRun() : FamilyRun(0, 0, 0) {}
@@ -66,7 +66,7 @@ class FamilyRun {
       flowtime = SUM1N(required) * duration;
       weight = ((double)duration + ((double)setup) / ((double)required));
     } else {
-      delta = - this->required;
+      delta = -this->required;
       this->required = 0;
       slength = 0;
       length = 0;
@@ -83,15 +83,16 @@ class FamilyRun {
     pred = run->pred + run->required;
     endtime = run->endtime + length;
   }
-  
-  int getFlowtime() {return required * slength + flowtime + next * length;}
+
+  int getFlowtime() { return required * slength + flowtime + next * length; }
 
   int cancelSetup() { return -(required + next) * slength; }
 
   int moveFirst() {
-    int delta = pred * (length - slength); // predecessors are postponed
-    delta -= required * (endtime - length); // the current run is moved first
-    delta -= (required + next) * slength; //  the setup of the current following runs are removed 
+    int delta = pred * (length - slength);   // predecessors are postponed
+    delta -= required * (endtime - length);  // the current run is moved first
+    delta -= (required + next) *
+             slength;  //  the setup of the current following runs are removed
     return delta;
   }
 };
@@ -110,30 +111,48 @@ class SequenceSMPT {
   std::vector<FamilyRun*> runs;
 
  public:
-  SequenceSMPT(std::vector<int> durations, std::vector<int> setups) : n(durations.size()), nreq(0) {
+  SequenceSMPT(std::vector<int> durations, std::vector<int> setups,
+               bool extended)
+      : n( (extended + 1) * durations.size()), nreq(0) {
     const int n = durations.size();
-    sequence.reserve(n + 1);
-    runs.reserve(n + 1);  
+     sequence.reserve(this->n + 1);
+    runs.reserve(this->n + 1);
     FamilyRun* run = new FamilyRun();
     sequence.push_back(run);
     for (int i = 0; i < n; i++) {
       sequence.push_back(new FamilyRun(i + 1, setups[i], durations[i]));
-      //sequence.push_back(new FamilyRun(i + 1, 0, 0));
     }
-    // Copying vector by copy function 
-    copy(sequence.begin(), sequence.end(), back_inserter(runs)); 
+    if (extended) {
+      for (int i = 0; i < n; i++) {
+        sequence.push_back(new FamilyRun(n + i + 1, 0, durations[i]));
+      }
+    }
+    // Copying vector by copy function
+    copy(sequence.begin(), sequence.end(), back_inserter(runs));
   }
 
-  SequenceSMPT(int n, int durations[], int setups[]) : n(n), nreq(0) {
-    sequence.reserve(n + 1);
-    runs.reserve(n + 1);  
+  SequenceSMPT(std::vector<int> durations, std::vector<int> setups)
+      : SequenceSMPT(durations, setups, false) {}
+
+  SequenceSMPT(int n, int durations[], int setups[], bool extended)
+      : n((extended +1) * n), nreq(0) {
+    sequence.reserve(this->n + 1);
+    runs.reserve(this->n + 1);
     FamilyRun* run = new FamilyRun();
     sequence.push_back(run);
     for (int i = 0; i < n; i++) {
       sequence.push_back(new FamilyRun(i + 1, setups[i], durations[i]));
     }
-     copy(sequence.begin(), sequence.end(), back_inserter(runs)); 
+    if (extended) {
+      for (int i = 0; i < n; i++) {
+        sequence.push_back(new FamilyRun(n + i + 1, 0, durations[i]));
+      }
+    }
+    copy(sequence.begin(), sequence.end(), back_inserter(runs));
   }
+
+  SequenceSMPT(int n, int durations[], int setups[])
+      : SequenceSMPT(n, durations, setups, false) {}
 
   ~SequenceSMPT() {
     for (int i = 0; i <= n; i++) {

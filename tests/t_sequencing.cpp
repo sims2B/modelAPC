@@ -6,7 +6,7 @@ bool testSequenceSMPT(SequenceSMPT &seq, int flowtime) {
   seq.sequencing();
   seq.printSequence();
   std::cout << std::endl;
- 
+  
   return seq.searching() == flowtime 
    && seq.searching(flowtime + flowtime /10)
    && seq.searching(flowtime) 
@@ -67,9 +67,32 @@ bool testSequence1() {
   return true;
 }
 
+bool testExtendedSequence0() {
+  int n = 3;
+  int durations[] = {2, 3, 4};
+  int setups[] = {10, 5, 1};
+  SequenceSMPT seq(n, durations, setups, true);
+  for (int i = 1; i <= 2*n; i++) {
+     seq.setRequired(i, 0);
+   }
+  if(! testSequenceSMPT(seq, 0)) return false;
+  
+  for (int i = 1; i <= n; i++) {
+     seq.setRequired(i, 1);
+   }
+  if(! testSequenceSMPT(seq, 24)) return false;
+
+  for (int i = 1; i <= 2*n; i++) {
+     seq.setRequired(i, 1);
+   }
+  if(! testSequenceSMPT(seq, 64)) return false;
+ 
+  return true;
+}
+
 int main()
 {
-  if(!testSequence0() || !testSequence1()) {
+  if(!testSequence0() || !testSequence1() || !testExtendedSequence0()) {
     std::cout << std::endl << "TEST FAILURE" << std::endl; 
     return(EXIT_FAILURE);   
    }
