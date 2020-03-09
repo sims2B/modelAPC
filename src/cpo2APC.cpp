@@ -3,6 +3,57 @@
 
 #include <algorithm>
 
+
+IlcConstraint IlcRelax1SFConstraint(IloCPEngine cp, IlcIntVarArray families,
+                                    IlcIntVar flowtime, IlcIntArray durations,
+                                    IlcIntArray setups, IloInt propagationMask) {
+  return new (cp.getHeap())
+      IlcRelax1SFConstraintI(cp, families, flowtime, durations, setups, propagationMask);
+}
+
+ILOCPCONSTRAINTWRAPPER5(IloRelax1SFConstraint, cp, IloIntVarArray, families,
+                        IloIntVar, flowtime, IloIntArray, durations,
+                        IloIntArray, setups, IloInt, propagationMask) {
+  use(cp, families);
+  use(cp, flowtime);
+  return IlcRelax1SFConstraint(
+      cp, cp.getIntVarArray(families), cp.getIntVar(flowtime),
+      cp.getIntArray(durations), cp.getIntArray(setups), propagationMask);
+}
+
+
+void useRelax1SFConstraint(const Problem &problem, IloEnv& env,
+		IloOplModel& opl, IloCP& cp, IloInt propagationMask){
+
+  
+  IloIntVarMap familyM = opl.getElement("nFamM").asIntVarMap();
+  IloIntVarMap flowtimeM = opl.getElement("flowtimeM").asIntVarMap();
+  IloIntMap dMap = opl.getElement("durations").asIntMap();
+  IloIntMap sMap = opl.getElement("setups").asIntMap();
+  IloInt nf = (IloInt) problem.getNbFams();
+  IloInt nm = (IloInt) problem.getNbMchs();
+  
+  IloIntArray durations(env, nf); 
+  IloIntArray setups(env, nf);
+  if(nf > 1) {
+    IloInt k = 1; 
+    setups[0] = sMap.getSub( k + 1).get(k);
+    durations[0] = dMap.get((IloInt) 1);
+    for(IloInt i= 2; i <= nf ; i++) {
+      durations[i-1] = dMap.get(i);
+      setups[i-1] = sMap.getSub(k).get(i);
+    }
+  }
+  for(IloInt i= 1; i <= nm ; i++) {
+    IloIntVarArray families(env, nf);
+    for(IloInt j= 1; j <= nf ; j++) {
+      families[j-1] = familyM.getSub(j).get(i);
+    }
+    IloIntVar flowtime = flowtimeM.get(i);
+   cp.getModel().add(IloRelax1SFConstraint(env, families, flowtime, durations, setups, propagationMask, "IloRelax1SFConstraint"));
+  }
+  }
+
 void CpoSolver2APC::doSolve(IloEnv &env) {
   IloOplErrorHandler handler(env, std::cout);
   IloOplModelSource modelSource(env, config.getModelPath().c_str());
@@ -10,17 +61,18 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   IloOplModelDefinition def(modelSource, settings);
   IloCP cp(env);
   IloOplModel opl(def, cp);
-  MyCustomDataSource ds(env, problem);
+  MyCustomDataSource ds(env, problem, config);
   IloOplDataSource dataSource(&ds);
   opl.addDataSource(dataSource);
   opl.generate();
   configure(env, cp, config);
-  // FIXME ./bin/solverAPC example.cfg
-  // ../benchmarks/datasets/T4/T4_small/instance_10_2_3_10_5_Sthr_7.txt
   for (Solution sol : solutionPool) {
     solToModel(sol, env, opl, cp);
   }
   createObj(env, opl, cp);
+  if(config.withRelaxation1SF()) {
+    useRelax1SFConstraint(problem, env, opl, cp, (IloInt) config.withRelaxation1SF());
+  }
   IloBool solCPFound = iloSolve(cp);
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
   if (solCPFound) {
@@ -34,6 +86,10 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
 void MyCustomDataSource::read() const {
   IloOplDataHandler handler = getDataHandler();
   const int F = problem.getNbFams();
+  // initialize the relaxation 1SF flag
+  handler.startElement("withRelaxation1SF");
+  handler.addIntItem( config.withRelaxation1SF() ? 1 : 0);
+  handler.endElement(); 
   // initialize the int 'simpleInt'
   handler.startElement("nbM");
   handler.addIntItem(problem.getNbMchs());
@@ -120,7 +176,6 @@ void CpoSolver2APC::createObj(IloEnv &env, IloOplModel &opl, IloCP &cp) {
     model.add(IloMinimize(env, myObj));
     objs.end();
   }
-
   else {
     if (config.getWeightFlowtime() > config.getWeightQualified())
       model.add(IloMinimize(env, flow - qualif));

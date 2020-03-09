@@ -73,7 +73,7 @@ class Solution {
   void toDimacs() const;
 };
 
- bool compareLexFQ(const Solution&, const Solution&);
+bool compareLexFQ(const Solution&, const Solution&);
 
 bool compareLexQF(const Solution&, const Solution&);
 

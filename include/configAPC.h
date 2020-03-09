@@ -70,6 +70,14 @@
     return getIntValue("objective", "weightFlowtime", 1);
   }
 
+  bool isFlowtimePriority() {
+    return getWeightFlowtime() > getWeightQualified(); 
+  }
+
+  bool isQualifiedPriority() {
+    return getWeightFlowtime() <= getWeightQualified(); 
+  }
+
   int getWeightQualified() {
     return getIntValue("objective", "weightQualified", 1);
   }
@@ -80,8 +88,8 @@
     return getStringValue("cpo", "model", "schedAPC.mod");
   }
 
-  bool withRelaxation1SF() {
-    return getBoolValue("cpo", "relax1SF", true);
+  int withRelaxation1SF() {
+    return getIntValue("cpo", "withRelax1SF", 3);
   }
 
   void toDimacs();

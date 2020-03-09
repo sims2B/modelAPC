@@ -85,7 +85,6 @@ std::vector<std::string> ConfigAPC::getHeuristics() {
 }
 
 void ConfigAPC::toDimacs() {
-  // TODO Add Config Name !
   std::cout << "c CONFIG_NAME " << getConfigName() << std::endl
             << "c SOLVER " << getSolverType() << std::endl
             << "c O_FUNC " << getObjectiveFunction() << std::endl

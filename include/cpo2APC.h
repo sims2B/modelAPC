@@ -7,6 +7,7 @@
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 
 #include "iloSolverAPC.h"
+#include "ilcConstraintAPC.h"
 
 // TODO Avoid multiple typedef definitions in cpo[1-2]APC.h
 
@@ -14,9 +15,10 @@ class MyCustomDataSource : public IloOplDataSourceBaseI
 {
   protected:
   Problem problem;
+  ConfigAPC &config;
 
 public:
-  MyCustomDataSource(IloEnv &env, const Problem & problem) : IloOplDataSourceBaseI(env), problem(problem){};
+  MyCustomDataSource(IloEnv &env, const Problem & problem, ConfigAPC &config) : IloOplDataSourceBaseI(env), problem(problem), config(config) {};
   void read() const;
 };
 

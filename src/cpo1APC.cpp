@@ -205,8 +205,8 @@ void CpoSolver1APC::createObjective(IloEnv &env, IloModel &model,
       model.add(IloMinimize(env, IloSum(ends)));
     else
       model.add(IloMinimize(env, IloSum(disQ)));
-  }
-
+  } 
+  
   else if (config.getObjectiveFunction() == "LEX") {
     IloNumExprArray objs(env);
     if (config.getWeightFlowtime() > config.getWeightQualified()) {
@@ -219,8 +219,8 @@ void CpoSolver1APC::createObjective(IloEnv &env, IloModel &model,
     IloMultiCriterionExpr myObj = IloStaticLex(env, objs);
     model.add(IloMinimize(env, myObj));
     objs.end();
-  }
-
+  } 
+  
   else {
     if (config.getWeightFlowtime() > config.getWeightQualified())
       model.add(IloMinimize(env, IloSum(ends) + IloSum(disQ)));
@@ -231,8 +231,8 @@ void CpoSolver1APC::createObjective(IloEnv &env, IloModel &model,
   }
   // TODO Use config !
 
-  ends.end();
-  disQ.end();
+ends.end();
+disQ.end();
 }
 
 void CpoSolver1APC::createConstraints(IloEnv &env, IloModel &model,

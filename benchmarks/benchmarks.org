@@ -8,6 +8,16 @@
 #+HTML_HEAD:    <link rel="stylesheet" type="text/css" href="http://www.i3s.unice.fr/~malapert/css/worg.min.css" />
 #+PROPERTY: exports results
 * Tasks                                                            :noexport:
+* Create directory ~instances~
+
+#+BEGIN_SRC sh
+rm -fr instances/*
+PATTERN=../datasets/N[2-4]0/M[3-4]/*_[SMB]thr_[2-3].txt
+ln $PATTERN instances
+#+END_SRC
+
+#+RESULTS:
+
 * Convert instances From TXT To OPL format
 
 * AWK Script : Extract Tikz  
@@ -50,57 +60,65 @@ k {} \;
  - Build results data frame.
 
 #+BEGIN_SRC R :results silent :session apc
-  ReadResults <- function(resfiles) {
-    ReadFile <- function(resfile) {
-      df <- read.table(resfile, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE)
-      df <- df[-ncol(df)]
-      return(df)
-    }
-    ## results <- lapply(resfiles, function(x) read.table(x, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE))
-    results <- lapply(resfiles, ReadFile)
-    resnames <- gsub(".res$", "", resfiles)
-    resnames <- gsub("^.*/", "", resnames)
-    names(results) <- resnames
-    return(results)
-  }
+   ReadResults <- function(resfiles) {
+     ReadFile <- function(resfile) {
+       df <- read.table(resfile, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE)
+       df <- df[-ncol(df)]
+       return(df)
+     }
+     ## results <- lapply(resfiles, function(x) read.table(x, sep='|', fill = TRUE, strip.white = TRUE, header=TRUE))
+     results <- lapply(resfiles, ReadFile)
+     resnames <- gsub(".res$", "", resfiles)
+     resnames <- gsub("^.*/", "", resnames)
+     names(results) <- resnames
+     return(results)
+   }
 
+   IsOptimal <- function(status) status == "OPTIMUM"
+   IsStrictlyFeasible <- function(status) status == "FEASIBLE" | status == "SAT"
+   IsFeasible <- function(status) IsOptimal(status) | IsStrictlyFeasible(status)
 
   SummaryResults <- function(df) {
-    x <- cbind( 
-      feas = 100 *(df$s == "OPTIMUM" | df$s == "FEASIBLE"),
-      opt = 100 * (df$s == "OPTIMUM"), 
-      disq = df$DISQUALIFIED,
-      flow = df$FLOWTIME,
-      time = df$WCTIME
-    )
-    round(aggregate(x, by = list(df$JOBS), FUN = mean, na.rm = TRUE), 1)
-  }
-
-   MergeResults <- function(results, 
-                            indBy = c("i", "JOBS", "MACHINES"),
-                            indD = c("FLOWTIME", "DISQUALIFIED", "WCTIME") ) {
-     ind <- c(indBy, indD)
-     df <- data.frame(results[[1]][ind])
-     for(i in tail(seq_along(results),-1)) {
-       df <- merge(df, results[[i]][ind], by = indBy, all = TRUE)
-     }
-     colnames(df) <- c( 
-       indBy, 
-       paste( 
-         rep(names(results), each = length(indD)),
-         rep(indD, length(results)),
-         sep = "."
-       )
+     x <- cbind( 
+       feas = 100 * IsFeasible(df$s),
+       opt = 100 * IsOptimal(df$s), 
+       disq = df$DISQUALIFIED,
+       flow = df$FLOWTIME,
+       time = df$WCTIME,
+       fail = df$FAILS
      )
-     return(df)
-   }
- 
-   SummaryObjective <-   function(df) {
-     x <- df$FLOWTIME + df$DISQUALIFIED
      round(aggregate(x, by = list(df$JOBS), FUN = mean, na.rm = TRUE), 1)
    }
-
  #+END_SRC
+
+** Deprecated
+ #+BEGIN_SRC R :results silent :session apc
+    MergeResults <- function(results, 
+                             indBy = c("i", "JOBS", "MACHINES"),
+                             indD = c("FLOWTIME", "DISQUALIFIED", "WCTIME", "FAILS") ) {
+      ind <- c(indBy, indD)
+      df <- data.frame(results[[1]][ind])
+      for(i in tail(seq_along(results),-1)) {
+        df <- merge(df, results[[i]][ind], by = indBy, all = TRUE)
+      }
+      colnames(df) <- c( 
+        indBy, 
+        paste( 
+          rep(names(results), each = length(indD)),
+           rep(indD, length(results)),
+          sep = "."
+        )
+      )
+      return(df)
+    }
+
+     SummaryObjective <-   function(df) {
+       x <- df$FLOWTIME + df$DISQUALIFIED
+       round(aggregate(x, by = list(df$JOBS), FUN = mean, na.rm = TRUE), 1)
+     }
+
+  #+END_SRC
+
 
 
 * TODO Modification du format de sortie
@@ -108,6 +126,132 @@ k {} \;
  - Affichage des solutions initiales
  - Calcul du statut en prenant en compte la solution initiale
  - Manque des configurations dans IP3 quand le status est UNKONWN, par exemple les caractéristiques de l'instances.
+
+* STARTED Read and summarize results 
+ #+BEGIN_SRC R :results output :session apc
+   resfiles <- list.files('results', pattern = '*.res', full.names=TRUE)
+   resultsQF <- ReadResults(resfiles)
+   lapply(resultsQF, SummaryResults)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ $with1SF_3
+   Group.1 feas  opt disq   flow time     fail
+ 1      20  100 96.8  2.7  323.6  4.8  70492.2
+ 2      30   98 68.6  4.4  813.6 15.1 151600.8
+ 3      40   98 43.1  4.6 1348.7 21.5 172846.7
+
+ $with1SF
+   Group.1 feas  opt disq   flow time     fail
+ 1      20  100 82.3  2.8  323.8  9.4 121280.5
+ 2      30   98 51.0  4.3  814.4 18.0 180067.0
+ 3      40   98 39.2  4.7 1351.6 27.8 174951.8
+
+ $without1SF
+   Group.1  feas  opt disq   flow time     fail
+ 1      20 100.0 85.5  2.8  323.7  9.2 121321.5
+ 2      30  96.1 37.3  4.2  815.7 21.0 194965.2
+ 3      40  96.1 35.3  4.7 1343.3 22.7 171643.3
+ #+end_example
+
+ 
+
+
+ Merge data frames.
+#+BEGIN_SRC R :session apc 
+   library(dplyr)
+   x <- bind_rows(resultsQF, .id = "id")
+   x$o <- x$FLOWTIME + x$DISQUALIFIED
+#+END_SRC
+
+
+#+BEGIN_SRC R :results output silent :session apc 
+  library(ggplot2)
+  PlotOptimumTimes <- function(x) { 
+    x <- subset(x, IsOptimal(x$s))
+    ggplot(x %>% 
+           group_by(id) %>% 
+           arrange(WCTIME) %>% 
+           mutate(n = row_number())) + 
+      geom_step(aes(x=WCTIME, y=n, color=id))  + 
+      ggtitle('Number of instances solved optimally') +  theme(text = element_text(size=20))
+  }
+  PlotOptimumTimes(x) 
+  ggsave("optimum-times.png", device = 'png', width = 12, height = 9) 
+#+END_SRC
+
+#+RESULTS:
+: org_babel_R_eoe
+
+#+BEGIN_SRC R :results output silent :session apc 
+  GetTableVBS <- function(x) {
+    GetVBS <- function(x) {
+      y <- subset(x, IsOptimal(x$s))
+      ## TODO Check that all objectives are equals
+      if(nrow(y) == 0) {
+        y <- subset(x, IsStrictlyFeasible(x$s))
+      } else if(nrow(y) > 1) {
+        if(any(y$o != min(y$o))) {
+          warning(paste0("inconsistent optimal values for ", y$i[1]))
+        }
+      }
+      if(nrow(y) <= 1) return(y)
+      res <- head(y, 1)
+      ind <- sapply(y, is.numeric)
+      res[ind] <- sapply(y[ind], min)
+      return(res)
+    }
+
+    y <- x %>% group_by(i) %>% group_map( ~ GetVBS(.x), keep = TRUE)
+    return(bind_rows(y))
+  }
+  vbs <- GetTableVBS(x)
+ #+END_SRC 
+
+
+
+#+BEGIN_SRC R :results output silent :session apc 
+   PlotFeasibleObjectives <- function(x, vbs) {
+     x <- subset(x, IsStrictlyFeasible(x$s))
+     z <- inner_join(x, vbs, by = c("i"))
+
+     z$FLOWTIME <- (z$FLOWTIME.x - z$FLOWTIME.y) / z$FLOWTIME.y   
+     z$DISQUALIFIED <- (z$DISQUALIFIED.x - z$DISQUALIFIED.y) 
+     z <- z[ , c('id.x', 'FLOWTIME', 'DISQUALIFIED')]
+     ggplot(z, aes(x=FLOWTIME, y=DISQUALIFIED, shape=id.x, color=id.x)) + geom_point(size=8) + ggtitle('Gap to the virtual best solver if not proven optimal') +  theme(text = element_text(size=20))
+  
+   }
+   PlotFeasibleObjectives(x, vbs)
+    ggsave("feasible-objectives.png", device = 'png', width = 12, height = 9) 
+ #+END_SRC 
+
+#+BEGIN_SRC R :results output silent :session apc
+  n <- length(resultsQF)
+  if(n > 1) {
+    for(i in 1:(n-1)) {
+      for(j in (i+1):n) {
+        namei <- names(resultsQF)[i]
+        namej <- names(resultsQF)[j]
+        z <- full_join(resultsQF[[i]], resultsQF[[j]], by = c("i"))
+        p <- z[ , c('s.x', 's.y')]  
+        colnames(p) <- c(namei, namej)
+        p$Time <- z$WCTIME.x/ z$WCTIME.y
+        p$Fails <- z$FAILS.x / z$FAILS.y 
+
+        ggplot(p, aes_string(x="Time", y="Fails", shape=namei, color=namej)) +   geom_point(size=5) + scale_x_continuous(trans='log2') +   scale_y_continuous(trans='log2') + ggtitle(sprintf('%s versus %s', namei, namej)) +  theme(text = element_text(size=20))
+      ggsave(sprintf("compare-%s-%s.png", namei, namej), device = 'png', width = 12, height = 9) 
+      }
+  }
+  }
+#+END_SRC
+
+
+
+
+
+
+
 
 * DONE Read and summarize results : QUAL - FLOW ; 30 seconds 
   CLOSED: [2018-11-26 lun. 10:28] SCHEDULED: <2018-11-24 sam.>
@@ -359,7 +503,7 @@ Percentage
  : 5      60              50.0               8.3              36.7
  : 6      70              52.2               5.6              43.3
 
-* STARTED Read and summarize results : FLOW - QUAL ; 600 seconds 
+* DONE Read and summarize results : FLOW - QUAL ; 600 seconds 
 
  #+BEGIN_SRC R :results output :session apc
    resfiles <- list.files('results/flow-qual-600s-2711', pattern = '*.res', full.names=TRUE)
@@ -420,9 +564,7 @@ Percentage
  :   Group.1 modelCP1.FLOWTIME modelIP3.FLOWTIME schedAPC.FLOWTIME
  : 1      60                20                45                20
 
-
-
-* STARTED Read and summarize results : QUAL - FLOW ; 600 seconds 
+* DONE Read and summarize results : QUAL - FLOW ; 600 seconds 
 
  #+BEGIN_SRC R :results output :session apc
    resfiles <- list.files('results/qual-flow-600s-2911', pattern = '*.res', full.names=TRUE)
