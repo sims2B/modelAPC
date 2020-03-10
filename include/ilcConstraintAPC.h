@@ -20,6 +20,7 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
  protected:
   IlcInt _n;
   IlcIntVarArray _x;
+  IlcIntVar _c;
   IlcIntVar _f;
   //IlcIntArray _d;
   //IlcIntArray _s;
@@ -30,12 +31,13 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   std::vector<int> orderSPT;
 
  public:
-  IlcRelax1SFConstraintI(IloCPEngine cp, IlcIntVarArray families,
+  IlcRelax1SFConstraintI(IloCPEngine cp, IlcIntVarArray families, IlcIntVar cardinality,
                          IlcIntVar flowtime, IlcIntArray durations,
                          IlcIntArray setups, int propagationMask)
       : IlcConstraintI(cp),
         _n(families.getSize()),
         _x(families),
+        _c(cardinality),
         _f(flowtime),
         s(toVector(durations), toVector(setups), false),
         se(toVector(durations), toVector(setups), true),

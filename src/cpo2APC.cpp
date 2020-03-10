@@ -4,20 +4,21 @@
 #include <algorithm>
 
 
-IlcConstraint IlcRelax1SFConstraint(IloCPEngine cp, IlcIntVarArray families,
+IlcConstraint IlcRelax1SFConstraint(IloCPEngine cp, IlcIntVarArray families, IlcIntVar cardinality,
                                     IlcIntVar flowtime, IlcIntArray durations,
                                     IlcIntArray setups, IloInt propagationMask) {
   return new (cp.getHeap())
-      IlcRelax1SFConstraintI(cp, families, flowtime, durations, setups, propagationMask);
+      IlcRelax1SFConstraintI(cp, families, cardinality, flowtime, durations, setups, propagationMask);
 }
 
-ILOCPCONSTRAINTWRAPPER5(IloRelax1SFConstraint, cp, IloIntVarArray, families,
+ILOCPCONSTRAINTWRAPPER6(IloRelax1SFConstraint, cp, IloIntVarArray, families, IloIntVar, cardinality,
                         IloIntVar, flowtime, IloIntArray, durations,
                         IloIntArray, setups, IloInt, propagationMask) {
   use(cp, families);
+  use(cp, cardinality);
   use(cp, flowtime);
   return IlcRelax1SFConstraint(
-      cp, cp.getIntVarArray(families), cp.getIntVar(flowtime),
+      cp, cp.getIntVarArray(families), cp.getIntVar(cardinality), cp.getIntVar(flowtime),
       cp.getIntArray(durations), cp.getIntArray(setups), propagationMask);
 }
 
@@ -27,6 +28,7 @@ void useRelax1SFConstraint(const Problem &problem, IloEnv& env,
 
   
   IloIntVarMap familyM = opl.getElement("nFamM").asIntVarMap();
+  IloIntVarMap cardM = opl.getElement("nM").asIntVarMap();
   IloIntVarMap flowtimeM = opl.getElement("flowtimeM").asIntVarMap();
   IloIntMap dMap = opl.getElement("durations").asIntMap();
   IloIntMap sMap = opl.getElement("setups").asIntMap();
@@ -49,8 +51,9 @@ void useRelax1SFConstraint(const Problem &problem, IloEnv& env,
     for(IloInt j= 1; j <= nf ; j++) {
       families[j-1] = familyM.getSub(j).get(i);
     }
+    IloIntVar cardinality = cardM.get(i);
     IloIntVar flowtime = flowtimeM.get(i);
-   cp.getModel().add(IloRelax1SFConstraint(env, families, flowtime, durations, setups, propagationMask, "IloRelax1SFConstraint"));
+   cp.getModel().add(IloRelax1SFConstraint(env, families, cardinality, flowtime, durations, setups, propagationMask, "IloRelax1SFConstraint"));
   }
   }
 

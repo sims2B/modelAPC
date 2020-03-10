@@ -173,7 +173,7 @@ class SequenceSMPT {
   }
 
   void decrementRequired(int family) {
-     nreq += runs[family]->setRequired( runs[family]->getRequired() - 1);
+     setRequired(family, runs[family]->getRequired() - 1);
   }
 
   void sequencing();

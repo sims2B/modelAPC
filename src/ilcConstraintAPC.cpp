@@ -92,6 +92,8 @@ void IlcRelax1SFConstraintI::reduceCardMachine()
 {
   int f = _n - 1;
   const int flowUB = _f.getMax();
+   se.sequencing();
+   //std::cout << "COMPUTED LB " << se.searching() << " UB "<< flowUB << std::endl;
 
   while (!se.searching(flowUB))
   {
@@ -158,7 +160,7 @@ void IlcRelax1SFConstraintI::propagate()
             << std::endl
             << "START" << std::endl;
     se.printSequence();
-    std::cout << "MAX CARD " << maxCard << " FLOWTIME " << _f.getMax()<< std::endl;
+    std::cout << "MAX CARD " << maxCard << " FLOWTIME " << _f.getMax() << std::endl;
 #endif
     ///////////
     if (extendSequence(maxCard))
@@ -170,7 +172,8 @@ reduceCardMachine();
 #ifdef DEBUG
       std::cout << "NEW MAX CARD " << se.getSize() << std::endl;
 #endif
- if(maxCard > se.getSize()) std::cout << "UPDATE MAX CARD " << maxCard << " -> "<< se.getSize() << std::endl;
+ //if(maxCard > se.getSize()) 
+ std::cout << "UPDATE MAX CARD " << maxCard << " -> "<< se.getSize() << " REAL MAX CARD " << _c.getMax()<< std::endl;
  //if(se.getSize() == 0) exit(EXIT_SUCCESS);
     }
     else
