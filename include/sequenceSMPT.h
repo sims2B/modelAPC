@@ -102,11 +102,13 @@ typedef std::vector<FamilyRun*> Runs;
 
 class SequenceSMPT {
  public:
+  // Number of runs 
   const int n;
-  int nreq;
-  int flowtimeWS;
-
+  
  protected:
+  // Total number of jobs in the runs
+  int nreq; // TODO rename : size
+  int flowtimeWS; // TODO rename too ? 
   std::vector<FamilyRun*> sequence;
   std::vector<FamilyRun*> runs;
 
@@ -160,8 +162,18 @@ class SequenceSMPT {
     }
   }
 
+  int getSize() {return nreq;}
+
+  int getRequired(int family) {
+    return runs[family]->getRequired();
+  }
+
   void setRequired(int family, int required) {
     nreq += runs[family]->setRequired(required);
+  }
+
+  void decrementRequired(int family) {
+     nreq += runs[family]->setRequired( runs[family]->getRequired() - 1);
   }
 
   void sequencing();

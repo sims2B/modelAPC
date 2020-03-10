@@ -15,6 +15,7 @@
 
 // This is simply a constraint that is pushed and that calls the execute()
 // function of the above custom inferencer
+
 class IlcRelax1SFConstraintI : public IlcConstraintI {
  protected:
   IlcInt _n;
@@ -25,6 +26,7 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   SequenceSMPT s;
   SequenceSMPT se;
   int propagationMask;
+
   std::vector<int> orderSPT;
 
  public:
@@ -72,7 +74,7 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
  private:
   void initSequence();
   void initExtendedSequence();
-  
+  bool extendSequence(int size);
   void reduceCardFamily(int i);
   
   void reduceCardMachine();
