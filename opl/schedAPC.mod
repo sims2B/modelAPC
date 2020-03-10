@@ -120,6 +120,8 @@ int withRelaxation1SF = ...;
 
 // the number of jobs of each family for each machine
 dvar int+ nFamM[F][M];
+// the number of jobs of the machines
+dvar int+ nM[M];
 // the flowtime of the machines
 dvar int+ flowtimeM[M];
 
@@ -127,7 +129,7 @@ dvar int+ flowtimeM[M];
 ///////////////////////////////
 // Search Configuration ///////
 ///////////////////////////////
-int timeLimit = 180;
+int timeLimit = -1;
 string logVerbosity = "Normal";
 
 float wctime;
@@ -155,10 +157,10 @@ execute SEARCH {
 // The objective definition must be commented for the C++ project
 // They are only for the OPL project.
 
-//minimize staticLex(-qualified, flowtime);
+// minimize staticLex(-qualified, flowtime);
 
-//minimize flowtime - qualified;
-//minimize flowtime;
+// minimize flowtime - qualified;
+// minimize flowtime;
 
 ///////////////////////////////
 // Constraints ////////////////
@@ -196,8 +198,8 @@ subject to {
 		 // Redundant flowtime
  		ctFlow2:
 		flowtime == sum(m in M) flowtimeM[m];
-				
 		
+			
 		forall(f in F) { 	
  	 		// Count the number of jobs per family for each machine.
  	 		forall(m in M) { 
@@ -208,8 +210,14 @@ subject to {
    			
    			sum(m in M) nFamM[f][m] == fsizes[f]; 	 		
   		} 	
-  		}  		 	
-
+  		}
+  		
+  		// Numbers of jobs  per machine  
+ 		forall(m in M) { 	
+ 	 		sum(f in F) nFamM[f][m] == nM[m];		
+		}
+		// Total number of jobs	  		 	
+		sum(m in M) nM[m] == nbJ;
  		////////////////////////
 		/////  Parallel Machines  
 	    		 
