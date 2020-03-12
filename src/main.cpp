@@ -79,6 +79,8 @@ int main(int argc, char *argv[]) {
     solver->solve();/* 
     std::cout << solver->getSolution().toString();
     solver->getSolution().toTikz();  */
+  } else {
+    std::cout << "s ERROR\nError : command line argument - unknown solver." << std::endl;
   }
   timer.stagewc();
   timer.toDimacs();
