@@ -17,7 +17,7 @@
   This project requires:
 
   - Make 
-  - Cplex 12.8.0
+  - Cplex 12.9.0
 
 ** Building from source
  

@@ -21,7 +21,6 @@ void SequenceSMPT::sequencing() {
     sequence[i]->scheduleAfter(sequence[i - 1]);
     flowtimeWS += sequence[i]->getFlowtime();
   }
-  // printf("FLOWTIME_WS %d\n", flowtimeWS);
 }
 
 int SequenceSMPT::searchNextRun(int from) {

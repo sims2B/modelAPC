@@ -2,7 +2,9 @@
 
 #include <algorithm>
 
-// #define DEBUG
+#define DEBUG_FLOW
+#define DEBUG_FAMILY
+#define DEBUG_MACHINE
 
 bool compareWeights(FamilyRun f1, FamilyRun f2) {
   return f1.getWeight() < f2.getWeight();
@@ -35,7 +37,7 @@ void IlcRelax1SFConstraintI::reduceCardFamily(int i) {
     s.setRequired(i, max);
     s.sequencing();
     if (s.searching(flowUB)) {
-#ifdef DEBUG
+#ifdef DEBUG_FAMILY
       if (max < x.getMax()) {
         std::cout << "FAMILY " << i << " CARD " << x.getMax() << "->" << max
                   << std::endl;
@@ -65,13 +67,13 @@ void IlcRelax1SFConstraintI::initExtendedSequence() {
 bool IlcRelax1SFConstraintI::extendSequence(int size) {
   int f = 0;
   int missing = size - se.getSize();
-#ifdef DEBUG
+#ifdef DEBUG_MACHINE
   std::cout << "MISSING " << missing << std::endl;
 #endif
   while (missing > 0 && f < _n) {
     IlcIntVar x = _x[orderSPT[f] - 1];
     int opt = x.getMax() - x.getMin();
-#ifdef DEBUG
+#ifdef DEBUG_MACHINE
     if (opt == 0)
       std::cout << "NO MORE FAMILY " << _n + orderSPT[f] << std::endl;
     else
@@ -91,9 +93,7 @@ void IlcRelax1SFConstraintI::reduceCardMachine() {
   int f = _n - 1;
   const int flowUB = _f.getMax();
   se.sequencing();
-  // std::cout << "COMPUTED LB " << se.searching() << " UB "<< flowUB <<
-  // std::endl;
-
+ 
   while (!se.searching(flowUB)) {
     while (f >= 0) {
       const int i = _n + orderSPT[f];
@@ -105,7 +105,7 @@ void IlcRelax1SFConstraintI::reduceCardMachine() {
     }
     if (f >= 0) {
       se.sequencing();
-#ifdef DEBUG
+#ifdef DEBUG_MACHINE
       se.printSequence();
       printf("\n");
 #endif
@@ -118,9 +118,9 @@ void IlcRelax1SFConstraintI::reduceCardMachine() {
 void IlcRelax1SFConstraintI::increaseFlowtime(SequenceSMPT& s) {
   s.sequencing();
   const int flowLB = s.searching();
-#ifdef DEBUG
+#ifdef DEBUG_FLOW
   if (_f.getMin() < flowLB) {
-    std::cout << "FLOWTIME " << _f.getMax() << "->" << flowLB << std::endl;
+    std::cout << "FLOWTIME " << _f.getMin() << "->" << flowLB << std::endl;
   }
 #endif
   _f.setMin(flowLB);

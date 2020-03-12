@@ -26,8 +26,8 @@ class FamilyRun {
   int pred;
   int next;
   int endtime;
-  int flowtime;  // TODO Remove var
-
+  int flowtime; 
+  
  public:
   FamilyRun() : FamilyRun(0, 0, 0) {}
 
