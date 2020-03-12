@@ -57,16 +57,15 @@ class FamilyRun {
 
  protected:
   int setRequired(int required) {
-    int delta;
-    if (required > 0) {
-      delta = required - this->required;
+    int delta = -this->required;
+      if (required > 0) {
+      delta += required;
       this->required = required;
       slength = setup;
       length = setup + required * duration;
       flowtime = SUM1N(required) * duration;
       weight = ((double)duration + ((double)setup) / ((double)required));
     } else {
-      delta = -this->required;
       this->required = 0;
       slength = 0;
       length = 0;

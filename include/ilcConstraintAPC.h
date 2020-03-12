@@ -6,8 +6,8 @@
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 
 #include "sequenceSMPT.h"
-#ifndef __INTELLISENSE__ // code that generates an error squiggle #endif
-// FIX : missing include generic.h 
+#ifndef __INTELLISENSE__  // code that generates an error squiggle #endif
+// FIX : missing include generic.h
 #include <ilcp/cp.h>
 #include <ilcp/cpext.h>
 #endif
@@ -22,8 +22,8 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   IlcIntVarArray _x;
   IlcIntVar _c;
   IlcIntVar _f;
-  //IlcIntArray _d;
-  //IlcIntArray _s;
+  // IlcIntArray _d;
+  // IlcIntArray _s;
   SequenceSMPT s;
   SequenceSMPT se;
   int propagationMask;
@@ -31,9 +31,10 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
   std::vector<int> orderSPT;
 
  public:
-  IlcRelax1SFConstraintI(IloCPEngine cp, IlcIntVarArray families, IlcIntVar cardinality,
-                         IlcIntVar flowtime, IlcIntArray durations,
-                         IlcIntArray setups, int propagationMask)
+  IlcRelax1SFConstraintI(IloCPEngine cp, IlcIntVarArray families,
+                         IlcIntVar cardinality, IlcIntVar flowtime,
+                         IlcIntArray durations, IlcIntArray setups,
+                         int propagationMask)
       : IlcConstraintI(cp),
         _n(families.getSize()),
         _x(families),
@@ -43,31 +44,31 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
         se(toVector(durations), toVector(setups), true),
         propagationMask(propagationMask)
   //      _d(durations),
-  //      _s(setups) 
+  //      _s(setups)
   {
     for (int i = 1; i <= _n; i++) {
       orderSPT.push_back(i);
     }
-    sort( orderSPT.begin(),orderSPT.end(), [&](int i,int j){return durations[i-1]<durations[j-1];} );
+    sort(orderSPT.begin(), orderSPT.end(),
+         [&](int i, int j) { return durations[i - 1] < durations[j - 1]; });
     // for (int i = 0; i < _n; i++) {
-    //   std::cout << orderSPT[i] << " " << durations[orderSPT[i]-1] << " " << durations[i] << std::endl;
+    //   std::cout << orderSPT[i] << " " << durations[orderSPT[i]-1] << " " <<
+    //   durations[i] << std::endl;
     // }
     // std::cout << std::endl << "MASK " << propagationMask << std::endl;
   }
 
-  ~IlcRelax1SFConstraintI() {
-  }
+  ~IlcRelax1SFConstraintI() {}
 
   static std::vector<int> toVector(IlcIntArray t) {
     const int n = t.getSize();
-    std::vector<int> v; 
+    std::vector<int> v;
     v.reserve(n);
     for (int i = 0; i < n; i++) {
       v.push_back(t[i]);
     }
     return v;
   }
-
 
   virtual void post();
   virtual void propagate();
@@ -76,12 +77,14 @@ class IlcRelax1SFConstraintI : public IlcConstraintI {
  private:
   void initSequence();
   void initExtendedSequence();
-  bool extendSequence(int size);
-  void reduceCardFamily(int i);
   
-  void reduceCardMachine();
-  
-};
+  void increaseFlowtime(SequenceSMPT& s);
 
+  void reduceCardFamily(int i);
+  void reduceCardFamilies();
+
+  bool extendSequence(int size);
+  void reduceCardMachine();
+};
 
 #endif
