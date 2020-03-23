@@ -32,24 +32,16 @@ bool testSequence0() {
   int durations[] = {2, 3, 4};
   int setups[] = {10, 5, 1};
   SequenceSMPT seq(n, durations, setups);
-  for (int i = 1; i <= n; i++) {
-     seq.setRequired(i, 0);
-   }
+  setRequired(seq, n, 0);
   if(! testSequenceSMPT(seq, 0)) return false;
   
-  for (int i = 1; i <= n; i++) {
-     seq.setRequired(i, 1);
-   }
+  setRequired(seq, n, 1);
   if(! testSequenceSMPT(seq, 24)) return false;
 
-  for (int i = 1; i <= n; i++) {
-     seq.setRequired(i, 10);
-   }
+  setRequired(seq, n, 10);
   if(! testSequenceSMPT(seq, 1305)) return false;
   
-  for (int i = 1; i <= n; i++) {
-     seq.setRequired(i, 0);
-   }
+  setRequired(seq, n, 0);
   if(! testSequenceSMPT(seq, 0)) return false;
   
   return true;
@@ -63,19 +55,14 @@ bool testSequence1() {
   SequenceSMPT seq(n, durations, setups);
 
   int required[] = {3, 2, 1, 0, 5};
-  for (int i = 1; i <= n; i++) {
-     seq.setRequired(i, required[i-1]);
-   }
+  setRequired(seq, n, required); 
+  
   if( !testSequenceSMPT(seq, 260)) return false;
 
-  for (int i = 1; i <= n; i++) {
-     seq.setRequired(i, 1);
-  }
+  setRequired(seq, n, 1); 
   if(! testSequenceSMPT(seq, 58)) return false;
 
-  for (int i = 1; i <= n; i++) {
-     seq.setRequired(i, 0);
-  }
+  setRequired(seq, n, 0); 
   if(! testSequenceSMPT(seq, 0)) return false;
 
   return true;
@@ -86,19 +73,13 @@ bool testExtendedSequence0() {
   int durations[] = {2, 3, 4};
   int setups[] = {10, 5, 1};
   SequenceSMPT seq(n, durations, setups, true);
-  for (int i = 1; i <= 2*n; i++) {
-     seq.setRequired(i, 0);
-   }
+  setRequired(seq, n, 0);
   if(! testSequenceSMPT(seq, 0)) return false;
   
-  for (int i = 1; i <= n; i++) {
-     seq.setRequired(i, 1);
-   }
+  setRequired(seq, n, 1); 
   if(! testSequenceSMPT(seq, 24)) return false;
 
-  for (int i = 1; i <= 2*n; i++) {
-     seq.setRequired(i, 1);
-   }
+  setRequired(seq, 2*n, 1); 
   if(! testSequenceSMPT(seq, 64)) return false;
  
   return true;
