@@ -42,7 +42,7 @@ int SequenceSMPT::searching() {
   // Try to schedule first each remaining non empty run
   while ((i = searchNextRun(i)) <= n) {
     const int delta = sequence[i]->moveFirst();
-    // printf("try F%d -> %d\n", sequence[i]->index, delta);
+    printf("try F%d -> %d\n", sequence[i]->index, delta);
     if (delta < bestDelta) {
       bestDelta = delta;
     }
