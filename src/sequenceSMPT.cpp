@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#define DEBUG
+#define DEBUG_SEQ
 
 bool compareWeights(FamilyRun* f1, FamilyRun* f2) {
   return f1->getWeight() < f2->getWeight();
@@ -20,7 +20,9 @@ void SequenceSMPT::sequencing() {
   for (int i = 1; i <= n; i++) {
     sequence[i]->scheduleAfter(sequence[i - 1]);
     flowtimeWS += sequence[i]->getFlowtime();
+    std::cout << "F_WS_" << i << " " << sequence[i]->getFlowtime() << std::endl;
   }
+  std::cout << "F_WS " << flowtimeWS << std::endl;
 }
 
 int SequenceSMPT::searchNextRun(int from) {

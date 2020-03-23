@@ -2,12 +2,26 @@
 #include <iostream>
 #include "sequenceSMPT.h"
 
+
+void setRequired(SequenceSMPT &seq, int n, int required) {
+  for (int i = 1; i <= n; i++) {
+     seq.setRequired(i, required);
+   }
+}
+
+void setRequired(SequenceSMPT &seq, int n,int required[]) {
+  for (int i = 1; i <= n; i++) {
+     seq.setRequired(i, required[i-1]);
+   }
+}
+
 bool testSequenceSMPT(SequenceSMPT &seq, int flowtime) {
   seq.sequencing();
   seq.printSequence();
-  std::cout << std::endl;
+  const int results = seq.searching();
+  std::cout << "COMPUTED FLOWTIME "<< results << std::endl;
   
-  return seq.searching() == flowtime 
+  return results == flowtime 
    && seq.searching(flowtime + flowtime /10)
    && seq.searching(flowtime) 
    && (flowtime <= 0 || !seq.searching(flowtime - 1));
@@ -90,9 +104,35 @@ bool testExtendedSequence0() {
   return true;
 }
 
+bool testSequence2() {
+  int n = 4;
+  int durations[] = {1, 2, 3, 4};
+  int setups[] = {1, 1, 1, 1};
+  SequenceSMPT seq(n, durations, setups);
+  
+  setRequired(seq, n, 1);
+  seq.setRequired(1, 10);
+  if(! testSequenceSMPT(seq, 107)) return false;
+ 
+  setRequired(seq, n, 1);
+  seq.setRequired(2, 10);
+  if(! testSequenceSMPT(seq, 188)) return false;
+ 
+  setRequired(seq, n, 1);
+  seq.setRequired(3, 10);
+  if(! testSequenceSMPT(seq, 260)) return false;
+
+  setRequired(seq, n, 1);
+  seq.setRequired(4, 10);
+  if(! testSequenceSMPT(seq, 323)) return false;
+
+  return true;
+}
+
 int main()
 {
-  if(!testSequence0() || !testSequence1() || !testExtendedSequence0()) {
+  //if(!testSequence2() ) {    
+  if(!testSequence0() || !testSequence1() || !testSequence2() || !testExtendedSequence0()) {
     std::cout << std::endl << "TEST FAILURE" << std::endl; 
     return(EXIT_FAILURE);   
    }
