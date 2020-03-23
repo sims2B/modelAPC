@@ -78,6 +78,9 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   }
   IloBool solCPFound = iloSolve(cp);
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
+  // std::cout << "#### BEGIN OPL POSTPROCESSING" << std::endl;
+  // opl.postProcess();
+  // std::cout << "#### END POSTPROCESSING" << std::endl;
   if (solCPFound) {
     IloOplElement elmt = opl.getElement("mjobs");
     modelToSol(env, cp, elmt);
@@ -165,7 +168,6 @@ void CpoSolver2APC::createObj(IloEnv &env, IloOplModel &opl, IloCP &cp) {
     else
       model.add(IloMaximize(env, qualif));
   }
-
   else if (config.getObjectiveFunction() == "LEX") {
     IloNumExprArray objs(env);
     if (config.getWeightFlowtime() > config.getWeightQualified()) {
@@ -179,7 +181,8 @@ void CpoSolver2APC::createObj(IloEnv &env, IloOplModel &opl, IloCP &cp) {
     model.add(IloMinimize(env, myObj));
     objs.end();
   }
-  else {
+  else { // config.getObjectiveFunction() == "SUM")
+    std::cout << "FOO " << std::endl;
     if (config.getWeightFlowtime() > config.getWeightQualified())
       model.add(IloMinimize(env, flow - qualif));
     else {

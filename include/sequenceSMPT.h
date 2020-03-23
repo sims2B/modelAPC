@@ -175,7 +175,7 @@ class SequenceSMPT {
      setRequired(family, runs[family]->getRequired() - 1);
   }
 
-  void sequencing();
+  void sequencing(); // TODO return the flowtime with setups ?
 
   int searching();
 

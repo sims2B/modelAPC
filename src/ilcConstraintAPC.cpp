@@ -4,7 +4,7 @@
 
 //#define DEBUG_FLOW
 #define DEBUG_FAMILY
-//#define DEBUG_MACHINE
+#define DEBUG_MACHINE
 
 bool compareWeights(FamilyRun f1, FamilyRun f2) {
   return f1.getWeight() < f2.getWeight();
@@ -15,6 +15,7 @@ ILCCTDEMON0(Relax1SFDemon, IlcRelax1SFConstraintI, varDemon)
 void IlcRelax1SFConstraintI::post() {
   IloCPEngine cp = getCPEngine();
   _f.whenRange(Relax1SFDemon(cp, this));
+  _c.whenRange(Relax1SFDemon(cp, this));
   for (IlcInt i = 0; i < _n; i++) {
     _x[i].whenRange(Relax1SFDemon(cp, this));
   }
@@ -128,6 +129,7 @@ void IlcRelax1SFConstraintI::increaseFlowtime(SequenceSMPT &s) {
 }
 
 void IlcRelax1SFConstraintI::propagate() {
+  
   if (propagationMask & 3) {
     initSequence();
     increaseFlowtime(s);
@@ -137,14 +139,13 @@ void IlcRelax1SFConstraintI::propagate() {
       }
     }
   }
-
+  // WORK IN PROGRESS 
   // FIXME beware of the initialization !
   if (propagationMask & 12 && !_c.isFixed()) {
     initExtendedSequence();
     if (extendSequence(_c.getMin())) {
       increaseFlowtime(se);
     } else {
-
       fail();
     }
     if (propagationMask & 8) {

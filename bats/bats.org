@@ -1,0 +1,64 @@
+#+SETUPFILE: ~/.emacs.d/org-templates/base.org
+#+TITLE:       Notes about the test cases
+#+DESCRIPTION: 
+#+KEYWORDS:    
+#+TEXT:        
+#+OPTIONS: H:2 num:nil toc:2
+#+LANGUAGE: en
+#+HTML_HEAD:    <link rel="stylesheet" type="text/css" href="http://www.i3s.unice.fr/~malapert/css/worg.min.css" />
+#+PROPERTY: exports results
+
+* Cleanup directories
+
+#+BEGIN_SRC sh
+rm -fr algorithms[FQ]*
+#+END_SRC
+
+
+* Generate algorithms
+
+#+BEGIN_SRC R
+    WriteConfig <- function(dir = ".", type, obj, wF, wQ, lvl) {
+    filename <- tolower(sprintf("%s-%d.cfg", type, lvl))
+    template <- "name = \"%s\";
+  solver = {
+         timeLimit = 60;
+         workers = 1;
+         verbose = true;
+         tikz = false;
+         type = \"%s\";
+         heuristics = ();
+  }
+
+  objective = {
+         function = \"%s\"
+         weightFlowtime = %d;
+         weightQualified = %d;
+  }      
+  cpo = {
+         model = \"/home/nono/c++/modelAPC/opl/schedAPC.mod\";
+         withRelax1SF = %d
+  }
+  "
+   sink(file.path(dir, filename))
+   cat(sprintf(template, filename, type, obj, wF, wQ, lvl))
+   sink()
+  }
+
+  WriteConfigs <- function(dir =".", obj, wF, wQ) {
+    dir.create(dir)
+    WriteConfig(dir = dir, type = "CPLEX", obj = obj, wF = wF, wQ = wQ, lvl = 0)
+    WriteConfig(dir = dir, type = "CPO1", obj = obj, wF = wF, wQ = wQ, lvl = 0)
+    for(lvl in c(0, 1, 3, 4)) {
+      WriteConfig(dir = dir, type = "CPO2", obj = obj, wF = wF, wQ = wQ, lvl = lvl)
+    }
+  }
+
+  WriteConfigs("algorithmsF", obj = "MONO", wF = 1, wQ = -1)
+  WriteConfigs("algorithmsQ", obj = "MONO", wF = -1, wQ = 1)
+  WriteConfigs("algorithmsFQ", obj = "SUM", wF = 1, wQ = -1)
+
+#+END_SRC
+
+#+RESULTS:
+
