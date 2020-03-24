@@ -38,7 +38,6 @@ void IlcRelax1SFConstraintI::reduceCardFamily(int i) {
   const int flowUB = _f.getMax();
   do {
     s.setRequired(i, max);
-    s.sequencing();
     if (s.searching(flowUB)) {break;}
     max--; 
   } while (max > min);
@@ -94,7 +93,6 @@ bool IlcRelax1SFConstraintI::extendSequence(int size) {
 void IlcRelax1SFConstraintI::reduceCardMachine() {
   int f = _n - 1;
   const int flowUB = _f.getMax();
-  se.sequencing();
 
   while (!se.searching(flowUB)) {
     while (f >= 0) {
@@ -106,7 +104,6 @@ void IlcRelax1SFConstraintI::reduceCardMachine() {
       f--;
     }
     if (f >= 0) {
-      se.sequencing();
 #ifdef DEBUG_MACHINE
       se.printSequence();
       printf("\n");
@@ -118,7 +115,6 @@ void IlcRelax1SFConstraintI::reduceCardMachine() {
 }
 
 void IlcRelax1SFConstraintI::increaseFlowtime(SequenceSMPT &s) {
-  s.sequencing();
   const int flowLB = s.searching();
 #ifdef DEBUG_FLOW
   if (_f.getMin() < flowLB) {
@@ -128,38 +124,42 @@ void IlcRelax1SFConstraintI::increaseFlowtime(SequenceSMPT &s) {
   _f.setMin(flowLB);
 }
 
+#define REQ_LB 1
+#define F_CARD 2
+#define EXT_LB 4
+#define M_CARD 8
+
+
 void IlcRelax1SFConstraintI::propagate() {
   
-  if (propagationMask & 3) {
+  if (propagationMask & (REQ_LB | F_CARD) ) {
     initSequence();
     increaseFlowtime(s);
-    if (propagationMask & 2) {
+    if (propagationMask & F_CARD) {
       for (int i = 1; i <= _n; i++) {
         reduceCardFamily(i);
       }
     }
   }
-  // WORK IN PROGRESS 
-  // FIXME beware of the initialization !
-  if (propagationMask & 12 && !_c.isFixed()) {
+  
+  if (propagationMask & EXT_LB) {
     initExtendedSequence();
     if (extendSequence(_c.getMin())) {
       increaseFlowtime(se);
     } else {
       fail();
     }
-    if (propagationMask & 8) {
-      if (propagationMask & 4) {
-        initExtendedSequence();
-      }
+  }
+
+  if (propagationMask & M_CARD && !_c.isFixed()) {
+      initExtendedSequence();
       if (extendSequence(_c.getMax())) {
         reduceCardMachine();
       } else {
-        // FIXME should not fail : simply reduce the variable accordingly !
-        // fail();
+         _c.setMax(se.getSize());
       }
-    }
   }
+  
 }
 
 void IlcRelax1SFConstraintI::varDemon() { push(); }

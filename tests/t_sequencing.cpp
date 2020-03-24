@@ -15,11 +15,7 @@ void setRequired(SequenceSMPT &seq, int n, int required[]) {
 }
 
 bool testSequenceSMPT(SequenceSMPT &seq, int flowtime) {
-  seq.sequencing();
-  seq.printSequence();
   const int results = seq.searching();
-  std::cout << "COMPUTED FLOWTIME " << results << std::endl << std::endl;
-
   return results == flowtime && seq.searching(flowtime) &&
          (flowtime <= 0 || !seq.searching(flowtime - 1));
 }
