@@ -1,0 +1,10 @@
+## This README decriscribes the instance file format. 
+## The first line gives the dimensions of the problem : n, m, and f.
+## The second line gives the job families.
+## The following 'f' lines gives the family descriptions
+<number-of-jobs> <number-of-machines> <number-of-families>
+<family-job-1> <family-job-2> ... <family-job-n>
+<duration-family-1> <threshold-family-1> <threshold-family-1> <qualif-1-1> <qualif-1-2> ... <qualif-1-m>  
+...
+<duration-family-f> <threshold-family-f> <threshold-family-f> <qualif-f-1> <qualif-f-2> ... <qualif-f-m>  
+

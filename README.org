@@ -5,7 +5,6 @@
 #+LANGUAGE: en
 * Model APC
 
-
 * Documentation, Support and Issues
   
  Look for the most up-to-date documentation on the web site.
