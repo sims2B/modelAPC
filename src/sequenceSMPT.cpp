@@ -8,11 +8,10 @@ bool compareWeights(FamilyRun* f1, FamilyRun* f2) {
   return f1->getWeight() < f2->getWeight();
 }
 
-void SequenceSMPT::sequencing() {
+int SequenceSMPT::sequencing() {
   // Init.
-  flowtimeWS = 0;
+  int flowtimeWS = 0;
   sequence[0]->initFirstRun(size);
-
   // Sort according to SMPT order
   std::sort(sequence.begin()++, sequence.end(), compareWeights);
 
@@ -20,9 +19,12 @@ void SequenceSMPT::sequencing() {
   for (int i = 1; i <= n; i++) {
     sequence[i]->scheduleAfter(sequence[i - 1]);
     flowtimeWS += sequence[i]->getFlowtime();
-    //std::cout << "F_WS_" << i << " " << sequence[i]->getFlowtime() << std::endl;
   }
-  //std::cout << "F_WS " << flowtimeWS << std::endl;
+  #ifdef DEBUG_SEQ 
+  std::cout << "FLOWTIME_WS " << flowtimeWS << std::endl;
+  printSequence();
+  #endif
+  return flowtimeWS;
 }
 
 int SequenceSMPT::searchNextRun(int from) {
@@ -34,30 +36,46 @@ int SequenceSMPT::searchNextRun(int from) {
 
 int SequenceSMPT::searching() {
   if (size == 0) return 0;
+  const int flowtimeWS = sequencing();
   // Remove setup from the first non empty run
   int i = searchNextRun(0);
   int bestDelta = sequence[i]->cancelSetup();
-  // printf("try F%d -> %d\n", sequence[i]->index, bestDelta);
-
+  #ifdef DEBUG_SEQ 
+   printf("cancel setup F%d -> %d\n", sequence[i]->index, bestDelta);
+  #endif
+  
   // Try to schedule first each remaining non empty run
   while ((i = searchNextRun(i)) <= n) {
     const int delta = sequence[i]->moveFirst();
-    //printf("try F%d -> %d\n", sequence[i]->index, delta);
+  #ifdef DEBUG_SEQ 
+   printf("schedule first F%d -> %d\n", sequence[i]->index, delta);
+  #endif
     if (delta < bestDelta) {
       bestDelta = delta;
     }
   }
-  return flowtimeWS + bestDelta;
+  const int flowtime = flowtimeWS + bestDelta;
+  #ifdef DEBUG_SEQ 
+  std::cout << "FLOWTIME " << flowtime << std::endl;
+  #endif
+  return flowtime;
 }
 
 bool SequenceSMPT::searching(int flowtimeUB) {
-  if (size == 0 || flowtimeWS <= flowtimeUB) return true;
+  if (size == 0) return true;
+  const int flowtimeWS = sequencing();
+  // The sequence with initial setup is feasible 
+  if (flowtimeWS <= flowtimeUB) return true;
+  // the flowtime must decrease so that the sequence becomes feasible
   const int targetDelta = flowtimeUB - flowtimeWS;
-  // printf("try target delta -> %d\n", targetDelta);
-
+  #ifdef DEBUG_SEQ 
+   printf("FLOWTIME_DELTA %d\n", targetDelta);
+  #endif
+  
   // Remove setup from the first non empty run
   int i = searchNextRun(0);
   int delta = sequence[i]->cancelSetup();
+  
   if (delta <= targetDelta) return true;
 
   // Try to schedule first each non empty run
@@ -65,6 +83,8 @@ bool SequenceSMPT::searching(int flowtimeUB) {
     if (sequence[i]->moveFirst() <= targetDelta) return true;
   }
   // No feasible schedule found
-  // printf("fail target delta -> %d\n", targetDelta);
+  #ifdef DEBUG_SEQ 
+   printf("FAIL\n");
+  #endif
   return false;
 }

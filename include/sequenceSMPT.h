@@ -105,16 +105,33 @@ class SequenceSMPT {
   const int n;
   
  protected:
-  // Total number of jobs in the runs
-  int nreq; // TODO rename : size
-  int flowtimeWS; // TODO rename too ? 
+  /**
+   * @brief the total number of jobs in the runs
+   * 
+   */
+  int size; 
+  
+  /**
+   * @brief the flowtime of the runs in SMPT order with an initial setup 
+   */
+  int flowtimeWS;  
+
+  /**
+   * @brief the runs in SMPT order
+   * 
+   * The sequence starts by a dummy run with no jobs, nil duration, and nil setup. 
+   */
   std::vector<FamilyRun*> sequence;
+  /**
+   * @brief the runs by family index starting at 1.
+   * 
+   */
   std::vector<FamilyRun*> runs;
 
  public:
   SequenceSMPT(std::vector<int> durations, std::vector<int> setups,
                bool extended)
-      : n( (extended + 1) * durations.size()), nreq(0) {
+      : n( (extended + 1) * durations.size()), size(0) {
     const int n = durations.size();
      sequence.reserve(this->n + 1);
     runs.reserve(this->n + 1);
@@ -131,12 +148,20 @@ class SequenceSMPT {
     // Copying vector by copy function
     copy(sequence.begin(), sequence.end(), back_inserter(runs));
   }
-
+  
   SequenceSMPT(std::vector<int> durations, std::vector<int> setups)
       : SequenceSMPT(durations, setups, false) {}
 
+/**
+ * @brief Construct a new sequence of runs for the given families.
+ * 
+ * @param n the number of family
+ * @param durations the family durations
+ * @param setups the family setups
+ * @param extended if true, append additional runs with the same durations, but nil setups. 
+ */
   SequenceSMPT(int n, int durations[], int setups[], bool extended)
-      : n((extended +1) * n), nreq(0) {
+      : n((extended +1) * n), size(0) {
     sequence.reserve(this->n + 1);
     runs.reserve(this->n + 1);
     FamilyRun* run = new FamilyRun();
@@ -160,22 +185,42 @@ class SequenceSMPT {
       delete (sequence[i]);
     }
   }
-
-  int getSize() {return nreq;}
-
+  /**
+   * @brief Get the total number of jobs in the runs
+   * 
+   */
+  int getSize() {return size;}
+  
+  /**
+   * @brief Get the number of required jobs for a family 
+   * 
+   * @param family the family index starting at 1.
+   * @return int number of required jobs
+   */
   int getRequired(int family) {
     return runs[family]->getRequired();
   }
 
+  /**
+   * @brief Set the number of required jobs for a family.
+   * 
+   * @param family the family index starting at 1.
+   * @param required number of required jobs.
+   * 
+   */
   void setRequired(int family, int required) {
-    nreq += runs[family]->setRequired(required);
+    size += runs[family]->setRequired(required);
   }
 
+  /**
+   * @brief Decrement the number of required jobs for a family.
+   * 
+   * @param family the family index starting at 1.
+  */
   void decrementRequired(int family) {
-     setRequired(family, runs[family]->getRequired() - 1);
+     setRequired(family, getRequired(family) - 1);
   }
 
-  void sequencing(); // TODO return the flowtime with setups ?
 
   int searching();
 
@@ -186,8 +231,9 @@ class SequenceSMPT {
       run->print();
     }
   }
-
+ int sequencing();
  private:
+  
   int searchNextRun(int from);
 };
 
