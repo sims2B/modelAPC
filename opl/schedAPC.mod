@@ -210,7 +210,6 @@ subject to {
    			
    			sum(m in M) nFamM[f][m] == fsizes[f]; 	 		
   		} 	
-  		}
   		
   		// Numbers of jobs  per machine  
  		forall(m in M) { 	
@@ -218,6 +217,7 @@ subject to {
 		}
 		// Total number of jobs	  		 	
 		sum(m in M) nM[m] == nbJ;
+		}			
  		////////////////////////
 		/////  Parallel Machines  
 	    		 
