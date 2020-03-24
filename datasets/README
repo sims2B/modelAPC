@@ -1,4 +1,4 @@
-## This README decriscribes the instance file format. 
+## This README describes the instance file format. 
 ## The first line gives the dimensions of the problem : n, m, and f.
 ## The second line gives the job families.
 ## The following 'f' lines gives the family descriptions
