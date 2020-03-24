@@ -183,7 +183,6 @@ void CpoSolver2APC::createObj(IloEnv &env, IloOplModel &opl, IloCP &cp) {
     objs.end();
   }
   else { // config.getObjectiveFunction() == "SUM")
-    std::cout << "FOO " << std::endl;
     if (config.getWeightFlowtime() > config.getWeightQualified())
       model.add(IloMinimize(env, flow - qualif));
     else {

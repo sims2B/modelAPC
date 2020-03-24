@@ -204,9 +204,6 @@ void CplexSolverAPC::createConstraints(int T, IloEnv &env, IloModel &model,
   const int M = problem.getNbMchs();
   const int F = problem.getNbFams();
 
-  // objective
-  // TODO Use config !
-
   // each job is scheduled once
   for (f = 0; f < F; ++f) {
     IloExpr expr(env);

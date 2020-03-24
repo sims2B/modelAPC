@@ -229,7 +229,6 @@ void CpoSolver1APC::createObjective(IloEnv &env, IloModel &model,
       model.add(IloMinimize(env, IloSum(ends) + beta * IloSum(disQ)));
     }
   }
-  // TODO Use config !
 
 ends.end();
 disQ.end();
