@@ -11,7 +11,7 @@ bool compareWeights(FamilyRun* f1, FamilyRun* f2) {
 void SequenceSMPT::sequencing() {
   // Init.
   flowtimeWS = 0;
-  sequence[0]->initFirstRun(nreq);
+  sequence[0]->initFirstRun(size);
 
   // Sort according to SMPT order
   std::sort(sequence.begin()++, sequence.end(), compareWeights);
@@ -33,7 +33,7 @@ int SequenceSMPT::searchNextRun(int from) {
 }
 
 int SequenceSMPT::searching() {
-  if (nreq == 0) return 0;
+  if (size == 0) return 0;
   // Remove setup from the first non empty run
   int i = searchNextRun(0);
   int bestDelta = sequence[i]->cancelSetup();
@@ -51,7 +51,7 @@ int SequenceSMPT::searching() {
 }
 
 bool SequenceSMPT::searching(int flowtimeUB) {
-  if (nreq == 0 || flowtimeWS <= flowtimeUB) return true;
+  if (size == 0 || flowtimeWS <= flowtimeUB) return true;
   const int targetDelta = flowtimeUB - flowtimeWS;
   // printf("try target delta -> %d\n", targetDelta);
 
