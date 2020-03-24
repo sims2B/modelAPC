@@ -78,9 +78,10 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   }
   IloBool solCPFound = iloSolve(cp);
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
-  // std::cout << "#### BEGIN OPL POSTPROCESSING" << std::endl;
-  // opl.postProcess();
-  // std::cout << "#### END POSTPROCESSING" << std::endl;
+  std::cout << std::endl << "#### BEGIN OPL POSTPROCESSING" << std::endl;
+  // TODO Increase the family index in the tikz export ?
+  opl.postProcess();
+  std::cout << "#### END POSTPROCESSING" << std::endl << std::endl;
   if (solCPFound) {
     IloOplElement elmt = opl.getElement("mjobs");
     modelToSol(env, cp, elmt);
