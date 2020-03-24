@@ -4,19 +4,15 @@
 #include "paramModelAPC.h"
 #include "problem.h"
 
-// TODO Try to avoid the restriction on the max number of families !
-// REP : c'est just limitant pour le tikz! Je me sert uniquement de la borne
-// pour définir les couleurs.
-#define nbFamMax 5
-const std::string tikzColor[nbFamMax] = {"blue", "green", "orange", "purple",
-                                         "red"};
+// Color Palette used for TiKZ drawings
+#define TIKZ_COLORS 15
+const std::string tikzColors[TIKZ_COLORS] = {"cyan", "lime", "olive", "magenta", "teal", "orange", "lightgray", "pink", "purple", "red", "blue", "violet", "yellow", "brown", "green"};
+
 typedef std::vector<std::vector<Job>> JobMatrix;
 typedef std::vector<std::vector<int>> IntMatrix;
 
 class Solution {
-  // FIXME Change visibility of some fields and methods
-  // FIXME the problem should be stored in a field ?
-
+  
  private:
   Problem problem;
   JobMatrix assign;

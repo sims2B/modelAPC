@@ -344,8 +344,8 @@ void Solution::toTikz() const {
               << t << "$} ;\n";
   for (uint j = 0; j < assign.size(); ++j) {
     for (uint i = 0; i < assign[j].size(); ++i) {
-      std::cout << "\\draw[fill = " << tikzColor[assign[j][i].getFam()]
-                << "!80!black!80]  (" << assign[j][i].getStart() << ","
+      std::cout << "\\draw[fill = " << tikzColors[assign[j][i].getFam() % TIKZ_COLORS]
+                << "!80!white!80]  (" << assign[j][i].getStart() << ","
                 << ((int)j * 0.5) << ") rectangle ("
                 << assign[j][i].getStart() + problem.getDuration(assign[j][i])
                 << "," << ((int)j * 0.5 + 0.5) << ") node[midway] {$"
