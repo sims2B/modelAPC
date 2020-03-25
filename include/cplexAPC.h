@@ -24,7 +24,7 @@ class CplexSolverAPC : public IloSolverAPC {
 
  protected:
   void doSolve(IloEnv& env);
-
+  int checkObjValue(const IloCplex&, const IloNumVarArray&,const IloNumVarMatrix&);
   // fill an instance of solution with the solution found by the model
   void modelToSol(const IloCplex&, const IloNumVar3DMatrix&,
                   const IloNumVar3DMatrix&, const IloNumVarMatrix&);

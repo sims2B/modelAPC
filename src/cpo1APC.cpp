@@ -24,9 +24,33 @@ void CpoSolver1APC::doSolve(IloEnv &env) {
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
   if (solCPFound) {
     modelToSol(cp, altTasks, disqualif);
+    if (!checkObjValue(cp,masterTask,disqualif)) std::cout << "WARNING : objective value between CPO and solution does not match";
   }
   setStatus(cp);
   tearDown(cp);
+}
+
+int CpoSolver1APC::checkObjValue(const IloCP &cp,
+                                const  IloIntervalVarArray &masterTask,
+                                const IloIntervalVarMatrix &disqualif){
+
+  const int m = problem.getNbMchs();
+  const int F = problem.getNbFams();
+  int flowtime = 0;
+  for (int i = 0; i < problem.getNbJobs(); ++i) 
+    flowtime += cp.getEnd(masterTask[i]);  
+  if (flowtime != solution.getSumCompletion()) return 0;
+  int nbDisqualif = 0;
+  int nbQualif = 0;
+  for (int f = 0; f < F; ++f)
+    for (int j = 0; j < m; ++j)
+      if (problem.isQualif(f, j)){
+        if (cp.isPresent(disqualif[j][f]))
+          nbDisqualif++;
+        else nbQualif++;
+      }
+  if (nbQualif != solution.getNbQualif () || nbDisqualif != solution.getNbDisqualif() ) return 0;
+  return 1;
 }
 
 void CpoSolver1APC::modelToSol(const IloCP &cp,

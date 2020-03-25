@@ -17,6 +17,7 @@ class CpoSolver1APC : public IloSolverAPC {
   void doSolve(IloEnv &env);
 
  private:
+ int checkObjValue(const IloCP &, const  IloIntervalVarArray& ,const IloIntervalVarMatrix& );
   void modelToSol(const IloCP &, const IloIntervalVarMatrix &,
                   const IloIntervalVarMatrix &);
 

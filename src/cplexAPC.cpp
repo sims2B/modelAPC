@@ -26,9 +26,33 @@ void CplexSolverAPC::doSolve(IloEnv &env) {
   solutionCount += cplex.getSolnPoolNsolns();
   if (solMIPFound) {
     modelToSol(cplex, x, y, Y);
+    if (!checkObjValue(cplex,C,Y)) std::cout << "WARNING : objective value between CPLEX and solution does not match";
   }
   setStatus(cplex);
   tearDown(cplex);
+}
+
+int CplexSolverAPC::checkObjValue(const IloCplex &cplex,
+                                const IloNumVarArray &C,
+                                const IloNumVarMatrix &Y){
+  int flowTime = 0;
+  for (int f = 0 ; f < problem.getNbFams() ; ++f){
+    flowTime += cplex.getValue(C[f]);
+  }
+  if (flowTime != solution.getSumCompletion()) return 0;
+
+  int nbDisqualif = 0;
+  int nbQualif = 0;
+  for (int f = 0; f < problem.getNbFams(); ++f) {
+    for (int j = 0; j < problem.getNbMchs(); ++j)
+      if (problem.isQualif(f, j)) {
+        nbQualif  += 1 - cplex.getValue(Y[f][j]);
+        nbDisqualif += cplex.getValue(Y[f][j]);
+      }
+  }
+  if (nbQualif != solution.getNbQualif () || nbDisqualif != solution.getNbDisqualif() )
+    return 0;
+  return 1;
 }
 
 void CplexSolverAPC::modelToSol(const IloCplex &cplex,
