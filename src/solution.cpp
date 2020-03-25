@@ -166,22 +166,21 @@ void Solution::repairDisqualif() {
     }
 }
 
-int Solution::getTotalNbDisqualif() const {
+/*int Solution::getTotalNbDisqualif() const {
   int sum = 0;
   for (unsigned int f = 0; f < qualifLostTime.size(); ++f)
     for (unsigned int j = 0; j < qualifLostTime[f].size(); ++j)
       if (qualifLostTime[f][j] < std::numeric_limits<int>::max()) sum++;
   return sum;
-}
+}*/
 
 int Solution::getNbQualif() const {
   int sum = 0;
   for (unsigned int f = 0; f < qualifLostTime.size(); ++f)
     for (unsigned int j = 0; j < qualifLostTime[f].size(); ++j)
-      if (problem.isQualif(f, j) &&
-          qualifLostTime[f][j] >= std::numeric_limits<int>::max())
+      if (problem.isQualif(f, j) )
         sum++;
-  return sum;
+  return sum - getNbDisqualif();
 }
 
 int Solution::getNbDisqualif() const {
