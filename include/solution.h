@@ -50,7 +50,7 @@ class Solution {
   Job nextOf(int i, int f, int m) const; //return first Job of f scheduled after job at ith pos
   Job nextOf(const Job& i, int f, int m) const; //return first Job of f scheduled after j
 
-  int getTotalNbDisqualif() const;
+  //int getTotalNbDisqualif() const;
   int getNbQualif() const;
   int getNbDisqualif() const;
   int getWeigthedObjectiveValue() const;
