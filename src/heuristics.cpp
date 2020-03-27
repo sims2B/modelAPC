@@ -178,7 +178,6 @@ void SchedCentricHeuristic::doSolve() {
 }
 
 void QualifCentricHeuristic::doSolve() {
-  // FIXME REALLY NOT SURE ABOUT THIS ONE !
 
   if (findSchedule()) {
     /*  std::cout << "\n after phase 1 \\\\ \n";
