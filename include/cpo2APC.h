@@ -33,6 +33,7 @@ public:
   void doSolve(IloEnv &env);
 
 private:
+int checkObjValue(const IloCP& , IloOplModel&);
 void createObj(IloEnv&, IloOplModel &, IloCP &);
   void modelToSol(const IloEnv &, const IloCP &, const IloOplElement &);
 

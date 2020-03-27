@@ -85,9 +85,21 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   if (solCPFound) {
     IloOplElement elmt = opl.getElement("mjobs");
     modelToSol(env, cp, elmt);
+    if (!checkObjValue(cp,opl)) std::cout << "WARNING : objective value between CPO and solution does not match";
   }
   setStatus(cp);
   tearDown(cp);
+}
+
+int CpoSolver2APC::checkObjValue(const IloCP& cp, IloOplModel& opl){
+  int flowtime = opl.getElement("flowtime").asInt();
+  int qualified = opl.getElement("qualified").asInt();
+  int disqualified = opl.getElement("disqualified").asInt();
+  if (flowtime != solution.getSumCompletion()) return 0;
+
+  if (qualified != solution.getNbQualif () || disqualified != solution.getNbDisqualif() ) return 0;
+  return 1;
+
 }
 
 void MyCustomDataSource::read() const {
