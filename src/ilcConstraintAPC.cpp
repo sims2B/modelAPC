@@ -3,8 +3,8 @@
 #include <algorithm>
 
 //#define DEBUG_FLOW
-#define DEBUG_FAMILY
-#define DEBUG_MACHINE
+//#define DEBUG_FAMILY
+//#define DEBUG_MACHINE
 
 bool compareWeights(FamilyRun f1, FamilyRun f2) {
   return f1.getWeight() < f2.getWeight();

@@ -51,7 +51,7 @@ protected:
 public:
   IloSolverAPC(Problem &problem, ConfigAPC &config, std::vector<Solution> &solutionPool, Timer &timer) : AbstractSolverAPC(problem, config), solutionPool(solutionPool), timer(timer){
     if(config.isFlowtimePriority()) {
-      sort(this->solutionPool.begin(), this->solutionPool.end(), compareLexQF);
+      sort(this->solutionPool.begin(), this->solutionPool.end(), compareLexFQ);
     } else {
       sort(this->solutionPool.begin(), this->solutionPool.end(), compareLexQF);
     } 
