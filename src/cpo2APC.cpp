@@ -85,7 +85,7 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   if (solCPFound) {
     IloOplElement elmt = opl.getElement("mjobs");
     modelToSol(env, cp, elmt);
-    if (!checkObjValue(cp,opl)) std::cout << "WARNING : objective value between CPO and solution does not match";
+    if (!checkObjValue(cp,opl)) std::cout << "WARNING : objective value between CPO and solution does not match" << std::endl;
   }
   setStatus(cp);
   tearDown(cp);

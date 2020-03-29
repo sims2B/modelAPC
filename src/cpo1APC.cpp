@@ -24,7 +24,7 @@ void CpoSolver1APC::doSolve(IloEnv &env) {
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
   if (solCPFound) {
     modelToSol(cp, altTasks, disqualif);
-    if (!checkObjValue(cp,masterTask,disqualif)) std::cout << "WARNING : objective value between CPO and solution does not match";
+    if (!checkObjValue(cp,masterTask,disqualif)) std::cout << "WARNING : objective value between CPO and solution does not match" << std::endl;
   }
   setStatus(cp);
   tearDown(cp);
