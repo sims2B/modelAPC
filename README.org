@@ -14,16 +14,48 @@
   This project works on 64 bits environment. 
 
   This project requires:
-
+  
+  - gcc 
   - Make 
-  - Cplex 12.9.0
+  - Cplex Optimization Studio 12.9.0
 
 ** Building from source
  
    This project uses the Makefile build system. 
+   
+   First, let's configure environment variable before compiling.
+   1. Modify the path to cplex in the Makefile if needed : variable ~CPLEXDIR~.
+   2. Add the path to cplex libs in the variable ~LD_lIBRARY_PATH~.
 
-#+BEGIN_SRC sh
-  export CPX_PATH=/opt/ibm/ILOG/CPLEX_Studio128/
-  find . -name Makefile -execdir make \;
+   Second, type ~make~.
+  
+*** On Centos 7 
+
+    It is more complicated because the default gcc version is quite old (4.8.5). 
+    We assume that you have root permissions.
+ 
+**** Install Developer Toolset 9 with yum
+     Install a package with repository for your system based on [[https://www.softwarecollections.org/en/scls/rhscl/devtoolset-8/][these instructions]].   
+
+     On CentOS, install package centos-release-scl available in CentOS repository.
+     : sudo yum install centos-release-scl
+     Install the collection:
+     : sudo yum install devtoolset-9
+     Start using software collections:
+     : scl enable devtoolset-9 bash
+
+**** Install libconfig from source
+
+    We are using a single library (libconfig). Of course, the system version is not compatible with gcc 9.
+    So, let's install libconfig from source following the INSTALL instructions.
+#+BEGIN_SRC shell
+  git clone https://github.com/hyperrealm/libconfig.git
+  cd libconfig/
+  autoreconf 
+  ./configure 
+  make 
+  sudo make install 
 #+END_SRC
 
+A useful tips to know where gcc is searching for headers.
+: gcc -xc++ -E -v -
