@@ -46,7 +46,7 @@
 
 **** Install libconfig from source
 
-    We are using a single library (libconfig). Of course, the system version is not compatible with gcc 9.
+     We are using a single library (libconfig). Of course, the system version is not compatible with gcc 9.
     So, let's install libconfig from source following the INSTALL instructions.
 #+BEGIN_SRC shell
   git clone https://github.com/hyperrealm/libconfig.git
@@ -56,6 +56,7 @@
   make 
   sudo make install 
 #+END_SRC
+Add the path to libconfig libs in the variable ~LD_lIBRARY_PATH~.
 
 A useful tips to know where gcc is searching for headers.
 : gcc -xc++ -E -v -
