@@ -45,11 +45,11 @@ void IloSolverAPC::configure(IloEnv &env, IloCplex &cplex, ConfigAPC &config) {
   }
   int timeLimit = config.getTimeLimit();
   if (timeLimit > 0) {
-    cplex.setParam(IloCplex::TiLim, timeLimit);
+    cplex.setParam(IloCplex::Param::TimeLimit, timeLimit);
   }
   int workers = config.getWorkers();
   if (workers > 0) {
-    cplex.setParam(IloCplex::Threads, workers);
+    cplex.setParam(IloCplex::Param::Threads, workers);
   }
 }
 

@@ -3,6 +3,7 @@
 
 #include <algorithm>
 
+// #define DEBUG_OPL
 
 IlcConstraint IlcRelax1SFConstraint(IloCPEngine cp, IlcIntVarArray families, IlcIntVar cardinality,
                                     IlcIntVar flowtime, IlcIntArray durations,
@@ -78,10 +79,12 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   }
   IloBool solCPFound = iloSolve(cp);
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
-  std::cout << std::endl << "#### BEGIN OPL POSTPROCESSING" << std::endl;
-  // TODO Increase the family index in the tikz export ?
+  #ifdef DEBUG_OPL 
+  std::cout << std::endl << "#### BEGIN_OPL_POSTPROCESSING" << std::endl;
   opl.postProcess();
-  std::cout << "#### END POSTPROCESSING" << std::endl << std::endl;
+  std::cout << "#### END_OPL_POSTPROCESSING" << std::endl << std::endl;
+  #endif 
+  
   if (solCPFound) {
     IloOplElement elmt = opl.getElement("mjobs");
     modelToSol(env, cp, elmt);

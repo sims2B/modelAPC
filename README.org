@@ -17,7 +17,7 @@
   
   - gcc 
   - Make 
-  - Cplex Optimization Studio 12.9.0
+  - Cplex Optimization Studio 12.10.0
 
 ** Building from source
  

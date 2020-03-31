@@ -145,7 +145,7 @@ execute SEARCH {
         //TODO ? cp.setSearchPhases( ...)));
         //cp.param.workers=1;
         wctime = (new Date()).getTime();
-
+		// cp.param.TemporalRelaxation=true;
     	//var f = cp.factory;
   		//cp.setSearchPhases(f.searchPhase(mjobs)); 
 }
