@@ -4,7 +4,7 @@
 #OAR --project ptc
 
 ## module add java/1.8.0_u11 
-export LD_LIBRARY_PATH=/opt/ibm/ILOG/CPLEX_Studio129/opl/bin/x86-64_linux/:$LIBRARY_PATH_LD
+## export LD_LIBRARY_PATH=/opt/ibm/ILOG/CPLEX_Studio1210/opl/bin/x86-64_linux/:$LIBRARY_PATH_LD
 
 ./solverAPC $1 $2 
 exit $? 
