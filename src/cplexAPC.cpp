@@ -35,12 +35,15 @@ void CplexSolverAPC::doSolve(IloEnv &env) {
 int CplexSolverAPC::checkObjValue(const IloCplex &cplex,
                                 const IloNumVarArray &C,
                                 const IloNumVarMatrix &Y){
-  int flowTime = 0;
+  
+  if (!(config.getObjectiveFunction() == "MONO" && config.getWeightFlowtime() < config.getWeightQualified())){
+    int flowTime = 0;
   for (int f = 0 ; f < problem.getNbFams() ; ++f){
     flowTime += cplex.getValue(C[f]);
   }
   if (flowTime != solution.getSumCompletion()) return 0;
-
+                                }
+  if (!(config.getObjectiveFunction() == "MONO" && config.getWeightFlowtime() > config.getWeightQualified())){
   int nbDisqualif = 0;
   int nbQualif = 0;
   for (int f = 0; f < problem.getNbFams(); ++f) {
@@ -51,7 +54,8 @@ int CplexSolverAPC::checkObjValue(const IloCplex &cplex,
       }
   }
   if (nbQualif != solution.getNbQualif () || nbDisqualif != solution.getNbDisqualif() )
-    return 0;
+     return 0;
+  }
   return 1;
 }
 

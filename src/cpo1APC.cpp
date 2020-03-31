@@ -24,7 +24,9 @@ void CpoSolver1APC::doSolve(IloEnv &env) {
   solutionCount += cp.getInfo(IloCP::NumberOfSolutions);
   if (solCPFound) {
     modelToSol(cp, altTasks, disqualif);
-    if (!checkObjValue(cp,masterTask,disqualif)) std::cout << "WARNING : objective value between CPO and solution does not match" << std::endl;
+    if (!checkObjValue(cp,masterTask,disqualif)) {
+      std::cout << "WARNING : objective value between CPO and solution does not match" << std::endl;
+    }
   }
   setStatus(cp);
   tearDown(cp);
@@ -36,10 +38,15 @@ int CpoSolver1APC::checkObjValue(const IloCP &cp,
 
   const int m = problem.getNbMchs();
   const int F = problem.getNbFams();
+
+  if (!(config.getObjectiveFunction() == "MONO" && config.getWeightFlowtime() < config.getWeightQualified())){
   int flowtime = 0;
   for (int i = 0; i < problem.getNbJobs(); ++i) 
     flowtime += cp.getEnd(masterTask[i]);  
-  if (flowtime != solution.getSumCompletion()) return 0;
+  if (flowtime != solution.getSumCompletion()) 
+    return 0;
+  }
+  if (!(config.getObjectiveFunction() == "MONO" && config.getWeightFlowtime() > config.getWeightQualified())){
   int nbDisqualif = 0;
   int nbQualif = 0;
   for (int f = 0; f < F; ++f)
@@ -49,7 +56,9 @@ int CpoSolver1APC::checkObjValue(const IloCP &cp,
           nbDisqualif++;
         else nbQualif++;
       }
-  if (nbQualif != solution.getNbQualif () || nbDisqualif != solution.getNbDisqualif() ) return 0;
+  if (nbQualif != solution.getNbQualif() || nbDisqualif != solution.getNbDisqualif() ) 
+    return 0;
+  }
   return 1;
 }
 
@@ -58,7 +67,6 @@ void CpoSolver1APC::modelToSol(const IloCP &cp,
                                const IloIntervalVarMatrix &disqualif) {
   int i, j, f;
   const int m = problem.getNbMchs();
-  const int F = problem.getNbFams();
 
   for (j = 0; j < m; ++j) {
     int deb, fin = 0;
@@ -75,11 +83,8 @@ void CpoSolver1APC::modelToSol(const IloCP &cp,
     }
   }
 
-  for (f = 0; f < F; ++f)
-    for (j = 0; j < m; ++j)
-      if (problem.isQualif(f, j))
-        if (cp.isPresent(disqualif[j][f]))
-          solution.setDisqualif((int)cp.getStart(disqualif[j][f]), f, j);
+
+          solution.repairDisqualif();
 }
 
 void CpoSolver1APC::solToModel(const Solution &solution,
