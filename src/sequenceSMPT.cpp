@@ -34,6 +34,9 @@ int SequenceSMPT::searchNextRun(int from) {
   return from;
 }
 
+
+// Question : if a family has no setup, then it is useless to try to move it in first position.
+// TODO Find a way to return the family in first position
 int SequenceSMPT::searching() {
   if (size == 0) return 0;
   const int flowtimeWS = sequencing();
@@ -87,3 +90,31 @@ bool SequenceSMPT::searching(int flowtimeUB) {
   #endif
   return false;
 }
+
+
+void SequenceSMPT::toTikz() {
+std::vector<std::string> palette = {"cyan", "lime", "olive", "magenta", "teal", "orange", 
+"lightgray", "pink", "purple", "red", "blue", "violet", "yellow", "brown", "green"};
+ const int makespan = sequence.back()->endtime + 2;
+ std::cout << "\\begin{tikzpicture}\n"
+            << "\\node (O) at (0,0) {};\n"
+            << "\\draw[->] (O.center) -- ( " << makespan << ",0);\n"
+            << "\\draw[->] (O.center) -- (0, 1.5);\n";
+    for (auto run : sequence) {
+      //std::cout << run->index << std::endl;
+      int endtime = run->endtime;
+      for (int i = 0; i < run->required ;  i++) {
+        int starttime = endtime - run->duration;
+         std::cout << "\\draw[fill = " << palette[run->index % palette.size()]
+                   << "!80!white!80]  (" << starttime << ","
+                 << 0.5 << ") rectangle ("
+                 << endtime 
+                 << "," << 1.5 << ") node[midway] {$"
+                 << run->index << "$};\n";
+        endtime = starttime;
+      }
+      }
+       std::cout << "\\end{tikzpicture}\n\n";
+    }
+    
+

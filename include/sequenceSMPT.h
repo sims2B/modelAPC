@@ -86,7 +86,7 @@ class FamilyRun {
         next(0),
         endtime(0),
         flowtime(0) {}
-   
+
   int getRequired() { return required; }
 
   double getWeight() { return weight; }
@@ -99,12 +99,12 @@ class FamilyRun {
   }
 
  protected:
- /**
-  * @brief Set the number of required jobs in the run.
-  * This differs for empty and non empty runs.
-  * @param required the new number of jobs
-  * @return int the difference between the actual and previous numbers of jobs
-  */
+  /**
+   * @brief Set the number of required jobs in the run.
+   * This differs for empty and non empty runs.
+   * @param required the new number of jobs
+   * @return int the difference between the actual and previous numbers of jobs
+   */
   int setRequired(int required) {
     int delta = -this->required;
     if (required > 0) {
@@ -127,14 +127,14 @@ class FamilyRun {
   /**
    * @brief tet the number of successors (job).
    * This method is only used to initialize the first dummy run of a sequence.
-   * 
+   *
    * @param next the total number of jobs in the sequence
    */
   void setNext(int next) { this->next = next; }
-  
+
   /**
-   * @brief schedule this run immediatly after the given run. 
-   * 
+   * @brief schedule this run immediatly after the given run.
+   *
    * @param run the immediate predecessor of this run
    */
   void scheduleAfter(FamilyRun* run) {
@@ -142,25 +142,26 @@ class FamilyRun {
     pred = run->pred + run->required;
     endtime = run->endtime + length;
   }
-  
+
   /**
-   * @brief get the flowtime induced only by this run 
-   * 
-   * @return int 
+   * @brief get the flowtime induced only by this run
+   *
+   * @return int
    */
   int getFlowtime() { return required * slength + flowtime + next * length; }
 
   /**
    * @brief Get the flowtime variation if there is no setup time.
-   * 
+   *
    * @return int the flowtime decrease if there is no setup
    */
   int cancelSetup() { return -(required + next) * slength; }
 
   /**
    * @brief Get the flowtime variation if this run is moved first.
-   * This run is scheduled first without setup while the rest of the sequence remains unchanged.
-   * 
+   * This run is scheduled first without setup while the rest of the sequence
+   * remains unchanged.
+   *
    * @return int the flowtime variation
    */
   int moveFirst() {
@@ -176,8 +177,9 @@ class FamilyRun {
  * @brief this class optimally sequences jobs with family setups.
  * There is no initial setup.
  * To do so, it first sequences optimally the jobs with an initial setup.
- * Then, it computes the best sequence among those where a non empty run is moved first without initial setup.   
- * 
+ * Then, it computes the best sequence among those where a non empty run is
+ * moved first without initial setup.
+ *
  */
 class SequenceSMPT {
  public:
@@ -321,6 +323,7 @@ class SequenceSMPT {
    */
   bool searching(int flowtimeUB);
 
+  void toTikz();
   /**
    * @brief print the sequence in a human readable format (useful for
    * debugging).

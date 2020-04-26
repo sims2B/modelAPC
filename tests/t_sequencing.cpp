@@ -179,46 +179,6 @@ bool testSequence3() {
   return true;
 }
 
-// bool testSequence3() {
-//   int n = 4;
-//   int durations[] = {1, 2, 3, 4};
-//   int setups[] = {1, 2, 3, 4};
-//   SequenceSMPT seq(n, durations, setups);
-
-//   setRequired(seq, n, 1);
-//   seq.setRequired(1, 4);
-//   if (!testSequenceSMPT(seq, 54))
-//     return false;
-
-//   setRequired(seq, n, 1);
-//   seq.setRequired(2, 2);
-//   if (!testSequenceSMPT(seq, 44))
-//     return false;
-
-//   setRequired(seq, n, 1);
-//   seq.setRequired(3, 2);
-//   if (!testSequenceSMPT(seq, 49))
-//     return false;
-
-//   setRequired(seq, n, 1);
-//   seq.setRequired(4, 2);
-//   if (!testSequenceSMPT(seq, 55))
-//     return false;
-
-//   seq.setRequired(3, 2);
-//   seq.setRequired(4, 6);
-//   if (!testSequenceSMPT(seq, 209))
-//     return false;
-
-//   seq.setRequired(3, 3);
-//   seq.setRequired(4, 100);
-//   if (!testSequenceSMPT(seq, 22144))
-//     return false;
-  
-  
-//   return true;
-// }
-
 bool testSequence4() {
   int n = 3;
   int durations[] = {3, 2, 1};
