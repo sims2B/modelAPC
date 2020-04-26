@@ -5,6 +5,7 @@
 #+TEXT:        
 #+OPTIONS: H:2 num:nil toc:2
 #+LANGUAGE: en
+#+PROPERTY: header-args :results output replace :exports results
 #+HTML_HEAD:    <link rel="stylesheet" type="text/css" href="http://www.i3s.unice.fr/~malapert/css/worg.min.css" />
 #+PROPERTY: exports results
 * Tasks                                                            :noexport:
@@ -87,7 +88,7 @@ k {} \;
        time = df$WCTIME,
        fail = df$FAILS
      )
-     round(aggregate(x, by = list(df$JOBS), FUN = mean, na.rm = TRUE), 1)
+     round(aggregate(x, by = list(df$JOBS), FUN = mean, na.rm = TRUE), 2)
    }
  #+END_SRC
 
@@ -136,34 +137,54 @@ k {} \;
 
  #+RESULTS:
  #+begin_example
- $with1SF_3
-   Group.1 feas  opt disq   flow time     fail
- 1      20  100 96.8  2.7  323.6  4.8  70492.2
- 2      30   98 68.6  4.4  813.6 15.1 151600.8
- 3      40   98 43.1  4.6 1348.7 21.5 172846.7
+ $`cpo2-0`
+   Group.1   feas   opt disq    flow  time     fail
+ 1      20 100.00 88.89 2.89  331.59 32.32 171638.4
+ 2      30  98.89 31.67 4.80  761.43 95.05 348620.1
+ 3      40  93.33 44.00 4.41 1395.65 85.15 271660.1
 
- $with1SF
-   Group.1 feas  opt disq   flow time     fail
- 1      20  100 82.3  2.8  323.8  9.4 121280.5
- 2      30   98 51.0  4.3  814.4 18.0 180067.0
- 3      40   98 39.2  4.7 1351.6 27.8 174951.8
+ $`cpo2-1`
+   Group.1   feas   opt disq    flow  time     fail
+ 1      20 100.00 88.89 2.89  331.59 32.77 177562.8
+ 2      30  97.78 32.22 4.86  760.38 95.24 377777.1
+ 3      40  93.33 39.33 4.43 1404.13 89.25 306257.7
 
- $without1SF
-   Group.1  feas  opt disq   flow time     fail
- 1      20 100.0 85.5  2.8  323.7  9.2 121321.5
- 2      30  96.1 37.3  4.2  815.7 21.0 194965.2
- 3      40  96.1 35.3  4.7 1343.3 22.7 171643.3
+ $`cpo2-12`
+   Group.1   feas    opt disq    flow  time      fail
+ 1      20 100.00 100.00 2.89  331.49  6.24  39966.48
+ 2      30  97.78  71.67 4.92  758.77 55.81 228340.47
+ 3      40  94.67  52.67 4.46 1413.99 77.69 264345.37
+
+ $`cpo2-15`
+   Group.1   feas    opt disq    flow  time      fail
+ 1      20 100.00 100.00 2.89  331.49  6.31  37841.07
+ 2      30  97.78  70.00 4.93  758.68 56.94 226169.32
+ 3      40  94.67  52.67 4.46 1414.63 75.70 255118.47
+
+ $`cpo2-3`
+   Group.1   feas    opt disq    flow  time      fail
+ 1      20 100.00 100.00 2.91  331.48  6.35  40388.27
+ 2      30  97.78  70.00 4.93  758.73 57.12 235838.48
+ 3      40  94.67  51.33 4.46 1414.27 76.93 265271.27
+
+ $`cpo2-4`
+   Group.1   feas    opt disq    flow  time      fail
+ 1      20 100.00 100.00 2.89  331.49  8.07  53809.55
+ 2      30  97.78  67.78 4.91  758.80 62.02 261620.29
+ 3      40  94.67  49.33 4.46 1414.00 80.56 274543.36
  #+end_example
 
  
 
 
  Merge data frames.
-#+BEGIN_SRC R :session apc 
+#+BEGIN_SRC R :results output silent :session apc 
    library(dplyr)
    x <- bind_rows(resultsQF, .id = "id")
    x$o <- x$FLOWTIME + x$DISQUALIFIED
 #+END_SRC
+
+#+RESULTS:
 
 
 #+BEGIN_SRC R :results output silent :session apc 
@@ -181,8 +202,6 @@ k {} \;
   ggsave("optimum-times.png", device = 'png', width = 12, height = 9) 
 #+END_SRC
 
-#+RESULTS:
-: org_babel_R_eoe
 
 #+BEGIN_SRC R :results output silent :session apc 
   GetTableVBS <- function(x) {
@@ -212,38 +231,103 @@ k {} \;
 
 
 #+BEGIN_SRC R :results output silent :session apc 
-   PlotFeasibleObjectives <- function(x, vbs) {
-     x <- subset(x, IsStrictlyFeasible(x$s))
-     z <- inner_join(x, vbs, by = c("i"))
+      PlotFeasibleObjectives <- function(x, vbs) {
+        x <- subset(x, IsStrictlyFeasible(x$s))
+        z <- inner_join(x, vbs, by = c("i"))
 
-     z$FLOWTIME <- (z$FLOWTIME.x - z$FLOWTIME.y) / z$FLOWTIME.y   
-     z$DISQUALIFIED <- (z$DISQUALIFIED.x - z$DISQUALIFIED.y) 
-     z <- z[ , c('id.x', 'FLOWTIME', 'DISQUALIFIED')]
-     ggplot(z, aes(x=FLOWTIME, y=DISQUALIFIED, shape=id.x, color=id.x)) + geom_point(size=8) + ggtitle('Gap to the virtual best solver if not proven optimal') +  theme(text = element_text(size=20))
-  
-   }
-   PlotFeasibleObjectives(x, vbs)
-    ggsave("feasible-objectives.png", device = 'png', width = 12, height = 9) 
+        z$FLOWTIME <- (z$FLOWTIME.x - z$FLOWTIME.y) / z$FLOWTIME.y   
+        z$DISQUALIFIED <- (z$DISQUALIFIED.x - z$DISQUALIFIED.y) 
+        z <- z[ , c('id.x', 'FLOWTIME', 'DISQUALIFIED')]
+        ggplot(z, aes(x=FLOWTIME, y=DISQUALIFIED, shape=id.x, color=id.x)) + geom_point(size=8) + ggtitle('Gap to the virtual best solver if not proven optimal') +  theme(text = element_text(size=20))
+
+      }
+      PlotFeasibleObjectives(x, vbs)
+       ggsave("feasible-objectives.png", device = 'png', width = 12, height = 9) 
  #+END_SRC 
 
 #+BEGIN_SRC R :results output silent :session apc
-  n <- length(resultsQF)
-  if(n > 1) {
-    for(i in 1:(n-1)) {
-      for(j in (i+1):n) {
-        namei <- names(resultsQF)[i]
-        namej <- names(resultsQF)[j]
-        z <- full_join(resultsQF[[i]], resultsQF[[j]], by = c("i"))
-        p <- z[ , c('s.x', 's.y')]  
-        colnames(p) <- c(namei, namej)
-        p$Time <- z$WCTIME.x/ z$WCTIME.y
-        p$Fails <- z$FAILS.x / z$FAILS.y 
+         library(gridExtra)
+         library(ggplot2)
+         library(dplyr)
+         MakePlotData <- function(results, i, j) {
+           namei <- names(resultsQF)[i]
+           namej <- names(resultsQF)[j]
+           z <- full_join(resultsQF[[i]], resultsQF[[j]], by = c("i"))
+           indP <- z$s.x %in% c("OPTIMUM", "SAT") & z$s.y == c("OPTIMUM")
+           indP <- indP | (z$s.y %in% c("OPTIMUM", "SAT") & z$s.x == c("OPTIMUM"))
+           #indP <- z$s.x == "OPTIMUM" | z$s.y == "OPTIMUM"
+           zp <- subset(z, indP)
+           zp <- data.frame(
+             droplevels(zp$s.x), 
+             droplevels(zp$s.y), 
+             zp$WCTIME.x/zp$WCTIME.y, 
+             zp$FAILS.x/zp$FAILS.y
+           )
+           colnames(zp) <- c(namei, namej, "Time", "Fails")
 
-        ggplot(p, aes_string(x="Time", y="Fails", shape=namei, color=namej)) +   geom_point(size=5) + scale_x_continuous(trans='log2') +   scale_y_continuous(trans='log2') + ggtitle(sprintf('%s versus %s', namei, namej)) +  theme(text = element_text(size=20))
-      ggsave(sprintf("compare-%s-%s.png", namei, namej), device = 'png', width = 12, height = 9) 
-      }
-  }
-  }
+           #zt <- subset(z, !indP)
+           zt <- droplevels(z[, c("s.x", "s.y")])
+           colnames(zt) <- c(namei, namej)
+           levels(zt[ ,1])[levels(zt[, 1])=="UNKNOWN"] <- "UNK"
+           levels(zt[ ,2])[levels(zt[, 2])=="UNKNOWN"] <- "UNK"
+           levels(zt[ ,1])[levels(zt[, 1])=="OPTIMUM"] <- "OPT"
+           levels(zt[ ,2])[levels(zt[, 2])=="OPTIMUM"] <- "OPT"
+           zt <- table(zt)
+            return(list( scatter=zp, table=zt))
+         }
+
+     ## https://stackoverflow.com/questions/12318120/adding-table-within-the-plotting-region-of-a-ggplot-in-r
+     n <- length(resultsQF)
+     names(resultsQF) <- gsub("-", "_", names(resultsQF))
+     if(n > 1) {
+       for(i in 1:(n-1)) {
+         for(j in (i+1):n) {
+         data <- MakePlotData(resultsQF, i, j)
+         namei <- names(resultsQF)[i]
+         namej <- names(resultsQF)[j]
+
+         ## ggplot(data$scatter, aes_string(x="Time", y="Fails", shape=namei, color=namej)) +   geom_point(size=5) + scale_x_continuous(trans='log10' , limits = c(0.05, 200)) +   scale_y_continuous(trans='log10', limits = c(0.05, 200)) + ggtitle(sprintf('%s versus %s', namei, namej)) +  theme(text = element_text(size=20)) 
+
+         content <- tableGrob(data$table)
+         ## rheader <- tableGrob(data$table[1, 1], rows=NULL, cols=namei) 
+         ## tg <- gtable_combine(rheader[1, ], content, along=2)
+         ## tg$widths <- rep(max(tg$widths), length(tg$widths))
+         ## tg$layout[1:2 , c("l", "r")] <- list( c(2, 2), c(4, 4))
+
+         rheader <- tableGrob(data.frame(data$table[1, 1], data$table[1, 2]), rows=NULL, cols=c(namei, namej)) 
+         tg <- gtable_combine(rheader[1, ], content, along=2)
+         tg$widths <- rep(max(tg$widths), length(tg$widths))
+         tg$layout[1:4 , c("l", "r")] <- list( c(1, 2), c(1, 4))
+         tg$layout[c(1,3), c("t", "b")] <- c(2, 2)
+  #       Drw(tg)
+          Drw <- function(tg) {
+            grid.newpage()
+            grid.draw(tg)
+          }
+
+         ggplot(data$scatter, aes_string(x="Time", y="Fails", shape=namei, color=namej)) +   geom_point(size=5)  + ggtitle(sprintf('%s versus %s', namei, namej)) +  theme(text = element_text(size=20)) +  annotation_custom(tg, xmin = 2, ymin = -4)  + scale_x_continuous(trans='log10' , limits = c(0.05, 200)) +   scale_y_continuous(trans='log10', limits = c(0.05, 200))
+                                            # ggsave(sprintf("compare-%s-%s.png", namei, namej), device = 'png', width = 12, height = 9) 
+
+ ## TODO http://www.sthda.com/french/wiki/ggplot2-ajouter-une-ligne-droite-a-un-graphe-ligne-horizontale-verticale-et-droite-de-regression
+             ggsave(sprintf("compare-%s-%s.png", namei, namej), device = 'png', width = 12, height = 9) 
+         }
+       }
+     }
+
+     ##       namei <- names(resultsQF)[i]
+     ##       namej <- names(resultsQF)[j]
+     ##       z <- full_join(resultsQF[[i]], resultsQF[[j]], by = c("i"))
+
+     ##       p <- z[ , c('s.x', 's.y')]  
+     ##       colnames(p) <- c(namei, namej)
+     ##       p$Time <- z$WCTIME.x/ z$WCTIME.y
+     ##       p$Fails <- z$FAILS.x / z$FAILS.y 
+     ##       ggplot(p, aes_string(x="Time", y="Fails", shape=namei, color=namej)) +   geom_point(size=5) + scale_x_continuous(trans='log10' , limits = c(0.05, 200)) +   scale_y_continuous(trans='log10', limits = c(0.05, 200)) + ggtitle(sprintf('%s versus %s', namei, namej)) +  theme(text = element_text(size=20)) 
+
+
+     ##     }
+     ## }
+     ## }
 #+END_SRC
 
 
