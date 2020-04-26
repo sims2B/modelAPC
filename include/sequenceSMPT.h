@@ -171,6 +171,22 @@ class FamilyRun {
              slength;  //  the setup of the current following runs are removed
     return delta;
   }
+
+  int toTikz(int start, bool withSetup) {
+    std::vector<std::string> palette = {
+        "cyan",   "lime",      "olive",  "magenta", "teal",
+        "orange", "lightgray", "pink",   "purple",  "red",
+        "blue",   "violet",    "yellow", "brown",   "green"};
+    if(withSetup) start += slength;
+    for (int i = 0; i < required; i++) {
+      int end = start + duration;
+      std::cout << "\\draw[fill = " << palette[index % palette.size()]
+                << "!80!white!80]  (" << start << "," << 0.5 << ") rectangle ("
+                << end << "," << 1.5 << ") node[midway] {$" << index << "$};\n";
+      start = end;          
+    }
+    return start;
+  }
 };
 
 /**
@@ -323,7 +339,7 @@ class SequenceSMPT {
    */
   bool searching(int flowtimeUB);
 
-  void toTikz();
+  void toTikz(int first);
   /**
    * @brief print the sequence in a human readable format (useful for
    * debugging).

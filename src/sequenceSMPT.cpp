@@ -92,28 +92,24 @@ bool SequenceSMPT::searching(int flowtimeUB) {
 }
 
 
-void SequenceSMPT::toTikz() {
-std::vector<std::string> palette = {"cyan", "lime", "olive", "magenta", "teal", "orange", 
-"lightgray", "pink", "purple", "red", "blue", "violet", "yellow", "brown", "green"};
- const int makespan = sequence.back()->endtime + 2;
+void SequenceSMPT::toTikz(int first) {
+const int makespan = sequence.back()->endtime + 2;
  std::cout << "\\begin{tikzpicture}\n"
             << "\\node (O) at (0,0) {};\n"
             << "\\draw[->] (O.center) -- ( " << makespan << ",0);\n"
-            << "\\draw[->] (O.center) -- (0, 1.5);\n";
-    for (auto run : sequence) {
-      //std::cout << run->index << std::endl;
-      int endtime = run->endtime;
-      for (int i = 0; i < run->required ;  i++) {
-        int starttime = endtime - run->duration;
-         std::cout << "\\draw[fill = " << palette[run->index % palette.size()]
-                   << "!80!white!80]  (" << starttime << ","
-                 << 0.5 << ") rectangle ("
-                 << endtime 
-                 << "," << 1.5 << ") node[midway] {$"
-                 << run->index << "$};\n";
-        endtime = starttime;
+            << "\\draw[->] (O.center) -- (0, 2);\n";
+    
+ if(first > 0) {    
+      int start = runs[first]->toTikz(0, false);
+      for (auto run : sequence) {
+        if(run->index != first) start = run->toTikz(start, true);
       }
+ } else {
+      int start = 0;
+      for (auto run : sequence) {
+        start = run->toTikz(start, true);
       }
+    }
        std::cout << "\\end{tikzpicture}\n\n";
     }
     
