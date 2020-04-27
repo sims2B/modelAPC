@@ -38,7 +38,7 @@ void IlcRelax1SFConstraintI::reduceCardFamily(int i) {
   const int flowUB = _f.getMax();
   do {
     s.setRequired(i, max);
-    if (s.searching(flowUB)) {break;}
+    if (s.search(flowUB)) {break;}
     max--; 
   } while (max > min);
 #ifdef DEBUG_FAMILY
@@ -94,7 +94,7 @@ void IlcRelax1SFConstraintI::reduceCardMachine() {
   int f = _n - 1;
   const int flowUB = _f.getMax();
 
-  while (!se.searching(flowUB)) {
+  while (!se.search(flowUB)) {
     while (f >= 0) {
       const int i = _n + orderSPT[f];
       if (se.getRequired(i) > 0) {
@@ -115,7 +115,7 @@ void IlcRelax1SFConstraintI::reduceCardMachine() {
 }
 
 void IlcRelax1SFConstraintI::increaseFlowtime(SequenceSMPT &s) {
-  const int flowLB = s.searching();
+  const int flowLB = s.search().flowtime;
 #ifdef DEBUG_FLOW
   if (_f.getMin() < flowLB) {
     std::cout << "FLOWTIME " << _f.getMin() << "->" << flowLB << std::endl;

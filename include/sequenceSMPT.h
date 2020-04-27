@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 
+#define DEBUG_SEQ
 #define SUM1N(n) ((n * (n + 1)) / 2)
 
 /**
@@ -189,6 +190,12 @@ class FamilyRun {
   }
 };
 
+typedef struct SequenceData {
+  int flowtimeWS;
+  int flowtime;
+  int firstFamily;
+} SequenceData;
+
 /**
  * @brief this class optimally sequences jobs with family setups.
  * There is no initial setup.
@@ -215,6 +222,7 @@ class SequenceSMPT {
   /**
    * @brief the flowtime of the runs in SMPT order with an initial setup
    */
+  // FIXME not used anymore
   int flowtimeWS;
 
   /**
@@ -323,11 +331,11 @@ class SequenceSMPT {
   }
 
   /**
-   * @brief search the optimal flowtime of the sequence without initial setups
+   * @brief search the optimal sequence without initial setups
    *
-   * @return int the optimal flowtime
+   * @return SequenceData informations about the optimal sequence
    */
-  int searching();
+  SequenceData search();
 
   /**
    * @brief search a sequence without initial setups under a given upper bound
@@ -337,9 +345,10 @@ class SequenceSMPT {
    * @return true at least one feasible sequence exists
    * @return false no feasible sequence exists
    */
-  bool searching(int flowtimeUB);
+  bool search(int flowtimeUB);
 
   void toTikz(int first);
+
   /**
    * @brief print the sequence in a human readable format (useful for
    * debugging).

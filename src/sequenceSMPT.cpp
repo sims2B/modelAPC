@@ -21,7 +21,7 @@ int SequenceSMPT::sequencing() {
     flowtimeWS += sequence[i]->getFlowtime();
   }
   #ifdef DEBUG_SEQ 
-  std::cout << "FLOWTIME_WS " << flowtimeWS << std::endl;
+  std::cout << "FLOWTIME_WITH_INITIAL_SETUP " << flowtimeWS << std::endl;
   printSequence();
   #endif
   return flowtimeWS;
@@ -37,14 +37,16 @@ int SequenceSMPT::searchNextRun(int from) {
 
 // Question : if a family has no setup, then it is useless to try to move it in first position.
 // TODO Find a way to return the family in first position
-int SequenceSMPT::searching() {
-  if (size == 0) return 0;
-  const int flowtimeWS = sequencing();
+SequenceData SequenceSMPT::search() {
+  SequenceData res ={0, 0, 0};
+  if (size == 0) return res;
+  res.flowtimeWS = sequencing();
   // Remove setup from the first non empty run
   int i = searchNextRun(0);
-  int bestDelta = sequence[i]->cancelSetup();
+  res.firstFamily = sequence[i]->index;
+  res.flowtime = sequence[i]->cancelSetup();
   #ifdef DEBUG_SEQ 
-   printf("cancel setup F%d -> %d\n", sequence[i]->index, bestDelta);
+   printf("cancel setup F%d -> %d\n", sequence[i]->index, res.flowtime);
   #endif
   
   // Try to schedule first each remaining non empty run
@@ -53,18 +55,19 @@ int SequenceSMPT::searching() {
   #ifdef DEBUG_SEQ 
    printf("schedule first F%d -> %d\n", sequence[i]->index, delta);
   #endif
-    if (delta < bestDelta) {
-      bestDelta = delta;
+    if (delta < res.flowtime) {
+       res.firstFamily = sequence[i]->index;
+       res.flowtime = delta;
     }
   }
-  const int flowtime = flowtimeWS + bestDelta;
+  res.flowtime += res.flowtimeWS;
   #ifdef DEBUG_SEQ 
-  std::cout << "FLOWTIME " << flowtime << std::endl;
+  std::cout << "FLOWTIME " << res.flowtime << " WITH_FIRST_FAMILY " << res.firstFamily << std::endl;
   #endif
-  return flowtime;
+  return res;
 }
 
-bool SequenceSMPT::searching(int flowtimeUB) {
+bool SequenceSMPT::search(int flowtimeUB) {
   if (size == 0) return true;
   const int flowtimeWS = sequencing();
   // The sequence with initial setup is feasible 

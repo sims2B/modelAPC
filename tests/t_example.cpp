@@ -2,12 +2,12 @@
 #include <iostream>
 #include "sequenceSMPT.h"
 
-void searching(SequenceSMPT& seq) {
-  std::cout << "Flowtime Without Initial Setup : " << seq.searching() << std::endl << std::endl;
+// Define in SequenceSMPT.h
+// #define DEBUG_SEQ
+void search(SequenceSMPT& seq) {
+  SequenceData res = seq.search();
   seq.toTikz(0);
-  seq.toTikz(1);
-    seq.toTikz(2);
-      seq.toTikz(3);
+  seq.toTikz(res.firstFamily);
 }
 
 int main() {
@@ -18,15 +18,15 @@ int main() {
   seq.setRequired(1, 1);
   seq.setRequired(2, 1);
   seq.setRequired(3, 1);
-  searching(seq);
+  search(seq);
 
   seq.setRequired(2, 3);
-  searching(seq);
+  search(seq);
 
   seq.setRequired(2, 1);
   seq.setRequired(3 + 1, 2);
   seq.setRequired(3 + 2, 1);
-  searching(seq);
+  search(seq);
 
 
   return (EXIT_SUCCESS);
