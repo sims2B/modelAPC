@@ -15,9 +15,9 @@ void setRequired(SequenceSMPT &seq, int n, int required[]) {
 }
 
 bool testSequenceSMPT(SequenceSMPT &seq, int flowtime) {
-  const int results = seq.searching();
-  return results == flowtime && seq.searching(flowtime) &&
-         (flowtime <= 0 || !seq.searching(flowtime - 1));
+  const int results = seq.search().flowtime;
+  return results == flowtime && seq.search(flowtime) &&
+         (flowtime <= 0 || !seq.search(flowtime - 1));
 }
 
 bool testSequence0() {

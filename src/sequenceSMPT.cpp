@@ -35,8 +35,7 @@ int SequenceSMPT::searchNextRun(int from) {
 }
 
 
-// Question : if a family has no setup, then it is useless to try to move it in first position.
-// TODO Find a way to return the family in first position
+// Remark (possible optimization) : if a family has no setup, then it is useless to try to move it in first position.
 SequenceData SequenceSMPT::search() {
   SequenceData res ={0, 0, 0};
   if (size == 0) return res;
