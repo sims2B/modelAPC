@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-#define DEBUG_SEQ
+// #define DEBUG_SEQ
 #define SUM1N(n) ((n * (n + 1)) / 2)
 
 /**

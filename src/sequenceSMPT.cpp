@@ -2,8 +2,6 @@
 
 #include <algorithm>
 
-//#define DEBUG_SEQ
-
 bool compareWeights(FamilyRun* f1, FamilyRun* f2) {
   return f1->getWeight() < f2->getWeight();
 }

@@ -153,11 +153,9 @@ void IlcRelax1SFConstraintI::propagate() {
 
   if (propagationMask & M_CARD && !_c.isFixed()) {
       initExtendedSequence();
-      if (extendSequence(_c.getMax())) {
-        reduceCardMachine();
-      } else {
-         _c.setMax(se.getSize());
-      }
+      extendSequence(_c.getMax());
+      // If the sequence cannot be extended completely, then the upper bound will be reduced.
+      reduceCardMachine();
   }
   
 }
