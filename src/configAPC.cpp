@@ -89,5 +89,6 @@ void ConfigAPC::toDimacs() {
             << "c SOLVER " << getSolverType() << std::endl
             << "c O_FUNC " << getObjectiveFunction() << std::endl
             << "c O_FLOW " << getWeightFlowtime() << std::endl
-            << "c O_QUAL " << getWeightQualified() << std::endl;
+            << "c O_QUAL " << getWeightQualified() << std::endl
+            << "c RELAX_1SF " << withRelaxation1SF() << std::endl;
 }

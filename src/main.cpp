@@ -47,15 +47,12 @@ int main(int argc, char *argv[]) {
   ConfigAPC config;
   if (!config.readFile(configPath)) return exitOnFailure("invalid configuration file");
   std::ifstream instance(instancePath, std::ios::in);
+  config.toDimacs();
 
+  // Read problem instance from file
   if (!instance.is_open()) return exitOnFailure("invalid instance file");
-
   Problem problem = oldReader(instance);
   instance.close();
-
-  // Log on Config and Problem
-
-  config.toDimacs();
   problem.toDimacs();
 
   // Execute heuristics for warm getStart

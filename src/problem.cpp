@@ -150,9 +150,9 @@ std::string Problem::toString() const {
 }
 
 void Problem::toDimacs() const {
-  std::cout << "c MACHINES " << M << std::endl
-            << "c FAMILIES " << getNbFams() << std::endl
-            << "c JOBS " << N << std::endl;
+  std::cout << "c JOBS " << N << std::endl
+            << "c MACHINES " << M << std::endl
+            << "c FAMILIES " << getNbFams() << std::endl;
 }
 
 // reader
