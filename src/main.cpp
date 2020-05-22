@@ -21,7 +21,8 @@ AbstractSolverAPC *makeSolverAPC(Problem &problem, ConfigAPC &config,
   return NULL;
 }
 
-int exitOnFailure() {
+int exitOnFailure(std::string message) {
+  std::cerr << "ERROR: " << message << std::endl;
   std::cout << "s " << S_ERROR << std::endl;
   return (EXIT_FAILURE);
 }
@@ -35,7 +36,7 @@ int main(int argc, char *argv[]) {
   Timer timer;
   // Check arguments
   if (argc != 3) {
-    return exitOnFailure();
+    return exitOnFailure("invalid arguments");
   }
   // Print parameters
   std::string configPath = argv[1];
@@ -44,10 +45,10 @@ int main(int argc, char *argv[]) {
   std::cout << "c CONFIG " << getFilename(configPath, false) << std::endl;
   // Read Config From file
   ConfigAPC config;
-  if (!config.readFile(configPath)) return exitOnFailure();
+  if (!config.readFile(configPath)) return exitOnFailure("invalid configuration file");
   std::ifstream instance(instancePath, std::ios::in);
 
-  if (!instance.is_open()) return exitOnFailure();
+  if (!instance.is_open()) return exitOnFailure("invalid instance file");
 
   Problem problem = oldReader(instance);
   instance.close();
@@ -76,11 +77,9 @@ int main(int argc, char *argv[]) {
       makeSolverAPC(problem, config, solutionPool, timer);
   if (solver != NULL) {
     std::cout << std::endl;
-    solver->solve();/* 
-    std::cout << solver->getSolution().toString();
-    solver->getSolution().toTikz();  */
+    solver->solve(); 
   } else {
-    std::cout << "s ERROR\nError : command line argument - unknown solver." << std::endl;
+    return exitOnFailure("invalid solver type");
   }
   timer.stagewc();
   timer.toDimacs();

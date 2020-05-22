@@ -26,7 +26,7 @@ void CplexSolverAPC::doSolve(IloEnv &env) {
   solutionCount += cplex.getSolnPoolNsolns();
   if (solMIPFound) {
     modelToSol(cplex, x, y, Y);
-    if (!checkObjValue(cplex,C,Y)) std::cout << "WARNING : objective value between CPLEX and solution does not match" << std::endl;
+    if (!checkObjValue(cplex,C,Y)) std::cerr << "WARNING : objective value between CPLEX and solution does not match" << std::endl;
   }
   setStatus(cplex);
   tearDown(cplex);

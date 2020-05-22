@@ -136,24 +136,20 @@ void IloSolverAPC::solve() {
     solutionCount += solutionPool.size();
     doSolve(env);
   } catch (IloOplException &e) {
-    std::cout << "### OPL exception: " << e.getMessage() << std::endl;
+    std::cerr << "ERROR: OPL exception - " << e.getMessage() << std::endl;
     status = S_ERROR;
   } catch (IloException &e) {
-    std::cout << "Iloexception in solve" << e << std::endl;
+    std::cerr << "ERROR: Iloexception in solve" << e << std::endl;
     e.end();
     status = S_ERROR;
   } catch (...) {
-    std::cout << "Error unknown\n";
+    std::cerr << "ERROR: unknown cause\n";
     status = S_ERROR;
   }
   env.end();
 
   if (hasSolution()) {
     if (getSolutionCount() == (int)solutionPool.size()) {
-      // TODO Must set the best solution in the pool
-      // DONE Restore the first solution
-      std::cout << ">>>> TODO RESTORE BEST HEURISTIC SOLUTION <<<<"
-                << std::endl;
       solution = solutionPool[0];
     }
   }

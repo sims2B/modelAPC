@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-// #define DEBUG_OPL
+#define DEBUG_OPL
 
 IlcConstraint IlcRelax1SFConstraint(IloCPEngine cp, IlcIntVarArray families, IlcIntVar cardinality,
                                     IlcIntVar flowtime, IlcIntArray durations,
@@ -88,7 +88,7 @@ void CpoSolver2APC::doSolve(IloEnv &env) {
   if (solCPFound) {
     IloOplElement elmt = opl.getElement("mjobs");
     modelToSol(env, cp, elmt);
-    if (!checkObjValue(cp,opl)) std::cout << "WARNING : objective value between CPO and solution does not match" << std::endl;
+    if (!checkObjValue(cp,opl)) std::cerr << "WARNING : objective value between CPO and solution does not match" << std::endl;
   }
   setStatus(cp);
   tearDown(cp);
